@@ -1,0 +1,33 @@
+{
+  "name": "d3-graphviz",
+  "version": "0.0.1",
+  "description": "Graphviz DOT rendering and transition",
+  "keywords": [
+    "d3",
+    "d3-module",
+    "Graphviz",
+    "DOT",
+    "graph layout",
+    "transition",
+    "Viz.js"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "build/d3-graphviz.js",
+  "jsnext:main": "index",
+  "homepage": "https://github.com/magjac/d3-graphviz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/magjac/d3-graphviz.git"
+  },
+  "scripts": {
+    "pretest": "rm -rf build && mkdir build && rollup -f umd -n d3 -o build/d3-graphviz.js -- index.js",
+    "test": "tape 'test/**/*-test.js'",
+    "prepublish": "npm run test && uglifyjs build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
+    "postpublish": "zip -j build/d3-graphviz.zip -- LICENSE README.md build/d3-graphviz.js build/d3-graphviz.min.js"
+  },
+  "devDependencies": {
+    "rollup": "0.27",
+    "tape": "4",
+    "uglify-js": "2"
+  }
+}
