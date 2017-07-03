@@ -29,5 +29,8 @@
     "rollup": "0.27",
     "tape": "4",
     "uglify-js": "2"
+  },
+  "dependencies": {
+    "viz.js": "^1.8.0"
   }
 }
