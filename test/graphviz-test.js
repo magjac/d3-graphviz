@@ -29,7 +29,7 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
 <polygon fill="#000000" stroke="#000000" points="30.5001,-46.4132 27,-36.4133 23.5001,-46.4133 30.5001,-46.4132"></polygon>
 </g>
 </g>
-`
+`.replace(/<!--.*-->\n/g, '').replace(/\n/g, '');
 
     test.equal(graphviz.render('digraph {a -> b;}', "#graph").html(), svgDoc);
 
