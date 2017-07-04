@@ -26,7 +26,7 @@
     "postpublish": "zip -j build/d3-graphviz.zip -- LICENSE README.md build/d3-graphviz.js build/d3-graphviz.min.js"
   },
   "devDependencies": {
-    "jsdom": "9",
+    "jsdom": "11",
     "rollup": "0.27",
     "tape": "4",
     "uglify-js": "2"

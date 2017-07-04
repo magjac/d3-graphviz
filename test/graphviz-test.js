@@ -1,10 +1,10 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("./jsdom"),
     d3 = require("d3-selection"),
     graphviz = require("../");
 
 tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
-    var document = global.document = jsdom.jsdom('<div id="graph"></div>');
+    var document = global.document = jsdom('<div id="graph"></div>');
 
     svgDoc = `
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
