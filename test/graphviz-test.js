@@ -34,5 +34,37 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
     test.equal(graphviz.render('digraph {a -> b;}', "#graph").html(), svgDoc);
 
     test.equal(d3.select('svg').html(), svgDoc);
+
+    // Check data tag by tag
+    test.equal(d3.select('svg').data()[0].tag, 'svg');
+    test.equal(d3.select('g').data()[0].tag, 'g');
+    test.equal(d3.select('title').data()[0].tag, 'title');
+    test.equal(d3.select('ellipse').data()[0].tag, 'ellipse');
+    test.equal(d3.select('text').data()[0].tag, 'text');
+    test.equal(d3.select('path').data()[0].tag, 'path');
+    test.equal(d3.select('polygon').data()[0].tag, 'polygon');
+
+    // Check data tag by id
+    test.equal(d3.select('#graph0').data()[0].tag, 'g');
+    test.equal(d3.select('#node1').data()[0].tag, 'g');
+    test.equal(d3.select('#node2').data()[0].tag, 'g');
+    test.equal(d3.select('#edge1').data()[0].tag, 'g');
+
+    // Check data tag by class
+    test.equal(d3.select('.graph').data()[0].tag, 'g');
+    test.equal(d3.select('.node').data()[0].tag, 'g');
+    test.equal(d3.select('.edge').data()[0].tag, 'g');
+
+    // Check full data structure for some primary elements
+    var data = d3.select('svg').data();
+    var svgData = data[0];
+    var graph0Data = svgData.children[0];
+
+    test.deepEqual(d3.select('svg').datum(), svgData);
+    test.deepEqual(d3.select('#graph0').datum(), graph0Data);
+    test.deepEqual(d3.select('#node1').datum(), graph0Data.children[2]);
+    test.deepEqual(d3.select('#node2').datum(), graph0Data.children[3]);
+    test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[4]);
+
     test.end();
 });

@@ -40,8 +40,12 @@ export default function(src, rootElement) {
     }
 
     function insertSvg(element, data) {
-        data.forEach(function(childData) {
-            var child = element
+        var children = element.selectAll('*')
+          .data(data);
+        var childrenEnter = children
+          .enter()
+        childrenEnter.each(function(childData) {
+            var child = d3.select(this)
               .append(childData.tag);
             childData.attributes.forEach(function(attribute) {
                 child.attr(attribute.name, attribute.value);
