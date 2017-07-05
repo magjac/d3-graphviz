@@ -78,8 +78,4 @@ export default function(src, rootElement) {
     var root = d3.select(rootElement);
     insertSvg(root, [data]);
 
-    var svg = d3.select(rootElement)
-      .select('svg');
-
-    return svg;
 };

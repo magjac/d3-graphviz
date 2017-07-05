@@ -31,7 +31,7 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
 </g>
 `.replace(/<!--.*-->\n/g, '').replace(/\n/g, '');
 
-    test.equal(graphviz.render('digraph {a -> b;}', "#graph").html(), svgDoc);
+    graphviz.render('digraph {a -> b;}', "#graph");
 
     test.equal(d3.select('svg').html(), svgDoc);
 
