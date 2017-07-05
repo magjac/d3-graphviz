@@ -7,10 +7,6 @@ export default function(src, rootElement) {
 
         var datum = {};
         var tag = element.node().nodeName;
-        if (tag[0] == '#') {
-            // Skip close tag
-            return null;
-        }
         datum.tag = tag;
         datum.attributes = [];
         datum.children = [];
@@ -23,9 +19,10 @@ export default function(src, rootElement) {
                 datum.attributes.push({'name': name, 'value': value});
             }
         }
-        if (tag == 'text' || tag == 'title') {
-            var text = element.text();
-            datum.text = text;
+        if (tag == '#text') {
+            datum.text = element.text();
+        } else if (tag == '#comment') {
+            datum.comment = element.text();
         }
         var children = d3.selectAll(element.node().childNodes);
         children.each(function () {
@@ -40,12 +37,21 @@ export default function(src, rootElement) {
     }
 
     function insertSvg(element, data) {
+        if (data.length == 0) {
+            return;
+        }
         var children = element.selectAll('*')
           .data(data);
         var childrenEnter = children
           .enter()
           .append(function(d) {
-              return document.createElementNS('http://www.w3.org/2000/svg', d.tag);
+              if (d.tag == '#text') {
+                  return document.createTextNode(d.text);
+              } else if (d.tag == '#comment') {
+                  return document.createComment(d.comment);
+              } else {
+                  return document.createElementNS('http://www.w3.org/2000/svg', d.tag);
+              }
           });
 
         childrenEnter.each(function(childData) {
@@ -53,9 +59,6 @@ export default function(src, rootElement) {
             childData.attributes.forEach(function(attribute) {
                 child.attr(attribute.name, attribute.value);
             });
-            if (childData.text) {
-                child.text(childData.text);
-            }
             insertSvg(child, childData.children);
         });
     }

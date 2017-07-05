@@ -6,8 +6,7 @@ var tape = require("tape"),
 tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
 
-    svgDoc = `
-<svg width="62pt" height="116pt" viewbox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    svgDoc = `<svg width="62pt" height="116pt" viewbox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
 <title>%0</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-112 58,-112 58,4 -4,4"></polygon>
@@ -30,8 +29,7 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
 <polygon fill="#000000" stroke="#000000" points="30.5001,-46.4132 27,-36.4133 23.5001,-46.4133 30.5001,-46.4132"></polygon>
 </g>
 </g>
-</svg>
-`.replace(/<!--.*-->\n/g, '').replace(/\n/g, '');
+</svg>`;
 
     graphviz.render('digraph {a -> b;}', "#graph");
 
@@ -60,13 +58,13 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
     // Check full data structure for some primary elements
     var data = d3.select('svg').data();
     var svgData = data[0];
-    var graph0Data = svgData.children[0];
+    var graph0Data = svgData.children[1];
 
     test.deepEqual(d3.select('svg').datum(), svgData);
     test.deepEqual(d3.select('#graph0').datum(), graph0Data);
-    test.deepEqual(d3.select('#node1').datum(), graph0Data.children[2]);
-    test.deepEqual(d3.select('#node2').datum(), graph0Data.children[3]);
-    test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[4]);
+    test.deepEqual(d3.select('#node1').datum(), graph0Data.children[7]);
+    test.deepEqual(d3.select('#node2').datum(), graph0Data.children[11]);
+    test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[15]);
 
     test.end();
 });
