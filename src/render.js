@@ -44,9 +44,12 @@ export default function(src, rootElement) {
           .data(data);
         var childrenEnter = children
           .enter()
+          .append(function(d) {
+              return document.createElementNS('http://www.w3.org/2000/svg', d.tag);
+          });
+
         childrenEnter.each(function(childData) {
-            var child = d3.select(this)
-              .append(childData.tag);
+            var child = d3.select(this);
             childData.attributes.forEach(function(attribute) {
                 child.attr(attribute.name, attribute.value);
             });
