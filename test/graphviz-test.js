@@ -7,6 +7,7 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
 
     svgDoc = `
+<svg width="62pt" height="116pt" viewbox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
 <title>%0</title>
 <polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-112 58,-112 58,4 -4,4"></polygon>
@@ -29,11 +30,12 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
 <polygon fill="#000000" stroke="#000000" points="30.5001,-46.4132 27,-36.4133 23.5001,-46.4133 30.5001,-46.4132"></polygon>
 </g>
 </g>
+</svg>
 `.replace(/<!--.*-->\n/g, '').replace(/\n/g, '');
 
     graphviz.render('digraph {a -> b;}', "#graph");
 
-    test.equal(d3.select('svg').html(), svgDoc);
+    test.equal(d3.select('div').html(), svgDoc);
 
     // Check data tag by tag
     test.equal(d3.select('svg').data()[0].tag, 'svg');
