@@ -1,6 +1,8 @@
 var tape = require("tape"),
     jsdom = require("./jsdom"),
     d3 = require("d3-selection"),
+    d3_transition = require("d3-transition"),
+    d3_timer = require("d3-timer"),
     graphviz = require("../");
 
 tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
@@ -109,4 +111,29 @@ tape("graphviz() adds SVG elements for nodes and edges when added to updated DOT
     test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after add');
 
     test.end();
+});
+
+tape("graphviz() adds and removes SVG elements after transition delay.", function(test) {
+
+    var document = global.document = jsdom('<div id="graph"></div>');
+
+    graphviz.render('digraph {a -> b; c}', "#graph");
+    test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    transition1 = d3_transition.transition().duration(0);
+    graphviz.render('digraph {a -> b; b -> a}', "#graph", transition1);
+    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
+
+    d3_timer.timeout(function(elapsed) {
+        part3_end();
+    }, 100);
+
+    function part3_end() {
+
+        test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after transition');
+        test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after transition');
+
+        test.end();
+    }
 });

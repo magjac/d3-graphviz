@@ -1,7 +1,8 @@
 import * as Viz from "viz.js";
 import * as d3 from "d3-selection";
+import {transition} from "d3-transition";
 
-export default function(src, rootElement) {
+export default function(src, rootElement, transitionInstance) {
 
     function extractData(element) {
 
@@ -68,14 +69,24 @@ export default function(src, rootElement) {
 
         var childrenExit = children
           .exit();
+        if (transitionInstance) {
+            childrenExit = childrenExit
+                .transition(transitionInstance);
+        }
         childrenExit = childrenExit
             .remove()
         children = childrenEnter
             .merge(children);
         children.each(function(childData) {
             var child = d3.select(this);
+            var childTransition = child;
+            if (transitionInstance) {
+                childTransition = childTransition
+                    .transition(transitionInstance);
+            }
             childData.attributes.forEach(function(attribute) {
-                child.attr(attribute.name, attribute.value);
+                childTransition
+                    .attr(attribute.name, attribute.value);
             });
             insertSvg(child, childData.children);
         });
