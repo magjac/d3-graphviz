@@ -66,5 +66,22 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
     test.deepEqual(d3.select('#node2').datum(), graph0Data.children[11]);
     test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[15]);
 
+    graphviz.render('digraph {a}', "#graph");
+
+    svgDoc2 = `<svg width="62pt" height="44pt" viewbox="0.00 0.00 62.00 44.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 40)">
+<title>%0</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-40 58,-40 58,4 -4,4"></polygon>
+<!-- a -->
+<g id="node1" class="node">
+<title>a</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">a</text>
+</g>
+</g>
+</svg>`;
+
+    test.equal(d3.select('div').html(), svgDoc2);
+
     test.end();
 });

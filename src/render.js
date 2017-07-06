@@ -58,6 +58,10 @@ export default function(src, rootElement) {
               }
           });
 
+        var childrenExit = children
+          .exit();
+        childrenExit = childrenExit
+            .remove()
         children = childrenEnter
             .merge(children);
         children.each(function(childData) {
