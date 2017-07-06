@@ -37,10 +37,14 @@ export default function(src, rootElement) {
     }
 
     function insertSvg(element, data) {
-        if (data.length == 0) {
+        if (element.node().childNodes.length != 0) {
+            var children = d3.selectAll(element.node().childNodes);
+        } else if (data.length == 0) {
             return;
+        } else {
+            var children = element.selectAll('*');
         }
-        var children = element.selectAll('*')
+        children = children
           .data(data);
         var childrenEnter = children
           .enter()
@@ -54,7 +58,9 @@ export default function(src, rootElement) {
               }
           });
 
-        childrenEnter.each(function(childData) {
+        children = childrenEnter
+            .merge(children);
+        children.each(function(childData) {
             var child = d3.select(this);
             childData.attributes.forEach(function(attribute) {
                 child.attr(attribute.name, attribute.value);
