@@ -33,7 +33,7 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
 
     graphviz.render('digraph {a -> b;}', "#graph");
 
-    test.equal(d3.select('div').html(), svgDoc);
+    test.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
 
     // Check data tag by tag
     test.equal(d3.select('svg').data()[0].tag, 'svg');
@@ -81,7 +81,7 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
 </g>
 </svg>`;
 
-    test.equal(d3.select('div').html(), svgDoc2);
+    test.equal(d3.select('div').html(), svgDoc2, "SVG after removal of one edge and one node");
 
     graphviz.render('digraph {a -> b; a -> c}', "#graph");
 
