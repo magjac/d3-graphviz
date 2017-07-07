@@ -38,15 +38,9 @@ export default function(src, rootElement, transitionInstance) {
     }
 
     function insertSvg(element, data) {
-        if (element.node().childNodes.length != 0) {
-            var children = element.selectAll(function () {
-                return element.node().childNodes;
-            });
-        } else if (data.length == 0) {
-            return;
-        } else {
-            var children = element.selectAll('*');
-        }
+        var children = element.selectAll(function () {
+            return element.node().childNodes;
+        });
         children = children
           .data(data, function (d, i, parent) {
               if (d.id) {
