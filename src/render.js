@@ -47,7 +47,13 @@ export default function(src, rootElement) {
             var children = element.selectAll('*');
         }
         children = children
-          .data(data);
+          .data(data, function (d, i, parent) {
+              if (d.id) {
+                  return d.id;
+              } else {
+                  return d.tag + '-' + i;
+              }
+          });
         var childrenEnter = children
           .enter()
           .append(function(d) {
