@@ -83,5 +83,9 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
 
     test.equal(d3.select('div').html(), svgDoc2);
 
+    graphviz.render('digraph {a -> b; a -> c}', "#graph");
+
+    test.deepEqual(d3.select('#node3').empty(), false, "Newly inserted node 'c' is present");
+
     test.end();
 });

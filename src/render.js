@@ -38,7 +38,9 @@ export default function(src, rootElement) {
 
     function insertSvg(element, data) {
         if (element.node().childNodes.length != 0) {
-            var children = d3.selectAll(element.node().childNodes);
+            var children = element.selectAll(function () {
+                return element.node().childNodes;
+            });
         } else if (data.length == 0) {
             return;
         } else {
