@@ -42,9 +42,15 @@ export default function(src, rootElement, transitionInstance, keyMode = 'title')
         if (datum.key == null) {
             datum.key = tag + '-' + index;
         }
-        children.each(function (d, i) {
+        var childTagIndexes = {};
+        children.each(function () {
             if (this !== null) {
-                var childData = extractData(d3.select(this), keyMode, i);
+                var childTag = this.nodeName;
+                if (childTagIndexes[childTag] == null) {
+                    childTagIndexes[childTag] = 0;
+                }
+                var childIndex = childTagIndexes[childTag]++;
+                var childData = extractData(d3.select(this), keyMode, childIndex);
                 if (childData) {
                     datum.children.push(childData);
                 }
