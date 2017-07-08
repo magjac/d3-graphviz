@@ -30,7 +30,7 @@
     "jsdom": "11",
     "rollup": "0.27",
     "tape": "4",
-    "uglify-js": "2"
+    "uglify-es": "^3.0.27"
   },
   "dependencies": {
     "d3-selection": "^1.1.0",

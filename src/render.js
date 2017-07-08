@@ -2,9 +2,9 @@ import * as Viz from "viz.js";
 import * as d3 from "d3-selection";
 import {transition} from "d3-transition";
 
-export default function(src, rootElement, transitionInstance) {
+export default function(src, rootElement, transitionInstance, keyMode = 'title') {
 
-    function extractData(element) {
+    function extractData(element, keyMode, index = 0) {
 
         var datum = {};
         var tag = element.node().nodeName;
@@ -26,9 +26,25 @@ export default function(src, rootElement, transitionInstance) {
             datum.comment = element.text();
         }
         var children = d3.selectAll(element.node().childNodes);
-        children.each(function () {
+        if (keyMode == 'index') {
+            datum.key = index;
+        } else if (tag[0] != '#') {
+            if (keyMode == 'id') {
+                datum.key = element.attr('id');
+            } else if (keyMode == 'title') {
+                element.select('title');
+                var title = element.select('title');
+                if (!title.empty()) {
+                    datum.key = element.select('title').text();
+                }
+            }
+        }
+        if (datum.key == null) {
+            datum.key = tag + '-' + index;
+        }
+        children.each(function (d, i) {
             if (this !== null) {
-                var childData = extractData(d3.select(this));
+                var childData = extractData(d3.select(this), keyMode, i);
                 if (childData) {
                     datum.children.push(childData);
                 }
@@ -42,12 +58,8 @@ export default function(src, rootElement, transitionInstance) {
             return element.node().childNodes;
         });
         children = children
-          .data(data, function (d, i, parent) {
-              if (d.id) {
-                  return d.id;
-              } else {
-                  return d.tag + '-' + i;
-              }
+          .data(data, function (d) {
+              return d.key;
           });
         var childrenEnter = children
           .enter()
@@ -106,7 +118,7 @@ export default function(src, rootElement, transitionInstance) {
     var newSvg = newDoc
       .select('svg');
 
-    var data = extractData(newSvg);
+    var data = extractData(newSvg, keyMode);
 
     var root = d3.select(rootElement);
     insertSvg(root, [data]);
