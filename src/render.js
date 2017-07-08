@@ -79,6 +79,13 @@ export default function(src, rootElement, transitionInstance, keyMode = 'title')
               }
           });
 
+        if (transitionInstance) {
+            childrenEnter
+                .filter(function(d) {
+                    return d.tag[0] == '#' ? null : this;
+                })
+                .style("opacity", 0.0);
+        }
         var childrenExit = children
           .exit();
         if (transitionInstance) {
@@ -95,6 +102,11 @@ export default function(src, rootElement, transitionInstance, keyMode = 'title')
             if (transitionInstance) {
                 childTransition = childTransition
                     .transition(transitionInstance);
+                childTransition
+                  .filter(function(d) {
+                      return d.tag[0] == '#' ? null : this;
+                  })
+                    .style("opacity", 1.0);
             }
             childData.attributes.forEach(function(attribute) {
                 childTransition
