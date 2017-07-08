@@ -113,6 +113,25 @@ tape("graphviz() adds SVG elements for nodes and edges when added to updated DOT
     test.end();
 });
 
+tape("graphviz() changes SVG element type when node shape changes in DOT.", function(test) {
+    var document = global.document = jsdom('<div id="graph"></div>');
+
+    graphviz.render('digraph {a -> b;}', "#graph");
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
+    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+    graphviz.render('digraph {a [shape="box"];a -> b}', "#graph");
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after shape change');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after shape change');
+    test.equal(d3.selectAll('ellipse').size(), 1, 'Number of ellipses after shape change');
+    test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after shape change');
+    test.equal(d3.selectAll('path').size(), 1, 'Number of paths after shape change');
+
+    test.end();
+});
+
 tape("graphviz() adds and removes SVG elements after transition delay.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
