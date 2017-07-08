@@ -91,6 +91,11 @@ export default function(src, rootElement, transitionInstance, keyMode = 'title')
         if (transitionInstance) {
             childrenExit = childrenExit
                 .transition(transitionInstance);
+            childrenExit
+              .filter(function(d) {
+                  return d.tag[0] == '#' ? null : this;
+              })
+                .style("opacity", 0.0);
         }
         childrenExit = childrenExit
             .remove()
