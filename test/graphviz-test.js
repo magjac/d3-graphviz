@@ -113,6 +113,21 @@ tape("graphviz() adds SVG elements for nodes and edges when added to updated DOT
     test.end();
 });
 
+tape("graphviz() updates SVG text element when node name changes in DOT.", function(test) {
+    var document = global.document = jsdom('<div id="graph"></div>');
+
+    graphviz.render('digraph {a}', "#graph");
+    test.equal(d3.selectAll('.node').size(), 1, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 0, 'Number of initial edges');
+    test.equal(d3.selectAll('text').text(), 'a', 'Text of initial node');
+    graphviz.render('digraph {b}', "#graph");
+    test.equal(d3.selectAll('.node').size(), 1, 'Number of nodes after node name change');
+    test.equal(d3.selectAll('.edge').size(), 0, 'Number of edges after node name change');
+    test.equal(d3.selectAll('text').text(), 'b', 'Text after node name change');
+
+    test.end();
+});
+
 tape("graphviz() changes SVG element type when node shape changes in DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
 

@@ -82,6 +82,10 @@ export default function(src, rootElement, transitionInstance) {
                 childTransition
                     .attr(attribute.name, attribute.value);
             });
+            if (childData.text) {
+                childTransition
+                    .text(childData.text);
+            }
             insertSvg(child, childData.children);
         });
     }
