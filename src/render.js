@@ -1,8 +1,8 @@
 import * as Viz from "viz.js";
 import * as d3 from "d3-selection";
-import {transition} from "d3-transition";
+import {transition, attrTween} from "d3-transition";
 
-export default function(src, rootElement, transitionInstance, keyMode = 'title') {
+export default function(src, rootElement, transitionInstance, tweenPaths = true, keyMode = 'title') {
 
     function extractData(element, keyMode, index = 0) {
 
@@ -114,8 +114,13 @@ export default function(src, rootElement, transitionInstance, keyMode = 'title')
                     .style("opacity", 1.0);
             }
             childData.attributes.forEach(function(attribute) {
-                childTransition
-                    .attr(attribute.name, attribute.value);
+                if (tweenPaths && transitionInstance && childData.tag == 'path' && attribute.name == 'd' && child.attr('d') != null) {
+                    childTransition
+                        .attrTween("d", pathTween(attribute.value, 4));
+                } else {
+                    childTransition
+                        .attr(attribute.name, attribute.value);
+                }
             });
             if (childData.text) {
                 childTransition
@@ -123,6 +128,31 @@ export default function(src, rootElement, transitionInstance, keyMode = 'title')
             }
             insertSvg(child, childData.children);
         });
+    }
+
+    function pathTween(d1, precision) {
+        return function() {
+            var path0 = this,
+                path1 = path0.cloneNode(),
+                n0 = path0.getTotalLength(),
+                n1 = (path1.setAttribute("d", d1), path1).getTotalLength();
+
+            // Uniform sampling of distance based on specified precision.
+            var distances = [0], i = 0, dt = precision / Math.max(n0, n1);
+            while ((i += dt) < 1) distances.push(i);
+            distances.push(1);
+
+            // Compute point-interpolators at each distance.
+            var points = distances.map(function(t) {
+                var p0 = path0.getPointAtLength(t * n0),
+                    p1 = path1.getPointAtLength(t * n1);
+                return d3.interpolate([p0.x, p0.y], [p1.x, p1.y]);
+            });
+
+            return function(t) {
+                return t < 1 ? "M" + points.map(function(p) { return p(t); }).join("L") : d1;
+            };
+        };
     }
 
     var svgDoc = Viz(src,

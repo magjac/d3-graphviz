@@ -20,7 +20,7 @@
     "url": "https://github.com/magjac/d3-graphviz.git"
   },
   "scripts": {
-    "pretest": "rm -rf build && mkdir build && rollup -g d3-selection:d3,d3-transition:d3,viz.js:Viz -f umd -n d3 -o build/d3-graphviz.js -- index.js",
+    "pretest": "rm -rf build && mkdir build && rollup -g d3-selection:d3,d3-transition:d3,d3-interpolate:d3,viz.js:Viz -f umd -n d3 -o build/d3-graphviz.js -- index.js",
     "test": "tape 'test/**/*-test.js'",
     "prepublish": "npm run test && uglifyjs build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
     "postpublish": "zip -j build/d3-graphviz.zip -- LICENSE README.md build/d3-graphviz.js build/d3-graphviz.min.js"
@@ -33,6 +33,7 @@
     "uglify-es": "^3.0.27"
   },
   "dependencies": {
+    "d3-interpolate": "^1.1.5",
     "d3-selection": "^1.1.0",
     "d3-transition": "^1.1.0",
     "viz.js": "^1.8.0"
