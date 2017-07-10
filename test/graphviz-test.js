@@ -183,7 +183,8 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
     transition1 = d3_transition.transition().duration(0);
     graphviz
         .dot('digraph {a -> b; b -> a}')
-        .render("#graph", transition1, false);
+        .transition(transition1)
+        .render("#graph", false);
     test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
 

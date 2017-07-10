@@ -1,7 +1,9 @@
 import * as d3 from "d3-selection";
 import {transition, attrTween} from "d3-transition";
 
-export default function(rootElement, transitionInstance, tweenPaths = true) {
+export default function(rootElement, tweenPaths = true) {
+
+    var transitionInstance = this._transition;
 
     function insertSvg(element, data) {
         var children = element.selectAll(function () {
