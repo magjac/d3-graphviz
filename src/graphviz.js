@@ -1,6 +1,7 @@
 import render from "./render";
 
-export function Graphviz() {
+export function Graphviz(selection) {
+    this._selection = selection;
 }
 
 export default function graphviz() {

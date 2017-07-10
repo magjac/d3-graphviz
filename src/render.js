@@ -174,6 +174,14 @@ export default function(src, rootElement, transitionInstance, tweenPaths = true,
     var data = extractData(newSvg, keyMode);
 
     var root = d3.select(rootElement);
+    if (root.empty()) {
+        root = this._selection;
+    } else {
+        if (this._selection != null) {
+            throw new Error('Multiply specified selection to render on');
+        }
+    }
     insertSvg(root, [data]);
 
+    return this;
 };
