@@ -34,7 +34,9 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
 </g>
 </svg>`;
 
-    graphviz.render('digraph {a -> b;}', "#graph");
+    graphviz
+        .dot('digraph {a -> b;}')
+        .render("#graph");
 
     test.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
 
@@ -77,10 +79,14 @@ tape("graphviz().render() removes SVG elements for nodes and edges when removed 
     var document = global.document = jsdom('<div id="graph"></div>');
     var graphviz = d3_graphviz.graphviz();
 
-    graphviz.render('digraph {a -> b;}', "#graph");
+    graphviz
+        .dot('digraph {a -> b;}')
+        .render("#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    graphviz.render('digraph {a}', "#graph");
+    graphviz
+        .dot('digraph {a}')
+        .render("#graph");
 
     svgDoc2 = `<svg width="62pt" height="44pt" viewbox="0.00 0.00 62.00 44.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 40)">
@@ -106,10 +112,14 @@ tape("graphviz().render() adds SVG elements for nodes and edges when added to up
     var document = global.document = jsdom('<div id="graph"></div>');
     var graphviz = d3_graphviz.graphviz();
 
-    graphviz.render('digraph {a -> b;}', "#graph");
+    graphviz
+        .dot('digraph {a -> b;}')
+        .render("#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    graphviz.render('digraph {a -> b; a -> c}', "#graph");
+    graphviz
+        .dot('digraph {a -> b; a -> c}')
+        .render("#graph");
     test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes after add');
     test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after add');
 
@@ -120,11 +130,15 @@ tape("graphviz().render() updates SVG text element when node name changes in DOT
     var document = global.document = jsdom('<div id="graph"></div>');
     var graphviz = d3_graphviz.graphviz();
 
-    graphviz.render('digraph {a}', "#graph");
+    graphviz
+        .dot('digraph {a}')
+        .render("#graph");
     test.equal(d3.selectAll('.node').size(), 1, 'Number of initial nodes');
     test.equal(d3.selectAll('.edge').size(), 0, 'Number of initial edges');
     test.equal(d3.selectAll('text').text(), 'a', 'Text of initial node');
-    graphviz.render('digraph {b}', "#graph");
+    graphviz
+        .dot('digraph {b}')
+        .render("#graph");
     test.equal(d3.selectAll('.node').size(), 1, 'Number of nodes after node name change');
     test.equal(d3.selectAll('.edge').size(), 0, 'Number of edges after node name change');
     test.equal(d3.selectAll('text').text(), 'b', 'Text after node name change');
@@ -136,13 +150,17 @@ tape("graphviz().render() changes SVG element type when node shape changes in DO
     var document = global.document = jsdom('<div id="graph"></div>');
     var graphviz = d3_graphviz.graphviz();
 
-    graphviz.render('digraph {a -> b;}', "#graph");
+    graphviz
+        .dot('digraph {a -> b;}')
+        .render("#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
     test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
     test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
     test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
-    graphviz.render('digraph {a [shape="box"];a -> b}', "#graph");
+    graphviz
+        .dot('digraph {a [shape="box"];a -> b}')
+        .render("#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after shape change');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after shape change');
     test.equal(d3.selectAll('ellipse').size(), 1, 'Number of ellipses after shape change');
@@ -157,11 +175,15 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
     var document = global.document = jsdom('<div id="graph"></div>');
     var graphviz = d3_graphviz.graphviz();
 
-    graphviz.render('digraph {a -> b; c}', "#graph");
+    graphviz
+        .dot('digraph {a -> b; c}')
+        .render("#graph");
     test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
     transition1 = d3_transition.transition().duration(0);
-    graphviz.render('digraph {a -> b; b -> a}', "#graph", transition1, false);
+    graphviz
+        .dot('digraph {a -> b; b -> a}')
+        .render("#graph", transition1, false);
     test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
 
