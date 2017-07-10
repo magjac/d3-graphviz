@@ -1,1 +1,1 @@
-export {default as render} from "./src/render";
+export {default as graphviz} from "./src/graphviz";

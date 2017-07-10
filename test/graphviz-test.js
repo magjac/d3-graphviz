@@ -3,10 +3,11 @@ var tape = require("tape"),
     d3 = require("d3-selection"),
     d3_transition = require("d3-transition"),
     d3_timer = require("d3-timer"),
-    graphviz = require("../");
+    d3_graphviz = require("../");
 
-tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
+tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
 
     svgDoc = `<svg width="62pt" height="116pt" viewbox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
@@ -71,9 +72,10 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
     test.end();
 });
 
-tape("graphviz() removes SVG elements for nodes and edges when removed from updated DOT.", function(test) {
+tape("graphviz().render() removes SVG elements for nodes and edges when removed from updated DOT.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
 
     graphviz.render('digraph {a -> b;}', "#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
@@ -100,8 +102,9 @@ tape("graphviz() removes SVG elements for nodes and edges when removed from upda
     test.end();
 });
 
-tape("graphviz() adds SVG elements for nodes and edges when added to updated DOT.", function(test) {
+tape("graphviz().render() adds SVG elements for nodes and edges when added to updated DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
 
     graphviz.render('digraph {a -> b;}', "#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
@@ -113,8 +116,9 @@ tape("graphviz() adds SVG elements for nodes and edges when added to updated DOT
     test.end();
 });
 
-tape("graphviz() updates SVG text element when node name changes in DOT.", function(test) {
+tape("graphviz().render() updates SVG text element when node name changes in DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
 
     graphviz.render('digraph {a}', "#graph");
     test.equal(d3.selectAll('.node').size(), 1, 'Number of initial nodes');
@@ -128,8 +132,9 @@ tape("graphviz() updates SVG text element when node name changes in DOT.", funct
     test.end();
 });
 
-tape("graphviz() changes SVG element type when node shape changes in DOT.", function(test) {
+tape("graphviz().render() changes SVG element type when node shape changes in DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
 
     graphviz.render('digraph {a -> b;}', "#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
@@ -147,9 +152,10 @@ tape("graphviz() changes SVG element type when node shape changes in DOT.", func
     test.end();
 });
 
-tape("graphviz() adds and removes SVG elements after transition delay.", function(test) {
+tape("graphviz().render() adds and removes SVG elements after transition delay.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
 
     graphviz.render('digraph {a -> b; c}', "#graph");
     test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
