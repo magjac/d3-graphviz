@@ -26,7 +26,7 @@ tape("selection.graphviz().dot().render() renders an SVG from graphviz DOT.", fu
     test.end();
 });
 
-tape("selection.graphviz().render(selection) throw error", function(test) {
+tape("selection.graphviz().render(selection) throws error", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
 
     function specifyMultipeSelections() {
