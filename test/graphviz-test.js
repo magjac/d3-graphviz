@@ -196,7 +196,166 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
 
         test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after transition');
         test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after transition');
+        test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after transition');
+        test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after transition');
+        test.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
 
         test.end();
     }
+});
+
+tape("graphviz().keyMode() affects transitions and order of rendering.", function(test) {
+    var document = global.document = jsdom('<div id="main"></div>');
+    var keyModes = [
+        'title',
+        'tag-index',
+        'id',
+// NOTE: The 'index' keyMode is not useful, because it may create transition between SVG objects of different types which yields error:
+// TypeError: Cannot read property 'baseVal' of undefined
+//    at parseSvg (/home/magjac/external/d3-graphviz/node_modules/d3-interpolate/build/d3-interpolate.js:303:34)
+//        'index',
+    ];
+    var delay = 500;
+    var duration = 500;
+    keyModes.forEach(function (keyMode) {
+        d3.select('#main')
+          .append('div')
+            .attr('id', 'graph-' + keyMode)
+        var graphviz = d3_graphviz.graphviz();
+        graphviz
+            .keyMode(keyMode)
+            .dot('digraph {a -> b; c}')
+            .render("#graph-" + keyMode);
+        checkInitalRendering(keyMode);
+        transition1 = d3_transition.transition().delay(delay).duration(duration);
+        graphviz
+            .keyMode(keyMode)
+            .dot('digraph {a -> b; b -> a}')
+            .transition(transition1)
+            .render("#graph-" + keyMode, false);
+
+        checkBeforeScheduling(keyMode);
+        d3_timer.timeout(function(elapsed) {
+            checkBeforeStarting(keyMode)
+        }, delay / 2);
+        transition1
+            .on('start', function() {
+                checkAtStarting(keyMode);
+               });
+        d3_timer.timeout(function(elapsed) {
+            checkAfterStarting(keyMode)
+        }, delay + duration / 2);
+        transition1
+            .on('end', function() {
+                checkAtEnding(keyMode);
+               });
+        d3_timer.timeout(function(elapsed) {
+            checkAfterEnding(keyMode)
+        }, delay + duration + delay);
+    });
+
+    d3_timer.timeout(function(elapsed) {
+        endTest()
+    }, delay + duration + delay);
+
+    function check(counts, state, keyMode) {
+        for (name in counts) {
+            var count = counts[name];
+            objectName = name.replace('.', '');
+            test.equal(d3.select('#graph-' + keyMode).selectAll(name).size(), count, 'Number of ' + objectName + 's is ' + count + ' ' + state + ' transition with keyMode ' + keyMode);
+        }
+    }
+
+    function checkInitalRendering(keyMode) {
+        var counts = {
+            '.node': 3,
+            '.edge': 1,
+            'polygon': 2,
+            'ellipse': 3,
+        };
+        check(counts, 'after initial rendering without', keyMode);
+    }
+
+    function checkBeforeScheduling(keyMode) {
+        var counts = {
+            '.node': 3,
+            '.edge': 1,
+            'polygon': keyMode == 'index' ? 5 : 3,
+            'ellipse': keyMode == 'index' ? 5 : 3,
+        };
+        check(counts, 'before scheduling', keyMode);
+    }
+
+    function checkBeforeStarting(keyMode) {
+        var counts = {
+            '.node': 3,
+            '.edge': 1,
+            'polygon': keyMode == 'index' ? 5 : 3,
+            'ellipse': keyMode == 'index' ? 5 : 3,
+        };
+        check(counts, 'before starting', keyMode);
+    }
+
+    function checkAtStarting(keyMode) {
+        var counts = {
+            '.node': 3,
+            '.edge': keyMode == 'id' ? 2 : 1,
+            'polygon': keyMode == 'index' ? 5 : 3,
+            'ellipse': keyMode == 'index' ? 5 : 3,
+        };
+        check(counts, 'at starting', keyMode);
+    }
+
+    function checkAfterStarting(keyMode) {
+        var counts = {
+            '.node': keyMode == 'tag-index' ? 2 : 3,
+            '.edge': 2,
+            'polygon': keyMode == 'index' ? 5 : 3,
+            'ellipse': keyMode == 'index' ? 5 : 3,
+        };
+        check(counts, 'after starting', keyMode);
+    }
+
+    function checkAtEnding(keyMode) {
+        var counts = {
+            '.node': keyMode == 'tag-index' ? 2 : 3,
+            '.edge': 2,
+            'polygon': keyMode == 'index' ? 5 : 3,
+            'ellipse': keyMode == 'index' ? 5 : 3,
+        };
+        check(counts, 'at ending', keyMode);
+    }
+
+    function checkAfterEnding(keyMode) {
+        var counts = {
+            '.node': 2,
+            '.edge': 2,
+            'polygon': 3,
+            'ellipse': 2,
+        };
+        check(counts, 'after ending', keyMode);
+    }
+
+    function endTest() {
+        test.end();
+    }
+
+});
+
+tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
+
+    var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
+
+    function useIllegalKeyMode() {
+        graphviz
+            .keyMode('illegal-key-mode')
+            .dot('digraph {a -> b}')
+            .render("#graph");
+    }
+
+    test.throws(useIllegalKeyMode, 'Illegal keyMode throws error');
+
+    test.end();
+
 });
