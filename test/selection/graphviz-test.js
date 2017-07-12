@@ -36,7 +36,7 @@ tape("selection.graphviz().render(selection) throws error", function(test) {
             .render("#graph");
     }
 
-    test.throws(specifyMultipeSelections);
+    test.throws(specifyMultipeSelections, 'Multiply specfified selection throws error');
 
     test.end();
 });
