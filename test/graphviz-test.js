@@ -180,6 +180,9 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
         .render("#graph");
     test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
     transition1 = d3_transition.transition().duration(0);
     graphviz
         .dot('digraph {a -> b; b -> a}')
@@ -187,6 +190,9 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
         .render("#graph", false);
     test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
+    test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
+    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
+    test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
 
     d3_timer.timeout(function(elapsed) {
         part3_end();
