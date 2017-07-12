@@ -187,7 +187,8 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
     graphviz
         .dot('digraph {a -> b; b -> a}')
         .transition(transition1)
-        .render("#graph", false);
+        .tweenPaths(false)
+        .render("#graph");
     test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
     test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
@@ -238,7 +239,8 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
             .keyMode(keyMode)
             .dot('digraph {a -> b; b -> a}')
             .transition(transition1)
-            .render("#graph-" + keyMode, false);
+            .tweenPaths(false)
+            .render("#graph-" + keyMode);
 
         checkBeforeScheduling(keyMode);
         d3_timer.timeout(function(elapsed) {
@@ -364,4 +366,71 @@ tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
 
     test.end();
 
+});
+
+tape("graphviz().tweenPaths() enables and disables path tweening during transitions. FIXME: tape bug prohibits tweenPaths enabled test.", function(test) {
+
+    var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
+
+    graphviz
+        .dot('digraph {a -> b; c}')
+        .render("#graph");
+    test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+    transition1 = d3_transition.transition().duration(0);
+    graphviz
+        .dot('digraph {a -> b; b -> a}')
+        .transition(transition1)
+        .tweenPaths(false)
+        .render("#graph");
+    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
+    test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
+    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
+    test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
+
+    d3_timer.timeout(function(elapsed) {
+        part1_end();
+    }, 100);
+
+    function part1_end() {
+
+        test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after transition');
+        test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after transition');
+        test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after transition');
+        test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after transition');
+        test.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function renderWithPathTweening() {
+            graphviz
+                .dot('digraph {a -> b; b -> a}')
+                .transition(transition1)
+// FIXME: Re-enable when https://github.com/tmpvar/jsdom/issues/1330 is fixed
+//                .tweenPaths(true)
+                .tweenPaths(false)
+                .render("#graph");
+        }
+
+        d3_timer.timeout(function(elapsed) {
+            part2_end();
+        }, 0);
+    }
+
+    function part2_end() {
+
+        test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after transition');
+        test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after transition');
+        test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after transition');
+        test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after transition');
+        test.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
+        test.end();
+    }
 });
