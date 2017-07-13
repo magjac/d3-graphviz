@@ -6,12 +6,15 @@ export default function(rootElement) {
     var transitionInstance = this._transition;
     var tweenPaths = this._tweenPaths
 
-    function insertSvg(element, data) {
+    function insertSvg(element) {
         var children = element.selectAll(function () {
             return element.node().childNodes;
         });
+
         children = children
-          .data(data, function (d) {
+          .data(function (d) {
+              return d.children;
+          }, function (d) {
               return d.key;
           });
         var childrenEnter = children
@@ -73,7 +76,7 @@ export default function(rootElement) {
                 childTransition
                     .text(childData.text);
             }
-            insertSvg(child, childData.children);
+            insertSvg(child);
         });
     }
 
@@ -113,7 +116,9 @@ export default function(rootElement) {
 
     var data = this._data;
 
-    insertSvg(root, [data]);
+    root
+        .datum({children: [data]});
+    insertSvg(root);
 
     return this;
 };
