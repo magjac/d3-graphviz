@@ -5,6 +5,7 @@ export default function(rootElement) {
 
     var transitionInstance = this._transition;
     var tweenPaths = this._tweenPaths
+    var tweenShapes = this._tweenShapes
 
     function insertSvg(element) {
         var children = element.selectAll(function () {
@@ -25,7 +26,13 @@ export default function(rootElement) {
               } else if (d.tag == '#comment') {
                   return document.createComment(d.comment);
               } else {
-                  return document.createElementNS('http://www.w3.org/2000/svg', d.tag);
+                  var tag = d.tag;
+                  if (tweenShapes) {
+                      if (tag == 'ellipse' || tag == 'polygon') {
+                          tag = 'path'
+                      }
+                  }
+                  return document.createElementNS('http://www.w3.org/2000/svg', tag);
               }
           });
 
@@ -63,8 +70,55 @@ export default function(rootElement) {
                   })
                     .style("opacity", 1.0);
             }
-            childData.attributes.forEach(function(attribute) {
-                if (tweenPaths && transitionInstance && childData.tag == 'path' && attribute.name == 'd' && child.attr('d') != null) {
+            var tag = childData.tag;
+            var attributes = childData.attributes;
+            if (tweenShapes) {
+                var attributesObject = {};
+                attributes.map(function (attribute) {
+                    return attributesObject[attribute.name] = attribute.value;
+                });
+                if (this.nodeName == 'path' && childData.tag == 'polygon') {
+                    tag = 'path';
+                    attributes = [
+                        {
+                            name: 'd',
+                            value: 'M' + attributesObject.points + 'z'
+                        },
+                        {
+                            name: 'fill',
+                            value: attributesObject.fill,
+                        },
+                        {
+                            name: 'stroke',
+                            value: attributesObject.stroke,
+                        },
+                    ];
+                }
+                if (this.nodeName == 'path' && childData.tag == 'ellipse') {
+                    tag = 'path';
+                    var cx = attributesObject.cx;
+                    var cy = attributesObject.cy;
+                    var rx = attributesObject.rx;
+                    var ry = attributesObject.ry;
+                    attributes = [
+                        {
+                            name: 'd',
+                            // Start the ellipse at the top
+                            value: 'M '  +  cx + ' ' + cy + ' m ' + '0, -' + ry + ' a ' + rx + ',' + ry + ' 0 1,0 0,' + (ry * 2) + ' a ' + rx + ',' + ry + ' 0 1,0 0,-' + (ry * 2) + 'z'
+                        },
+                        {
+                            name: 'fill',
+                            value: attributesObject.fill,
+                        },
+                        {
+                            name: 'stroke',
+                            value: attributesObject.stroke,
+                        },
+                    ];
+                }
+            }
+            attributes.forEach(function(attribute) {
+                if (tweenPaths && transitionInstance && tag == 'path' && attribute.name == 'd' && child.attr('d') != null) {
                     childTransition
                         .attrTween("d", pathTween(attribute.value, 4));
                 } else {

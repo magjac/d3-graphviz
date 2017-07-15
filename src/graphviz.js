@@ -3,6 +3,7 @@ import dot from "./dot";
 import transition from "./transition";
 import keyMode from "./keyMode";
 import tweenPaths from "./tweenPaths";
+import tweenShapes from "./tweenShapes";
 
 export function Graphviz(selection) {
     this._selection = selection;
@@ -14,6 +15,7 @@ export function Graphviz(selection) {
     ]);
     this._keyMode = 'title';
     this._tweenPaths = true;
+    this._tweenShapes = true;
 }
 
 export default function graphviz() {
@@ -25,6 +27,7 @@ Graphviz.prototype = graphviz.prototype = {
     constructor: Graphviz,
     keyMode: keyMode,
     tweenPaths: tweenPaths,
+    tweenShapes: tweenShapes,
     render: render,
     dot: dot,
     transition: transition,

@@ -35,6 +35,7 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
 </svg>`;
 
     graphviz
+        .tweenShapes(false)
         .dot('digraph {a -> b;}')
         .render("#graph");
 
@@ -80,6 +81,7 @@ tape("graphviz().render() removes SVG elements for nodes and edges when removed 
     var graphviz = d3_graphviz.graphviz();
 
     graphviz
+        .tweenShapes(false)
         .dot('digraph {a -> b;}')
         .render("#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
@@ -113,6 +115,7 @@ tape("graphviz().render() adds SVG elements for nodes and edges when added to up
     var graphviz = d3_graphviz.graphviz();
 
     graphviz
+        .tweenShapes(false)
         .dot('digraph {a -> b;}')
         .render("#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
@@ -131,6 +134,7 @@ tape("graphviz().render() updates SVG text element when node name changes in DOT
     var graphviz = d3_graphviz.graphviz();
 
     graphviz
+        .tweenShapes(false)
         .dot('digraph {a}')
         .render("#graph");
     test.equal(d3.selectAll('.node').size(), 1, 'Number of initial nodes');
@@ -151,6 +155,7 @@ tape("graphviz().render() changes SVG element type when node shape changes in DO
     var graphviz = d3_graphviz.graphviz();
 
     graphviz
+        .tweenShapes(false)
         .dot('digraph {a -> b;}')
         .render("#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
@@ -176,6 +181,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
     var graphviz = d3_graphviz.graphviz();
 
     graphviz
+        .tweenShapes(false)
         .dot('digraph {a -> b; c}')
         .render("#graph");
     test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
@@ -230,6 +236,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
             .attr('id', 'graph-' + keyMode)
         var graphviz = d3_graphviz.graphviz();
         graphviz
+            .tweenShapes(false)
             .keyMode(keyMode)
             .dot('digraph {a -> b; c}')
             .render("#graph-" + keyMode);
@@ -357,6 +364,7 @@ tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
 
     function useIllegalKeyMode() {
         graphviz
+            .tweenShapes(false)
             .keyMode('illegal-key-mode')
             .dot('digraph {a -> b}')
             .render("#graph");
@@ -374,6 +382,7 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
     var graphviz = d3_graphviz.graphviz();
 
     graphviz
+        .tweenShapes(false)
         .dot('digraph {a -> b; c}')
         .render("#graph");
     test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
@@ -431,6 +440,77 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
         test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after transition');
         test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after transition');
         test.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
+        test.end();
+    }
+});
+
+tape("graphviz().tweenShapes() enables and disables shape tweening during transitions. FIXME: tape bug prohibits tweenShapes enabled test.", function(test) {
+
+    var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
+
+    graphviz
+        .tweenShapes(true)
+        .tweenPaths(false)
+        .dot('digraph {a -> b;}')
+        .render("#graph");
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    test.equal(d3.selectAll('ellipse').size(), 0, 'Number of initial ellipses');
+    test.equal(d3.selectAll('polygon').size(), 0, 'Number of initial polygons');
+    test.equal(d3.selectAll('path').size(), 5, 'Number of initial paths');
+    transition1 = d3_transition.transition().duration(0);
+    graphviz
+        .dot('digraph {a [shape="box"];a -> b}')
+        .transition(transition1)
+        .render("#graph");
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes immediately after rendering');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
+    test.equal(d3.selectAll('polygon').size(), 0, 'Number of polygons immediately after rendering');
+    test.equal(d3.selectAll('ellipse').size(), 0, 'Number of ellipses immediately after rendering');
+    test.equal(d3.selectAll('path').size(), 6, 'Number of paths immediately after rendering');
+
+
+
+    d3_timer.timeout(function(elapsed) {
+        part1_end();
+    }, 100);
+
+    function part1_end() {
+
+        test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after shape change');
+        test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after shape change');
+        test.equal(d3.selectAll('ellipse').size(), 0, 'Number of ellipses after shape change');
+        test.equal(d3.selectAll('polygon').size(), 0, 'Number of polygons after shape change');
+        test.equal(d3.selectAll('path').size(), 5, 'Number of paths after shape change');
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function renderWithShapeTweening() {
+            graphviz
+                .dot('digraph {a -> b; b -> a}')
+                .transition(transition1)
+// FIXME: Re-enable when https://github.com/tmpvar/jsdom/issues/1330 is fixed
+//                .tweenShapes(true)
+                .tweenShapes(false)
+                .render("#graph");
+        }
+
+        d3_timer.timeout(function(elapsed) {
+            part2_end();
+        }, 0);
+    }
+
+    function part2_end() {
+
+        test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after shape change');
+        test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after shape change');
+        test.equal(d3.selectAll('ellipse').size(), 0, 'Number of ellipses after shape change');
+        test.equal(d3.selectAll('polygon').size(), 0, 'Number of polygons after shape change');
+        test.equal(d3.selectAll('path').size(), 5, 'Number of paths after shape change');
+
         test.end();
     }
 });

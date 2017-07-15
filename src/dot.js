@@ -4,6 +4,7 @@ import * as d3 from "d3-selection";
 export default function(src) {
 
     var keyMode = this._keyMode;
+    var tweenShapes = this._tweenShapes
 
     function extractData(element, keyMode, index = 0) {
 
@@ -41,12 +42,20 @@ export default function(src) {
             }
         }
         if (datum.key == null) {
+            if (tweenShapes) {
+                if (tag == 'ellipse' || tag == 'polygon') {
+                    tag = 'path';
+                }
+            }
             datum.key = tag + '-' + index;
         }
         var childTagIndexes = {};
         children.each(function () {
             if (this !== null) {
                 var childTag = this.nodeName;
+                if (tag == 'ellipse' || tag == 'polygon') {
+                    var childTag = 'path';
+                }
                 if (childTagIndexes[childTag] == null) {
                     childTagIndexes[childTag] = 0;
                 }
