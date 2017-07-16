@@ -73,59 +73,35 @@ export default function(rootElement) {
             var tag = childData.tag;
             var attributes = childData.attributes;
             if (tweenShapes) {
-                var attributesObject = {};
-                attributes.map(function (attribute) {
-                    return attributesObject[attribute.name] = attribute.value;
-                });
                 if (this.nodeName == 'path' && childData.tag == 'polygon') {
                     tag = 'path';
-                    attributes = [
-                        {
-                            name: 'd',
-                            value: 'M' + attributesObject.points + 'z'
-                        },
-                        {
-                            name: 'fill',
-                            value: attributesObject.fill,
-                        },
-                        {
-                            name: 'stroke',
-                            value: attributesObject.stroke,
-                        },
-                    ];
+                    attributes['d'] = 'M' + attributes.points + 'z';
+                    delete attributes.points;
                 }
                 if (this.nodeName == 'path' && childData.tag == 'ellipse') {
                     tag = 'path';
-                    var cx = attributesObject.cx;
-                    var cy = attributesObject.cy;
-                    var rx = attributesObject.rx;
-                    var ry = attributesObject.ry;
-                    attributes = [
-                        {
-                            name: 'd',
-                            // Start the ellipse at the top
-                            value: 'M '  +  cx + ' ' + cy + ' m ' + '0, -' + ry + ' a ' + rx + ',' + ry + ' 0 1,0 0,' + (ry * 2) + ' a ' + rx + ',' + ry + ' 0 1,0 0,-' + (ry * 2) + 'z'
-                        },
-                        {
-                            name: 'fill',
-                            value: attributesObject.fill,
-                        },
-                        {
-                            name: 'stroke',
-                            value: attributesObject.stroke,
-                        },
-                    ];
+                    var cx = attributes.cx;
+                    var cy = attributes.cy;
+                    var rx = attributes.rx;
+                    var ry = attributes.ry;
+                    // Start the ellipse at the top
+                    attributes['d'] = 'M '  +  cx + ' ' + cy + ' m ' + '0, -' + ry + ' a ' + rx + ',' + ry + ' 0 1,0 0,' + (ry * 2) + ' a ' + rx + ',' + ry + ' 0 1,0 0,-' + (ry * 2) + 'z';
+                    delete attributes.cx;
+                    delete attributes.cy;
+                    delete attributes.rx;
+                    delete attributes.ry;
                 }
             }
-            attributes.forEach(function(attribute) {
-                if (tweenPaths && transitionInstance && tag == 'path' && attribute.name == 'd' && child.attr('d') != null) {
+            for (var attributeName of Object.keys(attributes)) {
+                var attributeValue = attributes[attributeName];
+                if (tweenPaths && transitionInstance && tag == 'path' && attributeName == 'd' && child.attr('d') != null) {
                     childTransition
-                        .attrTween("d", pathTween(attribute.value, 4));
+                        .attrTween("d", pathTween(attributeValue, 4));
                 } else {
                     childTransition
-                        .attr(attribute.name, attribute.value);
+                        .attr(attributeName, attributeValue);
                 }
-            });
+            }
             if (childData.text) {
                 childTransition
                     .text(childData.text);

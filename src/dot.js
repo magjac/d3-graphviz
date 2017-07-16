@@ -11,7 +11,7 @@ export default function(src) {
         var datum = {};
         var tag = element.node().nodeName;
         datum.tag = tag;
-        datum.attributes = [];
+        datum.attributes = {};
         datum.children = [];
         var attributes = element.node().attributes;
         if (attributes) {
@@ -19,7 +19,7 @@ export default function(src) {
                 var attribute = attributes[i];
                 var name = attribute.name;
                 var value = attribute.value;
-                datum.attributes.push({'name': name, 'value': value});
+                datum.attributes[name] = value;
             }
         }
         if (tag == '#text') {
