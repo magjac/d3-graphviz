@@ -84,8 +84,16 @@ export default function(rootElement) {
                     var cy = attributes.cy;
                     var rx = attributes.rx;
                     var ry = attributes.ry;
-                    // Start the ellipse at the top
-                    attributes['d'] = 'M '  +  cx + ' ' + cy + ' m ' + '0, -' + ry + ' a ' + rx + ',' + ry + ' 0 1,0 0,' + (ry * 2) + ' a ' + rx + ',' + ry + ' 0 1,0 0,-' + (ry * 2) + 'z';
+                    // FIXME: TODO compute automatically when original tag is restored after transition
+                    // Start the ellipse at 30 deg to be close to rectangle start point
+                    var angle = Math.PI / 6;
+                    var x1 = rx * Math.cos(angle);
+                    var y1 = -ry * Math.sin(angle);
+                    var x2 = rx * Math.cos(angle + Math.PI);
+                    var y2 = -ry * Math.sin(angle + Math.PI);
+                    var dx = x2 - x1;
+                    var dy = y2 - y1;
+                    attributes['d'] = 'M '  +  cx + ' ' + cy + ' m ' + x1 + ',' + y1 + ' a ' + rx + ',' + ry + ' 0 1,0 ' + dx + ',' + dy + ' a ' + rx + ',' + ry + ' 0 1,0 ' + -dx + ',' + -dy + 'z';
                     delete attributes.cx;
                     delete attributes.cy;
                     delete attributes.rx;
