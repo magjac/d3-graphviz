@@ -129,6 +129,19 @@ tape("graphviz().render() adds SVG elements for nodes and edges when added to up
     test.end();
 });
 
+tape("graphviz().renderDot() renders an SVG from graphviz DOT.", function(test) {
+    var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
+
+    graphviz
+        .tweenShapes(false)
+        .renderDot('digraph {a -> b;}', "#graph");
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+
+    test.end();
+});
+
 tape("graphviz().render() updates SVG text element when node name changes in DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
     var graphviz = d3_graphviz.graphviz();

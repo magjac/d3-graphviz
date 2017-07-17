@@ -1,5 +1,6 @@
 import render from "./render";
 import dot from "./dot";
+import renderDot from "./renderDot";
 import transition from "./transition";
 import keyMode from "./keyMode";
 import tweenPaths from "./tweenPaths";
@@ -30,5 +31,6 @@ Graphviz.prototype = graphviz.prototype = {
     tweenShapes: tweenShapes,
     render: render,
     dot: dot,
+    renderDot: renderDot,
     transition: transition,
 };
