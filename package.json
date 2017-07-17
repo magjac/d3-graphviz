@@ -28,6 +28,7 @@
   "devDependencies": {
     "d3-timer": "^1.0.6",
     "jsdom": "11",
+    "markdown-to-html": "0.0.13",
     "rollup": "0.27",
     "tape": "4",
     "uglify-es": "^3.0.27"
