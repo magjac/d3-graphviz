@@ -376,6 +376,26 @@ tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
 
 });
 
+tape("graphviz().keyMode() cannot be changed after applying dot source.", function(test) {
+
+    var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz();
+
+    function changeKeyMode() {
+        graphviz
+            .tweenShapes(false)
+            .keyMode('title')
+            .dot('digraph {a -> b}')
+            .keyMode('id')
+            .render("#graph");
+    }
+
+    test.throws(changeKeyMode, 'Too late change of keyMode throws error');
+
+    test.end();
+
+});
+
 tape("graphviz().tweenPaths() enables and disables path tweening during transitions. FIXME: tape bug prohibits tweenPaths enabled test.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
