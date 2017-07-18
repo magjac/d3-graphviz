@@ -71,6 +71,20 @@ Computes the layout of a graph from the specified *dotSrc* string and saves the 
 
 Renders an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) and appends it to the selection the grapviz renderer instance was generated on, or if no such selection exists, on the first element that matches the specified *selector* string. If the *selector* is given when the graphviz renderer instance is already attached to a selection, an error is thrown. Returns the graph render instance.
 
+<a name="graphviz_engine" href="#graphviz_engine">#</a> <i>graphviz</i>.<b>engine</b>(<i>engine</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/engine.js "Source")
+
+Set the [Graphviz](http://www.graphviz.org) layout engine name to *engine*. The engine name must be set before attaching the [DOT](http://www.graphviz.org/content/dot-language) source. If it is changed after this, an eror is thrown. Returns the graph render instance. Supports all engines that [Viz.js](https://github.com/mdaines/viz.js/) supports. Currently these are:
+
+* <b>circo</b>
+* <b>dot</b> (default)
+* <b>fdp</b>
+* <b>neato</b> (not supported with [viz-lite.js](https://github.com/mdaines/viz.js#lite-version)
+* <b>osage</b>
+* <b>patchwork</b>
+* <b>twopi</b>
+
+<b>sfdp</b> is currently not supported.
+
 ### Creating Transitions
 <a name="graphviz_transition" href="#graphviz_transition">#</a> <i>graphviz</i>.<b>transition</b>([<i>name</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/transition.js "Source")
 

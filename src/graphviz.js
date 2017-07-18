@@ -2,6 +2,7 @@ import render from "./render";
 import dot from "./dot";
 import renderDot from "./renderDot";
 import transition from "./transition";
+import engine from "./engine";
 import keyMode from "./keyMode";
 import tweenPaths from "./tweenPaths";
 import tweenShapes from "./tweenShapes";
@@ -14,6 +15,7 @@ export function Graphviz(selection) {
         'tag-index',
         'index'
     ]);
+    this._engine = 'dot';
     this._keyMode = 'title';
     this._tweenPaths = true;
     this._tweenShapes = true;
@@ -26,6 +28,7 @@ export default function graphviz() {
 
 Graphviz.prototype = graphviz.prototype = {
     constructor: Graphviz,
+    engine: engine,
     keyMode: keyMode,
     tweenPaths: tweenPaths,
     tweenShapes: tweenShapes,

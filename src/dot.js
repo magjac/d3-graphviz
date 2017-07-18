@@ -3,6 +3,7 @@ import * as d3 from "d3-selection";
 
 export default function(src) {
 
+    var engine = this._engine;
     var keyMode = this._keyMode;
     var tweenShapes = this._tweenShapes
 
@@ -72,7 +73,7 @@ export default function(src) {
     var svgDoc = Viz(src,
               {
                   format: "svg",
-                  engine: "dot"
+                  engine: engine,
               }
              );
 
