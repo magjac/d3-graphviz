@@ -31,6 +31,8 @@ If you use NPM, `npm install d3-graphviz`. Otherwise, download the [latest relea
 
 ## Principles of operation
 
+Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph specified in the [DOT](http://www.graphviz.org/content/dot-language) language and generate an SVG text representation, which is analyzed and converted into a data representation that is joined with a selected DOM element and used to render the SVG graph on that element and to animate transitioning of one graph into another.
+
 ## API Reference
 
 * [Creating a Graphviz Renderer](#creating-a-graphviz-renderer)
@@ -65,7 +67,7 @@ This enables doing the computational intensive layout stages for multiple graphs
 
 <a name="graphviz_dot" href="#graphviz_dot">#</a> <i>graphviz</i>.<b>dot</b>(<i>dotSrc</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/dot.js "Source")
 
-Computes the layout of a graph from the specified *dotSrc* string and saves the data for rendering the SVG at a later stage. Returns the graph render instance.
+Computes the layout of a graph from the specified *dotSrc* string and saves the data for rendering the SVG with [<i>graphviz</i>.<b>render</b>](#graphviz_render) at a later stage. Returns the graph render instance.
 
 <a name="graphviz_render" href="#graphviz_render">#</a> <i>graphviz</i>.<b>render</b>([<i>selector</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/dot.js "Source")
 
@@ -73,12 +75,12 @@ Renders an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>](#graphviz_d
 
 <a name="graphviz_engine" href="#graphviz_engine">#</a> <i>graphviz</i>.<b>engine</b>(<i>engine</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/engine.js "Source")
 
-Set the [Graphviz](http://www.graphviz.org) layout engine name to *engine*. The engine name must be set before attaching the [DOT](http://www.graphviz.org/content/dot-language) source. If it is changed after this, an eror is thrown. Returns the graph render instance. Supports all engines that [Viz.js](https://github.com/mdaines/viz.js/) supports. Currently these are:
+Set the [Graphviz](http://www.graphviz.org) layout engine name as specified by the *engine* string. The engine name must be set before attaching the [DOT](http://www.graphviz.org/content/dot-language) source. If it is changed after this, an eror is thrown. Returns the graph render instance. Supports all engines that [Viz.js](https://github.com/mdaines/viz.js/) supports. Currently these are:
 
 * <b>circo</b>
 * <b>dot</b> (default)
 * <b>fdp</b>
-* <b>neato</b> (not supported with [viz-lite.js](https://github.com/mdaines/viz.js#lite-version)
+* <b>neato</b> (not supported with [viz-lite.js](https://github.com/mdaines/viz.js#lite-version))
 * <b>osage</b>
 * <b>patchwork</b>
 * <b>twopi</b>
@@ -123,4 +125,4 @@ In order to acheive [meaningful transitions](https://bost.ocks.org/mike/constanc
 
 <a name="graphviz_keyMode" href="#graphviz_keyMode">#</a> <i>graphviz</i>.<b>keyMode</b>(<i>mode</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/keyMode.js "Source")
 
-Set the key mode to the string *mode*. If *mode* is not one of the defined key modes above, an error is thrown. Returns the graph renderer instance. The key mode must be set before attaching the [DOT](http://www.graphviz.org/content/dot-language) source. If it is changed after this, an eror is thrown.
+Set the key mode to the specified *mode* string. If *mode* is not one of the defined key modes above, an error is thrown. Returns the graph renderer instance. The key mode must be set before attaching the [DOT](http://www.graphviz.org/content/dot-language) source. If it is changed after this, an eror is thrown.
