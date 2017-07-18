@@ -501,7 +501,7 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
     test.equal(d3.selectAll('polygon').size(), 0, 'Number of polygons immediately after rendering');
     test.equal(d3.selectAll('ellipse').size(), 0, 'Number of ellipses immediately after rendering');
-    test.equal(d3.selectAll('path').size(), 6, 'Number of paths immediately after rendering');
+    test.equal(d3.selectAll('path').size(), 5, 'Number of paths immediately after rendering');
 
 
 

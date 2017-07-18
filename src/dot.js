@@ -54,8 +54,8 @@ export default function(src) {
         children.each(function () {
             if (this !== null) {
                 var childTag = this.nodeName;
-                if (tag == 'ellipse' || tag == 'polygon') {
-                    var childTag = 'path';
+                if (childTag == 'ellipse' || childTag == 'polygon') {
+                    childTag = 'path';
                 }
                 if (childTagIndexes[childTag] == null) {
                     childTagIndexes[childTag] = 0;
