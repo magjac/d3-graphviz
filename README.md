@@ -112,7 +112,7 @@ If *enable* is true, enables path tweening (default), else disables path tweenin
 
 <a name="graphviz_tweenShapes" href="#graphviz_tweenShapes">#</a> <i>graphviz</i>.<b>tweenShapes</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/tweenShapes.js "Source")
 
-If *enable* is true, enables shape tweening (default), else disables shape tweening. Returns the graph renderer instance.
+If *enable* is true, enables shape tweening (default), else disables shape tweening. If *enable* is true, also enables path tweening since shape tweening currently is performed by converting SVG ellipses and polygons to SVG paths and do path tweening on them. This might change in a future release if shape tweening restores the original SVG shape element. Returns the graph renderer instance.
 
 ### Maintaining [Object Constancy](https://bost.ocks.org/mike/constancy/)
 
