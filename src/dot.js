@@ -1,5 +1,6 @@
 import * as Viz from "viz.js";
 import * as d3 from "d3-selection";
+import {extractElementData} from "./element";
 
 export default function(src) {
 
@@ -9,20 +10,10 @@ export default function(src) {
 
     function extractData(element, keyMode, index = 0) {
 
-        var datum = {};
-        var tag = element.node().nodeName;
-        datum.tag = tag;
-        datum.attributes = {};
+        var datum = extractElementData(element);
+
         datum.children = [];
-        var attributes = element.node().attributes;
-        if (attributes) {
-            for (var i = 0; i < attributes.length; i++) {
-                var attribute = attributes[i];
-                var name = attribute.name;
-                var value = attribute.value;
-                datum.attributes[name] = value;
-            }
-        }
+        var tag = datum.tag;
         if (tag == '#text') {
             datum.text = element.text();
         } else if (tag == '#comment') {
