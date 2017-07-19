@@ -1,5 +1,7 @@
 import * as d3 from "d3-selection";
 import {transition, attrTween} from "d3-transition";
+import {createElement} from "./element";
+import {shallowCopyObject} from "./utils";
 
 export default function(rootElement) {
 
@@ -21,19 +23,12 @@ export default function(rootElement) {
         var childrenEnter = children
           .enter()
           .append(function(d) {
-              if (d.tag == '#text') {
-                  return document.createTextNode(d.text);
-              } else if (d.tag == '#comment') {
-                  return document.createComment(d.comment);
-              } else {
-                  var tag = d.tag;
-                  if (tweenShapes) {
-                      if (tag == 'ellipse' || tag == 'polygon') {
-                          tag = 'path'
-                      }
-                  }
-                  return document.createElementNS('http://www.w3.org/2000/svg', tag);
+              data = d;
+              if (tweenShapes && (d.tag == 'ellipse' || d.tag == 'polygon')) {
+                  data = shallowCopyObject(d);
+                  data.tag = 'path';
               }
+              return createElement(data);
           });
 
         if (transitionInstance) {

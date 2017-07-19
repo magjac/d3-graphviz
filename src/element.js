@@ -20,3 +20,14 @@ export function extractElementData(element) {
     }
     return datum
 }
+
+export function createElement(data) {
+
+    if (data.tag == '#text') {
+        return document.createTextNode(data.text);
+    } else if (data.tag == '#comment') {
+        return document.createComment(data.comment);
+    } else {
+        return document.createElementNS('http://www.w3.org/2000/svg', data.tag);
+    }
+}
