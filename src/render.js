@@ -2,6 +2,7 @@ import * as d3 from "d3-selection";
 import {transition, attrTween} from "d3-transition";
 import {createElement} from "./element";
 import {shallowCopyObject} from "./utils";
+import {convertToPathData} from "./svg";
 
 export default function(rootElement) {
 
@@ -68,31 +69,19 @@ export default function(rootElement) {
             var tag = childData.tag;
             var attributes = childData.attributes;
             if (tweenShapes) {
-                if (this.nodeName == 'path' && childData.tag == 'polygon') {
-                    tag = 'path';
-                    attributes['d'] = 'M' + attributes.points + 'z';
-                    delete attributes.points;
-                }
-                if (this.nodeName == 'path' && childData.tag == 'ellipse') {
-                    tag = 'path';
-                    var cx = attributes.cx;
-                    var cy = attributes.cy;
-                    var rx = attributes.rx;
-                    var ry = attributes.ry;
-                    // FIXME: TODO compute automatically when original tag is restored after transition
-                    // Start the ellipse at 30 deg to be close to rectangle start point
-                    var angle = Math.PI / 6;
-                    var x1 = rx * Math.cos(angle);
-                    var y1 = -ry * Math.sin(angle);
-                    var x2 = rx * Math.cos(angle + Math.PI);
-                    var y2 = -ry * Math.sin(angle + Math.PI);
-                    var dx = x2 - x1;
-                    var dy = y2 - y1;
-                    attributes['d'] = 'M '  +  cx + ' ' + cy + ' m ' + x1 + ',' + y1 + ' a ' + rx + ',' + ry + ' 0 1,0 ' + dx + ',' + dy + ' a ' + rx + ',' + ry + ' 0 1,0 ' + -dx + ',' + -dy + 'z';
-                    delete attributes.cx;
-                    delete attributes.cy;
-                    delete attributes.rx;
-                    delete attributes.ry;
+                if (this.nodeName == 'path' && (childData.tag == 'polygon' || childData.tag == 'ellipse')) {
+                    var newData = convertToPathData(childData);
+                    for (var attributeName of Object.keys(childData.attributes)) {
+                        if (!(attributeName in newData.attributes)) {
+                            delete attributes[attributeName];
+                        }
+                    }
+                    for (var attributeName of Object.keys(newData.attributes)) {
+                        if (!(attributeName in childData.attributes)) {
+                            attributes[attributeName] = newData.attributes[attributeName];
+                        }
+                    }
+                    tag = newData.tag;
                 }
             }
             for (var attributeName of Object.keys(attributes)) {
