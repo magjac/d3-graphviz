@@ -1,6 +1,6 @@
 import * as d3 from "d3-selection";
 import {transition, attrTween} from "d3-transition";
-import {createElement} from "./element";
+import {createElement, extractElementData, replaceElement} from "./element";
 import {shallowCopyObject} from "./utils";
 import {convertToPathData} from "./svg";
 
@@ -24,12 +24,7 @@ export default function(rootElement) {
         var childrenEnter = children
           .enter()
           .append(function(d) {
-              data = d;
-              if (tweenShapes && (d.tag == 'ellipse' || d.tag == 'polygon')) {
-                  data = shallowCopyObject(d);
-                  data.tag = 'path';
-              }
-              return createElement(data);
+              return createElement(d);
           });
 
         if (transitionInstance) {
@@ -56,6 +51,24 @@ export default function(rootElement) {
             .merge(children);
         children.each(function(childData) {
             var child = d3.select(this);
+            var tag = childData.tag;
+            var attributes = childData.attributes;
+            var convertShape = false;
+            if (tweenShapes && transitionInstance) {
+                if (this.nodeName == 'polygon' || this.nodeName == 'ellipse') {
+                    var prevData = extractElementData(child);
+                    var prevPathData = convertToPathData(prevData);
+                    var pathElement = replaceElement(child, prevPathData);
+                    pathElement.data([childData], function () {
+                        return childData.key;
+                    });
+                    var newPathData = convertToPathData(childData);
+                    child = pathElement;
+                    tag = 'path';
+                    attributes = newPathData.attributes;
+                    convertShape = true;
+                }
+            }
             var childTransition = child;
             if (transitionInstance) {
                 childTransition = childTransition
@@ -66,33 +79,28 @@ export default function(rootElement) {
                   })
                     .style("opacity", 1.0);
             }
-            var tag = childData.tag;
-            var attributes = childData.attributes;
-            if (tweenShapes) {
-                if (this.nodeName == 'path' && (childData.tag == 'polygon' || childData.tag == 'ellipse')) {
-                    var newData = convertToPathData(childData);
-                    for (var attributeName of Object.keys(childData.attributes)) {
-                        if (!(attributeName in newData.attributes)) {
-                            delete attributes[attributeName];
-                        }
-                    }
-                    for (var attributeName of Object.keys(newData.attributes)) {
-                        if (!(attributeName in childData.attributes)) {
-                            attributes[attributeName] = newData.attributes[attributeName];
-                        }
-                    }
-                    tag = newData.tag;
-                }
-            }
+            var tweenThisPath = tweenPaths && transitionInstance && tag == 'path' && child.attr('d') != null;
             for (var attributeName of Object.keys(attributes)) {
                 var attributeValue = attributes[attributeName];
-                if (tweenPaths && transitionInstance && tag == 'path' && attributeName == 'd' && child.attr('d') != null) {
+                if (tweenThisPath && attributeName == 'd') {
                     childTransition
                         .attrTween("d", pathTween(attributeValue, 4));
                 } else {
                     childTransition
                         .attr(attributeName, attributeValue);
                 }
+            }
+            if (convertShape) {
+                childTransition
+                    .on("end", function (d, i, nodes) {
+                        if (this.nodeName != d.tag) {
+                            pathElement = d3.select(this);
+                            var newElement = replaceElement(pathElement, d);
+                            newElement.data([d], function () {
+                                return d.key;
+                            });
+                        }
+                    })
             }
             if (childData.text) {
                 childTransition

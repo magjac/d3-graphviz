@@ -489,9 +489,9 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
         .render("#graph");
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    test.equal(d3.selectAll('ellipse').size(), 0, 'Number of initial ellipses');
-    test.equal(d3.selectAll('polygon').size(), 0, 'Number of initial polygons');
-    test.equal(d3.selectAll('path').size(), 5, 'Number of initial paths');
+    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
+    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
     transition1 = d3_transition.transition().duration(0);
     graphviz
         .dot('digraph {a [shape="box"];a -> b}')
@@ -513,9 +513,9 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
 
         test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after shape change');
         test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after shape change');
-        test.equal(d3.selectAll('ellipse').size(), 0, 'Number of ellipses after shape change');
-        test.equal(d3.selectAll('polygon').size(), 0, 'Number of polygons after shape change');
-        test.equal(d3.selectAll('path').size(), 5, 'Number of paths after shape change');
+        test.equal(d3.selectAll('ellipse').size(), 1, 'Number of ellipses after shape change');
+        test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after shape change');
+        test.equal(d3.selectAll('path').size(), 1, 'Number of paths after shape change');
 
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -540,9 +540,9 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
 
         test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after shape change');
         test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after shape change');
-        test.equal(d3.selectAll('ellipse').size(), 0, 'Number of ellipses after shape change');
-        test.equal(d3.selectAll('polygon').size(), 0, 'Number of polygons after shape change');
-        test.equal(d3.selectAll('path').size(), 5, 'Number of paths after shape change');
+        test.equal(d3.selectAll('ellipse').size(), 1, 'Number of ellipses after shape change');
+        test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after shape change');
+        test.equal(d3.selectAll('path').size(), 1, 'Number of paths after shape change');
 
         test.end();
     }
