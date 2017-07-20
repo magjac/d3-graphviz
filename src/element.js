@@ -47,3 +47,15 @@ export function createElementWithAttributes(data) {
     }
     return elementNode;
 }
+
+export function replaceElement(element, data) {
+    var parent = d3.select(element.node().parentNode);
+    var newElementNode = createElementWithAttributes(data);
+    var newElement = parent.insert(function () {
+        return newElementNode;
+    }, function () {
+        return element.node();
+    });
+    element.remove();
+    return newElement;
+}
