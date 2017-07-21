@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="../../node_modules/viz.js/viz.js"></script>
+<script src="../../build/d3-graphviz.js"></script>
+<div id="graph"></div>
+<script>
+
+var dotIndex = 0;
+var graphviz = d3.select("#graph").graphviz();
+
+function render() {
+    var dotLines = dots[dotIndex];
+    var dot = dotLines.join('');
+    var transition1 = d3.transition()
+        .delay(1000)
+        .duration(2000);
+    graphviz
+        .dot(dot)
+        .transition(transition1)
+        .render();
+    dotIndex = (dotIndex + 1) % dots.length;
+
+    transition1
+        .transition()
+        .duration(100)
+        .on('end', function () {
+            render();
+        });
+}
+
+var dots = [
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    a -> b',
+        '    a -> c',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728", shape="box"]',
+        '    b [fillcolor="#1f77b4", shape="parallelogram"]',
+        '    c [fillcolor="#2ca02c", shape="pentagon"]',
+        '    a -> b',
+        '    a -> c',
+        '    b -> c',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="yellow", shape="star"]',
+        '    b [fillcolor="yellow", shape="star"]',
+        '    c [fillcolor="yellow", shape="star"]',
+        '    a -> b',
+        '    a -> c',
+        '    b -> c',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728", shape="triangle"]',
+        '    b [fillcolor="#1f77b4", shape="diamond"]',
+        '    c [fillcolor="#2ca02c", shape="trapezium"]',
+        '    a -> b',
+        '    a -> c',
+        '    b -> c',
+        '}'
+    ],
+];
+
+render();
+
+</script>
