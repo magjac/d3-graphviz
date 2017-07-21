@@ -84,7 +84,7 @@ export default function(rootElement) {
                 var attributeValue = attributes[attributeName];
                 if (tweenThisPath && attributeName == 'd') {
                     childTransition
-                        .attrTween("d", pathTween(attributeValue, 4));
+                        .attrTween("d", pathTween(attributeValue, 1));
                 } else {
                     childTransition
                         .attr(attributeName, attributeValue);
