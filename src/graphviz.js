@@ -6,6 +6,7 @@ import engine from "./engine";
 import keyMode from "./keyMode";
 import tweenPaths from "./tweenPaths";
 import tweenShapes from "./tweenShapes";
+import tweenPrecision from "./tweenPrecision";
 
 export function Graphviz(selection) {
     this._selection = selection;
@@ -19,6 +20,7 @@ export function Graphviz(selection) {
     this._keyMode = 'title';
     this._tweenPaths = true;
     this._tweenShapes = true;
+    this._tweenPrecision = 1;
 }
 
 export default function graphviz() {
@@ -32,6 +34,7 @@ Graphviz.prototype = graphviz.prototype = {
     keyMode: keyMode,
     tweenPaths: tweenPaths,
     tweenShapes: tweenShapes,
+    tweenPrecision: tweenPrecision,
     render: render,
     dot: dot,
     renderDot: renderDot,

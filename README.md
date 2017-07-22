@@ -108,6 +108,10 @@ d3.select("#graph").graphviz()
 
 If *enable* is true (default), enables path tweening, else disables path tweening. Returns the graph renderer instance.
 
+<a name="graphviz_tweenPrecision" href="#graphviz_tweenPrecision">#</a> <i>graphviz</i>.<b>tweenPrecision</b>(<i>precision</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/tweenPrecision.js "Source")
+
+Set the precision used during path tweening to *precision* pixels. Default is 1.Returns the graph render instance.
+
 ### Controlling Shape Tweening
 
 <a name="graphviz_tweenShapes" href="#graphviz_tweenShapes">#</a> <i>graphviz</i>.<b>tweenShapes</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/tweenShapes.js "Source")

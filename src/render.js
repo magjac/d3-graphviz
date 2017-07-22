@@ -9,6 +9,7 @@ export default function(rootElement) {
     var transitionInstance = this._transition;
     var tweenPaths = this._tweenPaths
     var tweenShapes = this._tweenShapes
+    var tweenPrecision = this._tweenPrecision
 
     function insertSvg(element) {
         var children = element.selectAll(function () {
@@ -84,7 +85,7 @@ export default function(rootElement) {
                 var attributeValue = attributes[attributeName];
                 if (tweenThisPath && attributeName == 'd') {
                     childTransition
-                        .attrTween("d", pathTween(attributeValue, 1));
+                        .attrTween("d", pathTween(attributeValue, tweenPrecision));
                 } else {
                     childTransition
                         .attr(attributeName, attributeValue);
