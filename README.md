@@ -41,6 +41,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Controlling Path Tweening](#controlling-path-tweening)
 * [Controlling Shape Tweening](#controlling-shape-tweening)
 * [Maintaining Object Constancy](#maintaining-object-constancy)
+* [Large Graphs](#large-graphs)
 * [Credits](#credits)
 
 ### Creating a Graphviz Renderer
@@ -131,6 +132,14 @@ In order to acheive [meaningful transitions](https://bost.ocks.org/mike/constanc
 <a name="graphviz_keyMode" href="#graphviz_keyMode">#</a> <i>graphviz</i>.<b>keyMode</b>(<i>mode</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/keyMode.js "Source")
 
 Sets the key mode to the specified *mode* string. If *mode* is not one of the defined key modes above, an error is thrown. Returns the graph renderer instance. The key mode must be set before attaching the [DOT](http://www.graphviz.org/content/dot-language) source. If it is changed after this, an eror is thrown.
+
+### Large Graphs
+
+For very large graphs it might be necessary to increase the amount of memory available to [Viz.js](https://github.com/mdaines/viz.js/).
+
+<a name="graphviz_totalMemory" href="#graphviz_totalMemory">#</a> <i>graphviz</i>.<b>totalMemory</b>(<i>size</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/totalMemory.js "Source")
+
+Sets the total memory available to [Viz.js](https://github.com/mdaines/viz.js/) to *size* bytes, which should be a power of 2. See the [Viz.js API](https://github.com/mdaines/viz.js#vizsrc-options-formatsvg-enginedot-scale-images-path-width-height--totalmemory16777216-) for details. Returns the graph renderer instance.
 
 ### Credits
 

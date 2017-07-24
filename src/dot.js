@@ -5,6 +5,7 @@ import {extractElementData} from "./element";
 export default function(src) {
 
     var engine = this._engine;
+    var totalMemory = this._totalMemory;
     var keyMode = this._keyMode;
     var tweenShapes = this._tweenShapes
 
@@ -65,6 +66,7 @@ export default function(src) {
               {
                   format: "svg",
                   engine: engine,
+                  totalMemory: totalMemory,
               }
              );
 
