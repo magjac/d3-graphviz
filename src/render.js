@@ -145,6 +145,29 @@ export default function(rootElement) {
         }
     }
 
+    if (transitionInstance != null) {
+        // Ensure orignal SVG shape elements are restored after transition before rendering new graph
+        var jobs = this._jobs;
+        var graphvizInstance = this;
+        if (graphvizInstance._active) {
+            jobs.push(null);
+            return;
+        } else {
+            root
+              .transition(transitionInstance)
+              .transition()
+                .duration(0)
+                .on("end" , function () {
+                    graphvizInstance._active = false;
+                    if (jobs.length != 0) {
+                        jobs.shift();
+                        graphvizInstance.render();
+                    }
+                });
+            this._active = true;
+        }
+    }
+
     var data = this._data;
 
     root

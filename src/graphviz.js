@@ -10,6 +10,8 @@ import tweenPrecision from "./tweenPrecision";
 
 export function Graphviz(selection) {
     this._selection = selection;
+    this._active = false;
+    this._jobs = [];
     this._keyModes = new Set([
         'title',
         'id',

@@ -23,8 +23,6 @@ function render() {
     dotIndex = (dotIndex + 1) % dots.length;
 
     transition1
-        .transition()
-        .duration(100)
         .on('end', function () {
             render();
         });
