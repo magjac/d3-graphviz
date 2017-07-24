@@ -41,6 +41,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Controlling Path Tweening](#controlling-path-tweening)
 * [Controlling Shape Tweening](#controlling-shape-tweening)
 * [Maintaining Object Constancy](#maintaining-object-constancy)
+* [Credits](#credits)
 
 ### Creating a Graphviz Renderer
 
@@ -130,3 +131,9 @@ In order to acheive [meaningful transitions](https://bost.ocks.org/mike/constanc
 <a name="graphviz_keyMode" href="#graphviz_keyMode">#</a> <i>graphviz</i>.<b>keyMode</b>(<i>mode</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/keyMode.js "Source")
 
 Set the key mode to the specified *mode* string. If *mode* is not one of the defined key modes above, an error is thrown. Returns the graph renderer instance. The key mode must be set before attaching the [DOT](http://www.graphviz.org/content/dot-language) source. If it is changed after this, an eror is thrown.
+
+### Credits
+
+* [Mike Daines](https://github.com/mdaines) for [Viz.js](https://github.com/mdaines/viz.js/).
+* [Mike Bostock](https://github.com/mbostock) for the [Path Tween](https://bl.ocks.org/mbostock/3916621) code.
+* [Marcin Stefaniuk](https://github.com/mstefaniuk)  for inspiration and learning through [graph-viz-d3-js](https://github.com/mstefaniuk/graph-viz-d3-js).
