@@ -7,6 +7,7 @@ Renders SVG from graphs described in the [DOT](http://www.graphviz.org/content/d
 * Animated transition of one graph into another
 * Edge path tweening
 * Node shape tweening
+* Fade-in and fade-out of entering and exiting nodes and edges
 
 To render a graph, select an element, call [*selection*.graphviz](#selection_graphviz), and then render from a [DOT](http://www.graphviz.org/content/dot-language) source string. For example:
 
