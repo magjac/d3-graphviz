@@ -25,19 +25,3 @@ tape("selection.graphviz().dot().render() renders an SVG from graphviz DOT.", fu
 
     test.end();
 });
-
-tape("selection.graphviz().render(selection) throws error", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
-
-    function specifyMultipeSelections() {
-        d3_selection.select("#graph")
-          .graphviz()
-            .dot('digraph {a -> b;}')
-            .render("#graph");
-    }
-
-    test.throws(specifyMultipeSelections, 'Multiply specfified selection throws error');
-
-    test.end();
-});
-

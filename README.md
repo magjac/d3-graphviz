@@ -17,11 +17,11 @@ d3.select("#graph")
     .renderDot('digraph {a -> b}');
 ```
 
-It is also possible to create a graph renderer first and append it to an element afterwards like so:
+It is also possible to call [d3.graphviz](#d3_graphviz) with a selection as the argument like so:
 
 ```js
-d3.graphviz()
-    .renderDot('digraph {a -> b}', "#graph");
+d3.graphviz(d3.select("#graph"))
+    .renderDot('digraph {a -> b}');
 ```
 
 [<img src="images/a-b.png">](http://bl.ocks.org/mbostock/ad70335eeef6d167bc36fd3c04378048)
@@ -45,9 +45,13 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Large Graphs](#large-graphs)
 * [Credits](#credits)
 
-### Creating a Graphviz Renderer
+### Creating a Graphviz Renderer on a selection
 
 <a name="selection_graphviz" href="#selection_graphviz">#</a> <i>selection</i>.<b>graphviz</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/graphviz.js "Source")
+
+Returns a new graphviz renderer instance on the given *selection*.
+
+<a name="d3_graphviz" href="#d3_graphviz">#</a> <b>d3.graphviz</b>(<i>selection</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/graphviz.js "Source")
 
 Returns a new graphviz renderer instance on the given *selection*.
 

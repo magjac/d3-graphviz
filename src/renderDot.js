@@ -1,8 +1,8 @@
-export default function(src, rootElement) {
+export default function(src) {
 
     this
         .dot(src)
-        .render(rootElement);
+        .render();
 
     return this;
 };

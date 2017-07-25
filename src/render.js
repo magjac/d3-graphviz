@@ -4,7 +4,7 @@ import {createElement, extractElementData, replaceElement} from "./element";
 import {shallowCopyObject} from "./utils";
 import {convertToPathData} from "./svg";
 
-export default function(rootElement) {
+export default function() {
 
     var transitionInstance = this._transition;
     var tweenPaths = this._tweenPaths
@@ -136,14 +136,7 @@ export default function(rootElement) {
         };
     }
 
-    var root = d3.select(rootElement);
-    if (root.empty()) {
-        root = this._selection;
-    } else {
-        if (this._selection != null) {
-            throw new Error('Multiply specified selection to render on');
-        }
-    }
+    var root = this._selection;
 
     if (transitionInstance != null) {
         // Ensure orignal SVG shape elements are restored after transition before rendering new graph
@@ -151,7 +144,7 @@ export default function(rootElement) {
         var graphvizInstance = this;
         if (graphvizInstance._active) {
             jobs.push(null);
-            return;
+            return this;
         } else {
             root
               .transition(transitionInstance)

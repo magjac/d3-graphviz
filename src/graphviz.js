@@ -8,6 +8,7 @@ import keyMode from "./keyMode";
 import tweenPaths from "./tweenPaths";
 import tweenShapes from "./tweenShapes";
 import tweenPrecision from "./tweenPrecision";
+import zoom from "./zoom";
 
 export function Graphviz(selection) {
     this._selection = selection;
@@ -27,9 +28,9 @@ export function Graphviz(selection) {
     this._tweenPrecision = 1;
 }
 
-export default function graphviz() {
-  var g = new Graphviz;
-  return g;
+export default function graphviz(selection) {
+    var g = new Graphviz(selection);
+    return g;
 }
 
 Graphviz.prototype = graphviz.prototype = {
@@ -40,6 +41,7 @@ Graphviz.prototype = graphviz.prototype = {
     tweenPaths: tweenPaths,
     tweenShapes: tweenShapes,
     tweenPrecision: tweenPrecision,
+    zoom: zoom,
     render: render,
     dot: dot,
     renderDot: renderDot,
