@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.js"></script>
+<script src="../../node_modules/viz.js/viz.js"></script>
+<script src="../../build/d3-graphviz.js"></script>
+<div id="graph"></div>
+<script>
+
+
+var dotIndex = 0;
+var graphviz = d3.select("#graph").graphviz();
+
+function render() {
+    var dotLines = dots[dotIndex];
+    var dot = dotLines.join('');
+    var transition1 = d3.transition()
+        .delay(100)
+        .duration(2000);
+    graphviz
+        .dot(dot)
+        .transition(transition1)
+        .render()
+    ;//        .zoom();
+
+    dotIndex = (dotIndex + 1) % dots.length;
+
+    transition1
+        .on('end', function () {
+            graphviz
+                .zoom();
+            if (dotIndex != 1)
+                render();
+        });
+}
+
+var dots = [
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    a -> b',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    a -> b',
+        '    a -> c',
+        '}'
+    ],
+];
+
+render();
+
+</script>
