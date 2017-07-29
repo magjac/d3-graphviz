@@ -25,8 +25,13 @@ export default function(enable) {
     var svg = d3.select(root.node().querySelector("svg"));
     var g = d3.select(svg.node().querySelector("g"));
     svg.call(zoomBehavior);
-    var translation = getTranslation(g);
-    zoomBehavior.translateBy(svg, translation.x, translation.y);
+    var oldTranslation = this._translation;
+    var newTranslation = getTranslation(g);
+    this._translation = newTranslation;
+    var diffTranslation = newTranslation;
+    diffTranslation.x -= oldTranslation.x;
+    diffTranslation.y -= oldTranslation.y;
+    zoomBehavior.translateBy(svg, diffTranslation.x, diffTranslation.y);
 
     return this;
 };
