@@ -15,7 +15,7 @@ function render() {
     var dotLines = dots[dotIndex];
     var dot = dotLines.join('');
     var transition1 = d3.transition()
-        .delay(100)
+        .delay(2000)
         .duration(2000);
     graphviz
         .dot(dot)
@@ -29,7 +29,7 @@ function render() {
         .on('end', function () {
             graphviz
                 .zoom();
-            if (dotIndex != 1)
+            if (dotIndex != 2)
                 render();
         });
 }
@@ -51,8 +51,10 @@ var dots = [
         '    b [fillcolor="#1f77b4"]',
         '    a -> b',
         '    a -> c',
+        '    b -> c',
         '}'
     ],
+    [],
 ];
 
 render();
