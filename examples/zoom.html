@@ -14,7 +14,9 @@ var graphviz = d3.select("#graph").graphviz();
 function render() {
     var dotLines = dots[dotIndex];
     var dot = dotLines.join('');
-    var transition1 = d3.transition()
+// FIXME: workaround for https://github.com/d3/d3-zoom/issues/110
+    var transition1 = d3.transition('graphviz')
+//    var transition1 = d3.transition()
         .delay(2000)
         .duration(2000);
     graphviz
