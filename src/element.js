@@ -1,4 +1,5 @@
 import * as d3 from "d3-selection";
+import {getTranslation} from "./zoom";
 
 export function extractElementData(element) {
 
@@ -13,6 +14,13 @@ export function extractElementData(element) {
             var name = attribute.name;
             var value = attribute.value;
             datum.attributes[name] = value;
+        }
+    }
+    var transform = element.node().transform;
+    if (transform) {
+        var translation = getTranslation(element);
+        if (translation.x != 0 || translation.y != 0) {
+            datum.translation = translation;
         }
     }
     if (tag == '#text') {

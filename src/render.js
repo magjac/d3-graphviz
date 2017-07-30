@@ -3,6 +3,7 @@ import {transition, attrTween} from "d3-transition";
 import {createElement, extractElementData, replaceElement} from "./element";
 import {shallowCopyObject} from "./utils";
 import {convertToPathData} from "./svg";
+import {createZoomBehavior, translateZoomTransform, translateZoomBehaviorTransform} from "./zoom";
 
 export default function() {
 
@@ -10,6 +11,7 @@ export default function() {
     var tweenPaths = this._tweenPaths
     var tweenShapes = this._tweenShapes
     var tweenPrecision = this._tweenPrecision
+    var graphvizInstance = this;
 
     function insertSvg(element) {
         var children = element.selectAll(function () {
@@ -87,6 +89,20 @@ export default function() {
                     childTransition
                         .attrTween("d", pathTween(attributeValue, tweenPrecision));
                 } else {
+                    if (attributeName == 'transform' && childData.translation) {
+                        childTransition
+                            .on("start", function () {
+                                if (graphvizInstance._zoomBehavior) {
+                                    childTransition
+                                        .attr(attributeName, translateZoomTransform.call(graphvizInstance, child).toString());
+                                }
+                            })
+                            .on("end", function () {
+                                if (graphvizInstance._zoomBehavior) {
+                                    translateZoomBehaviorTransform.call(graphvizInstance, child);
+                                }
+                            })
+                    }
                     childTransition
                         .attr(attributeName, attributeValue);
                 }
@@ -141,7 +157,6 @@ export default function() {
     if (transitionInstance != null) {
         // Ensure orignal SVG shape elements are restored after transition before rendering new graph
         var jobs = this._jobs;
-        var graphvizInstance = this;
         if (graphvizInstance._active) {
             jobs.push(null);
             return this;
@@ -166,6 +181,10 @@ export default function() {
     root
         .datum({children: [data]});
     insertSvg(root);
+
+    if (this._zoom && !this._zoomBehavior) {
+        createZoomBehavior.call(this);
+    }
 
     return this;
 };
