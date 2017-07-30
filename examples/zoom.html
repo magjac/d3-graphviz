@@ -23,16 +23,13 @@ function render() {
         .dot(dot)
         .transition(transition1)
         .render()
-    ;//        .zoom();
+        .zoom(true);
 
     dotIndex = (dotIndex + 1) % dots.length;
 
     transition1
         .on('end', function () {
-            graphviz
-                .zoom();
-            if (dotIndex != 2)
-                render();
+            render();
         });
 }
 
@@ -53,10 +50,29 @@ var dots = [
         '    b [fillcolor="#1f77b4"]',
         '    a -> b',
         '    a -> c',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    a -> b',
+        '    a -> c',
         '    b -> c',
         '}'
     ],
-    [],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    a -> b',
+        '    b -> c',
+        '}'
+    ],
 ];
 
 render();
