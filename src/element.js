@@ -34,7 +34,7 @@ export function extractElementData(element) {
 export function createElement(data) {
 
     if (data.tag == '#text') {
-        return document.createTextNode(data.text);
+        return document.createTextNode("");
     } else if (data.tag == '#comment') {
         return document.createComment(data.comment);
     } else {
