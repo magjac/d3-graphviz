@@ -8,6 +8,7 @@ Renders SVG from graphs described in the [DOT](http://www.graphviz.org/content/d
 * Edge path tweening
 * Node shape tweening
 * Fade-in and fade-out of entering and exiting nodes and edges
+* Panning & zooming of the generated graph
 
 Graphviz methods all return the graphviz renderer instance, allowing the concise application of multiple operations on a given graph renderer instance via method chaining.
 
@@ -113,6 +114,8 @@ d3.select("#graph").graphviz()
     .renderDot('digraph {a -> b}');
 ```
 
+<b>NOTE:</b> Transitions should be named if zooming is enabled. Transitions using the null name [will be interrupted](https://github.com/d3/d3-zoom/issues/110) by the [zoom behavior](https://github.com/d3/d3-zoom), causing the graph to be rendered incorrectly.
+
 ### Controlling Path Tweening
 
 <a name="graphviz_tweenPaths" href="#graphviz_tweenPaths">#</a> <i>graphviz</i>.<b>tweenPaths</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/tweenPaths.js "Source")
@@ -128,6 +131,12 @@ Sets the precision used during path tweening to *precision* pixels. Default is 1
 <a name="graphviz_tweenShapes" href="#graphviz_tweenShapes">#</a> <i>graphviz</i>.<b>tweenShapes</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/tweenShapes.js "Source")
 
 If *enable* is true (default), enables shape tweening during transitions, else disables shape tweening. If *enable* is true, also enables path tweening since shape tweening currently is performed by converting SVG ellipses and polygons to SVG paths and do path tweening on them. At the end of the transition the original SVG shape element is restored.
+
+### Controlling Panning & Zooming
+
+<a name="graphviz_zoom" href="#graphviz_zoom">#</a> <i>graphviz</i>.<b>zoom</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
+
+If *enable* is true (default), enables panning and zooming, else disables panning & zooming. Note that panning and zooming during transitions may be queued until after the transition.
 
 ### Maintaining [Object Constancy](https://bost.ocks.org/mike/constancy/)
 
