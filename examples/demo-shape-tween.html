@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="../../node_modules/viz.js/viz.js"></script>
+<script src="../../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+var dotIndex = 0;
+var graphviz = d3.select("#graph").graphviz();
+function render() {
+    var dotLines = dots[dotIndex % dots.length];
+    var dot = dotLines.join('');
+    var transition1 = d3.transition()
+        .delay(0)
+        .duration(2000);
+    graphviz
+        .dot(dot)
+        .transition(transition1)
+        .render();
+    dotIndex += 1;
+
+    transition1
+        .on('end', function () {
+            render();
+        });
+}
+
+var dots = [
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728" shape="polygon"]',
+        '    b [fillcolor="#1f77b4", shape="diamond"]',
+        '    c [fillcolor="#2ca02c", shape="triangle"]',
+        '    d [fillcolor="#ff7f0e", shape="octagon"]',
+        '    a -> b',
+        '    b -> c',
+        '    c -> d',
+        '    d -> a',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728" shape="ellipse"]',
+        '    b [fillcolor="#1f77b4", shape="ellipse"]',
+        '    c [fillcolor="#2ca02c", shape="ellipse"]',
+        '    d [fillcolor="#ff7f0e", shape="ellipse"]',
+        '    a -> b',
+        '    b -> c',
+        '    c -> d',
+        '    d -> a',
+        '}'
+    ],
+];
+
+render();
+
+</script>
