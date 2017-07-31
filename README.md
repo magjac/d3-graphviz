@@ -42,6 +42,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Creating a Graphviz Renderer](#creating-a-graphviz-renderer)
 * [Rendering](#renderering)
 * [Creating Transitions](#creating-transitions)
+* [Controlling Fade-in & Fade-out](#controlling-fade-in-&-fade-out)
 * [Controlling Path Tweening](#controlling-path-tweening)
 * [Controlling Shape Tweening](#controlling-shape-tweening)
 * [Maintaining Object Constancy](#maintaining-object-constancy)
@@ -116,6 +117,12 @@ d3.select("#graph").graphviz()
 ```
 
 <b>NOTE:</b> Transitions should be named if zooming is enabled. Transitions using the null name [will be interrupted](https://github.com/d3/d3-zoom/issues/110) by the [zoom behavior](https://github.com/d3/d3-zoom), causing the graph to be rendered incorrectly.
+
+### Controlling Fade-in & Fade-out
+
+<a name="graphviz_fade" href="#graphviz_fade">#</a> <i>graphviz</i>.<b>fade</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/fade.js "Source")
+
+If *enable* is true (default), enables fade-in and fade-out of nodes and shapes, else disables fade-in and fade-out.
 
 ### Controlling Path Tweening
 

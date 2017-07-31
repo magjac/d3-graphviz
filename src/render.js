@@ -8,6 +8,7 @@ import {createZoomBehavior, translateZoomTransform, translateZoomBehaviorTransfo
 export default function() {
 
     var transitionInstance = this._transition;
+    var fade = this._fade
     var tweenPaths = this._tweenPaths
     var tweenShapes = this._tweenShapes
     var tweenPrecision = this._tweenPrecision
@@ -31,7 +32,7 @@ export default function() {
               return createElement(d);
           });
 
-        if (transitionInstance) {
+        if (transitionInstance && fade) {
             childrenEnter
                 .filter(function(d) {
                     return d.tag[0] == '#' ? null : this;
@@ -46,11 +47,13 @@ export default function() {
         if (transitionInstance) {
             childrenExit = childrenExit
                 .transition(transitionInstance);
-            childrenExit
-              .filter(function(d) {
-                  return d.tag[0] == '#' ? null : this;
-              })
-                .style("opacity", 0.0);
+            if (fade) {
+                childrenExit
+                  .filter(function(d) {
+                      return d.tag[0] == '#' ? null : this;
+                  })
+                    .style("opacity", 0.0);
+            }
         }
         childrenExit = childrenExit
             .remove()
@@ -83,11 +86,13 @@ export default function() {
             if (transitionInstance) {
                 childTransition = childTransition
                     .transition(transitionInstance);
-                childTransition
-                  .filter(function(d) {
-                      return d.tag[0] == '#' ? null : this;
-                  })
-                    .style("opacity", 1.0);
+                if (fade) {
+                    childTransition
+                      .filter(function(d) {
+                          return d.tag[0] == '#' ? null : this;
+                      })
+                        .style("opacity", 1.0);
+                }
             }
             var tweenThisPath = tweenPaths && transitionInstance && tag == 'path' && child.attr('d') != null;
             for (var attributeName of Object.keys(attributes)) {

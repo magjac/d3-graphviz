@@ -6,6 +6,7 @@ import attributer from "./attributer";
 import engine from "./engine";
 import totalMemory from "./totalMemory";
 import keyMode from "./keyMode";
+import fade from "./fade";
 import tweenPaths from "./tweenPaths";
 import tweenShapes from "./tweenShapes";
 import tweenPrecision from "./tweenPrecision";
@@ -24,6 +25,7 @@ export function Graphviz(selection) {
     this._engine = 'dot';
     this._totalMemory = undefined;
     this._keyMode = 'title';
+    this._fade = true;
     this._tweenPaths = true;
     this._tweenShapes = true;
     this._tweenPrecision = 1;
@@ -41,6 +43,7 @@ Graphviz.prototype = graphviz.prototype = {
     engine: engine,
     totalMemory: totalMemory,
     keyMode: keyMode,
+    fade: fade,
     tweenPaths: tweenPaths,
     tweenShapes: tweenShapes,
     tweenPrecision: tweenPrecision,
