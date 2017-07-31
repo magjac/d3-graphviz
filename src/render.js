@@ -69,7 +69,25 @@ export default function() {
             var convertShape = false;
             if (tweenShapes && transitionInstance) {
                 if (this.nodeName == 'polygon' || this.nodeName == 'ellipse') {
+                    convertShape = true;
                     var prevData = extractElementData(child);
+                    if (this.nodeName == 'polygon' && tag == 'polygon') {
+                        var prevPoints = prevData.attributes.points;
+                        if (prevPoints == null) {
+                            convertShape = false;
+                        } else {
+                            var nPrevPoints = prevPoints.split(' ').length;
+                            var points = childData.attributes.points;
+                            var nPoints = points.split(' ').length;
+                            if (nPoints == nPrevPoints) {
+                                convertShape = false;
+                            }
+                        }
+                    } else if (this.nodeName == 'ellipse' && tag == 'ellipse') {
+                        convertShape = false;
+                    }
+                }
+                if (convertShape) {
                     var prevPathData = convertToPathData(prevData);
                     var pathElement = replaceElement(child, prevPathData);
                     pathElement.data([childData], function () {
@@ -79,7 +97,6 @@ export default function() {
                     child = pathElement;
                     tag = 'path';
                     attributes = newPathData.attributes;
-                    convertShape = true;
                 }
             }
             var childTransition = child;
