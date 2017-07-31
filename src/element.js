@@ -23,6 +23,22 @@ export function extractElementData(element) {
             datum.translation = translation;
         }
     }
+    if (tag == 'polygon' && datum.attributes.points) {
+        var points = element.attr('points').split(' ');
+        var x = points.map(function(p) {return p.split(',')[0]});
+        var y = points.map(function(p) {return p.split(',')[1]});
+        var xmin = Math.min.apply(null, x);
+        var xmax = Math.max.apply(null, x);
+        var ymin = Math.min.apply(null, y);
+        var ymax = Math.max.apply(null, y);
+        var bbox = {
+            x: xmin,
+            y: ymin,
+            width: xmax - xmin,
+            height: ymax - ymin,
+        }
+        datum.bbox = bbox;
+    }
     if (tag == '#text') {
         datum.text = element.text();
     } else if (tag == '#comment') {

@@ -88,12 +88,12 @@ export default function() {
                     }
                 }
                 if (convertShape) {
-                    var prevPathData = convertToPathData(prevData);
+                    var prevPathData = convertToPathData(prevData, childData);
                     var pathElement = replaceElement(child, prevPathData);
                     pathElement.data([childData], function () {
                         return childData.key;
                     });
-                    var newPathData = convertToPathData(childData);
+                    var newPathData = convertToPathData(childData, prevData);
                     child = pathElement;
                     tag = 'path';
                     attributes = newPathData.attributes;
