@@ -11,6 +11,7 @@ export default function() {
     var tweenPaths = this._tweenPaths
     var tweenShapes = this._tweenShapes
     var tweenPrecision = this._tweenPrecision
+    var attributer = this._attributer
     var graphvizInstance = this;
 
     function insertSvg(element) {
@@ -39,6 +40,9 @@ export default function() {
         }
         var childrenExit = children
           .exit();
+        if (attributer) {
+            childrenExit.each(attributer);
+        }
         if (transitionInstance) {
             childrenExit = childrenExit
                 .transition(transitionInstance);
@@ -52,6 +56,9 @@ export default function() {
             .remove()
         children = childrenEnter
             .merge(children);
+        if (attributer) {
+            children.each(attributer);
+        }
         children.each(function(childData) {
             var child = d3.select(this);
             var tag = childData.tag;

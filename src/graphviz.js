@@ -2,6 +2,7 @@ import render from "./render";
 import dot from "./dot";
 import renderDot from "./renderDot";
 import transition from "./transition";
+import attributer from "./attributer";
 import engine from "./engine";
 import totalMemory from "./totalMemory";
 import keyMode from "./keyMode";
@@ -48,4 +49,5 @@ Graphviz.prototype = graphviz.prototype = {
     dot: dot,
     renderDot: renderDot,
     transition: transition,
+    attributer: attributer,
 };

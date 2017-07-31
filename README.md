@@ -44,6 +44,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Controlling Path Tweening](#controlling-path-tweening)
 * [Controlling Shape Tweening](#controlling-shape-tweening)
 * [Maintaining Object Constancy](#maintaining-object-constancy)
+* [Customizing Graph Attributes](#customizing-graph-attributes)
 * [Large Graphs](#large-graphs)
 * [Credits](#credits)
 
@@ -139,6 +140,30 @@ In order to acheive [meaningful transitions](https://bost.ocks.org/mike/constanc
 <a name="graphviz_keyMode" href="#graphviz_keyMode">#</a> <i>graphviz</i>.<b>keyMode</b>(<i>mode</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/keyMode.js "Source")
 
 Sets the key mode to the specified *mode* string. If *mode* is not one of the defined key modes above, an error is thrown. The key mode must be set before attaching the [DOT](http://www.graphviz.org/content/dot-language) source. If it is changed after this, an eror is thrown.
+
+### Customizing Graph Attributes
+
+<a name="graphviz_attributer" href="#graphviz_attributer">#</a> <i>graphviz</i>.<b>attributer</b>(<i>function</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/attributer.js "Source")
+
+If the *function* is a function, it is evaluated for each SVG element, before applying attributes and transitions, being passed the current datum (*d*), the current index (*i*), and the current group (*nodes*), with *this* as the current DOM element (*nodes*[*i*]). If *function* is null, removes the attributer. For example, to set the fill color of ellipses to yellow and fade to red during transition:
+
+
+```js
+var t = d3.transition()
+    .duration(2000)
+    .ease(d3.easeLinear);
+
+d3.select("#graph").graphviz()
+    .transition(t)
+    .attributer(function(d) {
+        if (d.tag == "ellipse") {
+            d3.select(this)
+                .attr("fill", "yellow");
+            d.attributes.fill = "red";
+        }
+    })
+    .renderDot('digraph {a -> b}');
+```
 
 ### Large Graphs
 
