@@ -16,6 +16,7 @@ tape("selection.graphviz().dot().render() renders an SVG from graphviz DOT.", fu
 
     d3_selection.select("#graph")
       .graphviz()
+        .zoom(false)
         .dot('digraph {a -> b;}')
         .render();
 

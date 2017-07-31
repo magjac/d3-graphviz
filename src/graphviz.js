@@ -30,7 +30,7 @@ export function Graphviz(selection) {
     this._tweenShapes = true;
     this._tweenPrecision = 1;
     this._translation = {x: 0, y: 0};
-    this._zoom = false;
+    this._zoom = true;
 }
 
 export default function graphviz(selection) {

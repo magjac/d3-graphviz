@@ -36,6 +36,7 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
 
     graphviz
         .tweenShapes(false)
+        .zoom(false)
         .dot('digraph {a -> b;}')
         .render();
 
@@ -82,6 +83,7 @@ tape("graphviz().render() removes SVG elements for nodes and edges when removed 
 
     graphviz
         .tweenShapes(false)
+        .zoom(false)
         .dot('digraph {a -> b;}')
         .render();
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
@@ -116,6 +118,7 @@ tape("graphviz().render() adds SVG elements for nodes and edges when added to up
 
     graphviz
         .tweenShapes(false)
+        .zoom(false)
         .dot('digraph {a -> b;}')
         .render();
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
@@ -135,6 +138,7 @@ tape("graphviz().renderDot() renders an SVG from graphviz DOT.", function(test) 
 
     graphviz
         .tweenShapes(false)
+        .zoom(false)
         .renderDot('digraph {a -> b;}');
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
@@ -148,6 +152,7 @@ tape("graphviz().render() updates SVG text element when node name changes in DOT
 
     graphviz
         .tweenShapes(false)
+        .zoom(false)
         .dot('digraph {a}')
         .render();
     test.equal(d3.selectAll('.node').size(), 1, 'Number of initial nodes');
@@ -169,6 +174,7 @@ tape("graphviz().render() changes SVG element type when node shape changes in DO
 
     graphviz
         .tweenShapes(false)
+        .zoom(false)
         .dot('digraph {a -> b;}')
         .render();
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
@@ -195,6 +201,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
 
     graphviz
         .tweenShapes(false)
+        .zoom(false)
         .dot('digraph {a -> b; c}')
         .render();
     test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
@@ -250,6 +257,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
         var graphviz = d3_graphviz.graphviz(d3.select("#graph-" + keyMode));
         graphviz
             .tweenShapes(false)
+            .zoom(false)
             .keyMode(keyMode)
             .dot('digraph {a -> b; c}')
             .render();
@@ -378,6 +386,7 @@ tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
     function useIllegalKeyMode() {
         graphviz
             .tweenShapes(false)
+            .zoom(false)
             .keyMode('illegal-key-mode')
             .dot('digraph {a -> b}')
             .render();
@@ -397,6 +406,7 @@ tape("graphviz().keyMode() cannot be changed after applying dot source.", functi
     function changeKeyMode() {
         graphviz
             .tweenShapes(false)
+            .zoom(false)
             .keyMode('title')
             .dot('digraph {a -> b}')
             .keyMode('id')
@@ -416,6 +426,7 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
 
     graphviz
         .tweenShapes(false)
+        .zoom(false)
         .dot('digraph {a -> b; c}')
         .render();
     test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
@@ -484,6 +495,7 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
 
     graphviz
         .tweenShapes(true)
+        .zoom(false)
         .tweenPaths(false)
         .dot('digraph {a -> b;}')
         .render();
@@ -528,6 +540,7 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
 // FIXME: Re-enable when https://github.com/tmpvar/jsdom/issues/1330 is fixed
 //                .tweenShapes(true)
                 .tweenShapes(false)
+                .zoom(false)
                 .render();
         }
 
