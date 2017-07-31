@@ -46,6 +46,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Maintaining Object Constancy](#maintaining-object-constancy)
 * [Customizing Graph Attributes](#customizing-graph-attributes)
 * [Large Graphs](#large-graphs)
+* [Data Format](#data-format)
 * [Credits](#credits)
 
 ### Creating a Graphviz Renderer on a selection
@@ -172,6 +173,25 @@ For very large graphs it might be necessary to increase the amount of memory ava
 <a name="graphviz_totalMemory" href="#graphviz_totalMemory">#</a> <i>graphviz</i>.<b>totalMemory</b>(<i>size</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/totalMemory.js "Source")
 
 Sets the total memory available to [Viz.js](https://github.com/mdaines/viz.js/) to *size* bytes, which should be a power of 2. See the [Viz.js API](https://github.com/mdaines/viz.js#vizsrc-options-formatsvg-enginedot-scale-images-path-width-height--totalmemory16777216-) for details.
+
+### Data Format
+
+The data bound to each DOM node is an object containing the following fields:
+ * <b>tag</b> - The DOM node tag.
+ * <b>attributes</b> - An object containing attributes as properties.
+ * <b>children</b> - An array of data for the node's children.
+ * <b>key</b> - The key used when binding data to nodes with the [key function](https://github.com/d3/d3-selection#joining-data). See [<i>graphviz</i>.<b>keyMode</b>](#graphviz_keyMode) for more.
+ * <b>text</b> - Contains the text if the DOM node is a [Text node](https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-1312295772). A text node has the tag "<b>#text</b>", not to be confused with the tag "<b>text</b>", which is an [SVG <b>'text</b>' element](https://www.w3.org/TR/SVG/text.html#TextElement).
+ * <b>comment</b> - Contains the comment if the DOM element is a [Comment node](https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-1728279322). A comment node has the tag "<b>#comment</b>".
+ * <b>translation</b> - An object containing the x and y translation coordinates as properties if the element contains a [<b>transform</b>](https://www.w3.org/TR/SVG/coords.html#TransformAttribute) attribute which is not the identity transform.
+
+To inspect data:
+
+```js
+d3.select("#graph").graphviz()
+    .renderDot('digraph  {a -> b}');
+console.log(JSON.stringify(d3.select("svg").datum(), null, 4));
+ ```
 
 ### Credits
 
