@@ -37,7 +37,8 @@ function render() {
     var dotLines = dots[dotIndex];
     var dot = dotLines.join('');
     var transition1 = d3.transition()
-        .delay(100)
+        .ease(d3.easeLinear)
+        .delay(0)
         .duration(2000);
     graphviz
         .dot(dot)
