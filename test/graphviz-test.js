@@ -497,6 +497,7 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
         .tweenShapes(true)
         .zoom(false)
         .tweenPaths(false)
+        .convertEqualSidedPolygons(false)
         .dot('digraph {a -> b;}')
         .render();
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');

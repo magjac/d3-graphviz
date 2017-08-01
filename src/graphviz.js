@@ -9,6 +9,7 @@ import keyMode from "./keyMode";
 import fade from "./fade";
 import tweenPaths from "./tweenPaths";
 import tweenShapes from "./tweenShapes";
+import convertEqualSidedPolygons from "./convertEqualSidedPolygons";
 import tweenPrecision from "./tweenPrecision";
 import zoom from "./zoom";
 
@@ -28,6 +29,7 @@ export function Graphviz(selection) {
     this._fade = true;
     this._tweenPaths = true;
     this._tweenShapes = true;
+    this._convertEqualSidedPolygons = true;
     this._tweenPrecision = 1;
     this._translation = {x: 0, y: 0};
     this._zoom = true;
@@ -46,6 +48,7 @@ Graphviz.prototype = graphviz.prototype = {
     fade: fade,
     tweenPaths: tweenPaths,
     tweenShapes: tweenShapes,
+    convertEqualSidedPolygons: convertEqualSidedPolygons,
     tweenPrecision: tweenPrecision,
     zoom: zoom,
     render: render,

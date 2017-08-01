@@ -11,6 +11,7 @@ export default function() {
     var fade = this._fade
     var tweenPaths = this._tweenPaths
     var tweenShapes = this._tweenShapes
+    var convertEqualSidedPolygons = this._convertEqualSidedPolygons;
     var tweenPrecision = this._tweenPrecision
     var attributer = this._attributer
     var graphvizInstance = this;
@@ -75,7 +76,7 @@ export default function() {
                         var prevPoints = prevData.attributes.points;
                         if (prevPoints == null) {
                             convertShape = false;
-                        } else {
+                        } else if (!convertEqualSidedPolygons) {
                             var nPrevPoints = prevPoints.split(' ').length;
                             var points = childData.attributes.points;
                             var nPoints = points.split(' ').length;

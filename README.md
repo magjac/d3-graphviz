@@ -140,6 +140,10 @@ Sets the precision used during path tweening to *precision* pixels. Default is 1
 
 If *enable* is true (default), enables shape tweening during transitions, else disables shape tweening. If *enable* is true, also enables path tweening since shape tweening currently is performed by converting SVG ellipses and polygons to SVG paths and do path tweening on them. At the end of the transition the original SVG shape element is restored.
 
+<a name="graphviz_convertEqualSidedPolygons" href="#graphviz_convertEqualSidedPolygons">#</a> <i>graphviz</i>.<b>convertEqualSidedPolygons</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/convertEqualSidedPolygons.js "Source")
+
+If *enable* is true (default), enables conversion of polygons with equal number of sides during shape tweening, else disables conversion. Not applicable when shape tweening is disabled. At the end of the transition the original SVG shape element is restored.
+
 ### Controlling Panning & Zooming
 
 <a name="graphviz_zoom" href="#graphviz_zoom">#</a> <i>graphviz</i>.<b>zoom</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
