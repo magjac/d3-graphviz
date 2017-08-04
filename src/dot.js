@@ -1,6 +1,7 @@
 import * as Viz from "viz.js";
 import * as d3 from "d3-selection";
 import {extractElementData} from "./element";
+import {convertToPathData} from "./svg";
 
 export default function(src) {
 
@@ -8,6 +9,8 @@ export default function(src) {
     var totalMemory = this._totalMemory;
     var keyMode = this._keyMode;
     var tweenShapes = this._tweenShapes
+    var dictionary = {};
+    var prevDictionary = this._dictionary || {};
 
     function extractData(element, index = 0, parentData) {
 
@@ -43,6 +46,17 @@ export default function(src) {
             }
             datum.key = tag + '-' + index;
         }
+        var id = (parentData ? parentData.id + '.' : '') + datum.key;
+        datum.id = id;
+        dictionary[id] = datum;
+        if (tweenShapes && id in prevDictionary) {
+            var prevDatum = prevDictionary[id];
+            if ((prevDatum.tag == 'polygon' || prevDatum.tag == 'ellipse') && (prevDatum.tag != datum.tag || datum.tag == 'polygon')) {
+                datum.alternativeOld = convertToPathData(prevDatum, datum);
+                datum.alternativeNew = convertToPathData(datum, prevDatum);
+            }
+        }
+
         var childTagIndexes = {};
         children.each(function () {
             if (this !== null) {
@@ -82,6 +96,7 @@ export default function(src) {
 
     var data = extractData(newSvg);
     this._data = data;
+    this._dictionary = dictionary;
 
     return this;
 };

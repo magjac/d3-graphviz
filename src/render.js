@@ -2,7 +2,6 @@ import * as d3 from "d3-selection";
 import {transition, attrTween} from "d3-transition";
 import {createElement, extractElementData, replaceElement} from "./element";
 import {shallowCopyObject} from "./utils";
-import {convertToPathData} from "./svg";
 import {createZoomBehavior, translateZoomTransform, translateZoomBehaviorTransform} from "./zoom";
 import {pathTween} from "./tweening";
 
@@ -90,12 +89,12 @@ export default function() {
                     }
                 }
                 if (convertShape) {
-                    var prevPathData = convertToPathData(prevData, childData);
+                    var prevPathData = childData.alternativeOld;
                     var pathElement = replaceElement(child, prevPathData);
                     pathElement.data([childData], function () {
                         return childData.key;
                     });
-                    var newPathData = convertToPathData(childData, prevData);
+                    var newPathData = childData.alternativeNew;
                     child = pathElement;
                     tag = 'path';
                     attributes = newPathData.attributes;
