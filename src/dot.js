@@ -9,7 +9,7 @@ export default function(src) {
     var keyMode = this._keyMode;
     var tweenShapes = this._tweenShapes
 
-    function extractData(element, keyMode, index = 0) {
+    function extractData(element, index = 0) {
 
         var datum = extractElementData(element);
 
@@ -53,7 +53,7 @@ export default function(src) {
                     childTagIndexes[childTag] = 0;
                 }
                 var childIndex = childTagIndexes[childTag]++;
-                var childData = extractData(d3.select(this), keyMode, childIndex);
+                var childData = extractData(d3.select(this), childIndex);
                 if (childData) {
                     datum.children.push(childData);
                 }
@@ -79,7 +79,7 @@ export default function(src) {
     var newSvg = newDoc
       .select('svg');
 
-    var data = extractData(newSvg, keyMode);
+    var data = extractData(newSvg);
     this._data = data;
 
     return this;
