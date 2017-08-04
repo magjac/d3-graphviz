@@ -10,7 +10,26 @@
 var dotIndex = 0;
 var graphviz = d3.select("#graph").graphviz();
 function render() {
-    var dotLines = dots[dotIndex % dots.length];
+    var dotLines = [
+        'digraph  {',
+        '    node [style="filled"]',
+    ];
+    for (i = 0; i < shapes.length; i++) {
+        if (dotIndex % 2 == 0) {
+            shape = shapes[(dotIndex / 2) % shapes.length];
+        } else {
+            shape = shapes[i % shapes.length];
+        }
+        dotLines.push('    ' +  i + ' [label="' + shape + '" fillcolor="' + colors[i] +'" shape="' + shape + '"]');
+    }
+    dotLines = dotLines.concat([
+        '   0 -> 1 -> 2 -> 3',
+        '   4 -> 5 -> 6 -> 7',
+        '   8 -> 9 -> 10 -> 11',
+        '   12 -> 13 -> 14 -> 15',
+        '   16 -> 17 -> 18 -> 19',
+    ]);
+    dotLines.push('}');
     var dot = dotLines.join('');
     var transition1 = d3.transition()
         .delay(0)
@@ -27,34 +46,34 @@ function render() {
         });
 }
 
-var dots = [
-    [
-        'digraph  {',
-        '    node [style="filled"]',
-        '    a [fillcolor="#d62728" shape="polygon"]',
-        '    b [fillcolor="#1f77b4", shape="diamond"]',
-        '    c [fillcolor="#2ca02c", shape="triangle"]',
-        '    d [fillcolor="#ff7f0e", shape="octagon"]',
-        '    a -> b',
-        '    b -> c',
-        '    c -> d',
-        '    d -> a',
-        '}'
-    ],
-    [
-        'digraph  {',
-        '    node [style="filled"]',
-        '    a [fillcolor="#d62728" shape="ellipse"]',
-        '    b [fillcolor="#1f77b4", shape="ellipse"]',
-        '    c [fillcolor="#2ca02c", shape="ellipse"]',
-        '    d [fillcolor="#ff7f0e", shape="ellipse"]',
-        '    a -> b',
-        '    b -> c',
-        '    c -> d',
-        '    d -> a',
-        '}'
-    ],
+var shapes = [
+//    "box",
+    "polygon",
+    "ellipse",
+//    "oval",
+    "circle",
+    "point",
+    "egg",
+    "triangle",
+    "diamond",
+    "trapezium",
+    "parallelogram",
+    "house",
+    "pentagon",
+    "hexagon",
+    "septagon",
+    "octagon",
+    "invtriangle",
+    "invtrapezium",
+    "invhouse",
+//    "rect",
+//    "rectangle",
+    "square",
+    "star",
+    "cds",
 ];
+
+var colors = d3.schemeCategory20;
 
 render();
 
