@@ -9,10 +9,11 @@ export default function(src) {
     var keyMode = this._keyMode;
     var tweenShapes = this._tweenShapes
 
-    function extractData(element, index = 0) {
+    function extractData(element, index = 0, parentData) {
 
         var datum = extractElementData(element);
 
+        datum.parent = parentData;
         datum.children = [];
         var tag = datum.tag;
         if (tag == '#text') {
@@ -53,7 +54,7 @@ export default function(src) {
                     childTagIndexes[childTag] = 0;
                 }
                 var childIndex = childTagIndexes[childTag]++;
-                var childData = extractData(d3.select(this), childIndex);
+                var childData = extractData(d3.select(this), childIndex, datum);
                 if (childData) {
                     datum.children.push(childData);
                 }
