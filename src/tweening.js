@@ -8,11 +8,10 @@ export function pathTween(d1, precision) {
 }
 
 export function pathTweenPoints(node, d1, precision) {
-    var path0 = node,
-        path1 = path0.cloneNode(),
-        n0 = path0.getTotalLength(),
-        n1 = (path1.setAttribute("d", d1), path1).getTotalLength();
-
+    var path0 = node;
+    var path1 = path0.cloneNode();
+    var n0 = path0.getTotalLength();
+    var n1 = (path1.setAttribute("d", d1), path1).getTotalLength();
     // Uniform sampling of distance based on specified precision.
     var distances = [0], i = 0, dt = precision / Math.max(n0, n1);
     while ((i += dt) < 1) distances.push(i);
@@ -20,8 +19,8 @@ export function pathTweenPoints(node, d1, precision) {
 
     // Compute point-interpolators at each distance.
     var points = distances.map(function(t) {
-        var p0 = path0.getPointAtLength(t * n0),
-            p1 = path1.getPointAtLength(t * n1);
+        var p0 = path0.getPointAtLength(t * n0);
+        var p1 = path1.getPointAtLength(t * n1);
         return d3.interpolate([p0.x, p0.y], [p1.x, p1.y]);
     });
     return points;
