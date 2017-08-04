@@ -1,10 +1,12 @@
 import {interpolate} from "d3-interpolate";
 
-export function pathTween(d1, precision) {
+export function pathTween(points, d1) {
     return function() {
-        var points = pathTweenPoints(this, d1, precision);
+        var pointInterpolators = points.map(function(p) {
+            return interpolate([p[0][0], p[0][1]], [p[1][0], p[1][1]]);
+        });
         return function(t) {
-            return t < 1 ? "M" + points.map(function(p) { return p(t); }).join("L") : d1;
+            return t < 1 ? "M" + pointInterpolators.map(function(p) { return p(t); }).join("L") : d1;
         };
     };
 }
@@ -34,7 +36,7 @@ export function pathTweenPoints(node, d1, precision) {
             var p0 = {x: t * n0, y: t * n0};
             var p1 = {x: t * n1, y: t * n1};
         }
-        return interpolate([p0.x, p0.y], [p1.x, p1.y]);
+        return ([[p0.x, p0.y], [p1.x, p1.y]]);
     });
     return points;
 }

@@ -116,8 +116,9 @@ export default function() {
             for (var attributeName of Object.keys(attributes)) {
                 var attributeValue = attributes[attributeName];
                 if (tweenThisPath && attributeName == 'd') {
+                    var points = (childData.alternativeOld || childData).points;
                     childTransition
-                        .attrTween("d", pathTween(attributeValue, tweenPrecision));
+                        .attrTween("d", pathTween(points, attributeValue));
                 } else {
                     if (attributeName == 'transform' && childData.translation) {
                         childTransition

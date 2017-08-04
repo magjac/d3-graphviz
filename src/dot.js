@@ -1,14 +1,17 @@
 import * as Viz from "viz.js";
 import * as d3 from "d3-selection";
-import {extractElementData} from "./element";
+import {extractElementData, createElementWithAttributes} from "./element";
 import {convertToPathData} from "./svg";
+import {pathTweenPoints} from "./tweening";
 
 export default function(src) {
 
     var engine = this._engine;
     var totalMemory = this._totalMemory;
     var keyMode = this._keyMode;
+    var tweenPaths = this._tweenPaths
     var tweenShapes = this._tweenShapes
+    var tweenPrecision = this._tweenPrecision
     var dictionary = {};
     var prevDictionary = this._dictionary || {};
 
@@ -49,12 +52,21 @@ export default function(src) {
         var id = (parentData ? parentData.id + '.' : '') + datum.key;
         datum.id = id;
         dictionary[id] = datum;
+        var prevDatum = prevDictionary[id];
         if (tweenShapes && id in prevDictionary) {
-            var prevDatum = prevDictionary[id];
             if ((prevDatum.tag == 'polygon' || prevDatum.tag == 'ellipse') && (prevDatum.tag != datum.tag || datum.tag == 'polygon')) {
                 datum.alternativeOld = convertToPathData(prevDatum, datum);
                 datum.alternativeNew = convertToPathData(datum, prevDatum);
             }
+        }
+        if (tweenPaths && prevDatum && (prevDatum.tag == 'path' || (datum.alternativeOld && datum.alternativeOld.tag == 'path'))) {
+            var attribute_d = (datum.alternativeNew || datum).attributes.d;
+            if (datum.alternativeOld) {
+                var oldNode = createElementWithAttributes(datum.alternativeOld);
+            } else {
+                var oldNode = createElementWithAttributes(prevDatum);
+            }
+            (datum.alternativeOld || (datum.alternativeOld = {})).points = pathTweenPoints(oldNode, attribute_d, tweenPrecision);
         }
 
         var childTagIndexes = {};
