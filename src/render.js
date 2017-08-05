@@ -30,7 +30,11 @@ export default function() {
         var childrenEnter = children
           .enter()
           .append(function(d) {
-              return createElement(d);
+              var element = createElement(d);
+              if (d.tag == '#text' && fade) {
+                  element.nodeValue = d.text;
+              }
+              return element;
           });
 
         if (fade) {
