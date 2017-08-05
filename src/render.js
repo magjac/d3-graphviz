@@ -8,7 +8,7 @@ import {pathTween} from "./tweening";
 export default function() {
 
     var transitionInstance = this._transition;
-    var fade = this._fade
+    var fade = this._fade && transitionInstance != null;
     var tweenPaths = this._tweenPaths
     var tweenShapes = this._tweenShapes
     var convertEqualSidedPolygons = this._convertEqualSidedPolygons;
@@ -33,7 +33,7 @@ export default function() {
               return createElement(d);
           });
 
-        if (transitionInstance && fade) {
+        if (fade) {
             childrenEnter
                 .filter(function(d) {
                     return d.tag[0] == '#' ? null : this;
