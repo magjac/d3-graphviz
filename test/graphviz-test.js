@@ -213,6 +213,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
     graphviz
         .dot('digraph {a -> b; b -> a}')
         .transition(transition1)
+        .fade(false)
         .tweenPaths(false)
         .render();
     test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
@@ -267,6 +268,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
             .keyMode(keyMode)
             .dot('digraph {a -> b; b -> a}')
             .transition(transition1)
+            .fade(false)
             .tweenPaths(false)
             .render();
 
@@ -438,6 +440,7 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
     graphviz
         .dot('digraph {a -> b; b -> a}')
         .transition(transition1)
+        .fade(false)
         .tweenPaths(false)
         .render();
     test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');

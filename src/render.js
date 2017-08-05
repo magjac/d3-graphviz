@@ -38,6 +38,14 @@ export default function() {
                 .filter(function(d) {
                     return d.tag[0] == '#' ? null : this;
                 })
+                .each(function (d) {
+                    var childEnter = d3.select(this);
+                    for (var attributeName of Object.keys(d.attributes)) {
+                        var attributeValue = d.attributes[attributeName];
+                        childEnter
+                            .attr(attributeName, attributeValue);
+                    }
+                })
                 .style("opacity", 0.0);
         }
         var childrenExit = children
@@ -68,7 +76,7 @@ export default function() {
             var tag = childData.tag;
             var attributes = childData.attributes;
             var convertShape = false;
-            if (tweenShapes && transitionInstance) {
+            if (tweenShapes && transitionInstance && childData.alternativeOld) {
                 if (this.nodeName == 'polygon' || this.nodeName == 'ellipse') {
                     convertShape = true;
                     var prevData = extractElementData(child);
@@ -117,8 +125,10 @@ export default function() {
                 var attributeValue = attributes[attributeName];
                 if (tweenThisPath && attributeName == 'd') {
                     var points = (childData.alternativeOld || childData).points;
-                    childTransition
-                        .attrTween("d", pathTween(points, attributeValue));
+                    if (points) {
+                        childTransition
+                            .attrTween("d", pathTween(points, attributeValue));
+                    }
                 } else {
                     if (attributeName == 'transform' && childData.translation) {
                         childTransition
