@@ -32,7 +32,7 @@ function render() {
     dotLines.push('}');
     var dot = dotLines.join('');
     var transition1 = d3.transition()
-        .delay(0)
+        .delay(2500)
         .duration(2000);
     graphviz
         .dot(dot)
@@ -41,6 +41,8 @@ function render() {
     dotIndex += 1;
 
     transition1
+      .transition()
+        .duration(0)
         .on('end', function () {
             render();
         });
