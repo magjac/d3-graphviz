@@ -15,7 +15,8 @@ function render() {
     var dot = dotLines.join('');
     var transition1 = d3.transition()
         .ease(d3.easeLinear)
-        .delay(500)
+        .duration(500)
+      .transition()
         .duration(2000);
     graphviz
         .dot(dot)
