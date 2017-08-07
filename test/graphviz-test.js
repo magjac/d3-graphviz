@@ -466,9 +466,7 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
             graphviz
                 .dot('digraph {a -> b; b -> a}')
                 .transition(transition1)
-// FIXME: Re-enable when https://github.com/tmpvar/jsdom/issues/1330 is fixed
-//                .tweenPaths(true)
-                .tweenPaths(false)
+                .tweenPaths(true)
                 .render();
         }
 
@@ -488,7 +486,7 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
     }
 });
 
-tape("graphviz().tweenShapes() enables and disables shape tweening during transitions. FIXME: tape bug prohibits tweenShapes enabled test.", function(test) {
+tape("graphviz().tweenShapes() enables and disables shape tweening during transitions.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
     var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
@@ -496,7 +494,7 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
     graphviz
         .tweenShapes(true)
         .zoom(false)
-        .tweenPaths(false)
+        .tweenPaths(true)
         .convertEqualSidedPolygons(false)
         .dot('digraph {a -> b;}')
         .render();
@@ -538,9 +536,7 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
             graphviz
                 .dot('digraph {a -> b; b -> a}')
                 .transition(transition1)
-// FIXME: Re-enable when https://github.com/tmpvar/jsdom/issues/1330 is fixed
-//                .tweenShapes(true)
-                .tweenShapes(false)
+                .tweenShapes(true)
                 .zoom(false)
                 .render();
         }
