@@ -40,30 +40,34 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 ## API Reference
 
 * [Creating a Graphviz Renderer](#creating-a-graphviz-renderer)
-* [Rendering](#renderering)
+* [Rendering](#rendering)
 * [Creating Transitions](#creating-transitions)
-* [Controlling Fade-in & Fade-out](#controlling-fade-in-&-fade-out)
+* [Controlling Fade-in & Fade-out](#controlling-fade-in-&amp;-fade-out)
 * [Controlling Path Tweening](#controlling-path-tweening)
 * [Controlling Shape Tweening](#controlling-shape-tweening)
 * [Maintaining Object Constancy](#maintaining-object-constancy)
 * [Customizing Graph Attributes](#customizing-graph-attributes)
 * [Large Graphs](#large-graphs)
-* [Data Format](#data-format)
 * [Building Applications with d3-graphviz](#building-applications-with-d3-graphviz)
+* [Data Format](#data-format)
 * [Performance](#performance)
 * [Requirements](#requirements)
 * [Development](#development)
 * [Credits](#credits)
 
-### Creating a Graphviz Renderer on a selection
+### Creating a Graphviz Renderer
+
+#### Creating a Graphviz Renderer on an existing selection
 
 <a name="selection_graphviz" href="#selection_graphviz">#</a> <i>selection</i>.<b>graphviz</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/graphviz.js "Source")
 
 Returns a new graphviz renderer instance on the given *selection*.
 
-<a name="d3_graphviz" href="#d3_graphviz">#</a> <b>d3.graphviz</b>(<i>selection</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/graphviz.js "Source")
+#### Creating a Graphviz Renderer using a selector string
 
-Returns a new graphviz renderer instance on the given *selection*.
+<a name="d3_graphviz" href="#d3_graphviz">#</a> <b>d3.graphviz</b>(<i>selector</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/graphviz.js "Source")
+
+Returns a new graphviz renderer instance on the first element matching the given *selector*.
 
 ### Rendering
 
