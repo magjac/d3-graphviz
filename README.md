@@ -29,6 +29,10 @@ d3.graphviz(d3.select("#graph"))
 
 [<img src="images/a-b.png">](http://bl.ocks.org/mbostock/ad70335eeef6d167bc36fd3c04378048)
 
+This basic example can also bee seen [here](http://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b).
+
+A more colorful demo can be seen [here](http://bl.ocks.org/magjac/4acffdb3afbc4f71b448a210b5060bca).
+
 ## Installing
 
 If you use NPM, `npm install d3-graphviz`. Otherwise, download the [latest release](https://github.com/magjac/d3-graphviz/releases/latest).
@@ -40,6 +44,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 ## Contents
 
 * [API Reference](#api-reference)
+* [Examples](#examples)
 * [Building Applications with d3-graphviz](#building-applications-with-d3-graphviz)
 * [Data Format](#data-format)
 * [Performance](#performance)
@@ -155,6 +160,8 @@ If *enable* is true (default), enables shape tweening during transitions, else d
 
 If *enable* is true (default), enables conversion of polygons with equal number of sides during shape tweening, else disables conversion. Not applicable when shape tweening is disabled. At the end of the transition the original SVG shape element is restored.
 
+A demo of shape tweening can be seen [here](http://bl.ocks.org/magjac/69dc955a2e2ee085f60369c4a73f92a6).
+
 ### Controlling Panning & Zooming
 
 <a name="graphviz_zoom" href="#graphviz_zoom">#</a> <i>graphviz</i>.<b>zoom</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
@@ -205,6 +212,12 @@ For very large graphs it might be necessary to increase the amount of memory ava
 <a name="graphviz_totalMemory" href="#graphviz_totalMemory">#</a> <i>graphviz</i>.<b>totalMemory</b>(<i>size</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/totalMemory.js "Source")
 
 Sets the total memory available to [Viz.js](https://github.com/mdaines/viz.js/) to *size* bytes, which should be a power of 2. See the [Viz.js API](https://github.com/mdaines/viz.js#vizsrc-options-formatsvg-enginedot-scale-images-path-width-height--totalmemory16777216-) for details.
+
+### Examples
+
+* [Basic Example](http://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b)
+* [Demo](http://bl.ocks.org/magjac/4acffdb3afbc4f71b448a210b5060bca)
+* [Shape Tweening Demo](http://bl.ocks.org/magjac/4acffdb3afbc4f71b448a210b5060bca)
 
 ### Building Applications with [d3-graphviz](https://github.com/magjac/d3-graphviz)
 #### SVG structure
