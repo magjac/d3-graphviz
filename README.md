@@ -50,6 +50,9 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Large Graphs](#large-graphs)
 * [Data Format](#data-format)
 * [Building Applications with d3-graphviz](#building-applications-with-d3-graphviz)
+* [Performance](#performance)
+* [Requirements](#requirements)
+* [Development](#development)
 * [Credits](#credits)
 
 ### Creating a Graphviz Renderer on a selection
@@ -228,6 +231,22 @@ d3.select("#graph").graphviz()
     .renderDot('digraph  {a -> b}');
 console.log(JSON.stringify(d3.select("svg").datum(), null, 4));
  ```
+
+### Performance
+
+The shape- and path-tweening operations are quite computational intensive and can be disabled with [<i>graphviz</i>.<b>tweenShapes</b>](#graphviz_tweenShapes) and [<i>graphviz</i>.<b>tweenPaths</b>](#graphviz_tweenPaths) to improve performance if they are not needed. Even if enabled, performace gains can be made by turning off conversion of equally sided polygons with [<i>graphviz</i>.<b>convertEqualSidedPolygons</b>](#graphviz_convertEqualSidedPolygons).
+
+In order for animated transitions to be smooth, special considerations has been made to do the computational intensive operations before transitions start. Use [*transition*.delay](#transition_delay) to reserve time for those computations.
+
+Since the author is new to both Javascipt and D3, there are probably a lot of things that can be improved. Suggestions are welcome.
+
+### Requirements
+
+[d3-graphviz](https://github.com/magjac/d3-graphviz) uses a few [ES6](http://es6-features.org) language features, so it must be used with a modern browser.
+
+### Development
+
+In order to run the tests you need [Node.js](https://nodejs.org/en/download/package-manager/) 6.x or later.
 
 ### Credits
 
