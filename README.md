@@ -37,6 +37,16 @@ If you use NPM, `npm install d3-graphviz`. Otherwise, download the [latest relea
 
 Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph specified in the [DOT](http://www.graphviz.org/content/dot-language) language and generate an SVG text representation, which is analyzed and converted into a data representation that is joined with a selected DOM element and used to render the SVG graph on that element and to animate transitioning of one graph into another.
 
+## Contents
+
+* [API Reference](#api-reference)
+* [Building Applications with d3-graphviz](#building-applications-with-d3-graphviz)
+* [Data Format](#data-format)
+* [Performance](#performance)
+* [Requirements](#requirements)
+* [Development](#development)
+* [Credits](#credits)
+
 ## API Reference
 
 * [Creating a Graphviz Renderer](#creating-a-graphviz-renderer)
@@ -48,12 +58,6 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Maintaining Object Constancy](#maintaining-object-constancy)
 * [Customizing Graph Attributes](#customizing-graph-attributes)
 * [Large Graphs](#large-graphs)
-* [Building Applications with d3-graphviz](#building-applications-with-d3-graphviz)
-* [Data Format](#data-format)
-* [Performance](#performance)
-* [Requirements](#requirements)
-* [Development](#development)
-* [Credits](#credits)
 
 ### Creating a Graphviz Renderer
 
@@ -217,7 +221,7 @@ var g = d3.select(svg.node().querySelector("g"));
 
 For more, read [this issue](https://github.com/d3/d3/issues/1443) and [this Stack Overflow post](https://stackoverflow.com/questions/17846806/preventing-unwanted-data-inheritance-with-selection-select).
 
-### Data Format
+## Data Format
 
 The data bound to each DOM node is an object containing the following fields:
  * <b>tag</b> - The DOM node tag.
@@ -236,7 +240,7 @@ d3.select("#graph").graphviz()
 console.log(JSON.stringify(d3.select("svg").datum(), null, 4));
  ```
 
-### Performance
+## Performance
 
 The shape- and path-tweening operations are quite computational intensive and can be disabled with [<i>graphviz</i>.<b>tweenShapes</b>](#graphviz_tweenShapes) and [<i>graphviz</i>.<b>tweenPaths</b>](#graphviz_tweenPaths) to improve performance if they are not needed. Even if enabled, performace gains can be made by turning off conversion of equally sided polygons with [<i>graphviz</i>.<b>convertEqualSidedPolygons</b>](#graphviz_convertEqualSidedPolygons).
 
@@ -244,15 +248,15 @@ In order for animated transitions to be smooth, special considerations has been 
 
 Since the author is new to both Javascipt and D3, there are probably a lot of things that can be improved. Suggestions are welcome.
 
-### Requirements
+## Requirements
 
 [d3-graphviz](https://github.com/magjac/d3-graphviz) uses a few [ES6](http://es6-features.org) language features, so it must be used with a modern browser.
 
-### Development
+## Development
 
 In order to run the tests you need [Node.js](https://nodejs.org/en/download/package-manager/) 6.x or later.
 
-### Credits
+## Credits
 
 * [Mike Daines](https://github.com/mdaines) for [Viz.js](https://github.com/mdaines/viz.js/).
 * [Mike Bostock](https://github.com/mbostock) for the [Path Tween](https://bl.ocks.org/mbostock/3916621) code.
