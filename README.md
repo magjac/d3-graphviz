@@ -42,7 +42,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Creating a Graphviz Renderer](#creating-a-graphviz-renderer)
 * [Rendering](#rendering)
 * [Creating Transitions](#creating-transitions)
-* [Controlling Fade-in & Fade-out](#controlling-fade-in-&amp;-fade-out)
+* [Controlling Fade-in & Fade-out](#controlling-fade-in--fade-out)
 * [Controlling Path Tweening](#controlling-path-tweening)
 * [Controlling Shape Tweening](#controlling-shape-tweening)
 * [Maintaining Object Constancy](#maintaining-object-constancy)
