@@ -66,6 +66,16 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
     test.deepEqual(d3.select('#node2').datum(), graph0Data.children[11]);
     test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[15]);
 
+    test.end();
+});
+
+tape("graphviz() removes SVG elements for nodes and edges when removed from updated DOT.", function(test) {
+
+    var document = global.document = jsdom('<div id="graph"></div>');
+
+    graphviz.render('digraph {a -> b;}', "#graph");
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
     graphviz.render('digraph {a}', "#graph");
 
     svgDoc2 = `<svg width="62pt" height="44pt" viewbox="0.00 0.00 62.00 44.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -81,11 +91,22 @@ tape("graphviz() renders an SVG from graphviz DOT.", function(test) {
 </g>
 </svg>`;
 
+    test.equal(d3.selectAll('.node').size(), 1, 'Number of nodes after removal');
+    test.equal(d3.selectAll('.edge').size(), 0, 'Number of edges after removal');
     test.equal(d3.select('div').html(), svgDoc2, "SVG after removal of one edge and one node");
 
-    graphviz.render('digraph {a -> b; a -> c}', "#graph");
+    test.end();
+});
 
-    test.deepEqual(d3.select('#node3').empty(), false, "Newly inserted node 'c' is present");
+tape("graphviz() adds SVG elements for nodes and edges when added to updated DOT.", function(test) {
+    var document = global.document = jsdom('<div id="graph"></div>');
+
+    graphviz.render('digraph {a -> b;}', "#graph");
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    graphviz.render('digraph {a -> b; a -> c}', "#graph");
+    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes after add');
+    test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after add');
 
     test.end();
 });
