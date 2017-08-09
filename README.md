@@ -217,7 +217,7 @@ Sets the total memory available to [Viz.js](https://github.com/mdaines/viz.js/) 
 
 * [Basic Example](http://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b)
 * [Demo](http://bl.ocks.org/magjac/4acffdb3afbc4f71b448a210b5060bca)
-* [Shape Tweening Demo](http://bl.ocks.org/magjac/4acffdb3afbc4f71b448a210b5060bca)
+* [Shape Tweening Demo](http://bl.ocks.org/magjac/69dc955a2e2ee085f60369c4a73f92a6)
 
 ## Building Applications with [d3-graphviz](https://github.com/magjac/d3-graphviz)
 ### SVG structure
