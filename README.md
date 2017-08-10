@@ -80,9 +80,9 @@ Returns a new graphviz renderer instance on the first element matching the given
 
 ### Rendering
 
-<a name="graphviz_renderDot" href="#graphviz_renderDot">#</a> <i>graphviz</i>.<b>renderDot</b>(<i>dotSrc</i>, [<i>selector</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/renderDot.js "Source")
+<a name="graphviz_renderDot" href="#graphviz_renderDot">#</a> <i>graphviz</i>.<b>renderDot</b>(<i>dotSrc</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/renderDot.js "Source")
 
-Renders an SVG graph from the specified *dotSrc* string and appends it to the selection the grapviz renderer instance was generated on, or if no such selection exists, on the first element that matches the specified *selector* string. If the *selector* is given when the graphviz renderer instance is already attached to a selection, an error is thrown.
+Renders an SVG graph from the specified *dotSrc* string and appends it to the selection the grapviz renderer instance was generated on.
 
 It is also possible to do the [Graphviz](http://www.graphviz.org/content/dot-language) layout in a first separate stage and do the actual rendering of the SVG as a second step like so:
 
@@ -99,9 +99,9 @@ This enables doing the computational intensive layout stages for multiple graphs
 
 Computes the layout of a graph from the specified *dotSrc* string and saves the data for rendering the SVG with [<i>graphviz</i>.<b>render</b>](#graphviz_render) at a later stage.
 
-<a name="graphviz_render" href="#graphviz_render">#</a> <i>graphviz</i>.<b>render</b>([<i>selector</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/dot.js "Source")
+<a name="graphviz_render" href="#graphviz_render">#</a> <i>graphviz</i>.<b>render</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/dot.js "Source")
 
-Renders an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) and appends it to the selection the grapviz renderer instance was generated on, or if no such selection exists, on the first element that matches the specified *selector* string. If the *selector* is given when the graphviz renderer instance is already attached to a selection, an error is thrown.
+Renders an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) and appends it to the selection the grapviz renderer instance was generated on.
 
 <a name="graphviz_engine" href="#graphviz_engine">#</a> <i>graphviz</i>.<b>engine</b>(<i>engine</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/engine.js "Source")
 
