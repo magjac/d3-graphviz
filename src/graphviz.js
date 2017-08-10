@@ -1,3 +1,4 @@
+import * as d3 from "d3-selection";
 import render from "./render";
 import dot from "./dot";
 import renderDot from "./renderDot";
@@ -35,8 +36,8 @@ export function Graphviz(selection) {
     this._zoom = true;
 }
 
-export default function graphviz(selection) {
-    var g = new Graphviz(selection);
+export default function graphviz(selector) {
+    var g = new Graphviz(d3.select(selector));
     return g;
 }
 

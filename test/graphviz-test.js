@@ -7,7 +7,7 @@ var tape = require("tape"),
 
 tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     svgDoc = `<svg width="62pt" height="116pt" viewbox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
@@ -79,7 +79,7 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
 tape("graphviz().render() removes SVG elements for nodes and edges when removed from updated DOT.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
         .tweenShapes(false)
@@ -114,7 +114,7 @@ tape("graphviz().render() removes SVG elements for nodes and edges when removed 
 
 tape("graphviz().render() adds SVG elements for nodes and edges when added to updated DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
         .tweenShapes(false)
@@ -134,7 +134,7 @@ tape("graphviz().render() adds SVG elements for nodes and edges when added to up
 
 tape("graphviz().renderDot() renders an SVG from graphviz DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
         .tweenShapes(false)
@@ -148,7 +148,7 @@ tape("graphviz().renderDot() renders an SVG from graphviz DOT.", function(test) 
 
 tape("graphviz().render() updates SVG text element when node name changes in DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
         .tweenShapes(false)
@@ -170,7 +170,7 @@ tape("graphviz().render() updates SVG text element when node name changes in DOT
 
 tape("graphviz().render() changes SVG element type when node shape changes in DOT.", function(test) {
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
         .tweenShapes(false)
@@ -197,7 +197,7 @@ tape("graphviz().render() changes SVG element type when node shape changes in DO
 tape("graphviz().render() adds and removes SVG elements after transition delay.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
         .tweenShapes(false)
@@ -255,7 +255,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
         d3.select('#main')
           .append('div')
             .attr('id', 'graph-' + keyMode)
-        var graphviz = d3_graphviz.graphviz(d3.select("#graph-" + keyMode));
+        var graphviz = d3_graphviz.graphviz("#graph-" + keyMode);
         graphviz
             .tweenShapes(false)
             .zoom(false)
@@ -383,7 +383,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
 tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     function useIllegalKeyMode() {
         graphviz
@@ -403,7 +403,7 @@ tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
 tape("graphviz().keyMode() cannot be changed after applying dot source.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     function changeKeyMode() {
         graphviz
@@ -424,7 +424,7 @@ tape("graphviz().keyMode() cannot be changed after applying dot source.", functi
 tape("graphviz().tweenPaths() enables and disables path tweening during transitions. FIXME: tape bug prohibits tweenPaths enabled test.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
         .tweenShapes(false)
@@ -492,7 +492,7 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
 tape("graphviz().tweenShapes() enables and disables shape tweening during transitions.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');
-    var graphviz = d3_graphviz.graphviz(d3.select("#graph"));
+    var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
         .tweenShapes(true)

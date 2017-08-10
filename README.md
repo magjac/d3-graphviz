@@ -20,10 +20,10 @@ d3.select("#graph")
     .renderDot('digraph {a -> b}');
 ```
 
-It is also possible to call [d3.graphviz](#d3_graphviz) with a selection as the argument like so:
+It is also possible to call [d3.graphviz](#d3_graphviz) with a selector as the argument like so:
 
 ```js
-d3.graphviz(d3.select("#graph"))
+d3.graphviz("#graph")
     .renderDot('digraph {a -> b}');
 ```
 
@@ -72,11 +72,11 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 
 Returns a new graphviz renderer instance on the given *selection*.
 
-#### Creating a Graphviz Renderer using a selector string
+#### Creating a Graphviz Renderer using a selector string or a node
 
 <a name="d3_graphviz" href="#d3_graphviz">#</a> <b>d3.graphviz</b>(<i>selector</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/graphviz.js "Source")
 
-Returns a new graphviz renderer instance on the first element matching the given *selector*.
+Creates a new graphviz renderer instance on the first element matching the given *selector* string. If the *selecor* is not a string, instead creates a new graphviz renderer instance on the specified node.
 
 ### Rendering
 
