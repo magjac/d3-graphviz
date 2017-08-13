@@ -8,6 +8,7 @@ Renders SVG from graphs described in the [DOT](http://www.graphviz.org/content/d
 * Edge path tweening
 * Node shape tweening
 * Fade-in and fade-out of entering and exiting nodes and edges
+* Animated growth of entering edges
 * Panning & zooming of the generated graph
 
 Graphviz methods all return the graphviz renderer instance, allowing the concise application of multiple operations on a given graph renderer instance via method chaining.
@@ -58,6 +59,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Rendering](#rendering)
 * [Creating Transitions](#creating-transitions)
 * [Controlling Fade-In & Fade-Out](#controlling-fade-in--fade-out)
+* [Controlling Animated Growth of Entering Edges](#controlling-animated-growth-of-entering-edges)
 * [Controlling Path Tweening](#controlling-path-tweening)
 * [Controlling Shape Tweening](#controlling-shape-tweening)
 * [Maintaining Object Constancy](#maintaining-object-constancy)
@@ -139,6 +141,12 @@ d3.select("#graph").graphviz()
 <a name="graphviz_fade" href="#graphviz_fade">#</a> <i>graphviz</i>.<b>fade</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/fade.js "Source")
 
 If *enable* is true (default), enables fade-in and fade-out of nodes and shapes, else disables fade-in and fade-out.
+
+### Controlling Animated Growth of Entering Edges
+
+<a name="graphviz_growEnteringEdges" href="#graphviz_growEnteringEdges">#</a> <i>graphviz</i>.<b>growEnteringEdges</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/growEnteringEdges.js "Source")
+
+If *enable* is true (default), enables animated growth of entering edges, else disables animated growth of entering edges.
 
 ### Controlling Path Tweening
 
@@ -273,5 +281,7 @@ In order to run the tests you need [Node.js](https://nodejs.org/en/download/pack
 ## Credits
 
 * [Mike Daines](https://github.com/mdaines) for [Viz.js](https://github.com/mdaines/viz.js/).
-* [Mike Bostock](https://github.com/mbostock) for the [Path Tween](https://bl.ocks.org/mbostock/3916621) code.
+* [Mike Bostock](https://github.com/mbostock) for the [Path Tween](https://bl.ocks.org/mbostock/3916621) code and [Stroke Dash Interpolation](https://bl.ocks.org/mbostock/5649592) code.
+* [Aaron Bycoffe](https://bl.ocks.org/bycoffe) for the [Element rotation with point-along-path interpolation](http://bl.ocks.org/bycoffe/c3849a0b15234d7e32fc) code.
 * [Marcin Stefaniuk](https://github.com/mstefaniuk) for inspiration and learning through [graph-viz-d3-js](https://github.com/mstefaniuk/graph-viz-d3-js).
+* [Ueyama Satoshi](https://github.com/gyuque) for inspiring growing edges through [livizjs](http://ushiroad.com/jsviz/).

@@ -23,6 +23,12 @@ export function extractElementData(element) {
             datum.translation = translation;
         }
     }
+    if (tag == 'ellipse' && datum.attributes.cx) {
+        datum.center = {
+            x: datum.attributes.cx,
+            y: datum.attributes.cy,
+        };
+    }
     if (tag == 'polygon' && datum.attributes.points) {
         var points = element.attr('points').split(' ');
         var x = points.map(function(p) {return p.split(',')[0]});
@@ -38,6 +44,17 @@ export function extractElementData(element) {
             height: ymax - ymin,
         };
         datum.bbox = bbox;
+        datum.center = {
+            x: ymin + ymax / 2,
+            y: ymin + ymax / 2,
+        };
+    }
+    if (tag == 'path') {
+        if (element.node().getTotalLength) {
+            datum.totalLength = element.node().getTotalLength();
+        } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
+            datum.totalLength = 100;
+        }
     }
     if (tag == '#text') {
         datum.text = element.text();

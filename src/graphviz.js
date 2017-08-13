@@ -12,6 +12,7 @@ import tweenPaths from "./tweenPaths";
 import tweenShapes from "./tweenShapes";
 import convertEqualSidedPolygons from "./convertEqualSidedPolygons";
 import tweenPrecision from "./tweenPrecision";
+import growEnteringEdges from "./growEnteringEdges";
 import zoom from "./zoom";
 
 export function Graphviz(selection) {
@@ -32,6 +33,7 @@ export function Graphviz(selection) {
     this._tweenShapes = true;
     this._convertEqualSidedPolygons = true;
     this._tweenPrecision = 1;
+    this._growEnteringEdges = true;
     this._translation = {x: 0, y: 0};
     this._zoom = true;
 }
@@ -51,6 +53,7 @@ Graphviz.prototype = graphviz.prototype = {
     tweenShapes: tweenShapes,
     convertEqualSidedPolygons: convertEqualSidedPolygons,
     tweenPrecision: tweenPrecision,
+    growEnteringEdges: growEnteringEdges,
     zoom: zoom,
     render: render,
     dot: dot,

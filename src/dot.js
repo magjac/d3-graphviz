@@ -12,8 +12,11 @@ export default function(src) {
     var tweenPaths = this._tweenPaths;
     var tweenShapes = this._tweenShapes;
     var tweenPrecision = this._tweenPrecision;
+    var growEnteringEdges = this._growEnteringEdges;
     var dictionary = {};
     var prevDictionary = this._dictionary || {};
+    var nodeDictionary = {};
+    var prevNodeDictionary = this._nodeDictionary || {};
 
     function extractData(element, index = 0, parentData) {
 
@@ -89,6 +92,63 @@ export default function(src) {
         return datum;
     }
 
+    function postProcessData(datum) {
+
+        var id = datum.id;
+        var tag = datum.tag;
+        var prevDatum = prevDictionary[id];
+        if (growEnteringEdges && datum.parent) {
+            if (datum.parent.attributes.class == 'node') {
+                if (tag == 'title') {
+                    var child = datum.children[0];
+                    var nodeId = child.text;
+                    nodeDictionary[nodeId] = datum.parent;
+                }
+            }
+        }
+        if (growEnteringEdges && !prevDatum && datum.parent) {
+            if (datum.parent.attributes.class == 'edge') {
+                if (tag == 'path' || tag == 'polygon') {
+                    if (tag == 'polygon') {
+                        var path = datum.parent.children.find(function (e) {
+                            return e.tag == 'path';
+                        });
+                        datum.totalLength = path.totalLength;
+                    }
+                    var title = datum.parent.children.find(function (e) {
+                        return e.tag == 'title';
+                    });
+                    var child = title.children[0];
+                    var nodeIds = child.text.split('->');
+                    if (nodeIds.length != 2) {
+                        nodeIds = child.text.split('--');
+                    }
+                    var startNodeId = nodeIds[0];
+                    var startNode = nodeDictionary[startNodeId];
+                    var prevStartNode = prevNodeDictionary[startNodeId];
+                    if (prevStartNode) {
+                        var startShape = startNode.children[3];
+                        var prevStartShape = prevStartNode.children[3];
+                        if (startShape.tag != 'polygon' && startShape.tag != 'ellipse') {
+                            throw Error('Unexpected tag: ' + startShape.tag, '. Please file an issue at https://github.com/magjac/d3-graphviz/issues');
+                        }
+                        if (prevStartShape.tag != 'polygon' && prevStartShape.tag != 'ellipse') {
+                            throw Error('Unexpected tag: ' + prevStartShape.tag, '. Please file an issue at https://github.com/magjac/d3-graphviz/issues');
+                        }
+                        datum.offset = {
+                            x: prevStartShape.center.x - startShape.center.x,
+                            y: prevStartShape.center.y - startShape.center.y,
+                        }
+                    }
+                }
+            }
+        }
+        datum.children.forEach(function (childData) {
+            postProcessData(childData);
+        });
+        return datum;
+    }
+
     var svgDoc = Viz(src,
               {
                   format: "svg",
@@ -107,8 +167,10 @@ export default function(src) {
       .select('svg');
 
     var data = extractData(newSvg);
+    var data = postProcessData(data);
     this._data = data;
     this._dictionary = dictionary;
+    this._nodeDictionary = nodeDictionary;
 
     return this;
 };
