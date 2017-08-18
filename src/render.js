@@ -121,7 +121,11 @@ export default function() {
                       .filter(function(d) {
                           return d.tag[0] == '#' ? null : this;
                       })
-                        .style("opacity", 1.0);
+                        .style("opacity", 1.0)
+                        .on("end", function() {
+                            d3.select(this)
+                                .attr('style', null);
+                        });
                 }
             }
             var tweenThisPath = tweenPaths && transitionInstance && tag == 'path' && child.attr('d') != null;
