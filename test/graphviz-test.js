@@ -142,6 +142,9 @@ tape("graphviz().renderDot() renders an SVG from graphviz DOT.", function(test) 
         .renderDot('digraph {a -> b;}');
     test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
+    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
     test.end();
 });
