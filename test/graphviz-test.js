@@ -590,3 +590,30 @@ tape("graphviz().renderDot() renders an SVG from graphviz strict undirectd DOT."
 
     test.end();
 });
+
+tape("graphviz().renderDot() renders an SVG from graphviz strict directd DOT.", function(test) {
+    var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    graphviz
+        .tweenShapes(false)
+        .zoom(false)
+        .renderDot('digraph {a -> b;}');
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
+    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+    graphviz
+        .dot('strict digraph {a -> b; b -> a}')
+        .fade(false)
+        .tweenPaths(false)
+        .render();
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after adding an edge');
+    test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after adding an edge');
+    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after adding an edge');
+    test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after adding an edge');
+    test.equal(d3.selectAll('path').size(), 2, 'Number of paths after adding an edge');
+
+    test.end();
+});
