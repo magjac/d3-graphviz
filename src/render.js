@@ -161,10 +161,16 @@ export default function() {
             var moveThisPolygon = growEnteringEdges && tag == 'polygon' && childData.parent.attributes.class == 'edge' && childData.offset;
             if (moveThisPolygon) {
                 var edgePath = d3.select(element.node().querySelector("path"));
-                var p0 = edgePath.node().getPointAtLength(0);
-                var p1 = edgePath.node().getPointAtLength(childData.totalLength);
-                var p2 = edgePath.node().getPointAtLength(childData.totalLength - 1);
-                var angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x) * 180 / Math.PI;
+                if (edgePath.node().getPointAtLength) {
+                    var p0 = edgePath.node().getPointAtLength(0);
+                    var p1 = edgePath.node().getPointAtLength(childData.totalLength);
+                    var p2 = edgePath.node().getPointAtLength(childData.totalLength - 1);
+                    var angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x) * 180 / Math.PI;
+                } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
+                    var p0 = {x: 0, y: 0};
+                    var p1 = {x: 100, y: 100};
+                    var angle1 = 0;
+                }
                 var x = p0.x - p1.x + childData.offset.x;
                 var y = p0.y - p1.y + childData.offset.y;
                 child
@@ -172,9 +178,14 @@ export default function() {
                 childTransition
                     .attrTween("transform", function () {
                         return function (t) {
-                            var p = edgePath.node().getPointAtLength(childData.totalLength * t);
-                            var p2 = edgePath.node().getPointAtLength(childData.totalLength * t + 1);
-                            var angle = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI - angle1;
+                            if (edgePath.node().getPointAtLength) {
+                                var p = edgePath.node().getPointAtLength(childData.totalLength * t);
+                                var p2 = edgePath.node().getPointAtLength(childData.totalLength * t + 1);
+                                var angle = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI - angle1;
+                            } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
+                                var p = {x: 100.0 * t, y: 100.0 *t};
+                                var angle = 0;
+                            }
                             x = p.x - p1.x + childData.offset.x * (1 - t);
                             y = p.y - p1.y + childData.offset.y * (1 - t);
                             return 'translate(' + x + ',' + y + ') rotate(' + angle + ' ' + p1.x + ' ' + p1.y + ')';
