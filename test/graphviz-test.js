@@ -563,3 +563,30 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
         test.end();
     }
 });
+
+tape("graphviz().renderDot() renders an SVG from graphviz strict undirectd DOT.", function(test) {
+    var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    graphviz
+        .tweenShapes(false)
+        .zoom(false)
+        .renderDot('strict graph {a -- b;}');
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
+    test.equal(d3.selectAll('polygon').size(), 1, 'Number of initial polygons');
+    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+    graphviz
+        .dot('graph {a -- b; b -- a}')
+        .fade(false)
+        .tweenPaths(false)
+        .render();
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after adding one edge');
+    test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after adding one edge');
+    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after adding one edge');
+    test.equal(d3.selectAll('polygon').size(), 1, 'Number of polygons after adding one edge');
+    test.equal(d3.selectAll('path').size(), 2, 'Number of paths after adding one edge');
+
+    test.end();
+});
