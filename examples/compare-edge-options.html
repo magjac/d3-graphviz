@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="../../node_modules/viz.js/viz.js"></script>
+<script src="../../build/d3-graphviz.js"></script>
+<div id="main" style="text-align: center;"></div>
+<script>
+
+var dotIndex = 0;
+
+function attributer(datum, index, nodes) {
+    var selection = d3.select(this);
+    if (datum.tag == "svg") {
+        var width = "290";
+        var height = "230";
+        var x = "10";
+        var y = "10";
+        var k = 1.2;
+        selection
+            .attr("width", width + "pt")
+            .attr("height", height + "pt")
+            .attr("viewBox", -x + " " + -y + " " + width * k + " " + height * k);
+        datum.attributes.width = width + "pt";
+        datum.attributes.height = height + "pt";
+        datum.attributes.viewBox = -x + " " + -y + " " + width * k+ " " + height * k;
+    }
+}
+
+function render(graphviz, id, master) {
+    var dotLines = dots[dotIndex % dots.length];
+    var dot = dotLines.join('');
+    var transition1 = d3.transition(id)
+        .ease(d3.easeLinear)
+        .duration(1500)
+      .transition()
+        .duration(1500);
+    graphviz
+        .tweenShapes(false)
+        .dot(dot)
+        .transition(transition1)
+        .attributer(attributer)
+        .render();
+
+    transition1
+      .transition()
+        .duration(0)
+        .on('end', function () {
+            if (master) {
+                dotIndex += 1;
+            }
+            if (dotIndex != 100) {
+                render(graphviz, id, master);
+            }
+        });
+}
+
+var table = d3.select("#main").append("table");
+
+var graphs = [];
+var nrows = 2;
+var ncols = 4;
+
+for (var r = 0; r < nrows; r++) {
+    var row = table.append("tr");
+    graphs.push([]);
+    for (var c = 0; c < ncols; c++) {
+        var id = "r" + r + "c" + c;
+        var col = row.append("td")
+            .attr("id", id);
+        var p = col.append("p")
+            .text(id);
+        var div = col.append("div");
+        graphs[r].push({
+            "id": id,
+            "p": p,
+            "graphviz": div.graphviz(),
+        });
+    }
+}
+
+var dots = [
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    a [fillcolor="#d62728"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    d [fillcolor="#ff7f0e"]',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    d [fillcolor="#ff7f0e"]',
+        '    a -> b',
+        '    a -> c',
+        '    a -> d',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    d [fillcolor="#ff7f0e"]',
+        '    a -> b',
+        '    a -> c',
+        '    b -> d',
+        '    c -> d',
+        '    a -> d',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    d [fillcolor="#ff7f0e"]',
+        '    a -> b',
+        '    a -> c',
+        '    b -> d',
+        '    c -> d',
+        '    a -> d',
+        '    c -> b',
+        '}'
+    ],
+];
+
+for (var r = 0; r < nrows; r++) {
+    for (var c = 0; c < ncols; c++) {
+        var graph = graphs[r][c];
+        var p = graph.p;
+        var graphviz = graph.graphviz;
+        var html = [];
+        if (c < 2 ) {
+            graphviz.fade(false);
+            html.push("<s>fade</s>");
+        } else {
+            html.push("fade");
+        }
+        if (r == 0) {
+            graphviz.tweenPaths(false);
+            html.push("<s>tweenPaths</s>");
+        } else {
+            html.push("tweenPaths");
+        }
+        if (c == 0 | c == 2) {
+            graphviz.growEnteringEdges(false);
+            html.push("<s>growEnteringEdges</s>");
+        } else {
+            html.push("growEnteringEdges");
+        }
+        p.html(html.join(' '));
+    }
+}
+
+for (var r = 0; r < nrows; r++) {
+    for (var c = 0; c < ncols; c++) {
+        graph = graphs[r][c];
+        render(graph.graphviz, graph.id + "", r == 0 && c == 0);
+    }
+}
+
+</script>
