@@ -203,7 +203,7 @@ export default function() {
     var data = this._data;
 
     root
-        .datum({children: [data]});
+        .datum({attributes: {}, children: [data]});
     insertSvg(root);
 
     if (this._zoom && !this._zoomBehavior) {
