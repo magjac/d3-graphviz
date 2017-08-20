@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="../../node_modules/viz.js/viz.js"></script>
+<script src="../../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+var dotIndex = 0;
+var graphviz = d3.select("#graph").graphviz();
+
+function attributer(datum, index, nodes) {
+    var selection = d3.select(this);
+    if (datum.tag == "svg") {
+        var width = "600";
+        var height = "400";
+        var x = "10";
+        var y = "10";
+        selection
+            .attr("width", width + "pt")
+            .attr("height", height + "pt")
+            .attr("viewBox", -x + " " + -y + " " + width + " " + height);
+        datum.attributes.width = width + "pt";
+        datum.attributes.height = height + "pt";
+        datum.attributes.viewBox = -x + " " + -y + " " + width + " " + height;
+    }
+}
+
+function render() {
+    var dotLines = dots[dotIndex % dots.length];
+    var dot = dotLines.join('');
+    var transition1 = d3.transition()
+        .ease(d3.easeLinear)
+        .duration(1000)
+      .transition()
+        .duration(1500);
+    graphviz
+//        .tweenPaths(false)
+        .tweenShapes(false)
+        .dot(dot)
+        .transition(transition1)
+        .attributer(attributer)
+        .render();
+    dotIndex += 1;
+
+    transition1
+      .transition()
+        .duration(0)
+        .on('end', function () {
+            if (dotIndex != 0) {
+                render();
+            }
+        });
+}
+
+var dots = [
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    a [fillcolor="#d62728"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    d [fillcolor="#ff7f0e"]',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    d [fillcolor="#ff7f0e"]',
+        '    a -> b',
+        '    a -> c',
+        '    a -> d',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    d [fillcolor="#ff7f0e"]',
+        '    a -> b',
+        '    a -> c',
+        '    b -> d',
+        '    c -> d',
+        '    a -> d',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    d [fillcolor="#ff7f0e"]',
+        '    a -> b',
+        '    a -> c',
+        '    b -> d',
+        '    c -> d',
+        '    a -> d',
+        '    c -> b',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    d [fillcolor="#ff7f0e"]',
+        '    a -> b',
+        '    a -> c',
+        '    b -> d',
+        '    c -> d',
+        '    a -> d',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    d [fillcolor="#ff7f0e"]',
+        '    a -> b',
+        '    a -> c',
+        '    a -> d',
+        '}'
+    ],
+];
+
+render();
+
+</script>
