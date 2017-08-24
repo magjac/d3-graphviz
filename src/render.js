@@ -4,6 +4,8 @@ import {createElement, extractElementData, replaceElement} from "./element";
 import {shallowCopyObject} from "./utils";
 import {createZoomBehavior, translateZoomTransform, translateZoomBehaviorTransform} from "./zoom";
 import {pathTween} from "./tweening";
+import {isEdgeElement} from "./data";
+import {isEdgeElementParent} from "./data";
 
 export default function() {
 
@@ -38,7 +40,7 @@ export default function() {
               return element;
           });
 
-        if (fade || (growEnteringEdges && element.datum().attributes.class == 'edge')) {
+        if (fade || (growEnteringEdges && isEdgeElementParent(element.datum()))) {
             var childElementsEnter = childrenEnter
                 .filter(function(d) {
                     return d.tag[0] == '#' ? null : this;
@@ -158,7 +160,7 @@ export default function() {
                             .attr('transform', null);
                     });
             }
-            var moveThisPolygon = growEnteringEdges && tag == 'polygon' && childData.parent.attributes.class == 'edge' && childData.offset;
+            var moveThisPolygon = growEnteringEdges && tag == 'polygon' && isEdgeElement(childData) && childData.offset;
             if (moveThisPolygon) {
                 var edgePath = d3.select(element.node().querySelector("path"));
                 if (edgePath.node().getPointAtLength) {

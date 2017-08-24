@@ -617,3 +617,29 @@ tape("graphviz().renderDot() renders an SVG from graphviz strict directd DOT.", 
 
     test.end();
 });
+
+tape("graphviz().render() renders edges with tooltip attribute.", function(test) {
+    var document = global.document = jsdom('<div id="graph"></div>');
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    graphviz
+        .tweenShapes(false)
+        .zoom(false)
+        .renderDot('digraph {edge [tooltip="\\\\E"]; a -> b;}');
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    test.equal(d3.selectAll('g').size(), 5, 'Number of groups');
+    test.equal(d3.selectAll('a').size(), 1, 'Number of hyperlinks');
+    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses');
+    test.equal(d3.selectAll('path').size(), 1, 'Number of paths');
+    graphviz
+        .renderDot('digraph {edge [tooltip="\\\\E"]; a -> b; a -> c}')
+    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes after add');
+    test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after add');
+    test.equal(d3.selectAll('g').size(), 8, 'Number of groups');
+    test.equal(d3.selectAll('a').size(), 2, 'Number of hyperlinks');
+    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses');
+    test.equal(d3.selectAll('path').size(), 2, 'Number of paths');
+
+    test.end();
+});

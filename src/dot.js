@@ -3,6 +3,8 @@ import * as d3 from "d3-selection";
 import {extractElementData, createElementWithAttributes} from "./element";
 import {convertToPathData} from "./svg";
 import {pathTweenPoints} from "./tweening";
+import {isEdgeElement} from "./data";
+import {getEdgeTitle} from "./data";
 
 export default function(src) {
 
@@ -107,7 +109,7 @@ export default function(src) {
             }
         }
         if (growEnteringEdges && !prevDatum && datum.parent) {
-            if (datum.parent.attributes.class == 'edge') {
+            if (isEdgeElement(datum)) {
                 if (tag == 'path' || tag == 'polygon') {
                     if (tag == 'polygon') {
                         var path = datum.parent.children.find(function (e) {
@@ -115,9 +117,7 @@ export default function(src) {
                         });
                         datum.totalLength = path.totalLength;
                     }
-                    var title = datum.parent.children.find(function (e) {
-                        return e.tag == 'title';
-                    });
+                    var title = getEdgeTitle(datum);
                     var child = title.children[0];
                     var nodeIds = child.text.split('->');
                     if (nodeIds.length != 2) {
