@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="../../node_modules/viz.js/viz.js"></script>
+<script src="../../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+function attributer(datum, index, nodes) {
+    var selection = d3.select(this);
+    if (datum.tag == "svg") {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var x = 10;
+        var y = 10
+        var scale = 0.75;
+        selection
+            .attr("width", width + "pt")
+            .attr("height", height + "pt")
+            .attr("viewBox", -x + " " + -y + " " + (width / scale) + " " + (height / scale));
+        datum.attributes.width = width + "pt";
+        datum.attributes.height = height + "pt";
+        datum.attributes.viewBox = -x + " " + -y + " " + (width / scale) + " " + (height / scale);
+    }
+}
+
+var dotIndex = 0;
+var graphviz = d3.select("#graph").graphviz()
+    .tweenShapes(false)
+    .attributer(attributer);
+
+function render() {
+    var dotLines = dots[dotIndex % dots.length];
+    var dot = dotLines.join('');
+    graphviz
+        .dot(dot);
+    d3.transition("workaround")
+        .delay(1) // Decouple from time spent. See https://github.com/d3/d3-timer/issues/27
+        .duration(0)
+        .on("start", function() {
+            var transition1 = d3.transition("main")
+                .ease(d3.easeLinear)
+                .delay(1)
+                .duration(300 * dotIndex)
+            transition1
+              .transition("final")
+                .duration(50) // Allow time to finish transition
+                .on('end', function () {
+                    if (dotIndex != dots.length) {
+                        render();
+                    }
+                });
+            graphviz
+                .transition(transition1)
+                .render();
+        });
+
+    dotIndex += 1;
+
+}
+
+var colors = d3.schemeCategory20;
+
+var dots = [
+    [
+        'digraph  {',
+        '    graph [rankdir=TB]',
+        '    node [style="filled"]',
+        '    a0 [shape="circle" label="" fillcolor="' + colors[0] + '"]',
+        '    a1 [shape="circle" label="" fillcolor="' + colors[1] + '"]',
+        '    a2 [shape="circle" label="" fillcolor="' + colors[2] + '"]',
+        '    a3 [shape="circle" label="" fillcolor="' + colors[3] + '"]',
+        '    a4 [shape="circle" label="" fillcolor="' + colors[4] + '"]',
+        '    a5 [shape="circle" label="" fillcolor="' + colors[5] + '"]',
+        '    a6 [shape="circle" label="" fillcolor="' + colors[6] + '"]',
+        '    a7 [shape="circle" label="" fillcolor="' + colors[7] + '"]',
+        '    a8 [shape="circle" label="" fillcolor="' + colors[8] + '"]',
+        '    a9 [shape="circle" label="" fillcolor="' + colors[9] + '"]',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    graph [rankdir=TB]',
+        '    node [style="filled"]',
+        '    a0 [shape="circle" label="" fillcolor="' + colors[0] + '"]',
+        '    a1 [shape="circle" label="" fillcolor="' + colors[1] + '"]',
+        '    a2 [shape="circle" label="" fillcolor="' + colors[2] + '"]',
+        '    a3 [shape="circle" label="" fillcolor="' + colors[3] + '"]',
+        '    a4 [shape="circle" label="" fillcolor="' + colors[4] + '"]',
+        '    a5 [shape="circle" label="" fillcolor="' + colors[5] + '"]',
+        '    a6 [shape="circle" label="" fillcolor="' + colors[6] + '"]',
+        '    a7 [shape="circle" label="" fillcolor="' + colors[7] + '"]',
+        '    a8 [shape="circle" label="" fillcolor="' + colors[8] + '"]',
+        '    a9 [shape="circle" label="" fillcolor="' + colors[9] + '"]',
+        '    a0 -> a1',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    graph [rankdir=TB]',
+        '    node [style="filled"]',
+        '    a0 [shape="circle" label="" fillcolor="' + colors[0] + '"]',
+        '    a1 [shape="circle" label="" fillcolor="' + colors[1] + '"]',
+        '    a2 [shape="circle" label="" fillcolor="' + colors[2] + '"]',
+        '    a3 [shape="circle" label="" fillcolor="' + colors[3] + '"]',
+        '    a4 [shape="circle" label="" fillcolor="' + colors[4] + '"]',
+        '    a5 [shape="circle" label="" fillcolor="' + colors[5] + '"]',
+        '    a6 [shape="circle" label="" fillcolor="' + colors[6] + '"]',
+        '    a7 [shape="circle" label="" fillcolor="' + colors[7] + '"]',
+        '    a8 [shape="circle" label="" fillcolor="' + colors[8] + '"]',
+        '    a9 [shape="circle" label="" fillcolor="' + colors[9] + '"]',
+        '    a0 -> a1',
+        '    a0 -> a2',
+        '    a1 -> a2',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    graph [rankdir=TB]',
+        '    node [style="filled"]',
+        '    a0 [shape="circle" label="" fillcolor="' + colors[0] + '"]',
+        '    a1 [shape="circle" label="" fillcolor="' + colors[1] + '"]',
+        '    a2 [shape="circle" label="" fillcolor="' + colors[2] + '"]',
+        '    a3 [shape="circle" label="" fillcolor="' + colors[3] + '"]',
+        '    a4 [shape="circle" label="" fillcolor="' + colors[4] + '"]',
+        '    a5 [shape="circle" label="" fillcolor="' + colors[5] + '"]',
+        '    a6 [shape="circle" label="" fillcolor="' + colors[6] + '"]',
+        '    a7 [shape="circle" label="" fillcolor="' + colors[7] + '"]',
+        '    a8 [shape="circle" label="" fillcolor="' + colors[8] + '"]',
+        '    a9 [shape="circle" label="" fillcolor="' + colors[9] + '"]',
+        '    a0 -> a1',
+        '    a0 -> a2',
+        '    a1 -> a2',
+        '    a0 -> a3',
+        '    a1 -> a3',
+        '    a2 -> a3',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    graph [rankdir=TB]',
+        '    node [style="filled"]',
+        '    a0 [shape="circle" label="" fillcolor="' + colors[0] + '"]',
+        '    a1 [shape="circle" label="" fillcolor="' + colors[1] + '"]',
+        '    a2 [shape="circle" label="" fillcolor="' + colors[2] + '"]',
+        '    a3 [shape="circle" label="" fillcolor="' + colors[3] + '"]',
+        '    a4 [shape="circle" label="" fillcolor="' + colors[4] + '"]',
+        '    a5 [shape="circle" label="" fillcolor="' + colors[5] + '"]',
+        '    a6 [shape="circle" label="" fillcolor="' + colors[6] + '"]',
+        '    a7 [shape="circle" label="" fillcolor="' + colors[7] + '"]',
+        '    a8 [shape="circle" label="" fillcolor="' + colors[8] + '"]',
+        '    a9 [shape="circle" label="" fillcolor="' + colors[9] + '"]',
+        '    a0 -> a1',
+        '    a0 -> a2',
+        '    a1 -> a2',
+        '    a0 -> a3',
+        '    a1 -> a3',
+        '    a2 -> a3',
+        '    a0 -> a4',
+        '    a1 -> a4',
+        '    a2 -> a4',
+        '    a3 -> a4',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    graph [rankdir=TB]',
+        '    node [style="filled"]',
+        '    a0 [shape="circle" label="" fillcolor="' + colors[0] + '"]',
+        '    a1 [shape="circle" label="" fillcolor="' + colors[1] + '"]',
+        '    a2 [shape="circle" label="" fillcolor="' + colors[2] + '"]',
+        '    a3 [shape="circle" label="" fillcolor="' + colors[3] + '"]',
+        '    a4 [shape="circle" label="" fillcolor="' + colors[4] + '"]',
+        '    a5 [shape="circle" label="" fillcolor="' + colors[5] + '"]',
+        '    a6 [shape="circle" label="" fillcolor="' + colors[6] + '"]',
+        '    a7 [shape="circle" label="" fillcolor="' + colors[7] + '"]',
+        '    a8 [shape="circle" label="" fillcolor="' + colors[8] + '"]',
+        '    a9 [shape="circle" label="" fillcolor="' + colors[9] + '"]',
+        '    a0 -> a1',
+        '    a0 -> a2',
+        '    a1 -> a2',
+        '    a0 -> a3',
+        '    a1 -> a3',
+        '    a2 -> a3',
+        '    a0 -> a4',
+        '    a1 -> a4',
+        '    a2 -> a4',
+        '    a3 -> a4',
+        '    a0 -> a5',
+        '    a1 -> a5',
+        '    a2 -> a5',
+        '    a3 -> a5',
+        '    a4 -> a5',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    graph [rankdir=TB]',
+        '    node [style="filled"]',
+        '    a0 [shape="circle" label="" fillcolor="' + colors[0] + '"]',
+        '    a1 [shape="circle" label="" fillcolor="' + colors[1] + '"]',
+        '    a2 [shape="circle" label="" fillcolor="' + colors[2] + '"]',
+        '    a3 [shape="circle" label="" fillcolor="' + colors[3] + '"]',
+        '    a4 [shape="circle" label="" fillcolor="' + colors[4] + '"]',
+        '    a5 [shape="circle" label="" fillcolor="' + colors[5] + '"]',
+        '    a6 [shape="circle" label="" fillcolor="' + colors[6] + '"]',
+        '    a7 [shape="circle" label="" fillcolor="' + colors[7] + '"]',
+        '    a8 [shape="circle" label="" fillcolor="' + colors[8] + '"]',
+        '    a9 [shape="circle" label="" fillcolor="' + colors[9] + '"]',
+        '    a0 -> a1',
+        '    a0 -> a2',
+        '    a1 -> a2',
+        '    a0 -> a3',
+        '    a1 -> a3',
+        '    a2 -> a3',
+        '    a0 -> a4',
+        '    a1 -> a4',
+        '    a2 -> a4',
+        '    a3 -> a4',
+        '    a0 -> a5',
+        '    a1 -> a5',
+        '    a2 -> a5',
+        '    a3 -> a5',
+        '    a4 -> a5',
+        '    a0 -> a6',
+        '    a1 -> a6',
+        '    a2 -> a6',
+        '    a3 -> a6',
+        '    a4 -> a6',
+        '    a5 -> a6',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    graph [rankdir=TB]',
+        '    node [style="filled"]',
+        '    a0 [shape="circle" label="" fillcolor="' + colors[0] + '"]',
+        '    a1 [shape="circle" label="" fillcolor="' + colors[1] + '"]',
+        '    a2 [shape="circle" label="" fillcolor="' + colors[2] + '"]',
+        '    a3 [shape="circle" label="" fillcolor="' + colors[3] + '"]',
+        '    a4 [shape="circle" label="" fillcolor="' + colors[4] + '"]',
+        '    a5 [shape="circle" label="" fillcolor="' + colors[5] + '"]',
+        '    a6 [shape="circle" label="" fillcolor="' + colors[6] + '"]',
+        '    a7 [shape="circle" label="" fillcolor="' + colors[7] + '"]',
+        '    a8 [shape="circle" label="" fillcolor="' + colors[8] + '"]',
+        '    a9 [shape="circle" label="" fillcolor="' + colors[9] + '"]',
+        '    a0 -> a1',
+        '    a0 -> a2',
+        '    a1 -> a2',
+        '    a0 -> a3',
+        '    a1 -> a3',
+        '    a2 -> a3',
+        '    a0 -> a4',
+        '    a1 -> a4',
+        '    a2 -> a4',
+        '    a3 -> a4',
+        '    a0 -> a5',
+        '    a1 -> a5',
+        '    a2 -> a5',
+        '    a3 -> a5',
+        '    a4 -> a5',
+        '    a0 -> a6',
+        '    a1 -> a6',
+        '    a2 -> a6',
+        '    a3 -> a6',
+        '    a4 -> a6',
+        '    a5 -> a6',
+        '    a0 -> a7',
+        '    a1 -> a7',
+        '    a2 -> a7',
+        '    a3 -> a7',
+        '    a4 -> a7',
+        '    a6 -> a7',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    graph [rankdir=TB]',
+        '    node [style="filled"]',
+        '    a0 [shape="circle" label="" fillcolor="' + colors[0] + '"]',
+        '    a1 [shape="circle" label="" fillcolor="' + colors[1] + '"]',
+        '    a2 [shape="circle" label="" fillcolor="' + colors[2] + '"]',
+        '    a3 [shape="circle" label="" fillcolor="' + colors[3] + '"]',
+        '    a4 [shape="circle" label="" fillcolor="' + colors[4] + '"]',
+        '    a5 [shape="circle" label="" fillcolor="' + colors[5] + '"]',
+        '    a6 [shape="circle" label="" fillcolor="' + colors[6] + '"]',
+        '    a7 [shape="circle" label="" fillcolor="' + colors[7] + '"]',
+        '    a8 [shape="circle" label="" fillcolor="' + colors[8] + '"]',
+        '    a9 [shape="circle" label="" fillcolor="' + colors[9] + '"]',
+        '    a0 -> a1',
+        '    a0 -> a2',
+        '    a1 -> a2',
+        '    a0 -> a3',
+        '    a1 -> a3',
+        '    a2 -> a3',
+        '    a0 -> a4',
+        '    a1 -> a4',
+        '    a2 -> a4',
+        '    a3 -> a4',
+        '    a0 -> a5',
+        '    a1 -> a5',
+        '    a2 -> a5',
+        '    a3 -> a5',
+        '    a4 -> a5',
+        '    a0 -> a6',
+        '    a1 -> a6',
+        '    a2 -> a6',
+        '    a3 -> a6',
+        '    a4 -> a6',
+        '    a5 -> a6',
+        '    a0 -> a7',
+        '    a1 -> a7',
+        '    a2 -> a7',
+        '    a3 -> a7',
+        '    a4 -> a7',
+        '    a6 -> a7',
+        '    a0 -> a8',
+        '    a1 -> a8',
+        '    a2 -> a8',
+        '    a3 -> a8',
+        '    a4 -> a8',
+        '    a6 -> a8',
+        '    a7 -> a8',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    graph [rankdir=TB]',
+        '    node [style="filled"]',
+        '    a0 [shape="circle" label="" fillcolor="' + colors[0] + '"]',
+        '    a1 [shape="circle" label="" fillcolor="' + colors[1] + '"]',
+        '    a2 [shape="circle" label="" fillcolor="' + colors[2] + '"]',
+        '    a3 [shape="circle" label="" fillcolor="' + colors[3] + '"]',
+        '    a4 [shape="circle" label="" fillcolor="' + colors[4] + '"]',
+        '    a5 [shape="circle" label="" fillcolor="' + colors[5] + '"]',
+        '    a6 [shape="circle" label="" fillcolor="' + colors[6] + '"]',
+        '    a7 [shape="circle" label="" fillcolor="' + colors[7] + '"]',
+        '    a8 [shape="circle" label="" fillcolor="' + colors[8] + '"]',
+        '    a9 [shape="circle" label="" fillcolor="' + colors[9] + '"]',
+        '    a0 -> a1',
+        '    a0 -> a2',
+        '    a1 -> a2',
+        '    a0 -> a3',
+        '    a1 -> a3',
+        '    a2 -> a3',
+        '    a0 -> a4',
+        '    a1 -> a4',
+        '    a2 -> a4',
+        '    a3 -> a4',
+        '    a0 -> a5',
+        '    a1 -> a5',
+        '    a2 -> a5',
+        '    a3 -> a5',
+        '    a4 -> a5',
+        '    a0 -> a6',
+        '    a1 -> a6',
+        '    a2 -> a6',
+        '    a3 -> a6',
+        '    a4 -> a6',
+        '    a5 -> a6',
+        '    a0 -> a7',
+        '    a1 -> a7',
+        '    a2 -> a7',
+        '    a3 -> a7',
+        '    a4 -> a7',
+        '    a6 -> a7',
+        '    a0 -> a8',
+        '    a1 -> a8',
+        '    a2 -> a8',
+        '    a3 -> a8',
+        '    a4 -> a8',
+        '    a6 -> a8',
+        '    a7 -> a8',
+        '    a0 -> a9',
+        '    a1 -> a9',
+        '    a2 -> a9',
+        '    a3 -> a9',
+        '    a4 -> a9',
+        '    a6 -> a9',
+        '    a7 -> a9',
+        '    a8-> a9',
+        '}'
+    ],
+];
+
+render();
+
+</script>
