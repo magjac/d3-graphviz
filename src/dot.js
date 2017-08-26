@@ -9,9 +9,9 @@ export default function(src) {
     var engine = this._engine;
     var totalMemory = this._totalMemory;
     var keyMode = this._keyMode;
-    var tweenPaths = this._tweenPaths
-    var tweenShapes = this._tweenShapes
-    var tweenPrecision = this._tweenPrecision
+    var tweenPaths = this._tweenPaths;
+    var tweenShapes = this._tweenShapes;
+    var tweenPrecision = this._tweenPrecision;
     var dictionary = {};
     var prevDictionary = this._dictionary || {};
 

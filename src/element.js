@@ -36,7 +36,7 @@ export function extractElementData(element) {
             y: ymin,
             width: xmax - xmin,
             height: ymax - ymin,
-        }
+        };
         datum.bbox = bbox;
     }
     if (tag == '#text') {

@@ -9,11 +9,11 @@ export default function() {
 
     var transitionInstance = this._transition;
     var fade = this._fade && transitionInstance != null;
-    var tweenPaths = this._tweenPaths
-    var tweenShapes = this._tweenShapes
+    var tweenPaths = this._tweenPaths;
+    var tweenShapes = this._tweenShapes;
     var convertEqualSidedPolygons = this._convertEqualSidedPolygons;
-    var tweenPrecision = this._tweenPrecision
-    var attributer = this._attributer
+    var tweenPrecision = this._tweenPrecision;
+    var attributer = this._attributer;
     var graphvizInstance = this;
 
     function insertSvg(element) {
