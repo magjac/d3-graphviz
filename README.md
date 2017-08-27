@@ -266,7 +266,7 @@ console.log(JSON.stringify(d3.select("svg").datum(), null, 4));
 
 ## Performance
 
-The shape- and path-tweening operations are quite computational intensive and can be disabled with [<i>graphviz</i>.<b>tweenShapes</b>](#graphviz_tweenShapes) and [<i>graphviz</i>.<b>tweenPaths</b>](#graphviz_tweenPaths) to improve performance if they are not needed. Even if enabled, performance gains can be made by turning off conversion of equally sided polygons with [<i>graphviz</i>.<b>convertEqualSidedPolygons</b>](#graphviz_convertEqualSidedPolygons).
+The shape- and path-tweening operations are quite computational intensive and can be disabled with [<i>graphviz</i>.<b>tweenShapes</b>](#graphviz_tweenShapes) and [<i>graphviz</i>.<b>tweenPaths</b>](#graphviz_tweenPaths) to improve performance if they are not needed. Even if enabled, performance gains can be made by turning off conversion of equally sided polygons with [<i>graphviz</i>.<b>convertEqualSidedPolygons</b>](#graphviz_convertEqualSidedPolygons) or by reducing tween precision by setting a larger value with [<i>graphviz</i>.<b>tweenPrecision</b>](#graphviz_tweenPrecision).
 
 In order for animated transitions to be smooth, special considerations has been made to do the computational intensive operations before transitions start. Use [*transition*.delay](#transition_delay) to reserve time for those computations.
 
