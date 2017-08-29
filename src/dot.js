@@ -157,8 +157,9 @@ export default function(src) {
               }
              );
 
-    var newDoc = d3.select(document.createDocumentFragment())
-      .append('div');
+    var newDoc = d3.selection()
+      .append('div')
+      .attr('display', 'none');
 
     newDoc
         .html(svgDoc);
@@ -171,6 +172,7 @@ export default function(src) {
     this._data = data;
     this._dictionary = dictionary;
     this._nodeDictionary = nodeDictionary;
+    newDoc.remove();
 
     return this;
 };
