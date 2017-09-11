@@ -43,7 +43,7 @@ function render(graphviz, id, master) {
 
     transition1
       .transition()
-        .duration(0)
+        .duration(50) // Allow time to finish transition
         .on('end', function () {
             if (master) {
                 dotIndex += 1;
