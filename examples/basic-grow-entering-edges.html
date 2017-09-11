@@ -32,8 +32,7 @@ function render() {
     var dot = dotLines.join('');
     var transition1 = d3.transition()
         .ease(d3.easeLinear)
-        .duration(1000)
-      .transition()
+        .delay(1000)
         .duration(1500);
     graphviz
 //        .tweenPaths(false)

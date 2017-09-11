@@ -35,29 +35,25 @@ function render() {
     var dot = dotLines.join('');
     graphviz
         .dot(dot);
-    d3.transition("workaround")
-        .delay(1) // Decouple from time spent. See https://github.com/d3/d3-timer/issues/27
-        .duration(0)
-        .on("start", function() {
-            var transition1 = d3.transition("main")
-                .ease(d3.easeLinear)
-                .delay(1)
-                .duration(300 * dotIndex)
-            transition1
-              .transition("final")
-                .duration(50) // Allow time to finish transition
-                .on('end', function () {
-                    if (dotIndex != dots.length) {
-                        render();
-                    }
-                });
-            graphviz
-                .transition(transition1)
-                .render();
-        });
+    d3.timeout(function () { // Decouple from time spent. See https://github.com/d3/d3-transition/issues/73
+        var transition1 = d3.transition("main")
+            .ease(d3.easeLinear)
+            .delay(1)
+            .duration(300 * dotIndex);
+        transition1
+            .transition("final")
+            .duration(50) // Allow time to finish transition
+            .on('end', function () {
+                if (dotIndex != dots.length) {
+                    render();
+                }
+            });
+        graphviz
+            .transition(transition1)
+            .render();
 
-    dotIndex += 1;
-
+        dotIndex += 1;
+    }, 1);
 }
 
 var colors = d3.schemeCategory20;
