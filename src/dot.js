@@ -128,7 +128,13 @@ export default function(src) {
                     var prevStartNode = prevNodeDictionary[startNodeId];
                     if (prevStartNode) {
                         var startShape = startNode.children[3];
+                        if (startShape.tag == 'g' && startShape.children[0].tag == 'a') {
+                            startShape = startShape.children[0].children[1];
+                        }
                         var prevStartShape = prevStartNode.children[3];
+                        if (prevStartShape.tag == 'g' && prevStartShape.children[0].tag == 'a') {
+                            prevStartShape = prevStartShape.children[0].children[1];
+                        }
                         if (startShape.tag != 'polygon' && startShape.tag != 'ellipse') {
                             throw Error('Unexpected tag: ' + startShape.tag + '. Please file an issue at https://github.com/magjac/d3-graphviz/issues');
                         }
