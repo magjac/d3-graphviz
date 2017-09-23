@@ -130,10 +130,10 @@ export default function(src) {
                         var startShape = startNode.children[3];
                         var prevStartShape = prevStartNode.children[3];
                         if (startShape.tag != 'polygon' && startShape.tag != 'ellipse') {
-                            throw Error('Unexpected tag: ' + startShape.tag, '. Please file an issue at https://github.com/magjac/d3-graphviz/issues');
+                            throw Error('Unexpected tag: ' + startShape.tag + '. Please file an issue at https://github.com/magjac/d3-graphviz/issues');
                         }
                         if (prevStartShape.tag != 'polygon' && prevStartShape.tag != 'ellipse') {
-                            throw Error('Unexpected tag: ' + prevStartShape.tag, '. Please file an issue at https://github.com/magjac/d3-graphviz/issues');
+                            throw Error('Unexpected tag: ' + prevStartShape.tag + '. Please file an issue at https://github.com/magjac/d3-graphviz/issues');
                         }
                         datum.offset = {
                             x: prevStartShape.center.x - startShape.center.x,
