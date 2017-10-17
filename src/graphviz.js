@@ -16,6 +16,9 @@ import growEnteringEdges from "./growEnteringEdges";
 import zoom from "./zoom";
 
 export function Graphviz(selection) {
+    if (typeof Worker != 'undefined') {
+        this._worker = new Worker("../src/dotWorker.js");
+    }
     this._selection = selection;
     this._active = false;
     this._jobs = [];

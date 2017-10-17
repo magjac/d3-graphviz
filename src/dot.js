@@ -6,8 +6,11 @@ import {pathTweenPoints} from "./tweening";
 import {isEdgeElement} from "./data";
 import {getEdgeTitle} from "./data";
 
-export default function(src) {
+var worker = new Worker("../src/dotWorker.js");
 
+export default function(src, callback) {
+
+    var graphvizInstance = this;
     var engine = this._engine;
     var totalMemory = this._totalMemory;
     var keyMode = this._keyMode;
@@ -155,30 +158,52 @@ export default function(src) {
         return datum;
     }
 
-    var svgDoc = Viz(src,
-              {
-                  format: "svg",
-                  engine: engine,
-                  totalMemory: totalMemory,
-              }
-             );
+    var vizOptions = {
+        format: "svg",
+        engine: engine,
+        totalMemory: totalMemory,
+    };
+    if (this._worker) {
+        worker.postMessage({
+            dot: src,
+            options: vizOptions,
+        });
 
-    var newDoc = d3.selection()
-      .append('div')
-      .attr('display', 'none');
+        worker.onmessage = function(event) {
+            switch (event.data.type) {
+            case "done":
+                return layoutDone.call(graphvizInstance, event.data.svg);
+            }
+        };
+    } else {
+        layoutDone.call(this, Viz(src, vizOptions));
+    }
 
-    newDoc
-        .html(svgDoc);
+    function layoutDone(svgDoc) {
+        this._dispatch.call("layoutEnd", this);
 
-    var newSvg = newDoc
-      .select('svg');
+        var newDoc = d3.selection()
+          .append('div')
+          .attr('display', 'none');
 
-    var data = extractData(newSvg);
-    var data = postProcessData(data);
-    this._data = data;
-    this._dictionary = dictionary;
-    this._nodeDictionary = nodeDictionary;
-    newDoc.remove();
+        newDoc
+            .html(svgDoc);
+
+        var newSvg = newDoc
+          .select('svg');
+
+        var data = extractData(newSvg);
+        var data = postProcessData(data);
+        this._data = data;
+        this._dictionary = dictionary;
+        this._nodeDictionary = nodeDictionary;
+        newDoc.remove();
+
+        this._extractData = extractData;
+        if (callback) {
+            callback.call(this);
+        }
+    }
 
     return this;
 };
