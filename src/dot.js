@@ -158,7 +158,9 @@ export default function(src, callback) {
         return datum;
     }
 
+    this._dispatch.call("start", this);
     this._busy = true;
+    this._dispatch.call("layoutStart", this);
     var vizOptions = {
         format: "svg",
         engine: engine,
@@ -194,6 +196,7 @@ export default function(src, callback) {
           .select('svg');
 
         var data = extractData(newSvg);
+        this._dispatch.call('dataExtractEnd', this);
         var data = postProcessData(data);
         this._data = data;
         this._dictionary = dictionary;
@@ -202,6 +205,7 @@ export default function(src, callback) {
 
         this._extractData = extractData;
         this._busy = false;
+        this._dispatch.call('dataProcessEnd', this);
         if (callback) {
             callback.call(this);
         }

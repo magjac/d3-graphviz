@@ -1,4 +1,5 @@
 import * as d3 from "d3-selection";
+import {dispatch} from "d3-dispatch";
 import render from "./render";
 import dot from "./dot";
 import renderDot from "./renderDot";
@@ -15,6 +16,7 @@ import convertEqualSidedPolygons from "./convertEqualSidedPolygons";
 import tweenPrecision from "./tweenPrecision";
 import growEnteringEdges from "./growEnteringEdges";
 import zoom from "./zoom";
+import on from "./on";
 
 export function Graphviz(selection) {
     if (typeof Worker != 'undefined') {
@@ -42,6 +44,20 @@ export function Graphviz(selection) {
     this._growEnteringEdges = true;
     this._translation = {x: 0, y: 0};
     this._zoom = true;
+    this._eventTypes = [
+        'start',
+        'layoutStart',
+        'layoutEnd',
+        'dataExtractEnd',
+        'dataProcessEnd',
+        'renderStart',
+        'renderEnd',
+        'transitionStart',
+        'transitionEnd',
+        'restoreEnd',
+        'end'
+    ];
+    this._dispatch = dispatch(...this._eventTypes);
 }
 
 export default function graphviz(selector) {
@@ -67,4 +83,5 @@ Graphviz.prototype = graphviz.prototype = {
     transition: transition,
     transitionFactory: transitionFactory,
     attributer: attributer,
+    on: on,
 };

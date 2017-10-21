@@ -13,6 +13,7 @@ export default function(callback) {
         this._queue.push(this.render);
         return this;
     }
+    this._dispatch.call('renderStart', this);
 
     if (this._transitionFactory) {
         this._transition = transition(this._transitionFactory());
@@ -284,9 +285,17 @@ export default function(callback) {
     if (transitionInstance != null) {
         root
           .transition(transitionInstance)
+            .on("start" , function () {
+                graphvizInstance._dispatch.call('transitionStart', graphvizInstance);
+            })
+            .on("end" , function () {
+                graphvizInstance._dispatch.call('transitionEnd', graphvizInstance);
+            })
           .transition()
             .duration(0)
             .on("start" , function () {
+                graphvizInstance._dispatch.call('restoreEnd', graphvizInstance);
+                graphvizInstance._dispatch.call('end', graphvizInstance);
                 if (callback) {
                     callback.call(this);
                 }
@@ -302,6 +311,8 @@ export default function(callback) {
     if (this._zoom && !this._zoomBehavior) {
         createZoomBehavior.call(this);
     }
+
+    graphvizInstance._dispatch.call('renderEnd', graphvizInstance);
 
     return this;
 };
