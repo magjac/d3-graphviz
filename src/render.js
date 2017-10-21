@@ -14,6 +14,9 @@ export default function() {
         return this;
     }
 
+    if (this._transitionFactory) {
+        this._transition = transition(this._transitionFactory());
+    }
     var transitionInstance = this._transition;
     var fade = this._fade && transitionInstance != null;
     var tweenPaths = this._tweenPaths;

@@ -3,6 +3,7 @@ import render from "./render";
 import dot from "./dot";
 import renderDot from "./renderDot";
 import transition from "./transition";
+import transitionFactory from "./transitionFactory";
 import attributer from "./attributer";
 import engine from "./engine";
 import totalMemory from "./totalMemory";
@@ -64,5 +65,6 @@ Graphviz.prototype = graphviz.prototype = {
     dot: dot,
     renderDot: renderDot,
     transition: transition,
+    transitionFactory: transitionFactory,
     attributer: attributer,
 };
