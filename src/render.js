@@ -9,6 +9,11 @@ import {isEdgeElementParent} from "./data";
 
 export default function() {
 
+    if (this._busy) {
+        this._queue.push(this.render);
+        return this;
+    }
+
     var transitionInstance = this._transition;
     var fade = this._fade && transitionInstance != null;
     var tweenPaths = this._tweenPaths;

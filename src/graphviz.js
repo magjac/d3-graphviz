@@ -21,7 +21,9 @@ export function Graphviz(selection) {
     }
     this._selection = selection;
     this._active = false;
+    this._busy = false;
     this._jobs = [];
+    this._queue = [];
     this._keyModes = new Set([
         'title',
         'id',

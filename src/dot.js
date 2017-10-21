@@ -158,6 +158,7 @@ export default function(src, callback) {
         return datum;
     }
 
+    this._busy = true;
     var vizOptions = {
         format: "svg",
         engine: engine,
@@ -200,8 +201,13 @@ export default function(src, callback) {
         newDoc.remove();
 
         this._extractData = extractData;
+        this._busy = false;
         if (callback) {
             callback.call(this);
+        }
+        if (this._queue.length > 0) {
+            var job = this._queue.shift();
+            job.call(this);
         }
     }
 
