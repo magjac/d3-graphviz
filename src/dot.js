@@ -6,11 +6,11 @@ import {pathTweenPoints} from "./tweening";
 import {isEdgeElement} from "./data";
 import {getEdgeTitle} from "./data";
 
-var worker = new Worker("../src/dotWorker.js");
 
 export default function(src, callback) {
 
     var graphvizInstance = this;
+    var worker = this._worker;
     var engine = this._engine;
     var totalMemory = this._totalMemory;
     var keyMode = this._keyMode;
