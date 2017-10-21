@@ -7,7 +7,7 @@ import {pathTween} from "./tweening";
 import {isEdgeElement} from "./data";
 import {isEdgeElementParent} from "./data";
 
-export default function() {
+export default function(callback) {
 
     if (this._busy) {
         this._queue.push(this.render);
@@ -279,6 +279,18 @@ export default function() {
                 });
             this._active = true;
         }
+    }
+
+    if (transitionInstance != null) {
+        root
+          .transition(transitionInstance)
+          .transition()
+            .duration(0)
+            .on("start" , function () {
+                if (callback) {
+                    callback.call(this);
+                }
+            });
     }
 
     var data = this._data;

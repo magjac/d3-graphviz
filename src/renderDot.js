@@ -1,4 +1,4 @@
-export default function(src) {
+export default function(src, callback) {
 
     var graphvizInstance = this;
 
@@ -7,7 +7,7 @@ export default function(src) {
 
     function render() {
         graphvizInstance
-            .render();
+            .render(callback);
     }
 
     return this;
