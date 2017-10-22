@@ -8,7 +8,14 @@
 <script>
 
 var dotIndex = 0;
-var graphviz = d3.select("#graph").graphviz();
+var graphviz = d3.select("#graph").graphviz()
+    .transitionFactory(function () {
+        return d3.transition("main")
+            .ease(d3.easeLinear)
+            .delay(2500)
+            .duration(2000);
+    });
+
 function render() {
     var dotLines = [
         'digraph  {',
@@ -31,19 +38,10 @@ function render() {
     ]);
     dotLines.push('}');
     var dot = dotLines.join('');
-    var transition1 = d3.transition()
-        .delay(2500)
-        .duration(2000);
     graphviz
-        .dot(dot)
-        .transition(transition1)
-        .render();
-    dotIndex += 1;
-
-    transition1
-      .transition()
-        .duration(0)
-        .on('end', function () {
+        .renderDot(dot)
+        .on("end", function () {
+            dotIndex += 1;
             render();
         });
 }
