@@ -43,7 +43,8 @@ function render() {
     var dotLines = dots[dotIndex % dots.length];
     var dot = dotLines.join('');
     graphviz
-        .renderDot(dot, function () {
+        .renderDot(dot)
+        .on("end", function () {
             dotIndex += 1;
             if (dotIndex != dots.length) {
                 render();
