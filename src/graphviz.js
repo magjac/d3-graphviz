@@ -17,6 +17,7 @@ import tweenPrecision from "./tweenPrecision";
 import growEnteringEdges from "./growEnteringEdges";
 import zoom from "./zoom";
 import on from "./on";
+import logEvents from "./logEvents";
 
 export function Graphviz(selection) {
     if (typeof Worker != 'undefined') {
@@ -84,4 +85,5 @@ Graphviz.prototype = graphviz.prototype = {
     transitionFactory: transitionFactory,
     attributer: attributer,
     on: on,
+    logEvents: logEvents,
 };
