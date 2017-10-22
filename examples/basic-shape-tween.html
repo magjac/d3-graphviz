@@ -15,6 +15,7 @@ var graphviz = d3.select("#graph").graphviz()
             .delay(500)
             .duration(2000);
     })
+    .logEvents()
     .on("initEnd", render);
 
 function render() {
