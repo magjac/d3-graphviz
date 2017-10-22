@@ -1,5 +1,6 @@
 import * as d3 from "d3-selection";
 import {transition, attrTween} from "d3-transition";
+import {timeout} from "d3-timer";
 import {createElement, extractElementData, replaceElement} from "./element";
 import {shallowCopyObject} from "./utils";
 import {createZoomBehavior, translateZoomTransform, translateZoomBehaviorTransform} from "./zoom";
@@ -16,8 +17,17 @@ export default function(callback) {
     this._dispatch.call('renderStart', this);
 
     if (this._transitionFactory) {
-        this._transition = transition(this._transitionFactory());
+        timeout(function () { // Decouple from time spent. See https://github.com/d3/d3-timer/issues/27
+            this._transition = transition(this._transitionFactory());
+            _render.call(this, callback);
+        }.bind(this), 0);
+    } else {
+        _render.call(this, callback);
     }
+}
+
+function _render(callback) {
+
     var transitionInstance = this._transition;
     var fade = this._fade && transitionInstance != null;
     var tweenPaths = this._tweenPaths;
