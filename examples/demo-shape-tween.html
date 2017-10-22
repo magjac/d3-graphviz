@@ -14,7 +14,8 @@ var graphviz = d3.select("#graph").graphviz()
             .ease(d3.easeLinear)
             .delay(2500)
             .duration(2000);
-    });
+    })
+    .logEvents();
 
 function render() {
     var dotLines = [
