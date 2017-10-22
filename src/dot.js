@@ -7,6 +7,20 @@ import {isEdgeElement} from "./data";
 import {getEdgeTitle} from "./data";
 
 
+export function initViz() {
+    // force JIT compilation of Viz.js
+    if (this._worker == null) {
+        Viz("");
+        this._dispatch.call("initEnd", this);
+    } else {
+        var graphvizInstance = this;
+        this._worker.onmessage = function(event) {
+            graphvizInstance._dispatch.call("initEnd", this);
+        };
+        this._worker.postMessage({dot: ""});
+    }
+}
+
 export default function(src, callback) {
 
     var graphvizInstance = this;

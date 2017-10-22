@@ -2,6 +2,7 @@ import * as d3 from "d3-selection";
 import {dispatch} from "d3-dispatch";
 import render from "./render";
 import dot from "./dot";
+import {initViz} from "./dot";
 import renderDot from "./renderDot";
 import transition from "./transition";
 import transitionFactory from "./transitionFactory";
@@ -46,6 +47,7 @@ export function Graphviz(selection) {
     this._translation = {x: 0, y: 0};
     this._zoom = true;
     this._eventTypes = [
+        'initEnd',
         'start',
         'layoutStart',
         'layoutEnd',
@@ -59,6 +61,7 @@ export function Graphviz(selection) {
         'end'
     ];
     this._dispatch = dispatch(...this._eventTypes);
+    initViz.call(this);
 }
 
 export default function graphviz(selector) {

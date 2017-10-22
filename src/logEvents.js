@@ -13,7 +13,7 @@ export default function() {
         var expectedDelay;
         var expectedDuration;
         this
-            .on(eventType, function () {
+            .on(eventType + '.log', function () {
                 var t = Date.now();
                 var seqNo = times[eventType].length;
                 times[eventType].push(t);
@@ -22,7 +22,9 @@ export default function() {
                 string += format(' >2')(i) + ' ';
                 string += (eventType + '             ').slice(0, maxEventTypeLength + 1) + ' ';
                 string += format(' >5')(t - t0) + ' ';
-                string += format(' >5')(t - times['start'][seqNo]);
+                if (eventType != 'initEnd') {
+                    string += format(' >5')(t - times['start'][seqNo]);
+                }
                 if (eventType == 'dataProcessEnd') {
                     string += ' prepare                 ' + format(' >5')((t - times['layoutEnd'][seqNo]));
                 }
