@@ -9,7 +9,8 @@
 
 
 var dotIndex = 0;
-var graphviz = d3.select("#graph").graphviz();
+var graphviz = d3.select("#graph").graphviz()
+    .logEvents();
 
 function render() {
     var dotLines = dots[dotIndex];
