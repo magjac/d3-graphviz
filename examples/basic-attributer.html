@@ -8,19 +8,21 @@
 <script>
 
 var dotIndex = 0;
-var graphviz = d3.select("#graph").graphviz();
+var graphviz = d3.select("#graph").graphviz()
+    .transitionFactory(function () {
+        return d3.transition()
+            .ease(d3.easeLinear)
+            .delay(100)
+            .duration(2000);
+    })
+    .on("initEnd", render);
 
 
 function render() {
     var dotLines = dots[dotIndex];
     var dot = dotLines.join('');
-    var transition1 = d3.transition()
-        .ease(d3.easeLinear)
-        .delay(0)
-        .duration(2000);
     graphviz
         .dot(dot)
-        .transition(transition1)
         .attributer(function(d) {
             if (d.tag == "ellipse") {
                 d3.select(this)
@@ -28,13 +30,12 @@ function render() {
                 d.attributes.fill = "red";
             }
         })
-        .render();
-    dotIndex = (dotIndex + 1) % dots.length;
-
-    transition1
+        .render()
         .on('end', function () {
             render();
         });
+    dotIndex = (dotIndex + 1) % dots.length;
+
 }
 
 var dots = [
@@ -92,7 +93,5 @@ var dots = [
         '}'
     ],
 ];
-
-render();
 
 </script>
