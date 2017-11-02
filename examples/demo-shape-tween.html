@@ -15,7 +15,8 @@ var graphviz = d3.select("#graph").graphviz()
             .delay(40)
             .duration(2000);
     })
-    .logEvents();
+    .logEvents()
+    .on("initEnd", render);
 
 function render() {
     var dotLines = [
@@ -75,7 +76,5 @@ var shapes = [
 ];
 
 var colors = d3.schemeCategory20;
-
-render();
 
 </script>
