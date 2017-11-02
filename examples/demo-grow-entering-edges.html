@@ -37,6 +37,7 @@ var graphviz = d3.select("#graph").graphviz()
     .logEvents()
     .transitionFactory(transitionFactory)
     .tweenShapes(false)
+    .on("initEnd", render)
     .attributer(attributer);
 
 function render() {
@@ -375,7 +376,5 @@ var dots = [
         '}'
     ],
 ];
-
-render();
 
 </script>
