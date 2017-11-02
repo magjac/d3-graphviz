@@ -13,11 +13,16 @@ export function initViz() {
         Viz("");
         this._dispatch.call("initEnd", this);
     } else {
+        var scripts = d3.selectAll('script');
+        var vizScript = scripts.filter(function() {
+            return d3.select(this).attr('type') == 'javascript/worker';
+        });
+        var vizURL = vizScript.attr('src');
         var graphvizInstance = this;
         this._worker.onmessage = function(event) {
             graphvizInstance._dispatch.call("initEnd", this);
         };
-        this._worker.postMessage({dot: ""});
+        this._worker.postMessage({dot: "", vizURL: vizURL});
     }
 }
 

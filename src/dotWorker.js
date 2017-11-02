@@ -1,6 +1,7 @@
-importScripts("../node_modules/viz.js/viz.js");
-
 onmessage = function(event) {
+    if (event.data.vizURL) {
+        importScripts(event.data.vizURL);
+    }
     var svg = Viz(event.data.dot, event.data.options);
 
     if (svg) {
