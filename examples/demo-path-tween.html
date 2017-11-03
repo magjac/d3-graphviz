@@ -8,7 +8,14 @@
 <script>
 
 var dotIndex = 0;
-var graphviz = d3.select("#graph").graphviz();
+var graphviz = d3.select("#graph").graphviz()
+    .transitionFactory(function () {
+        return d3.transition()
+            .ease(d3.easeLinear)
+            .delay(1000)
+            .duration(1500);
+    })
+    .on("initEnd", render);
 
 function attributer(datum, index, nodes) {
     var selection = d3.select(this);
@@ -30,27 +37,19 @@ function attributer(datum, index, nodes) {
 function render() {
     var dotLines = dots[dotIndex % dots.length];
     var dot = dotLines.join('');
-    var transition1 = d3.transition()
-        .ease(d3.easeLinear)
-        .delay(1000)
-        .duration(1500);
     graphviz
 //        .tweenPaths(false)
         .tweenShapes(false)
         .dot(dot)
-        .transition(transition1)
         .attributer(attributer)
-        .render();
-    dotIndex += 1;
-
-    transition1
-      .transition()
-        .duration(0)
+        .render()
         .on('end', function () {
             if (dotIndex != 0) {
                 render();
             }
         });
+    dotIndex += 1;
+
 }
 
 var dots = [
@@ -131,7 +130,5 @@ var dots = [
         '}'
     ],
 ];
-
-render();
 
 </script>
