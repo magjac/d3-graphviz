@@ -8,6 +8,9 @@
 <script>
 
 var dotIndex = 0;
+var transition1;
+var numGraphs = 0;
+var numPending = 0;
 
 function attributer(datum, index, nodes) {
     var selection = d3.select(this);
@@ -27,31 +30,34 @@ function attributer(datum, index, nodes) {
     }
 }
 
-function render(graphviz, id, master) {
+function transitionFactory() {
+    if (numPending == numGraphs) {
+        transition1 = d3.transition("main")
+            .ease(d3.easeLinear)
+            .delay(1500)
+            .duration(1500);
+    }
+    numPending -= 1;
+    return transition1;
+}
+
+function render(graphviz) {
     var dotLines = dots[dotIndex % dots.length];
     var dot = dotLines.join('');
-    var transition1 = d3.transition(id)
-        .ease(d3.easeLinear)
-        .delay(1500)
-        .duration(1500);
     graphviz
         .tweenShapes(false)
         .dot(dot)
-        .transition(transition1)
         .attributer(attributer)
-        .render();
-
-    transition1
-      .transition()
-        .duration(50) // Allow time to finish transition
+        .render()
         .on('end', function () {
-            if (master) {
+            if (numPending == 0) {
                 dotIndex += 1;
             }
             if (dotIndex != 100) {
-                render(graphviz, id, master);
+                render(graphviz);
             }
         });
+    numPending += 1;
 }
 
 var table = d3.select("#main").append("table");
@@ -70,11 +76,25 @@ for (var r = 0; r < nrows; r++) {
         var p = col.append("p")
             .text(id);
         var div = col.append("div");
+        var graphviz = div.graphviz()
+            .transitionFactory(transitionFactory)
+            .on("initEnd", function () {
+                numPending -= 1;
+                if (numPending == 0) {
+                    for (var r = 0; r < nrows; r++) {
+                        for (var c = 0; c < ncols; c++) {
+                            var graph = graphs[r][c];
+                            render(graph.graphviz);
+                        }
+                    }
+                }
+            });
         graphs[r].push({
-            "id": id,
             "p": p,
-            "graphviz": div.graphviz(),
+            "graphviz": graphviz,
         });
+        numPending += 1;
+        numGraphs += 1;
     }
 }
 
@@ -156,13 +176,6 @@ for (var r = 0; r < nrows; r++) {
             html.push("growEnteringEdges");
         }
         p.html(html.join(' '));
-    }
-}
-
-for (var r = 0; r < nrows; r++) {
-    for (var c = 0; c < ncols; c++) {
-        graph = graphs[r][c];
-        render(graph.graphviz, graph.id + "", r == 0 && c == 0);
     }
 }
 
