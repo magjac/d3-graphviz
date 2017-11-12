@@ -77,7 +77,7 @@ for (var r = 0; r < nrows; r++) {
             .text(id);
         var div = col.append("div");
         var graphviz = div.graphviz()
-            .transitionFactory(transitionFactory)
+            .transition(transitionFactory)
             .on("initEnd", function () {
                 numPending -= 1;
                 if (numPending == 0) {

@@ -9,7 +9,7 @@
 
 var dotIndex = 0;
 var graphviz = d3.select("#graph").graphviz()
-    .transitionFactory(function () {
+    .transition(function () {
         return d3.transition("main")
             .ease(d3.easeLinear)
             .delay(40)
