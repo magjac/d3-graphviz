@@ -34,7 +34,7 @@ function transitionFactory() {
 
 var dotIndex = 0;
 var graphviz = d3.select("#graph").graphviz()
-    .logEvents()
+    .logEvents(true)
     .transition(transitionFactory)
     .tweenShapes(false)
     .on("initEnd", render)

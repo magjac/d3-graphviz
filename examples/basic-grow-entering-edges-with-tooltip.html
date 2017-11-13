@@ -15,7 +15,7 @@ var graphviz = d3.select("#graph").graphviz()
             .delay(1000)
             .duration(1500);
     })
-    .logEvents()
+    .logEvents(true)
     .on("initEnd", render);
 
 function attributer(datum, index, nodes) {

@@ -1,6 +1,6 @@
 import {format} from "d3-format";
 
-export default function() {
+export default function(enable) {
 
     var t0 = Date.now();
     var times = {};
@@ -13,7 +13,7 @@ export default function() {
         var expectedDelay;
         var expectedDuration;
         this
-            .on(eventType + '.log', function () {
+            .on(eventType + '.log', enable ? function () {
                 var t = Date.now();
                 var seqNo = times[eventType].length;
                 times[eventType].push(t);
@@ -47,7 +47,7 @@ export default function() {
                 }
                 console.log(string);
                 t0 = t;
-            });
+            } : null);
     }
     return this;
 }
