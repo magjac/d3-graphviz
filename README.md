@@ -122,7 +122,7 @@ Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified
 ### Creating Transitions
 <a name="graphviz_transition" href="#graphviz_transition">#</a> <i>graphviz</i>.<b>transition</b>([<i>name</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/transition.js "Source")
 
-Applies the specified transition *name* to subsequent SVG rendering. Accepts the same arguments as [<i>selection</i>.<b>transition</b>](https://github.com/d3/d3-transition#selection_transition), but returns the graph renderer instance, not the transition. To attach a configured transition, first create a transition intance with [d3.transition](https://github.com/d3/d3-transition#transition), configure it and attach it with [<i>graphviz</i>.<b>transition</b>](#graphviz_transition) like so:
+Applies the specified transition *name* to subsequent SVG rendering. Accepts the same arguments as [<i>selection</i>.<b>transition</b>](https://github.com/d3/d3-transition#selection_transition) or a function, but returns the graph renderer instance, not the transition. If *name* is a function, it is taken to be a transition factory. A transition factory is a function that returns a transition; when the rendering starts, the factory is evaluated once, with the `this` context as the graphviz instance. To attach a preconfigured transition, first create a transition intance with [d3.transition](https://github.com/d3/d3-transition#transition), configure it and attach it with [<i>graphviz</i>.<b>transition</b>](#graphviz_transition) like so:
 
 ```js
 var t = d3.transition()
@@ -133,6 +133,8 @@ d3.select("#graph").graphviz()
     .transition(t)
     .renderDot('digraph {a -> b}');
 ```
+
+A transition is scheduled when it is created. The above example will schedule the transition *before* the layout is computed, i.e. synchronously. But if, instead, a transition factory is used, the transition will be scheduled *after* the layout is computed, i.e. asynchronously.
 
 <b>NOTE:</b> Transitions should be named if zooming is enabled. Transitions using the null name [will be interrupted](https://github.com/d3/d3-zoom/issues/110) by the [zoom behavior](https://github.com/d3/d3-zoom), causing the graph to be rendered incorrectly.
 
