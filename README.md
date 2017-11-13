@@ -138,6 +138,35 @@ A transition is scheduled when it is created. The above example will schedule th
 
 <b>NOTE:</b> Transitions should be named if zooming is enabled. Transitions using the null name [will be interrupted](https://github.com/d3/d3-zoom/issues/110) by the [zoom behavior](https://github.com/d3/d3-zoom), causing the graph to be rendered incorrectly.
 
+### Control Flow
+
+For advanced usage, the grahviz renderer provides methods for custom control flow.
+
+<a name="graphviz_on" href="#graphviz_on">#</a> <i>graphviz</i>.<b>on</b>(<i>typenames</i>[, <i>listener</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/on.js "Source")
+
+Adds or removes a *listener* to the graphviz renderer instance for the specified event *typenames*. The *typenames* is one of the following string event types:
+
+* `initEnd` - when the graphviz renderer has finished initialization.
+* `start` - when analysis of the DOT source starts.
+* `layoutStart` - when the layout of the DOT source starts.
+* `layoutEnd` - when the layout of the DOT source ends.
+* `dataExtractEnd` - when the extraction of data from the SVG text representation ends.
+* `dataProcessEnd` - when the processing of the extracted data ends.
+* `renderStart` - when the rendering preparation starts, which is just before an eventual transition factory is called.
+* `renderEnd` - when the rendering preparation ends.
+* `transitionStart` - when the anmiated transition starts.
+* `transitionEnd` - when the anmiated transition ends.
+* `restoreEnd` - when possibly converted paths and shapes have been restored after the transition.
+* `end` - when the graphviz renderer has finished all actions.
+
+Note that these are *not* native DOM events as implemented by [*selection*.on](https://github.com/d3/d3-selection#selection_on) and [*selection*.dispatch](https://github.com/d3/d3-selection#selection_dispatch), but graphviz events!
+
+The type may be optionally followed by a period (`.`) and a name; the optional name allows multiple callbacks to be registered to receive events of the same type, such as `start.foo` and `start.bar`. To specify multiple typenames, separate typenames with spaces, such as `interrupt end` or `start.foo start.bar`.
+
+When a specified graphviz event is dispatched, the specified *listener* will be invoked with the `this` context as the graphviz instance.
+
+If an event listener was previously registered for the same *typename* on a selected element, the old listener is removed before the new listener is added. To remove a listener, pass null as the *listener*. To remove all listeners for a given name, pass null as the *listener* and `.foo` as the *typename*, where `foo` is the name; to remove all listeners with no name, specify `.` as the *typename*.
+
 ### Controlling Fade-In & Fade-Out
 
 <a name="graphviz_fade" href="#graphviz_fade">#</a> <i>graphviz</i>.<b>fade</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/fade.js "Source")
