@@ -2,31 +2,29 @@
 <meta charset="utf-8">
 <body>
 <script src="//d3js.org/d3.v4.min.js"></script>
-<script src="../../node_modules/viz.js/viz.js"></script>
+<script src="../../node_modules/viz.js/viz.js" type="javascript/worker"></script>
 <script src="../../build/d3-graphviz.js"></script>
 <div id="graph" style="text-align: center;"></div>
 <script>
 
 var dotIndex = 0;
-var graphviz = d3.select("#graph").graphviz();
+var graphviz = d3.select("#graph").graphviz()
+    .transition(function () {
+        return d3.transition("main")
+            .ease(d3.easeLinear)
+            .delay(500)
+            .duration(1500);
+    })
+    .logEvents(true)
+    .on("initEnd", render);
 
 function render() {
     var dotLines = dots[dotIndex];
     var dot = dotLines.join('');
-    var transition1 = d3.transition()
-        .ease(d3.easeLinear)
-        .delay(500)
-        .duration(1500);
     graphviz
-        .dot(dot)
-        .transition(transition1)
-        .render();
-    dotIndex = (dotIndex + 1) % dots.length;
-
-    transition1
-      .transition()
-        .duration(0)
-        .on('end', function () {
+        .renderDot(dot)
+        .on("end", function () {
+            dotIndex = (dotIndex + 1) % dots.length;
             render();
         });
 }
@@ -130,7 +128,5 @@ var dots = [
         '}'
     ],
 ];
-
-render();
 
 </script>

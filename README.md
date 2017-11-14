@@ -40,7 +40,7 @@ If you use NPM, `npm install d3-graphviz`. Otherwise, download the [latest relea
 
 ## Principles of Operation
 
-Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph specified in the [DOT](http://www.graphviz.org/content/dot-language) language and generate an SVG text representation, which is analyzed and converted into a data representation that is joined with a selected DOM element and used to render the SVG graph on that element and to animate transitioning of one graph into another.
+Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph specified in the [DOT](http://www.graphviz.org/content/dot-language) language and generates an SVG text representation, which is analyzed and converted into a data representation that is joined with a selected DOM element and used to render the SVG graph on that element and to animate transitioning of one graph into another.
 
 ## Contents
 
@@ -82,9 +82,9 @@ Creates a new graphviz renderer instance on the first element matching the given
 
 ### Rendering
 
-<a name="graphviz_renderDot" href="#graphviz_renderDot">#</a> <i>graphviz</i>.<b>renderDot</b>(<i>dotSrc</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/renderDot.js "Source")
+<a name="graphviz_renderDot" href="#graphviz_renderDot">#</a> <i>graphviz</i>.<b>renderDot</b>(<i>dotSrc</i>[, <i>callback</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/renderDot.js "Source")
 
-Renders an SVG graph from the specified *dotSrc* string and appends it to the selection the grapviz renderer instance was generated on.
+Starts rendering of an SVG graph from the specified *dotSrc* string and appends it to the selection the grapviz renderer instance was generated on. [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot) returns "immediately", while the rendering is performed in the backgound. The layout stage is performed by a web worker. If *callback* is specified and not null, it is called with the `this` context as the graphviz instance, when the graphviz renderer has finished all actions.
 
 It is also possible to do the [Graphviz](http://www.graphviz.org/content/dot-language) layout in a first separate stage and do the actual rendering of the SVG as a second step like so:
 
@@ -97,13 +97,13 @@ d3.select("#graph")
 
 This enables doing the computational intensive layout stages for multiple graphs before doing the potentially synchronized rendering of all the graphs simultaneously.
 
-<a name="graphviz_dot" href="#graphviz_dot">#</a> <i>graphviz</i>.<b>dot</b>(<i>dotSrc</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/dot.js "Source")
+<a name="graphviz_dot" href="#graphviz_dot">#</a> <i>graphviz</i>.<b>dot</b>(<i>dotSrc</i>[, <i>callback</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/dot.js "Source")
 
-Computes the layout of a graph from the specified *dotSrc* string and saves the data for rendering the SVG with [<i>graphviz</i>.<b>render</b>](#graphviz_render) at a later stage.
+Starts computation of the layout of a graph from the specified *dotSrc* string and saves the data for rendering the SVG with [<i>graphviz</i>.<b>render</b>](#graphviz_render) at a later stage. [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) returns "immediately", while the layout is performed by a web worker in the backgound. If *callback* is specified and not null, it is called with the `this` context as the graphviz instance, when the layout, data extraction and data processing has been finished.
 
-<a name="graphviz_render" href="#graphviz_render">#</a> <i>graphviz</i>.<b>render</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/dot.js "Source")
+<a name="graphviz_render" href="#graphviz_render">#</a> <i>graphviz</i>.<b>render</b>([<i>callback</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/dot.js "Source")
 
-Renders an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) and appends it to the selection the grapviz renderer instance was generated on.
+Starts rendering of an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) and appends it to the selection the grapviz renderer instance was generated on. [<i>graphviz</i>.<b>render</b>](#graphviz_render) returns "immediately", while the rendering is performed in the backgound. If computation of a layout, started with the [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) method has not yet finsihed, the rendering task is placed in a queue and will commence when the layout is ready. If *callback* is specified and not null, it is called with the `this` context as the graphviz instance, when the graphviz renderer has finished all actions.
 
 <a name="graphviz_engine" href="#graphviz_engine">#</a> <i>graphviz</i>.<b>engine</b>(<i>engine</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/engine.js "Source")
 
@@ -122,7 +122,7 @@ Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified
 ### Creating Transitions
 <a name="graphviz_transition" href="#graphviz_transition">#</a> <i>graphviz</i>.<b>transition</b>([<i>name</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/transition.js "Source")
 
-Applies the specified transition *name* to subsequent SVG rendering. Accepts the same arguments as [<i>selection</i>.<b>transition</b>](https://github.com/d3/d3-transition#selection_transition), but returns the graph renderer instance, not the transition. To attach a configured transition, first create a transition intance with [d3.transition](https://github.com/d3/d3-transition#transition), configure it and attach it with [<i>graphviz</i>.<b>transition</b>](#graphviz_transition) like so:
+Applies the specified transition *name* to subsequent SVG rendering. Accepts the same arguments as [<i>selection</i>.<b>transition</b>](https://github.com/d3/d3-transition#selection_transition) or a function, but returns the graph renderer instance, not the transition. If *name* is a function, it is taken to be a transition factory. A transition factory is a function that returns a transition; when the rendering starts, the factory is evaluated once, with the `this` context as the graphviz instance. To attach a preconfigured transition, first create a transition intance with [d3.transition](https://github.com/d3/d3-transition#transition), configure it and attach it with [<i>graphviz</i>.<b>transition</b>](#graphviz_transition) like so:
 
 ```js
 var t = d3.transition()
@@ -134,7 +134,42 @@ d3.select("#graph").graphviz()
     .renderDot('digraph {a -> b}');
 ```
 
+A transition is scheduled when it is created. The above example will schedule the transition *before* the layout is computed, i.e. synchronously. But if, instead, a transition factory is used, the transition will be scheduled *after* the layout is computed, i.e. asynchronously.
+
 <b>NOTE:</b> Transitions should be named if zooming is enabled. Transitions using the null name [will be interrupted](https://github.com/d3/d3-zoom/issues/110) by the [zoom behavior](https://github.com/d3/d3-zoom), causing the graph to be rendered incorrectly.
+
+### Control Flow
+
+For advanced usage, the grahviz renderer provides methods for custom control flow.
+
+<a name="graphviz_on" href="#graphviz_on">#</a> <i>graphviz</i>.<b>on</b>(<i>typenames</i>[, <i>listener</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/on.js "Source")
+
+Adds or removes a *listener* to the graphviz renderer instance for the specified event *typenames*. The *typenames* is one of the following string event types:
+
+* `initEnd` - when the graphviz renderer has finished initialization.
+* `start` - when analysis of the DOT source starts.
+* `layoutStart` - when the layout of the DOT source starts.
+* `layoutEnd` - when the layout of the DOT source ends.
+* `dataExtractEnd` - when the extraction of data from the SVG text representation ends.
+* `dataProcessEnd` - when the processing of the extracted data ends.
+* `renderStart` - when the rendering preparation starts, which is just before an eventual transition factory is called.
+* `renderEnd` - when the rendering preparation ends.
+* `transitionStart` - when the anmiated transition starts.
+* `transitionEnd` - when the anmiated transition ends.
+* `restoreEnd` - when possibly converted paths and shapes have been restored after the transition.
+* `end` - when the graphviz renderer has finished all actions.
+
+Note that these are *not* native DOM events as implemented by [*selection*.on](https://github.com/d3/d3-selection#selection_on) and [*selection*.dispatch](https://github.com/d3/d3-selection#selection_dispatch), but graphviz events!
+
+The type may be optionally followed by a period (`.`) and a name; the optional name allows multiple callbacks to be registered to receive events of the same type, such as `start.foo` and `start.bar`. To specify multiple typenames, separate typenames with spaces, such as `interrupt end` or `start.foo start.bar`.
+
+When a specified graphviz event is dispatched, the specified *listener* will be invoked with the `this` context as the graphviz instance.
+
+If an event listener was previously registered for the same *typename* on a selected element, the old listener is removed before the new listener is added. To remove a listener, pass null as the *listener*. To remove all listeners for a given name, pass null as the *listener* and `.foo` as the *typename*, where `foo` is the name; to remove all listeners with no name, specify `.` as the *typename*.
+
+<a name="graphviz_logEvents" href="#graphviz_logEvents">#</a> <i>graphviz</i>.<b>logEvents</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/logEvents.js "Source")
+
+If *enable* is true (default), adds event listeners, uing the name "log", for all available events. When invoked, each listener will print a one-line summary containing the event number and type, the time since the previous event and the time since the "start" event to the console log. For some events, additionally calculated times are printed. This method can used for debugging or for tuning transition delay and duration. If *enable* is false, removes all event listeners named "log".
 
 ### Controlling Fade-In & Fade-Out
 

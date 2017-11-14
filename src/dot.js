@@ -6,8 +6,30 @@ import {pathTweenPoints} from "./tweening";
 import {isEdgeElement} from "./data";
 import {getEdgeTitle} from "./data";
 
-export default function(src) {
 
+export function initViz() {
+    // force JIT compilation of Viz.js
+    if (this._worker == null) {
+        Viz("");
+        this._dispatch.call("initEnd", this);
+    } else {
+        var scripts = d3.selectAll('script');
+        var vizScript = scripts.filter(function() {
+            return d3.select(this).attr('type') == 'javascript/worker';
+        });
+        var vizURL = vizScript.attr('src');
+        var graphvizInstance = this;
+        this._worker.onmessage = function(event) {
+            graphvizInstance._dispatch.call("initEnd", this);
+        };
+        this._worker.postMessage({dot: "", vizURL: vizURL});
+    }
+}
+
+export default function(src, callback) {
+
+    var graphvizInstance = this;
+    var worker = this._worker;
     var engine = this._engine;
     var totalMemory = this._totalMemory;
     var keyMode = this._keyMode;
@@ -155,30 +177,62 @@ export default function(src) {
         return datum;
     }
 
-    var svgDoc = Viz(src,
-              {
-                  format: "svg",
-                  engine: engine,
-                  totalMemory: totalMemory,
-              }
-             );
+    this._dispatch.call("start", this);
+    this._busy = true;
+    this._dispatch.call("layoutStart", this);
+    var vizOptions = {
+        format: "svg",
+        engine: engine,
+        totalMemory: totalMemory,
+    };
+    if (this._worker) {
+        worker.postMessage({
+            dot: src,
+            options: vizOptions,
+        });
 
-    var newDoc = d3.selection()
-      .append('div')
-      .attr('display', 'none');
+        worker.onmessage = function(event) {
+            switch (event.data.type) {
+            case "done":
+                return layoutDone.call(graphvizInstance, event.data.svg);
+            }
+        };
+    } else {
+        layoutDone.call(this, Viz(src, vizOptions));
+    }
 
-    newDoc
-        .html(svgDoc);
+    function layoutDone(svgDoc) {
+        this._dispatch.call("layoutEnd", this);
 
-    var newSvg = newDoc
-      .select('svg');
+        var newDoc = d3.selection()
+          .append('div')
+          .attr('display', 'none');
 
-    var data = extractData(newSvg);
-    var data = postProcessData(data);
-    this._data = data;
-    this._dictionary = dictionary;
-    this._nodeDictionary = nodeDictionary;
-    newDoc.remove();
+        newDoc
+            .html(svgDoc);
+
+        var newSvg = newDoc
+          .select('svg');
+
+        var data = extractData(newSvg);
+        this._dispatch.call('dataExtractEnd', this);
+        var data = postProcessData(data);
+        this._data = data;
+        this._dictionary = dictionary;
+        this._nodeDictionary = nodeDictionary;
+        newDoc.remove();
+
+        this._extractData = extractData;
+        this._busy = false;
+        this._dispatch.call('dataProcessEnd', this);
+        if (callback) {
+            callback.call(this);
+        }
+        if (this._queue.length > 0) {
+            var job = this._queue.shift();
+            job.call(this);
+        }
+    }
 
     return this;
 };

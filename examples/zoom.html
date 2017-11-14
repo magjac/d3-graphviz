@@ -2,35 +2,35 @@
 <meta charset="utf-8">
 <body>
 <script src="//d3js.org/d3.v4.js"></script>
-<script src="../../node_modules/viz.js/viz.js"></script>
+<script src="../../node_modules/viz.js/viz.js" type="javascript/worker"></script>
 <script src="../../build/d3-graphviz.js"></script>
 <div id="graph" style="text-align: center;"></div>
 <script>
 
 
 var dotIndex = 0;
-var graphviz = d3.select("#graph").graphviz();
+var graphviz = d3.select("#graph").graphviz()
+    .transition(function () {
+        return d3.transition("graphviz")
+            .ease(d3.easeLinear)
+            .delay(40)
+            .duration(2000);
+    })
+    .logEvents(true)
+    .on("initEnd", render);
 
 function render() {
     var dotLines = dots[dotIndex];
     var dot = dotLines.join('');
-// FIXME: workaround for https://github.com/d3/d3-zoom/issues/110
-    var transition1 = d3.transition('graphviz')
-//    var transition1 = d3.transition()
-        .delay(2000)
-        .duration(2000);
     graphviz
         .dot(dot)
-        .transition(transition1)
         .render()
+        .on("end", function () {
+            render();
+        })
         .zoom(true);
 
     dotIndex = (dotIndex + 1) % dots.length;
-
-    transition1
-        .on('end', function () {
-            render();
-        });
 }
 
 var dots = [
@@ -74,7 +74,5 @@ var dots = [
         '}'
     ],
 ];
-
-render();
 
 </script>

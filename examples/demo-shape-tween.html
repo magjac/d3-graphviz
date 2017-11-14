@@ -2,13 +2,22 @@
 <meta charset="utf-8">
 <body>
 <script src="//d3js.org/d3.v4.min.js"></script>
-<script src="../../node_modules/viz.js/viz.js"></script>
+<script src="../../node_modules/viz.js/viz.js" type="javascript/worker"></script>
 <script src="../../build/d3-graphviz.js"></script>
 <div id="graph" style="text-align: center;"></div>
 <script>
 
 var dotIndex = 0;
-var graphviz = d3.select("#graph").graphviz();
+var graphviz = d3.select("#graph").graphviz()
+    .transition(function () {
+        return d3.transition("main")
+            .ease(d3.easeLinear)
+            .delay(40)
+            .duration(2000);
+    })
+    .logEvents(true)
+    .on("initEnd", render);
+
 function render() {
     var dotLines = [
         'digraph  {',
@@ -31,19 +40,10 @@ function render() {
     ]);
     dotLines.push('}');
     var dot = dotLines.join('');
-    var transition1 = d3.transition()
-        .delay(2500)
-        .duration(2000);
     graphviz
-        .dot(dot)
-        .transition(transition1)
-        .render();
-    dotIndex += 1;
-
-    transition1
-      .transition()
-        .duration(0)
-        .on('end', function () {
+        .renderDot(dot)
+        .on("end", function () {
+            dotIndex += 1;
             render();
         });
 }
@@ -76,7 +76,5 @@ var shapes = [
 ];
 
 var colors = d3.schemeCategory20;
-
-render();
 
 </script>

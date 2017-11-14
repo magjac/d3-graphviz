@@ -1,5 +1,6 @@
 import * as d3 from "d3-selection";
 import {transition, attrTween} from "d3-transition";
+import {timeout} from "d3-timer";
 import {createElement, extractElementData, replaceElement} from "./element";
 import {shallowCopyObject} from "./utils";
 import {createZoomBehavior, translateZoomTransform, translateZoomBehaviorTransform} from "./zoom";
@@ -7,7 +8,25 @@ import {pathTween} from "./tweening";
 import {isEdgeElement} from "./data";
 import {isEdgeElementParent} from "./data";
 
-export default function() {
+export default function(callback) {
+
+    if (this._busy) {
+        this._queue.push(this.render);
+        return this;
+    }
+    this._dispatch.call('renderStart', this);
+
+    if (this._transitionFactory) {
+        timeout(function () { // Decouple from time spent. See https://github.com/d3/d3-timer/issues/27
+            this._transition = transition(this._transitionFactory());
+            _render.call(this, callback);
+        }.bind(this), 0);
+    } else {
+        _render.call(this, callback);
+    }
+}
+
+function _render(callback) {
 
     var transitionInstance = this._transition;
     var fade = this._fade && transitionInstance != null;
@@ -273,6 +292,26 @@ export default function() {
         }
     }
 
+    if (transitionInstance != null) {
+        root
+          .transition(transitionInstance)
+            .on("start" , function () {
+                graphvizInstance._dispatch.call('transitionStart', graphvizInstance);
+            })
+            .on("end" , function () {
+                graphvizInstance._dispatch.call('transitionEnd', graphvizInstance);
+            })
+          .transition()
+            .duration(0)
+            .on("start" , function () {
+                graphvizInstance._dispatch.call('restoreEnd', graphvizInstance);
+                graphvizInstance._dispatch.call('end', graphvizInstance);
+                if (callback) {
+                    callback.call(this);
+                }
+            });
+    }
+
     var data = this._data;
 
     root
@@ -282,6 +321,8 @@ export default function() {
     if (this._zoom && !this._zoomBehavior) {
         createZoomBehavior.call(this);
     }
+
+    graphvizInstance._dispatch.call('renderEnd', graphvizInstance);
 
     return this;
 };
