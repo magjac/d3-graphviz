@@ -15,7 +15,8 @@ var graphviz = d3.select("#graph").graphviz()
             .delay(500)
             .duration(1500);
     })
-    .logEvents(true);
+    .logEvents(true)
+    .on("initEnd", render);
 
 function render() {
     var dotLines = dots[dotIndex];
@@ -127,7 +128,5 @@ var dots = [
         '}'
     ],
 ];
-
-render();
 
 </script>
