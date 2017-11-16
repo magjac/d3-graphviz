@@ -21,7 +21,29 @@ import logEvents from "./logEvents";
 
 export function Graphviz(selection) {
     if (typeof Worker != 'undefined') {
-        this._worker = new Worker("../src/dotWorker.js");
+        var js = `
+            onmessage = function(event) {
+                if (event.data.vizURL) {
+                    console.log('magjac 100:', event.data.vizURL)
+                    importScripts(event.data.vizURL);
+                }
+                var svg = Viz(event.data.dot, event.data.options);
+
+                if (svg) {
+                    postMessage({
+                        type: "done",
+                        svg: svg,
+                    });
+                } else {
+                    postMessage({
+                        type: "skip",
+                    });
+                }
+            }
+        `;
+        var blob = new Blob([js]);
+        var blobURL = window.URL.createObjectURL(blob);
+        this._worker = new Worker(blobURL);
     }
     this._selection = selection;
     this._active = false;
