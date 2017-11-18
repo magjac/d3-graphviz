@@ -62,6 +62,19 @@ export function extractElementData(element) {
     return datum
 }
 
+export function extractAllElementsData(element) {
+
+    var datum = extractElementData(element);
+    datum.children = [];
+    var children = d3.selectAll(element.node().childNodes);
+    children.each(function () {
+        var childData = extractAllElementsData(d3.select(this));
+        childData.parent = datum;
+        datum.children.push(childData);
+    });
+    return datum;
+}
+
 export function createElement(data) {
 
     if (data.tag == '#text') {

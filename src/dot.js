@@ -1,6 +1,6 @@
 import * as Viz from "viz.js";
 import * as d3 from "d3-selection";
-import {extractElementData, createElementWithAttributes} from "./element";
+import {extractAllElementsData, extractElementData, createElementWithAttributes} from "./element";
 import {convertToPathData} from "./svg";
 import {pathTweenPoints} from "./tweening";
 import {isEdgeElement} from "./data";
@@ -47,27 +47,19 @@ export default function(src, callback) {
     var nodeDictionary = {};
     var prevNodeDictionary = this._nodeDictionary || {};
 
-    function extractData(element, index = 0, parentData) {
-
-        var datum = extractElementData(element);
-
-        datum.parent = parentData;
-        datum.children = [];
+    function setKey(datum, index) {
         var tag = datum.tag;
-        var children = d3.selectAll(element.node().childNodes);
         if (keyMode == 'index') {
             datum.key = index;
         } else if (tag[0] != '#') {
             if (keyMode == 'id') {
-                datum.key = element.attr('id');
+                datum.key = datum.attributes.id;
             } else if (keyMode == 'title') {
-                var title = d3.select(children.nodes().find(function(child) {
-                    if (child.nodeName == 'title') {
-                        return child
-                    }
-                }));
-                if (!title.empty()) {
-                    datum.key = element.select('title').text();
+                var title = datum.children.find(function (childData) {
+                    return childData.tag == 'title';
+                });
+                if (title) {
+                    datum.key = title.children[0].text;
                 }
             }
         }
@@ -79,16 +71,27 @@ export default function(src, callback) {
             }
             datum.key = tag + '-' + index;
         }
+    }
+
+    function setId(datum, parentData) {
         var id = (parentData ? parentData.id + '.' : '') + datum.key;
         datum.id = id;
-        dictionary[id] = datum;
-        var prevDatum = prevDictionary[id];
-        if (tweenShapes && id in prevDictionary) {
+    }
+
+    function addToDictionary(datum) {
+        dictionary[datum.id] = datum;
+    }
+
+    function calculateAlternativeShapeData(datum, prevDatum) {
+        if (tweenShapes && datum.id in prevDictionary) {
             if ((prevDatum.tag == 'polygon' || prevDatum.tag == 'ellipse') && (prevDatum.tag != datum.tag || datum.tag == 'polygon')) {
                 datum.alternativeOld = convertToPathData(prevDatum, datum);
                 datum.alternativeNew = convertToPathData(datum, prevDatum);
             }
         }
+    }
+
+    function calculatePathTweenPoints(datum, prevDatum) {
         if (tweenPaths && prevDatum && (prevDatum.tag == 'path' || (datum.alternativeOld && datum.alternativeOld.tag == 'path'))) {
             var attribute_d = (datum.alternativeNew || datum).attributes.d;
             if (datum.alternativeOld) {
@@ -98,10 +101,19 @@ export default function(src, callback) {
             }
             (datum.alternativeOld || (datum.alternativeOld = {})).points = pathTweenPoints(oldNode, attribute_d, tweenPrecision);
         }
+    }
 
+    function postProcessDataPass1Local(datum, index=0, parentData) {
+        setKey(datum, index);
+        setId(datum, parentData);
+        var id = datum.id;
+        var prevDatum = prevDictionary[id];
+        addToDictionary(datum);
+        calculateAlternativeShapeData(datum, prevDatum);
+        calculatePathTweenPoints(datum, prevDatum);
         var childTagIndexes = {};
-        children.each(function () {
-            var childTag = this.nodeName;
+        datum.children.forEach(function (childData) {
+            var childTag = childData.tag;
             if (childTag == 'ellipse' || childTag == 'polygon') {
                 childTag = 'path';
             }
@@ -109,10 +121,8 @@ export default function(src, callback) {
                 childTagIndexes[childTag] = 0;
             }
             var childIndex = childTagIndexes[childTag]++;
-            var childData = extractData(d3.select(this), childIndex, datum);
-            datum.children.push(childData);
+            postProcessDataPass1Local(childData, childIndex, datum);
         });
-        return datum;
     }
 
     function addToNodeDictionary(datum) {
@@ -188,11 +198,11 @@ export default function(src, callback) {
         }
     }
 
-    function postProcessData(datum) {
+    function postProcessDataPass2Global(datum) {
         addToNodeDictionary(datum);
         extractGrowingEdgesData(datum);
         datum.children.forEach(function (childData) {
-            postProcessData(childData);
+            postProcessDataPass2Global(childData);
         });
     }
 
@@ -256,14 +266,20 @@ export default function(src, callback) {
         var newSvg = newDoc
           .select('svg');
 
-        var data = extractData(newSvg);
+        var data = extractAllElementsData(newSvg);
         this._dispatch.call('dataExtractEnd', this);
-        postProcessData(data);
+        postProcessDataPass1Local(data);
+        postProcessDataPass2Global(data);
         this._data = data;
         this._dictionary = dictionary;
         this._nodeDictionary = nodeDictionary;
 
-        this._extractData = extractData;
+        this._extractData = function (element, childIndex, parentData) {
+            var data = extractAllElementsData(element);
+            postProcessDataPass1Local(data, childIndex, parentData);
+            postProcessDataPass2Global(data);
+            return data;
+        }
         this._busy = false;
         this._dispatch.call('dataProcessEnd', this);
         if (callback) {
