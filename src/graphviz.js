@@ -24,7 +24,6 @@ export function Graphviz(selection) {
         var js = `
             onmessage = function(event) {
                 if (event.data.vizURL) {
-                    console.log('magjac 100:', event.data.vizURL)
                     importScripts(event.data.vizURL);
                 }
                 var svg = Viz(event.data.dot, event.data.options);
