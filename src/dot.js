@@ -54,11 +54,6 @@ export default function(src, callback) {
         datum.parent = parentData;
         datum.children = [];
         var tag = datum.tag;
-        if (tag == '#text') {
-            datum.text = element.text();
-        } else if (tag == '#comment') {
-            datum.comment = element.text();
-        }
         var children = d3.selectAll(element.node().childNodes);
         if (keyMode == 'index') {
             datum.key = index;

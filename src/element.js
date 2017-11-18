@@ -5,6 +5,11 @@ export function extractElementData(element) {
     var datum = {};
     var tag = element.node().nodeName;
     datum.tag = tag;
+    if (tag == '#text') {
+        datum.text = element.text();
+    } else if (tag == '#comment') {
+        datum.comment = element.text();
+    }
     datum.attributes = {};
     var attributes = element.node().attributes;
     if (attributes) {
