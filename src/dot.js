@@ -120,11 +120,9 @@ export default function(src, callback) {
         return datum;
     }
 
-    function postProcessData(datum) {
+    function addToNodeDictionary(datum) {
 
-        var id = datum.id;
         var tag = datum.tag;
-        var prevDatum = prevDictionary[id];
         if (growEnteringEdges && datum.parent) {
             if (datum.parent.attributes.class == 'node') {
                 if (tag == 'title') {
@@ -134,6 +132,12 @@ export default function(src, callback) {
                 }
             }
         }
+    }
+
+    function extractGrowingEdgesData(datum) {
+        var id = datum.id;
+        var tag = datum.tag;
+        var prevDatum = prevDictionary[id];
         if (growEnteringEdges && !prevDatum && datum.parent) {
             if (isEdgeElement(datum)) {
                 if (tag == 'path' || tag == 'polygon') {
@@ -187,6 +191,11 @@ export default function(src, callback) {
                 }
             }
         }
+    }
+
+    function postProcessData(datum) {
+        addToNodeDictionary(datum);
+        extractGrowingEdgesData(datum);
         datum.children.forEach(function (childData) {
             postProcessData(childData);
         });
