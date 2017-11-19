@@ -64,6 +64,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Controlling Shape Tweening](#controlling-shape-tweening)
 * [Maintaining Object Constancy](#maintaining-object-constancy)
 * [Customizing Graph Attributes](#customizing-graph-attributes)
+* [Accessing Elements of the Generated Graph](#accessing-elements-of-the-generated-graph)
 * [Large Graphs](#large-graphs)
 
 ### Creating a Graphviz Renderer
@@ -249,6 +250,12 @@ d3.select("#graph").graphviz()
     })
     .renderDot('digraph {a -> b}');
 ```
+
+### Accessing Elements of the Generated Graph
+
+<a name="selection_selectWithoutDataPropagation" href="#selection_selectWithoutDataPropagation">#</a> <i>selection</i>.<b>selectWithoutDataPropagation</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/selectWithoutDataPropagation.js "Source")
+
+For each selected element, selects the first descendant element that matches the specified selector string in the same ways as  [*selection*.select](https://github.com/d3/d3-selection#selection_select), but does *not* propagate any associated data from current element to the corresponding selected element.
 
 ### Large Graphs
 
