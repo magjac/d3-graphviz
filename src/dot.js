@@ -126,7 +126,6 @@ export default function(src, callback) {
     }
 
     function addToNodeDictionary(datum) {
-
         var tag = datum.tag;
         if (growEnteringEdges && datum.parent) {
             if (datum.parent.attributes.class == 'node') {
