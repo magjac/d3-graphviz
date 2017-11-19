@@ -45,8 +45,8 @@ export function extractElementData(element) {
         };
         datum.bbox = bbox;
         datum.center = {
-            x: ymin + ymax / 2,
-            y: ymin + ymax / 2,
+            x: (xmin + xmax) / 2,
+            y: (ymin + ymax) / 2,
         };
     }
     if (tag == 'path') {
