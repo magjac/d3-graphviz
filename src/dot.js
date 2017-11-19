@@ -194,7 +194,6 @@ export default function(src, callback) {
         datum.children.forEach(function (childData) {
             postProcessData(childData);
         });
-        return datum;
     }
 
     this._dispatch.call("start", this);
@@ -259,7 +258,7 @@ export default function(src, callback) {
 
         var data = extractData(newSvg);
         this._dispatch.call('dataExtractEnd', this);
-        var data = postProcessData(data);
+        postProcessData(data);
         this._data = data;
         this._dictionary = dictionary;
         this._nodeDictionary = nodeDictionary;
