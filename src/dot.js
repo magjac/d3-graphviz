@@ -269,7 +269,9 @@ export default function(src, callback) {
         var data = extractAllElementsData(newSvg);
         this._dispatch.call('dataExtractEnd', this);
         postProcessDataPass1Local(data);
+        this._dispatch.call('dataProcessPass1End', this);
         postProcessDataPass2Global(data);
+        this._dispatch.call('dataProcessPass2End', this);
         this._data = data;
         this._dictionary = dictionary;
         this._nodeDictionary = nodeDictionary;
