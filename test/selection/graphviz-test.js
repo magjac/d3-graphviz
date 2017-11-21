@@ -4,7 +4,9 @@ var tape = require("tape"),
     d3_graphviz = require("../../");
 
 tape("selection.graphviz() returns an instanceof d3.graphviz", function(test) {
-  var root = jsdom().documentElement,
+  var window = global.window = jsdom();
+  var document = global.document = window.document;
+  var root = document.documentElement,
       selection = d3_selection.select(root),
       graphviz = selection.graphviz();
     test.equal(graphviz instanceof d3_graphviz.graphviz, true, "graphviz is an instanceof d3.graphviz");
@@ -12,7 +14,8 @@ tape("selection.graphviz() returns an instanceof d3.graphviz", function(test) {
 });
 
 tape("selection.graphviz().dot().render() renders an SVG from graphviz DOT.", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
 
     d3_selection.select("#graph")
       .graphviz()

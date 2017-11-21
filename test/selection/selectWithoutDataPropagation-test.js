@@ -4,7 +4,8 @@ var tape = require("tape"),
     d3_graphviz = require("../../");
 
 tape("selection.selectWithoutDataPropagation() selects without propagating data", function(test) {
-    var document = global.document = jsdom('<div id="parent"><div id="child1"></div><div id="child2"></div></div>');
+    var window = global.window = jsdom('<div id="parent"><div id="child1"></div><div id="child2"></div></div>');
+    var document = global.document = window.document;
 
     var parent = d3_selection.select("#parent");
     parent

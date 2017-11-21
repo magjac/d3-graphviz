@@ -6,7 +6,8 @@ var tape = require("tape"),
     d3_graphviz = require("../");
 
 tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     svgDoc = `<svg width="62pt" height="116pt" viewBox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -77,7 +78,8 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
 });
 
 tape("graphviz().render() renders on a div with sub-elements", function(test) {
-    var document = global.document = jsdom('<div id="graph"><div id="dummy">Hello World</div></div>');
+    var window = global.window = jsdom('<div id="graph"><div id="dummy">Hello World</div></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -122,7 +124,8 @@ tape("graphviz().render() renders on a div with sub-elements", function(test) {
 
 tape("graphviz().render() removes SVG elements for nodes and edges when removed from updated DOT.", function(test) {
 
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -157,7 +160,8 @@ tape("graphviz().render() removes SVG elements for nodes and edges when removed 
 });
 
 tape("graphviz().render() adds SVG elements for nodes and edges when added to updated DOT.", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -177,7 +181,8 @@ tape("graphviz().render() adds SVG elements for nodes and edges when added to up
 });
 
 tape("graphviz().renderDot() renders an SVG from graphviz DOT.", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -194,7 +199,8 @@ tape("graphviz().renderDot() renders an SVG from graphviz DOT.", function(test) 
 });
 
 tape("graphviz().render() updates SVG text element when node name changes in DOT.", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -216,7 +222,8 @@ tape("graphviz().render() updates SVG text element when node name changes in DOT
 });
 
 tape("graphviz().render() changes SVG element type when node shape changes in DOT.", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -243,7 +250,8 @@ tape("graphviz().render() changes SVG element type when node shape changes in DO
 
 tape("graphviz().render() adds and removes SVG elements after transition delay.", function(test) {
 
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     transition1 = d3_transition.transition().duration(0);
@@ -294,7 +302,8 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
 });
 
 tape("graphviz().keyMode() affects transitions and order of rendering.", function(test) {
-    var document = global.document = jsdom('<div id="main"></div>');
+    var window = global.window = jsdom('<div id="main"></div>');
+    var document = global.document = window.document;
     var keyModes = [
         'title',
         'tag-index',
@@ -437,7 +446,8 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
 
 tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
 
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     function useIllegalKeyMode() {
@@ -457,7 +467,8 @@ tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
 
 tape("graphviz().keyMode() cannot be changed after applying dot source.", function(test) {
 
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     function changeKeyMode() {
@@ -478,7 +489,8 @@ tape("graphviz().keyMode() cannot be changed after applying dot source.", functi
 
 tape("graphviz().tweenPaths() enables and disables path tweening during transitions. FIXME: tape bug prohibits tweenPaths enabled test.", function(test) {
 
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -519,7 +531,8 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
 
 tape("graphviz().tweenShapes() enables and disables shape tweening during transitions.", function(test) {
 
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -559,7 +572,8 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
 });
 
 tape("graphviz().renderDot() renders an SVG from graphviz strict undirectd DOT.", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -586,7 +600,8 @@ tape("graphviz().renderDot() renders an SVG from graphviz strict undirectd DOT."
 });
 
 tape("graphviz().renderDot() renders an SVG from graphviz strict directd DOT.", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -613,7 +628,8 @@ tape("graphviz().renderDot() renders an SVG from graphviz strict directd DOT.", 
 });
 
 tape("graphviz().render() renders edges with tooltip attribute.", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
@@ -639,7 +655,8 @@ tape("graphviz().render() renders edges with tooltip attribute.", function(test)
 });
 
 tape("graphviz().render() renders growing edges to nodes with URL attribute.", function(test) {
-    var document = global.document = jsdom('<div id="graph"></div>');
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
