@@ -239,12 +239,16 @@ export default function(src, callback) {
     function layoutDone(svgDoc) {
         this._dispatch.call("layoutEnd", this);
 
-        var newDoc = d3.selection()
-          .append('div')
-          .attr('display', 'none');
+        var newDoc = d3.select(document.createDocumentFragment())
+            .append('div');
+
+        var parser = new window.DOMParser();
+        var doc = parser.parseFromString(svgDoc, "image/svg+xml");
 
         newDoc
-            .html(svgDoc);
+            .append(function() {
+                return doc.documentElement;
+            });
 
         var newSvg = newDoc
           .select('svg');
@@ -255,7 +259,6 @@ export default function(src, callback) {
         this._data = data;
         this._dictionary = dictionary;
         this._nodeDictionary = nodeDictionary;
-        newDoc.remove();
 
         this._extractData = extractData;
         this._busy = false;
