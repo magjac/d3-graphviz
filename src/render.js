@@ -307,7 +307,7 @@ function _render(callback) {
                 graphvizInstance._dispatch.call('restoreEnd', graphvizInstance);
                 graphvizInstance._dispatch.call('end', graphvizInstance);
                 if (callback) {
-                    callback.call(this);
+                    callback.call(graphvizInstance);
                 }
             });
     }
