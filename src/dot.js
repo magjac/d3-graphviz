@@ -22,7 +22,7 @@ export function initViz() {
         this._worker.onmessage = function(event) {
             graphvizInstance._dispatch.call("initEnd", this);
         };
-        if (vizURL[0] == '.') {
+        if (!vizURL.match(/^https?:\/\/|^\/\//i)) {
             // Local URL. Prepend with local domain to be usable in web worker
             vizURL = document.location.protocol + '//' + document.location.host + '/' + vizURL;
         }
