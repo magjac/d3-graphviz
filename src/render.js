@@ -324,5 +324,12 @@ function _render(callback) {
 
     graphvizInstance._dispatch.call('renderEnd', graphvizInstance);
 
+    if (transitionInstance == null) {
+        this._dispatch.call('end', this);
+        if (callback) {
+            callback.call(this);
+        }
+    }
+
     return this;
 };
