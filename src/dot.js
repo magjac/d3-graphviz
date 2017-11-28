@@ -153,19 +153,34 @@ export default function(src, callback) {
                     var startNode = nodeDictionary[startNodeId];
                     var prevStartNode = prevNodeDictionary[startNodeId];
                     if (prevStartNode) {
-                        var startShape = startNode.children[3];
-                        if (startShape.tag == 'g' && startShape.children[0].tag == 'a') {
-                            startShape = startShape.children[0].children[1];
+                        if (! startNode) {
+                            return;
                         }
-                        var prevStartShape = prevStartNode.children[3];
-                        if (prevStartShape.tag == 'g' && prevStartShape.children[0].tag == 'a') {
-                            prevStartShape = prevStartShape.children[0].children[1];
+                        if (startNode.children[3].tag == 'g' && startNode.children[3].children[0].tag == 'a') {
+                            startNode = startNode.children[3].children[0];
                         }
-                        if (startShape.tag != 'polygon' && startShape.tag != 'ellipse') {
-                            throw Error('Unexpected tag: ' + startShape.tag + '. Please file an issue at https://github.com/magjac/d3-graphviz/issues');
+                        if (prevStartNode.children[3].tag == 'g' && prevStartNode.children[3].children[0].tag == 'a') {
+                            prevStartNode = prevStartNode.children[3].children[0];
                         }
-                        if (prevStartShape.tag != 'polygon' && prevStartShape.tag != 'ellipse') {
-                            throw Error('Unexpected tag: ' + prevStartShape.tag + '. Please file an issue at https://github.com/magjac/d3-graphviz/issues');
+                        var startShapes = startNode.children;
+                        for (var i = 0; i < startShapes.length; i++) {
+                            if (startShapes[i].tag == 'polygon' || startShapes[i].tag == 'ellipse') {
+                                var startShape = startShapes[i];
+                                break;
+                            }
+                        }
+                        if (typeof startShape == 'undefined') {
+                            throw Error('Unsupported start shape of node ' + startNodeId + '.\nPlease file an issue at https://github.com/magjac/d3-graphviz/issues');
+                        }
+                        var prevStartShapes = prevStartNode.children;
+                        for (var i = 0; i < prevStartShapes.length; i++) {
+                            if (prevStartShapes[i].tag == 'polygon' || prevStartShapes[i].tag == 'ellipse') {
+                                var prevStartShape = prevStartShapes[i];
+                                break;
+                            }
+                        }
+                        if (typeof prevStartShape == 'undefined') {
+                            throw Error('Unsupported previuous start shape of node ' + startNodeId + '.\nPlease file an issue at https://github.com/magjac/d3-graphviz/issues');
                         }
                         datum.offset = {
                             x: prevStartShape.center.x - startShape.center.x,
