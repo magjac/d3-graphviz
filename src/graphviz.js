@@ -16,6 +16,7 @@ import convertEqualSidedPolygons from "./convertEqualSidedPolygons";
 import tweenPrecision from "./tweenPrecision";
 import growEnteringEdges from "./growEnteringEdges";
 import zoom from "./zoom";
+import {resetZoom} from "./zoom";
 import on from "./on";
 import logEvents from "./logEvents";
 
@@ -101,6 +102,7 @@ Graphviz.prototype = graphviz.prototype = {
     tweenPrecision: tweenPrecision,
     growEnteringEdges: growEnteringEdges,
     zoom: zoom,
+    resetZoom: resetZoom,
     render: render,
     dot: dot,
     renderDot: renderDot,
