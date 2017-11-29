@@ -214,6 +214,10 @@ A demo of shape tweening can be seen [here](http://bl.ocks.org/magjac/69dc955a2e
 
 If *enable* is true (default), enables panning and zooming, else disables panning and zooming. Note that panning and zooming during transitions may be queued until after the transition.
 
+<a name="graphviz_resetZoom" href="#graphviz_resetZoom">#</a> <i>graphviz</i>.<b>resetZoom</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
+
+Restores the original graph by resetting the transformation made by panning and zooming.
+
 ### Maintaining [Object Constancy](https://bost.ocks.org/mike/constancy/)
 
 In order to acheive [meaningful transitions](https://bost.ocks.org/mike/constancy/#when-constancy-matter), the D3 default join-by-index [key function](https://bost.ocks.org/mike/constancy/#key-functions) is not sufficient. Four different key modes are available that may be useful in different situations:
