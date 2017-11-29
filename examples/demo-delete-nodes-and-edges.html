@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.js"></script>
+<script src="../node_modules/viz.js/viz.js" type="javascript/worker"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+var dotSrc = `
+digraph {
+    graph [label="Click on a node or an edge to delete it" labelloc="t", fontsize="20.0" tooltip=" "]
+    node [style="filled"]
+    Node1 [id="NodeId1" label="N1" fillcolor="#d62728"]
+    Node2 [id="NodeId2" label="N2" fillcolor="#1f77b4"]
+    Node3 [id="NodeId3" label="N3" fillcolor="#2ca02c"]
+    Node4 [id="NodeId4" label="N4" fillcolor="#ff7f0e"]
+    Node1 -> Node2 [id="EdgeId12" label="E12"]
+    Node1 -> Node3 [id="EdgeId131" label="E13"]
+    Node2 -> Node3 [id="EdgeId23" label="E23"]
+    Node3 -> Node4 [id="EdgeId34" label="E34"]
+}
+`;
+var dotSrcLines;
+
+var graphviz = d3.select("#graph").graphviz();
+
+function render() {
+    console.log('DOT source =', dotSrc);
+    dotSrcLines = dotSrc.split('\n');
+
+    graphviz
+        .transition(function() {
+            return d3.transition()
+                .delay(100)
+                .duration(1000);
+        })
+        .renderDot(dotSrc)
+        .on("end", interactive);
+}
+
+function interactive() {
+
+    nodes = d3.selectAll('.node,.edge');
+    nodes
+        .on("click", function () {
+            var title = d3.select(this).selectAll('title').text().trim();
+            var text = d3.select(this).selectAll('text').text();
+            var id = d3.select(this).attr('id');
+            var class1 = d3.select(this).attr('class');
+            dotElement = title.replace('->',' -> ');
+            console.log('Element id="%s" class="%s" title="%s" text="%s" dotElement="%s"', id, class1, title, text, dotElement);
+            console.log('Finding and deleting references to %s "%s" from the DOT source', class1, dotElement);
+            for (i = 0; i < dotSrcLines.length;) {
+                if (dotSrcLines[i].indexOf(dotElement) >= 0) {
+                    console.log('Deleting line %d: %s', i, dotSrcLines[i]);
+                    dotSrcLines.splice(i, 1);
+                } else {
+                    i++;
+                }
+            }
+            dotSrc = dotSrcLines.join('\n');
+            render();
+        });
+}
+
+render(dotSrc);
+
+</script>
