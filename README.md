@@ -57,6 +57,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 
 * [Creating a Graphviz Renderer](#creating-a-graphviz-renderer)
 * [Rendering](#rendering)
+* [Images](#images)
 * [Creating Transitions](#creating-transitions)
 * [Controlling Fade-In & Fade-Out](#controlling-fade-in--fade-out)
 * [Controlling Animated Growth of Entering Edges](#controlling-animated-growth-of-entering-edges)
@@ -119,6 +120,24 @@ Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified
 * <b>twopi</b>
 
 <b>sfdp</b> is currently not supported.
+
+### Images
+<a name="graphviz_addImage" href="#graphviz_images">#</a> <i>graphviz</i>.<b>addImage</b>(<i>path</i>,<i>width</i>,<i>height</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/images.js "Source")
+
+Add image references as dictated by viz.js, **must be done before renderDot() or dot()**.  
+addImage can be called multiple times.
+
+*path* may be a filename ("example.png"), relative or absolute path ("/images/example.png"), or a URL ("http://example.com/image.png")  
+Dimensions(*width*,*height*) may be specified with units: in, px, pc, pt, cm, or mm. If no units are given or dimensions are given as numbers, points (pt) are used.  
+  
+Graphviz does not actually load image data when this option is used — images are referenced with the dimensions given, eg, in SVG by an <image> element with width and height attributes.
+
+```js
+d3.graphviz("#graph")
+    .addImage("images/first.png", "400px", "300px")
+    .addImage("images/second.png", "400px", "300px")
+    .renderDot('digraph { a[image="images/first.png"]; b[image="images/second.png"]; a -> b }');
+```
 
 ### Creating Transitions
 <a name="graphviz_transition" href="#graphviz_transition">#</a> <i>graphviz</i>.<b>transition</b>([<i>name</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/transition.js "Source")

@@ -7,6 +7,7 @@ import renderDot from "./renderDot";
 import transition from "./transition";
 import attributer from "./attributer";
 import engine from "./engine";
+import images from "./images";
 import totalMemory from "./totalMemory";
 import keyMode from "./keyMode";
 import fade from "./fade";
@@ -57,6 +58,7 @@ export function Graphviz(selection) {
         'index'
     ]);
     this._engine = 'dot';
+    this._images = [];
     this._totalMemory = undefined;
     this._keyMode = 'title';
     this._fade = true;
@@ -93,6 +95,7 @@ export default function graphviz(selector) {
 Graphviz.prototype = graphviz.prototype = {
     constructor: Graphviz,
     engine: engine,
+    addImage: images,
     totalMemory: totalMemory,
     keyMode: keyMode,
     fade: fade,

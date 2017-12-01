@@ -35,6 +35,7 @@ export default function(src, callback) {
     var graphvizInstance = this;
     var worker = this._worker;
     var engine = this._engine;
+    var images = this._images;
     var totalMemory = this._totalMemory;
     var keyMode = this._keyMode;
     var tweenPaths = this._tweenPaths;
@@ -202,6 +203,7 @@ export default function(src, callback) {
     var vizOptions = {
         format: "svg",
         engine: engine,
+        images: images,
         totalMemory: totalMemory,
     };
     if (this._worker) {
