@@ -24,6 +24,7 @@ export default function(callback) {
     } else {
         _render.call(this, callback);
     }
+    return this;
 }
 
 function _render(callback) {
