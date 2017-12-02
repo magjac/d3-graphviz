@@ -202,32 +202,44 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
     var document = global.document = jsdom('<div id="graph"></div>');
     var graphviz = d3_graphviz.graphviz("#graph");
 
+    transition1 = d3_transition.transition().duration(0);
     graphviz
         .tweenShapes(false)
         .zoom(false)
-        .dot('digraph {a -> b; c}')
-        .render();
-    test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
-    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
-    transition1 = d3_transition.transition().duration(0);
-    graphviz
-        .dot('digraph {a -> b; b -> a}')
         .transition(transition1)
-        .fade(false)
-        .tweenPaths(false)
-        .render();
-    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
-    test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
-    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
-    test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
+        .dot('digraph {a -> b; c}')
+        .render()
+        .on("end", part1_end);
 
-    d3_timer.timeout(function(elapsed) {
-        part3_end();
-    }, 100);
+    function part1_end() {
+        test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+
+        transition1 = d3_transition.transition().duration(0);
+        graphviz
+            .dot('digraph {a -> b; b -> a}')
+            .transition(transition1)
+            .fade(false)
+            .tweenPaths(false)
+            .on("renderEnd", part2_end)
+            .on("end", null)
+            .render();
+    }
+
+    function part2_end() {
+        test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
+        test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
+        test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
+        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
+        test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
+
+        d3_timer.timeout(function(elapsed) {
+            part3_end();
+        }, 100);
+    }
 
     function part3_end() {
 
