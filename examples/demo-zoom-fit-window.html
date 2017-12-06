@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.js"></script>
+<script src="../node_modules/viz.js/viz.js" type="javascript/worker"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+
+var dotIndex = 0;
+var graphviz = d3.select("#graph").graphviz()
+    .attributer(attributer)
+    .transition(function () {
+        return d3.transition("graphviz")
+            .ease(d3.easeLinear)
+            .delay(40)
+            .duration(2000);
+    })
+    .on("initEnd", render);
+
+function render() {
+    var dotLines = dots[dotIndex];
+    var dot = dotLines.join('');
+    graphviz
+        .dot(dot)
+        .render()
+        .on("end", function () {
+            render();
+        })
+        .zoom(true);
+
+    dotIndex = (dotIndex + 1) % dots.length;
+}
+
+function attributer(datum, index, nodes) {
+    margin = 20; // to avoid scrollbars
+    var selection = d3.select(this);
+    if (datum.tag == "svg") {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        datum.attributes.width = width - margin;
+        datum.attributes.height = height - margin;
+    }
+}
+
+function resetZoom() {
+    graphviz
+        .resetZoom(d3.transition().duration(1000));
+}
+
+function resizeSVG() {
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    var svg = d3.select("#graph").selectWithoutDataPropagation("svg");
+    svg
+        .transition()
+        .duration(700)
+        .attr("width", width - 40)
+        .attr("height", height - 40);
+    var d = svg.datum();
+    d.attributes['width'] = width - margin;
+    d.attributes['height'] = height - margin;
+};
+
+d3.select(window).on("resize", resizeSVG);
+d3.select(window).on("click", resetZoom);
+
+var dots = [
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    a -> b',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    a -> b',
+        '    a -> c',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    a -> b',
+        '    a -> c',
+        '    b -> c',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    a -> b',
+        '    b -> c',
+        '}'
+    ],
+];
+
+</script>
