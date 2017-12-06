@@ -27,6 +27,7 @@ export function createZoomBehavior() {
     var extent = [0.1, 10];
     var zoomBehavior = zoom()
         .scaleExtent(extent)
+        .interpolate(d3.interpolate)
         .on("zoom", zoomed);
     this._zoomBehavior = zoomBehavior;
     var g = d3.select(svg.node().querySelector("g"));
@@ -62,8 +63,15 @@ export function translateZoomBehaviorTransform(selection) {
     this._translation = selection.datum().translation;
 }
 
-export function resetZoom() {
-    this._zoomSelection.call(this._zoomBehavior.transform, this._originalTransform);
+export function resetZoom(transition) {
+
+    var selection = this._zoomSelection;
+    if (transition) {
+        selection = selection
+            .transition(transition);
+    }
+    selection
+        .call(this._zoomBehavior.transform, this._originalTransform);
 
     return this;
 }

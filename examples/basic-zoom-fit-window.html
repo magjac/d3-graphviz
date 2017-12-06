@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="../node_modules/viz.js/viz.js" type="javascript/worker"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+margin = 20; // to avoid scrollbars
+
+graphviz = d3.select("#graph").graphviz()
+    .attributer(attributer)
+    .renderDot('digraph  {a -> b}');
+
+function attributer(datum, index, nodes) {
+    var selection = d3.select(this);
+    if (datum.tag == "svg") {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        selection
+            .attr("width", width)
+            .attr("height", height)
+        datum.attributes.width = width - margin;
+        datum.attributes.height = height - margin;
+    }
+}
+
+function resetZoom() {
+    console.log('Resetting zoom');
+    graphviz
+        .resetZoom(d3.transition().duration(1000));
+}
+
+function resizeSVG() {
+    console.log('Resize');
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    d3.select("#graph").selectWithoutDataPropagation("svg")
+        .transition()
+        .duration(700)
+        .attr("width", width - margin)
+        .attr("height", height - margin);
+};
+
+d3.select(window).on("resize", resizeSVG);
+d3.select(window).on("click", resetZoom);
+
+</script>
