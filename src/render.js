@@ -3,7 +3,7 @@ import {transition, attrTween} from "d3-transition";
 import {timeout} from "d3-timer";
 import {createElement, extractElementData, replaceElement} from "./element";
 import {shallowCopyObject} from "./utils";
-import {createZoomBehavior, translateZoomTransform, translateZoomBehaviorTransform} from "./zoom";
+import {createZoomBehavior, getTranslatedZoomTransform, translateZoomBehaviorTransform} from "./zoom";
 import {pathTween} from "./tweening";
 import {isEdgeElement} from "./data";
 import {isEdgeElementParent} from "./data";
@@ -235,11 +235,14 @@ function _render(callback) {
                         childTransition
                             .on("start", function () {
                                 if (graphvizInstance._zoomBehavior) {
+                                    // Update the transform to transition to just before the transition starts
+                                    // in order to catch changes between the transition scheduling to its start.
                                     childTransition
-                                        .attr(attributeName, translateZoomTransform.call(graphvizInstance, child).toString());
+                                        .attr(attributeName, getTranslatedZoomTransform.call(graphvizInstance, child).toString());
                                 }
                             })
                             .on("end", function () {
+                                // Update the zoom transform to the new translated transform
                                 if (graphvizInstance._zoomBehavior) {
                                     translateZoomBehaviorTransform.call(graphvizInstance, child);
                                 }

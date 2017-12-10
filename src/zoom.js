@@ -50,7 +50,13 @@ export function getTranslation(g) {
     }
 }
 
-export function translateZoomTransform(selection) {
+export function getTranslatedZoomTransform(selection) {
+
+    // Get the current zoom transform for the top level svg and
+    // translate it uniformly with the given selection, using the
+    // difference between the translation specified in the selection's
+    // data and it's saved previous translation. The selection is
+    // normally the top level g element of the graph.
     var oldTranslation = this._translation;
     var newTranslation = selection.datum().translation;
     var dx = newTranslation.x - oldTranslation.x;
@@ -59,12 +65,21 @@ export function translateZoomTransform(selection) {
 }
 
 export function translateZoomBehaviorTransform(selection) {
-    this._zoomBehavior.transform(this._zoomSelection, translateZoomTransform.call(this, selection));
+
+    // Translate the current zoom transform for the top level svg
+    // uniformly with the given selection, using the difference
+    // between the translation specified in the selection's data and
+    // it's saved previous translation. The selection is normally the
+    // top level g element of the graph.
+    this._zoomBehavior.transform(this._zoomSelection, getTranslatedZoomTransform.call(this, selection));
+
+    // Save the selections's new translation.
     this._translation = selection.datum().translation;
 }
 
 export function resetZoom(transition) {
 
+    // Reset the zoom transform to the original zoom transform.
     var selection = this._zoomSelection;
     if (transition) {
         selection = selection
