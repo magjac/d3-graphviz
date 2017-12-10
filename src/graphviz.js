@@ -5,6 +5,7 @@ import dot from "./dot";
 import {initViz} from "./dot";
 import renderDot from "./renderDot";
 import transition from "./transition";
+import {active} from "./transition";
 import attributer from "./attributer";
 import engine from "./engine";
 import images from "./images";
@@ -110,6 +111,7 @@ Graphviz.prototype = graphviz.prototype = {
     dot: dot,
     renderDot: renderDot,
     transition: transition,
+    active: active,
     attributer: attributer,
     on: on,
     logEvents: logEvents,

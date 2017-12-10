@@ -158,6 +158,10 @@ A transition is scheduled when it is created. The above example will schedule th
 
 <b>NOTE:</b> Transitions should be named if zooming is enabled. Transitions using the null name [will be interrupted](https://github.com/d3/d3-zoom/issues/110) by the [zoom behavior](https://github.com/d3/d3-zoom), causing the graph to be rendered incorrectly.
 
+<a name="graphviz_active" href="#graphviz_active">#</a> <i>graphviz</i>.<b>active</b>([<i>name</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/transition.js "Source")
+
+Returns the active transition on the generated graph's top level <b>svg</b> with the specified *name*, if any. If no *name* is specified, null is used. Returns null if there is no such active transition on the top level <b>svg</b> node. This method is useful for creating chained transitions.
+
 ### Control Flow
 
 For advanced usage, the grahviz renderer provides methods for custom control flow.
@@ -231,7 +235,7 @@ A demo of shape tweening can be seen [here](http://bl.ocks.org/magjac/69dc955a2e
 
 <a name="graphviz_zoom" href="#graphviz_zoom">#</a> <i>graphviz</i>.<b>zoom</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
 
-If *enable* is true (default), enables panning and zooming, else disables panning and zooming. Note that panning and zooming during transitions may be queued until after the transition.
+If *enable* is true (default), enables panning and zooming, else disables panning and zooming. Note that panning and zooming during transitions may be queued until after the transition. The zoom behavior is applied to the graph's top level <b>svg</b> element.
 
 <a name="graphviz_resetZoom" href="#graphviz_resetZoom">#</a> <i>graphviz</i>.<b>resetZoom</b>([<i>transition</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
 
