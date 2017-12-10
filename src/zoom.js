@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import {zoom, zoomTransform} from "d3-zoom";
+import {zoom, zoomTransform, zoomIdentity} from "d3-zoom";
 
 export default function(enable) {
 
@@ -75,6 +75,10 @@ export function translateZoomBehaviorTransform(selection) {
 
     // Save the selections's new translation.
     this._translation = selection.datum().translation;
+
+    // Set the original zoom transform to the translation specified in
+    // the selection's data.
+    this._originalTransform = zoomIdentity.translate(selection.datum().translation.x, selection.datum().translation.y);
 }
 
 export function resetZoom(transition) {
