@@ -130,7 +130,7 @@ addImage can be called multiple times.
 *path* may be a filename ("example.png"), relative or absolute path ("/images/example.png"), or a URL ("http://example.com/image.png")  
 Dimensions(*width*,*height*) may be specified with units: in, px, pc, pt, cm, or mm. If no units are given or dimensions are given as numbers, points (pt) are used.  
   
-Graphviz does not actually load image data when this option is used — images are referenced with the dimensions given, eg, in SVG by an <image> element with width and height attributes.
+Graphviz does not actually load image data when this option is used — images are referenced with the dimensions given, eg, in SVG by an \<image> element with width and height attributes.
 
 ```js
 d3.graphviz("#graph")
