@@ -121,6 +121,10 @@ Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified
 
 <b>sfdp</b> is currently not supported.
 
+<a name="graphviz_onerror" href="#graphviz_onerror">#</a> <i>graphviz</i>.<b>onerror</b>(<i>callback</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/onerror.js "Source")
+
+If *callback* is specified and not null, it is called with the `this` context as the graphviz instance, if the layout computation encounters an error. If *callback* is null, removes any previously registered callback.
+
 ### Images
 <a name="graphviz_addImage" href="#graphviz_images">#</a> <i>graphviz</i>.<b>addImage</b>(<i>path</i>,<i>width</i>,<i>height</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/images.js "Source")
 

@@ -216,6 +216,14 @@ export default function(src, callback) {
             switch (event.data.type) {
             case "done":
                 return layoutDone.call(graphvizInstance, event.data.svg);
+                break;
+            case "error":
+                if (graphvizInstance._onerror) {
+                    graphvizInstance._onerror(event.data.error);
+                } else {
+                    throw event.data.error
+                }
+                break;
             }
         };
     } else {
