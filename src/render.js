@@ -1,6 +1,8 @@
 import * as d3 from "d3-selection";
 import {transition, attrTween} from "d3-transition";
 import {timeout} from "d3-timer";
+import {interpolateTransformSvg} from "d3-interpolate";
+import {zoomTransform} from "d3-zoom";
 import {createElement, extractElementData, replaceElement} from "./element";
 import {shallowCopyObject} from "./utils";
 import {createZoomBehavior, getTranslatedZoomTransform, translateZoomBehaviorTransform} from "./zoom";
@@ -238,7 +240,12 @@ function _render(callback) {
                                     // Update the transform to transition to just before the transition starts
                                     // in order to catch changes between the transition scheduling to its start.
                                     childTransition
-                                        .attr(attributeName, getTranslatedZoomTransform.call(graphvizInstance, child).toString());
+                                        .tween("attr.transform", function() {
+                                            var node = this;
+                                            return function(t) {
+                                                node.setAttribute("transform", interpolateTransformSvg(zoomTransform(graphvizInstance._zoomSelection.node()).toString(), getTranslatedZoomTransform.call(graphvizInstance, child).toString())(t));
+                                            };
+                                        });
                                 }
                             })
                             .on("end", function () {
