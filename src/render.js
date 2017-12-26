@@ -327,9 +327,16 @@ function _render(callback) {
 
     var data = this._data;
 
-    root
-        .datum({attributes: {}, children: [data]});
-    insertSvg(root);
+    var svg = root
+      .selectAll("svg")
+        .data([data], function (d) {return d.key});
+    svg = svg
+      .enter()
+      .append("svg")
+      .merge(svg);
+
+    attributeElement.call(svg.node(), data);
+
 
     if (this._zoom && !this._zoomBehavior) {
         createZoomBehavior.call(this);
