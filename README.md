@@ -197,7 +197,7 @@ If an event listener was previously registered for the same *typename* on a sele
 
 <a name="graphviz_logEvents" href="#graphviz_logEvents">#</a> <i>graphviz</i>.<b>logEvents</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/logEvents.js "Source")
 
-If *enable* is true (default), adds event listeners, uing the name "log", for all available events. When invoked, each listener will print a one-line summary containing the event number and type, the time since the previous event and the time since the "start" event to the console log. For some events, additionally calculated times are printed. This method can used for debugging or for tuning transition delay and duration. If *enable* is false, removes all event listeners named "log".
+If *enable* is true (default), adds event listeners, uing the name "log", for all available events. When invoked, each listener will print a one-line summary containing the event number and type, the time since the previous event and the time since the "start" event to the console log. For some events, additionally calculated times are printed. This method can be used for debugging or for tuning transition delay and duration. If *enable* is false, removes all event listeners named "log".
 
 ### Controlling Fade-In & Fade-Out
 
