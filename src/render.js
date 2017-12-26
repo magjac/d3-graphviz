@@ -101,9 +101,7 @@ function _render(callback) {
             .remove()
         children = childrenEnter
             .merge(children);
-        children.each(function(childData) {
-            attributeElement.call(this, childData);
-        });
+        children.each(attributeElement);
     }
 
     function attributeElement(childData) {
