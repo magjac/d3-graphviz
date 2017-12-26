@@ -101,9 +101,6 @@ function _render(callback) {
             .remove()
         children = childrenEnter
             .merge(children);
-        if (attributer) {
-            children.each(attributer);
-        }
         children.each(function(childData) {
             attributeElement.call(this, childData);
         });
@@ -111,6 +108,9 @@ function _render(callback) {
 
     function attributeElement(childData) {
         var child = d3.select(this);
+        if (attributer) {
+            child.each(attributer);
+        }
         var tag = childData.tag;
         var attributes = childData.attributes;
         var convertShape = false;
