@@ -76,6 +76,50 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
     test.end();
 });
 
+tape("graphviz().render() renders on a div with sub-elements", function(test) {
+    var document = global.document = jsdom('<div id="graph"><div id="dummy">Hello World</div></div>');
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    graphviz
+        .tweenShapes(false)
+        .zoom(false)
+        .dot('digraph {a -> b;}')
+        .render();
+
+    // Check data tag by tag
+    test.equal(d3.select('svg').data()[0].tag, 'svg', '"svg" tag present in data joined with SVG');
+    test.equal(d3.select('g').data()[0].tag, 'g', '"g" tag present in data joined with first svg group element');
+    test.equal(d3.select('title').data()[0].tag, 'title', '"title" tag present in data joined with first title element');
+    test.equal(d3.select('ellipse').data()[0].tag, 'ellipse', '"ellipse" tag present in data joined with first ellipse element');
+    test.equal(d3.select('text').data()[0].tag, 'text', '"text" tag present in data joined with first text element');
+    test.equal(d3.select('path').data()[0].tag, 'path', '"path" tag present in data joined with first path element');
+    test.equal(d3.select('polygon').data()[0].tag, 'polygon', '"polygon" tag present in data joined with first polygon element');
+
+    // Check data tag by id
+    test.equal(d3.select('#graph0').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "graph0"');
+    test.equal(d3.select('#node1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node1"');
+    test.equal(d3.select('#node2').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node2"');
+    test.equal(d3.select('#edge1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "edge1"');
+
+    // Check data tag by class
+    test.equal(d3.select('.graph').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "graph"');
+    test.equal(d3.select('.node').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "node"');
+    test.equal(d3.select('.edge').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "edge"');
+
+    // Check full data structure for some primary elements
+    var data = d3.select('svg').data();
+    var svgData = data[0];
+    var graph0Data = svgData.children[1];
+
+    test.deepEqual(d3.select('svg').datum(), svgData, 'Data structure present on SVG');
+    test.deepEqual(d3.select('#graph0').datum(), graph0Data, 'Data structure present on element with id "graph0"');
+    test.deepEqual(d3.select('#node1').datum(), graph0Data.children[7], 'Data structure present on element with id "node1"');
+    test.deepEqual(d3.select('#node2').datum(), graph0Data.children[11], 'Data structure present on element with id "node2"');
+    test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[15], 'Data structure present on element with id "edge1"');
+
+    test.end();
+});
+
 tape("graphviz().render() removes SVG elements for nodes and edges when removed from updated DOT.", function(test) {
 
     var document = global.document = jsdom('<div id="graph"></div>');

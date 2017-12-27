@@ -1,9 +1,11 @@
 import * as d3 from "d3-selection";
 import {transition, attrTween} from "d3-transition";
 import {timeout} from "d3-timer";
+import {interpolateTransformSvg} from "d3-interpolate";
+import {zoomTransform} from "d3-zoom";
 import {createElement, extractElementData, replaceElement} from "./element";
 import {shallowCopyObject} from "./utils";
-import {createZoomBehavior, translateZoomTransform, translateZoomBehaviorTransform} from "./zoom";
+import {createZoomBehavior, getTranslatedZoomTransform, translateZoomBehaviorTransform} from "./zoom";
 import {pathTween} from "./tweening";
 import {isEdgeElement} from "./data";
 import {isEdgeElementParent} from "./data";
@@ -39,7 +41,7 @@ function _render(callback) {
     var attributer = this._attributer;
     var graphvizInstance = this;
 
-    function insertSvg(element) {
+    function insertChildren(element) {
         var children = element.selectAll(function () {
             return element.node().childNodes;
         });
@@ -99,174 +101,184 @@ function _render(callback) {
             .remove()
         children = childrenEnter
             .merge(children);
+        children.each(attributeElement);
+    }
+
+    function attributeElement(data) {
+        var element = d3.select(this);
         if (attributer) {
-            children.each(attributer);
+            element.each(attributer);
         }
-        children.each(function(childData) {
-            var child = d3.select(this);
-            var tag = childData.tag;
-            var attributes = childData.attributes;
-            var convertShape = false;
-            if (tweenShapes && transitionInstance && childData.alternativeOld) {
-                if (this.nodeName == 'polygon' || this.nodeName == 'ellipse') {
-                    convertShape = true;
-                    var prevData = extractElementData(child);
-                    if (this.nodeName == 'polygon' && tag == 'polygon') {
-                        var prevPoints = prevData.attributes.points;
-                        if (prevPoints == null) {
-                            convertShape = false;
-                        } else if (!convertEqualSidedPolygons) {
-                            var nPrevPoints = prevPoints.split(' ').length;
-                            var points = childData.attributes.points;
-                            var nPoints = points.split(' ').length;
-                            if (nPoints == nPrevPoints) {
-                                convertShape = false;
-                            }
-                        }
-                    } else if (this.nodeName == 'ellipse' && tag == 'ellipse') {
+        var tag = data.tag;
+        var attributes = data.attributes;
+        var convertShape = false;
+        if (tweenShapes && transitionInstance && data.alternativeOld) {
+            if (this.nodeName == 'polygon' || this.nodeName == 'ellipse') {
+                convertShape = true;
+                var prevData = extractElementData(element);
+                if (this.nodeName == 'polygon' && tag == 'polygon') {
+                    var prevPoints = prevData.attributes.points;
+                    if (prevPoints == null) {
                         convertShape = false;
-                    }
-                }
-                if (convertShape) {
-                    var prevPathData = childData.alternativeOld;
-                    var pathElement = replaceElement(child, prevPathData);
-                    pathElement.data([childData], function () {
-                        return childData.key;
-                    });
-                    var newPathData = childData.alternativeNew;
-                    child = pathElement;
-                    tag = 'path';
-                    attributes = newPathData.attributes;
-                }
-            }
-            var childTransition = child;
-            if (transitionInstance) {
-                childTransition = childTransition
-                    .transition(transitionInstance);
-                if (fade) {
-                    childTransition
-                      .filter(function(d) {
-                          return d.tag[0] == '#' ? null : this;
-                      })
-                        .style("opacity", 1.0);
-                }
-                childTransition
-                  .filter(function(d) {
-                      return d.tag[0] == '#' ? null : this;
-                  })
-                    .on("end", function() {
-                        d3.select(this)
-                            .attr('style', null);
-                    });
-            }
-            var growThisPath = growEnteringEdges && tag == 'path' && childData.offset;
-            if (growThisPath) {
-                var totalLength = childData.totalLength;
-                child
-                    .attr("stroke-dasharray", totalLength + " " + totalLength)
-                    .attr("stroke-dashoffset", totalLength)
-                    .attr('transform', 'translate(' + childData.offset.x + ',' + childData.offset.y + ')');
-                childTransition
-                    .attr("stroke-dashoffset", 0)
-                    .attr('transform', 'translate(0,0)')
-                    .on("start", function() {
-                        d3.select(this)
-                            .style('opacity', null);
-                    })
-                    .on("end", function() {
-                        d3.select(this)
-                            .attr('stroke-dashoffset', null)
-                            .attr('stroke-dasharray', null)
-                            .attr('transform', null);
-                    });
-            }
-            var moveThisPolygon = growEnteringEdges && tag == 'polygon' && isEdgeElement(childData) && childData.offset;
-            if (moveThisPolygon) {
-                var edgePath = d3.select(element.node().querySelector("path"));
-                if (edgePath.node().getPointAtLength) {
-                    var p0 = edgePath.node().getPointAtLength(0);
-                    var p1 = edgePath.node().getPointAtLength(childData.totalLength);
-                    var p2 = edgePath.node().getPointAtLength(childData.totalLength - 1);
-                    var angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x) * 180 / Math.PI;
-                } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
-                    var p0 = {x: 0, y: 0};
-                    var p1 = {x: 100, y: 100};
-                    var angle1 = 0;
-                }
-                var x = p0.x - p1.x + childData.offset.x;
-                var y = p0.y - p1.y + childData.offset.y;
-                child
-                    .attr('transform', 'translate(' + x + ',' + y + ')');
-                childTransition
-                    .attrTween("transform", function () {
-                        return function (t) {
-                            if (edgePath.node().getPointAtLength) {
-                                var p = edgePath.node().getPointAtLength(childData.totalLength * t);
-                                var p2 = edgePath.node().getPointAtLength(childData.totalLength * t + 1);
-                                var angle = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI - angle1;
-                            } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
-                                var p = {x: 100.0 * t, y: 100.0 *t};
-                                var angle = 0;
-                            }
-                            x = p.x - p1.x + childData.offset.x * (1 - t);
-                            y = p.y - p1.y + childData.offset.y * (1 - t);
-                            return 'translate(' + x + ',' + y + ') rotate(' + angle + ' ' + p1.x + ' ' + p1.y + ')';
+                    } else if (!convertEqualSidedPolygons) {
+                        var nPrevPoints = prevPoints.split(' ').length;
+                        var points = data.attributes.points;
+                        var nPoints = points.split(' ').length;
+                        if (nPoints == nPrevPoints) {
+                            convertShape = false;
                         }
-                    })
-                    .on("start", function() {
-                        d3.select(this)
-                            .style('opacity', null);
-                    })
-                    .on("end", function() {
-                        d3.select(this).attr('transform', null);
-                    });
-            }
-            var tweenThisPath = tweenPaths && transitionInstance && tag == 'path' && child.attr('d') != null;
-            for (var attributeName of Object.keys(attributes)) {
-                var attributeValue = attributes[attributeName];
-                if (tweenThisPath && attributeName == 'd') {
-                    var points = (childData.alternativeOld || childData).points;
-                    if (points) {
-                        childTransition
-                            .attrTween("d", pathTween(points, attributeValue));
                     }
-                } else {
-                    if (attributeName == 'transform' && childData.translation) {
-                        childTransition
-                            .on("start", function () {
-                                if (graphvizInstance._zoomBehavior) {
-                                    childTransition
-                                        .attr(attributeName, translateZoomTransform.call(graphvizInstance, child).toString());
-                                }
-                            })
-                            .on("end", function () {
-                                if (graphvizInstance._zoomBehavior) {
-                                    translateZoomBehaviorTransform.call(graphvizInstance, child);
-                                }
-                            })
-                    }
-                    childTransition
-                        .attr(attributeName, attributeValue);
+                } else if (this.nodeName == 'ellipse' && tag == 'ellipse') {
+                    convertShape = false;
                 }
             }
             if (convertShape) {
-                childTransition
-                    .on("end", function (d, i, nodes) {
-                        if (this.nodeName != d.tag) {
-                            pathElement = d3.select(this);
-                            var newElement = replaceElement(pathElement, d);
-                            newElement.data([d], function () {
-                                return d.key;
-                            });
+                var prevPathData = data.alternativeOld;
+                var pathElement = replaceElement(element, prevPathData);
+                pathElement.data([data], function () {
+                    return data.key;
+                });
+                var newPathData = data.alternativeNew;
+                element = pathElement;
+                tag = 'path';
+                attributes = newPathData.attributes;
+            }
+        }
+        var elementTransition = element;
+        if (transitionInstance) {
+            elementTransition = elementTransition
+                .transition(transitionInstance);
+            if (fade) {
+                elementTransition
+                  .filter(function(d) {
+                      return d.tag[0] == '#' ? null : this;
+                  })
+                    .style("opacity", 1.0);
+            }
+            elementTransition
+              .filter(function(d) {
+                  return d.tag[0] == '#' ? null : this;
+              })
+                .on("end", function() {
+                    d3.select(this)
+                        .attr('style', null);
+                });
+        }
+        var growThisPath = growEnteringEdges && tag == 'path' && data.offset;
+        if (growThisPath) {
+            var totalLength = data.totalLength;
+            element
+                .attr("stroke-dasharray", totalLength + " " + totalLength)
+                .attr("stroke-dashoffset", totalLength)
+                .attr('transform', 'translate(' + data.offset.x + ',' + data.offset.y + ')');
+            elementTransition
+                .attr("stroke-dashoffset", 0)
+                .attr('transform', 'translate(0,0)')
+                .on("start", function() {
+                    d3.select(this)
+                        .style('opacity', null);
+                })
+                .on("end", function() {
+                    d3.select(this)
+                        .attr('stroke-dashoffset', null)
+                        .attr('stroke-dasharray', null)
+                        .attr('transform', null);
+                });
+        }
+        var moveThisPolygon = growEnteringEdges && tag == 'polygon' && isEdgeElement(data) && data.offset;
+        if (moveThisPolygon) {
+            var edgePath = d3.select(element.node().parentNode.querySelector("path"));
+            if (edgePath.node().getPointAtLength) {
+                var p0 = edgePath.node().getPointAtLength(0);
+                var p1 = edgePath.node().getPointAtLength(data.totalLength);
+                var p2 = edgePath.node().getPointAtLength(data.totalLength - 1);
+                var angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x) * 180 / Math.PI;
+            } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
+                var p0 = {x: 0, y: 0};
+                var p1 = {x: 100, y: 100};
+                var angle1 = 0;
+            }
+            var x = p0.x - p1.x + data.offset.x;
+            var y = p0.y - p1.y + data.offset.y;
+            element
+                .attr('transform', 'translate(' + x + ',' + y + ')');
+            elementTransition
+                .attrTween("transform", function () {
+                    return function (t) {
+                        if (edgePath.node().getPointAtLength) {
+                            var p = edgePath.node().getPointAtLength(data.totalLength * t);
+                            var p2 = edgePath.node().getPointAtLength(data.totalLength * t + 1);
+                            var angle = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI - angle1;
+                        } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
+                            var p = {x: 100.0 * t, y: 100.0 *t};
+                            var angle = 0;
                         }
-                    })
+                        x = p.x - p1.x + data.offset.x * (1 - t);
+                        y = p.y - p1.y + data.offset.y * (1 - t);
+                        return 'translate(' + x + ',' + y + ') rotate(' + angle + ' ' + p1.x + ' ' + p1.y + ')';
+                    }
+                })
+                .on("start", function() {
+                    d3.select(this)
+                        .style('opacity', null);
+                })
+                .on("end", function() {
+                    d3.select(this).attr('transform', null);
+                });
+        }
+        var tweenThisPath = tweenPaths && transitionInstance && tag == 'path' && element.attr('d') != null;
+        for (var attributeName of Object.keys(attributes)) {
+            var attributeValue = attributes[attributeName];
+            if (tweenThisPath && attributeName == 'd') {
+                var points = (data.alternativeOld || data).points;
+                if (points) {
+                    elementTransition
+                        .attrTween("d", pathTween(points, attributeValue));
+                }
+            } else {
+                if (attributeName == 'transform' && data.translation) {
+                    elementTransition
+                        .on("start", function () {
+                            if (graphvizInstance._zoomBehavior) {
+                                // Update the transform to transition to just before the transition starts
+                                // in order to catch changes between the transition scheduling to its start.
+                                elementTransition
+                                    .tween("attr.transform", function() {
+                                        var node = this;
+                                        return function(t) {
+                                            node.setAttribute("transform", interpolateTransformSvg(zoomTransform(graphvizInstance._zoomSelection.node()).toString(), getTranslatedZoomTransform.call(graphvizInstance, element).toString())(t));
+                                        };
+                                    });
+                            }
+                        })
+                        .on("end", function () {
+                            // Update the zoom transform to the new translated transform
+                            if (graphvizInstance._zoomBehavior) {
+                                translateZoomBehaviorTransform.call(graphvizInstance, element);
+                            }
+                        })
+                }
+                elementTransition
+                    .attr(attributeName, attributeValue);
             }
-            if (childData.text) {
-                childTransition
-                    .text(childData.text);
-            }
-            insertSvg(child);
-        });
+        }
+        if (convertShape) {
+            elementTransition
+                .on("end", function (d, i, nodes) {
+                    if (this.nodeName != d.tag) {
+                        pathElement = d3.select(this);
+                        var newElement = replaceElement(pathElement, d);
+                        newElement.data([d], function () {
+                            return d.key;
+                        });
+                    }
+                })
+        }
+        if (data.text) {
+            elementTransition
+                .text(data.text);
+        }
+        insertChildren(element);
     }
 
     var root = this._selection;
@@ -315,9 +327,16 @@ function _render(callback) {
 
     var data = this._data;
 
-    root
-        .datum({attributes: {}, children: [data]});
-    insertSvg(root);
+    var svg = root
+      .selectAll("svg")
+        .data([data], function (d) {return d.key});
+    svg = svg
+      .enter()
+      .append("svg")
+      .merge(svg);
+
+    attributeElement.call(svg.node(), data);
+
 
     if (this._zoom && !this._zoomBehavior) {
         createZoomBehavior.call(this);

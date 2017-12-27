@@ -5,6 +5,7 @@ import dot from "./dot";
 import {initViz} from "./dot";
 import renderDot from "./renderDot";
 import transition from "./transition";
+import {active} from "./transition";
 import attributer from "./attributer";
 import engine from "./engine";
 import images from "./images";
@@ -19,6 +20,7 @@ import growEnteringEdges from "./growEnteringEdges";
 import zoom from "./zoom";
 import {resetZoom} from "./zoom";
 import on from "./on";
+import onerror from "./onerror";
 import logEvents from "./logEvents";
 
 export function Graphviz(selection) {
@@ -28,8 +30,16 @@ export function Graphviz(selection) {
                 if (event.data.vizURL) {
                     importScripts(event.data.vizURL);
                 }
-                var svg = Viz(event.data.dot, event.data.options);
-
+                try {
+                    var svg = Viz(event.data.dot, event.data.options);
+                }
+                catch(error) {
+                    postMessage({
+                        type: "error",
+                        error: error.message,
+                    });
+                    return;
+                }
                 if (svg) {
                     postMessage({
                         type: "done",
@@ -110,7 +120,9 @@ Graphviz.prototype = graphviz.prototype = {
     dot: dot,
     renderDot: renderDot,
     transition: transition,
+    active: active,
     attributer: attributer,
     on: on,
+    onerror: onerror,
     logEvents: logEvents,
 };
