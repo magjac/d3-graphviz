@@ -41,7 +41,7 @@ function _render(callback) {
     var attributer = this._attributer;
     var graphvizInstance = this;
 
-    function insertSvg(element) {
+    function insertChildren(element) {
         var children = element.selectAll(function () {
             return element.node().childNodes;
         });
@@ -278,7 +278,7 @@ function _render(callback) {
             elementTransition
                 .text(data.text);
         }
-        insertSvg(element);
+        insertChildren(element);
     }
 
     var root = this._selection;
