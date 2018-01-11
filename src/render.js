@@ -13,7 +13,7 @@ import {isEdgeElementParent} from "./data";
 export default function(callback) {
 
     if (this._busy) {
-        this._queue.push(this.render);
+        this._queue.push(this.render.bind(this, callback));
         return this;
     }
     this._dispatch.call('renderStart', this);
