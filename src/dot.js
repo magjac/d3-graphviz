@@ -66,7 +66,11 @@ export default function(src, callback) {
             if (keyMode == 'id') {
                 datum.key = element.attr('id');
             } else if (keyMode == 'title') {
-                var title = element.select('title');
+                var title = d3.select(children.nodes().find(function(child) {
+                    if (child.nodeName == 'title') {
+                        return child
+                    }
+                }));
                 if (!title.empty()) {
                     datum.key = element.select('title').text();
                 }
