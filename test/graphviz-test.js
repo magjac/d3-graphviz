@@ -516,10 +516,6 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
         test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after transition');
         test.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
 
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
         function renderWithPathTweening() {
             graphviz
                 .dot('digraph {a -> b; b -> a}')
@@ -585,10 +581,6 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
         test.equal(d3.selectAll('ellipse').size(), 1, 'Number of ellipses after shape change');
         test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after shape change');
         test.equal(d3.selectAll('path').size(), 1, 'Number of paths after shape change');
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
 
         function renderWithShapeTweening() {
             graphviz
