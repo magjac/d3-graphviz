@@ -22,13 +22,29 @@
   },
   "scripts": {
     "pretest": "rm -rf build && mkdir build && rollup -g d3-selection:d3,d3-transition:d3,d3-interpolate:d3,d3-zoom:d3,d3-dispatch:d3,d3-format:d3,d3-timer:d3,viz.js:Viz -f umd -n d3 -o build/d3-graphviz.js -- index.js",
-    "test": "tape 'test/**/*-test.js'",
+    "test": "nyc tape 'test/**/*-test.js'",
+    "report": "nyc report --reporter=lcov",
     "prepublish": "npm run test && uglifyjs build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
     "postpublish": "zip -j build/d3-graphviz.zip -- LICENSE README.md build/d3-graphviz.js build/d3-graphviz.min.js"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "statements": 75,
+    "branches": 75,
+    "functions": 74,
+    "lines": 75,
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "cache": true,
+    "report-dir": "./alternative"
   },
   "devDependencies": {
     "jsdom": "11.1.0",
     "markdown-to-html": "0.0.13",
+    "nyc": "^11.4.1",
     "rollup": "0.27",
     "tape": "4",
     "uglify-es": "^3.0.27"
