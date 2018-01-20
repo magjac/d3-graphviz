@@ -577,28 +577,6 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
         test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after shape change');
         test.equal(d3.selectAll('path').size(), 1, 'Number of paths after shape change');
 
-        function renderWithShapeTweening() {
-            graphviz
-                .dot('digraph {a -> b; b -> a}')
-                .transition(transition1)
-                .tweenShapes(true)
-                .zoom(false)
-                .render();
-        }
-
-        d3_timer.timeout(function(elapsed) {
-            part2_end();
-        }, 0);
-    }
-
-    function part2_end() {
-
-        test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after shape change');
-        test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after shape change');
-        test.equal(d3.selectAll('ellipse').size(), 1, 'Number of ellipses after shape change');
-        test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after shape change');
-        test.equal(d3.selectAll('path').size(), 1, 'Number of paths after shape change');
-
         test.end();
     }
 });
