@@ -269,7 +269,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
             .fade(false)
             .tweenPaths(false)
             .on("renderEnd", part2_end)
-            .on("end", null)
+            .on("end", part3_end)
             .render();
     }
 
@@ -279,10 +279,6 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
         test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
         test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
         test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
-
-        d3_timer.timeout(function(elapsed) {
-            part3_end();
-        }, 100);
     }
 
     function part3_end() {
