@@ -24,6 +24,7 @@
     "pretest": "rm -rf build && mkdir build && rollup -g d3-selection:d3,d3-transition:d3,d3-interpolate:d3,d3-zoom:d3,d3-dispatch:d3,d3-format:d3,d3-timer:d3,viz.js:Viz -f umd -n d3 -o build/d3-graphviz.js -- index.js",
     "test": "nyc tape 'test/**/*-test.js'",
     "report": "nyc report --reporter=lcov",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "prepublish": "npm run test && uglifyjs build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
     "postpublish": "zip -j build/d3-graphviz.zip -- LICENSE README.md build/d3-graphviz.js build/d3-graphviz.min.js"
   },
@@ -42,6 +43,7 @@
     "report-dir": "./alternative"
   },
   "devDependencies": {
+    "codecov": "^3.0.0",
     "jsdom": "11.1.0",
     "markdown-to-html": "0.0.13",
     "nyc": "^11.4.1",
