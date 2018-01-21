@@ -30,7 +30,6 @@
   },
   "nyc": {
     "check-coverage": true,
-    "per-file": true,
     "statements": 75,
     "branches": 75,
     "functions": 74,
