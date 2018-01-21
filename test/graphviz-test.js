@@ -497,16 +497,13 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
         .transition(transition1)
         .fade(false)
         .tweenPaths(false)
-        .render();
+        .render()
+        .on("end", part1_end);
     test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
     test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
     test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
     test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
-
-    d3_timer.timeout(function(elapsed) {
-        part1_end();
-    }, 100);
 
     function part1_end() {
 
