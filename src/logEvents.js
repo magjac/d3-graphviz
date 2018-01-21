@@ -28,7 +28,7 @@ export default function(enable) {
                 if (eventType == 'dataProcessEnd') {
                     string += ' prepare                 ' + format(' >5')((t - times['layoutEnd'][seqNo]));
                 }
-                if (eventType == 'renderEnd') {
+                if (eventType == 'renderEnd' && graphvizInstance._transition) {
                     string += ' transition start margin ' + format(' >5')(graphvizInstance._transition.delay() - (t - times['renderStart'][seqNo]));
                     expectedDelay = graphvizInstance._transition.delay();
                     expectedDuration = graphvizInstance._transition.duration();
