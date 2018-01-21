@@ -36,7 +36,6 @@
     "functions": 74,
     "lines": 75,
     "reporter": [
-      "lcov",
       "text-summary"
     ],
     "cache": true,
