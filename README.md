@@ -3,6 +3,8 @@
 Renders SVG from graphs described in the [DOT](http://www.graphviz.org/content/dot-language) language using the [Viz.js](https://github.com/mdaines/viz.js/) port of [Graphviz](http://www.graphviz.org) and does animated transitions between graphs.
 
 [![Build Status](https://travis-ci.org/magjac/d3-graphviz.svg?branch=master)](https://travis-ci.org/magjac/d3-graphviz)
+[![codecov](https://codecov.io/gh/magjac/d3-graphviz/branch/master/graph/badge.svg)](https://codecov.io/gh/magjac/d3-graphviz)
+
 
 ## Features
 * Rendering of SVG graphs from [DOT](http://www.graphviz.org/content/dot-language) source

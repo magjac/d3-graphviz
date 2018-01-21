@@ -497,16 +497,13 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
         .transition(transition1)
         .fade(false)
         .tweenPaths(false)
-        .render();
+        .render()
+        .on("end", part1_end);
     test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
     test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
     test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
     test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
     test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
-
-    d3_timer.timeout(function(elapsed) {
-        part1_end();
-    }, 100);
 
     function part1_end() {
 
@@ -516,26 +513,6 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
         test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after transition');
         test.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
 
-        function renderWithPathTweening() {
-            graphviz
-                .dot('digraph {a -> b; b -> a}')
-                .transition(transition1)
-                .tweenPaths(true)
-                .render();
-        }
-
-        d3_timer.timeout(function(elapsed) {
-            part2_end();
-        }, 0);
-    }
-
-    function part2_end() {
-
-        test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after transition');
-        test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after transition');
-        test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after transition');
-        test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after transition');
-        test.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
         test.end();
     }
 });
