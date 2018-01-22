@@ -2,7 +2,7 @@ var tape = require("tape"),
     jsdom = require("./jsdom"),
     d3_graphviz = require("../");
 
-tape("logEvents(true) enables event logging.", function(test) {
+tape("logEvents enables and disables event logging.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -22,5 +22,20 @@ tape("logEvents(true) enables event logging.", function(test) {
     }
     test.ok(n > 10, "More than 10 events are registered when event logging is enabled");
     test.equal(n, eventTypes.length, "All " + eventTypes.length + " events are registered when event logging is enabled");
+
+    graphviz
+        .logEvents(false)
+        .dot('digraph {a -> b;}')
+        .render();
+
+    var eventTypes = graphviz._eventTypes;
+    n = 0;
+    for (let i in eventTypes) {
+        let eventType = eventTypes[i];
+        test.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'undefined', "No event named " + eventType + ".log is registered when event logging is disabled");
+        n += 1;
+    }
+    test.ok(n > 10, "None of the more than 10 events are registered when event logging is disabled");
+    test.equal(n, eventTypes.length, "None of the " + eventTypes.length + " events are registered when event logging is disabled");
     test.end();
 });
