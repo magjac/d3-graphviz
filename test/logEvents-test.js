@@ -1,6 +1,6 @@
-var tape = require("tape"),
-    jsdom = require("./jsdom"),
-    d3_graphviz = require("../");
+var tape = require("tape");
+var jsdom = require("./jsdom");
+var d3_graphviz = require("../");
 
 tape("logEvents enables and disables event logging.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
