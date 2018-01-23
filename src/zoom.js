@@ -46,7 +46,7 @@ export function getTranslation(g) {
         var matrix = transform.baseVal.consolidate().matrix;
         return {x: matrix.e, y: matrix.f};
     } else {
-        return {x: 0, y: 0};
+        return undefined;
     }
 }
 
@@ -59,9 +59,14 @@ export function getTranslatedZoomTransform(selection) {
     // normally the top level g element of the graph.
     var oldTranslation = this._translation;
     var newTranslation = selection.datum().translation;
-    var dx = newTranslation.x - oldTranslation.x;
-    var dy = newTranslation.y - oldTranslation.y;
-    return zoomTransform(this._zoomSelection.node()).translate(dx, dy);
+    var t = zoomTransform(this._zoomSelection.node());
+    if (oldTranslation) {
+        t = t.translate(-oldTranslation.x, -oldTranslation.y);
+    }
+    if (newTranslation) {
+        t = t.translate(newTranslation.x, newTranslation.y);
+    }
+    return t;
 }
 
 export function translateZoomBehaviorTransform(selection) {
@@ -78,7 +83,9 @@ export function translateZoomBehaviorTransform(selection) {
 
     // Set the original zoom transform to the translation specified in
     // the selection's data.
-    this._originalTransform = zoomIdentity.translate(selection.datum().translation.x, selection.datum().translation.y);
+    if (selection.datum().translation) {
+        this._originalTransform = zoomIdentity.translate(selection.datum().translation.x, selection.datum().translation.y);
+    }
 }
 
 export function resetZoom(transition) {

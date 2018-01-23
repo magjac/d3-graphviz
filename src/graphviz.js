@@ -77,7 +77,7 @@ export function Graphviz(selection) {
     this._convertEqualSidedPolygons = true;
     this._tweenPrecision = 1;
     this._growEnteringEdges = true;
-    this._translation = {x: 0, y: 0};
+    this._translation = undefined;
     this._zoom = true;
     this._eventTypes = [
         'initEnd',

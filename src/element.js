@@ -18,10 +18,7 @@ export function extractElementData(element) {
     }
     var transform = element.node().transform;
     if (transform) {
-        var translation = getTranslation(element);
-        if (translation.x != 0 || translation.y != 0) {
-            datum.translation = translation;
-        }
+        datum.translation = getTranslation(element);
     }
     if (tag == 'ellipse' && datum.attributes.cx) {
         datum.center = {
