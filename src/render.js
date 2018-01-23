@@ -240,7 +240,7 @@ function _render(callback) {
                     elementTransition
                         .on("start", function () {
                             if (graphvizInstance._zoomBehavior) {
-                                // Update the transform to transition to just before the transition starts
+                                // Update the transform to transition to, just before the transition starts
                                 // in order to catch changes between the transition scheduling to its start.
                                 elementTransition
                                     .tween("attr.transform", function() {
