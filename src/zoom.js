@@ -40,16 +40,6 @@ export function createZoomBehavior() {
     return this;
 };
 
-export function getTranslation(g) {
-    var transform = g.node().transform;
-    if (transform && transform.baseVal.numberOfItems != 0) {
-        var matrix = transform.baseVal.consolidate().matrix;
-        return {x: matrix.e, y: matrix.f};
-    } else {
-        return undefined;
-    }
-}
-
 export function getTranslatedZoomTransform(selection) {
 
     // Get the current zoom transform for the top level svg and

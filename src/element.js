@@ -1,5 +1,4 @@
 import * as d3 from "d3-selection";
-import {getTranslation} from "./zoom";
 
 export function extractElementData(element) {
 
@@ -96,4 +95,14 @@ export function replaceElement(element, data) {
     });
     element.remove();
     return newElement;
+}
+
+export function getTranslation(g) {
+    var transform = g.node().transform;
+    if (transform && transform.baseVal.numberOfItems != 0) {
+        var matrix = transform.baseVal.consolidate().matrix;
+        return {x: matrix.e, y: matrix.f};
+    } else {
+        return undefined;
+    }
 }
