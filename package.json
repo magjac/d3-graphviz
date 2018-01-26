@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "codecov": "^3.0.0",
-    "jsdom": "11.1.0",
+    "jsdom": "11.6.1",
     "markdown-to-html": "0.0.13",
     "nyc": "^11.4.1",
     "rollup": "0.27",
