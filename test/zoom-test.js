@@ -3,6 +3,33 @@ var jsdom = require("./jsdom");
 var d3_graphviz = require("../");
 var d3_transition = require("d3-transition");
 
+function polyfillSVGElement() {
+    if (!('width' in window.SVGElement.prototype)) {
+        Object.defineProperty(window.SVGElement.prototype, 'width', {
+            get: function() {
+                return {
+                    baseVal: {
+                            value: +this.getAttribute('width').replace('pt', ''),
+                    }
+                };
+            }
+        });
+    }
+    if (!('height' in window.SVGElement.prototype)) {
+        Object.defineProperty(window.SVGElement.prototype, 'height', {
+            get: function() {
+                return {
+                    baseVal: {
+                        value: +this.getAttribute('height').replace('pt', ''),
+                    }
+                };
+            }
+        });
+    }
+    }
+    global.SVGElement = window.SVGElement;
+}
+
 tape("zoom(false) disables zooming.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
@@ -21,11 +48,8 @@ tape("zoom(true) enables zooming.", function(test) {
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
-// Workaround for error in d3-zoom.js:
-//   if (e instanceof SVGElement) {
-//                    ^
-// ReferenceError: SVGElement is not defined
-    global.SVGElement = function(){};
+    polyfillSVGElement();
+
     graphviz
         .zoom(true);
 
@@ -45,11 +69,8 @@ tape("zooming rescales transforms during transitions.", function(test) {
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
-// Workaround for error in d3-zoom.js:
-//   if (e instanceof SVGElement) {
-//                    ^
-// ReferenceError: SVGElement is not defined
-    global.SVGElement = function(){};
+    polyfillSVGElement();
+
     graphviz
         .zoom(true)
         .transition(d3_transition.transition().duration(100));
