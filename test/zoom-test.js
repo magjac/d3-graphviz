@@ -2,6 +2,8 @@ var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3_graphviz = require("../");
 var d3_transition = require("d3-transition");
+var d3_zoom = require("d3-zoom");
+var d3_selection = require("d3-selection");
 
 function polyfillSVGElement() {
     if (!('width' in window.SVGElement.prototype)) {
@@ -115,9 +117,28 @@ tape("zooming rescales transforms during transitions.", function(test) {
     test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
 
     graphviz
-        .renderDot('digraph {a -> b;}');
+        .renderDot('digraph {a -> b;}')
+        .on('transitionStart', function() {
+            test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when transition starts');
+        })
+        .on('end', stage2);
 
-    test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph has been rendered');
+    test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
 
-    test.end();
+    test.deepEqual(
+        d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+        d3_zoom.zoomIdentity,
+        'The zoom transform is equal to the zoom identity transform before transition'
+    );
+
+    function stage2() {
+        matrix = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
+        test.deepEqual(
+            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoom.zoomIdentity.translate(matrix.e, matrix.f).scale(matrix.a),
+            'The zoom transform is equal to the "g" transform after transition'
+        );
+
+        test.end();
+    }
 });
