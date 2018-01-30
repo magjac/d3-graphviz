@@ -102,6 +102,62 @@ tape("zoom(true) enables zooming.", function(test) {
     test.end();
 });
 
+tape("resetZoom resets the zoom transform to the original transform.", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    polyfillSVGElement();
+
+    var dx = 10;
+    var dy = 20;
+    var selection;
+    var zoom;
+
+    graphviz
+        .zoom(true);
+
+    test.ok(graphviz._zoom, '.zoom(true) enables zooming');
+    test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
+
+    graphviz
+        .renderDot('digraph {a -> b;}');
+
+    test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
+    selection = graphviz._zoomSelection;
+    zoom = graphviz._zoomBehavior;
+
+    matrix0 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
+    test.deepEqual(
+        d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+        d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
+        'The zoom transform is equal to the "g" transform after rendering'
+    );
+
+    selection.call(zoom.translateBy, dx, dy);
+    test.deepEqual(
+        d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+        d3_zoom.zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
+        'The zoom transform is translated after zooming'
+    );
+
+    matrix1 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
+    test.deepEqual(
+        d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+        d3_zoom.zoomIdentity.translate(matrix1.e, matrix1.f).scale(matrix1.a),
+        'The zoom transform is equal to the "g" transform after zooming'
+    );
+
+    graphviz.resetZoom();
+    test.deepEqual(
+        d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+        d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
+        'The original zoom transform is restored after zoom reset'
+    );
+
+    test.end();
+});
+
 tape("zooming rescales transforms during transitions.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
