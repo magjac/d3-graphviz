@@ -13,15 +13,24 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
 
         var graphviz = d3_graphviz.graphviz("#graph");
 
+        test.equal(graphviz.active(), null, 'No transition is active before a graph has been rendered');
+
         graphviz
             .tweenShapes(false)
             .zoom(false)
             .transition(transition1)
             .dot('digraph {a -> b; c}')
             .render()
+            .on("transitionStart", function () {
+                test.equal(graphviz.active(), null, 'No transition is active before the transition starts');
+            })
+            .on("transitionEnd", function () {
+                test.ok(graphviz.active() instanceof d3_transition.transition, 'A transition is active just before the transition ends');
+            })
             .on("end", part1_end);
 
         function part1_end() {
+            test.equal(graphviz.active(), null, 'No transition is active after the transition ended');
             test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
             test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
             test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
@@ -39,6 +48,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
         }
 
         function part2_end() {
+            test.equal(graphviz.active(), null, 'No transition is active immediately after the rendering has been initiated');
             test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
             test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
             test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
@@ -48,6 +58,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
 
         function part3_end() {
 
+            test.equal(graphviz.active(), null, 'No transition is active after the transition ended');
             test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after transition');
             test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after transition');
             test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after transition');
