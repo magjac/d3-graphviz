@@ -230,7 +230,18 @@ export default function(src, callback) {
             }
         };
     } else {
-        layoutDone.call(this, Viz(src, vizOptions));
+        try {
+            var svgDoc = Viz(src, vizOptions);
+        }
+        catch(error) {
+            if (graphvizInstance._onerror) {
+                graphvizInstance._onerror(error.message);
+                return;
+            } else {
+                throw error.message
+            }
+        }
+        layoutDone.call(this, svgDoc);
     }
 
     function layoutDone(svgDoc) {
