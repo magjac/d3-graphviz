@@ -13,6 +13,7 @@ tape("graphviz().tweenPaths(true) enables path tweening during transitions.", fu
     graphviz
         .tweenShapes(false)
         .tweenPaths(true)
+        .tweenPrecision(4)
         .zoom(false)
         .dot('digraph {a -> b; c}')
         .render();
