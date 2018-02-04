@@ -1,5 +1,6 @@
 import * as d3 from "d3-selection";
 import {zoom, zoomTransform, zoomIdentity} from "d3-zoom";
+import {interpolate} from "d3-interpolate";
 
 export default function(enable) {
 
@@ -27,7 +28,7 @@ export function createZoomBehavior() {
     var extent = [0.1, 10];
     var zoomBehavior = zoom()
         .scaleExtent(extent)
-        .interpolate(d3.interpolate)
+        .interpolate(interpolate)
         .on("zoom", zoomed);
     this._zoomBehavior = zoomBehavior;
     var g = d3.select(svg.node().querySelector("g"));
