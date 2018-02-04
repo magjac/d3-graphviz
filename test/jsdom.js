@@ -1,5 +1,5 @@
 var jsdom = require("jsdom");
 
-module.exports = function(html) {
-  return (new jsdom.JSDOM(html)).window;
+module.exports = function(html, options) {
+  return (new jsdom.JSDOM(html, options)).window;
 };
