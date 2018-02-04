@@ -155,7 +155,28 @@ tape("resetZoom resets the zoom transform to the original transform.", function(
         'The original zoom transform is restored after zoom reset'
     );
 
-    test.end();
+    selection.call(zoom.translateBy, dx, dy);
+    test.deepEqual(
+        d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+        d3_zoom.zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
+        'The zoom transform is translated after zooming'
+    );
+
+    graphviz.resetZoom(
+        d3_transition.transition()
+            .duration(0)
+            .on("end", function() {
+                d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+                d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
+                'The original zoom transform is restored after zoom reset with transition'
+                test.end();
+            })
+    );
+    test.deepEqual(
+        d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+        d3_zoom.zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
+        'The original zoom transform is not restored directly after zoom reset with transition'
+    );
 });
 
 tape("zooming rescales transforms during transitions.", function(test) {
