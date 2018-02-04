@@ -32,7 +32,7 @@
     "check-coverage": true,
     "statements": 96,
     "branches": 91,
-    "functions": 97,
+    "functions": 98,
     "lines": 96,
     "reporter": [
       "text-summary"

@@ -4,7 +4,7 @@ var d3 = require("d3-selection");
 var d3_transition = require("d3-transition");
 var d3_graphviz = require("../");
 
-tape("graphviz().tweenPaths() enables and disables path tweening during transitions. FIXME: tape bug prohibits tweenPaths enabled test.", function(test) {
+tape("graphviz().tweenPaths(true) enables path tweening during transitions.", function(test) {
 
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
@@ -12,6 +12,7 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
 
     graphviz
         .tweenShapes(false)
+        .tweenPaths(true)
         .zoom(false)
         .dot('digraph {a -> b; c}')
         .render();
@@ -20,12 +21,12 @@ tape("graphviz().tweenPaths() enables and disables path tweening during transiti
     test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
     test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
     test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
-    transition1 = d3_transition.transition().duration(0);
+    transition1 = d3_transition.transition().duration(100);
     graphviz
         .dot('digraph {a -> b; b -> a}')
         .transition(transition1)
         .fade(false)
-        .tweenPaths(false)
+        .tweenPaths(true)
         .render()
         .on("end", part1_end);
     test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
