@@ -46,11 +46,7 @@ export function extractElementData(element) {
         };
     }
     if (tag == 'path') {
-        if (element.node().getTotalLength) {
-            datum.totalLength = element.node().getTotalLength();
-        } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
-            datum.totalLength = 100;
-        }
+        datum.totalLength = element.node().getTotalLength();
     }
     if (tag == '#text') {
         datum.text = element.text();
