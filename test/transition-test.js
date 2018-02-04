@@ -31,19 +31,23 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
 
         test.equal(graphviz.active(), null, 'No transition is active before a graph has been rendered');
 
-        graphviz
-            .tweenShapes(false)
-            .zoom(false)
-            .transition(transition1)
-            .dot('digraph {a -> b; c}')
-            .render()
-            .on("transitionStart", function () {
-                test.equal(graphviz.active(), null, 'No transition is active before the transition starts');
-            })
-            .on("transitionEnd", function () {
-                test.ok(graphviz.active() instanceof d3_transition.transition, 'A transition is active just before the transition ends');
-            })
-            .on("end", part1_end);
+        part1();
+
+        function part1() {
+            graphviz
+                .tweenShapes(false)
+                .zoom(false)
+                .transition(transition1)
+                .dot('digraph {a -> b; c}')
+                .render()
+                .on("transitionStart", function () {
+                    test.equal(graphviz.active(), null, 'No transition is active before the transition starts');
+                })
+                .on("transitionEnd", function () {
+                    test.ok(graphviz.active() instanceof d3_transition.transition, 'A transition is active just before the transition ends');
+                })
+                .on("end", part1_end);
+        }
 
         function part1_end() {
             test.equal(graphviz.active(), null, 'No transition is active after the transition ended');
