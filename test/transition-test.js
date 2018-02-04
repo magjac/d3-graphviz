@@ -31,7 +31,10 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
 
         test.equal(graphviz.active(), null, 'No transition is active before a graph has been rendered');
 
-        part1();
+        graphviz
+            .on("initEnd", function () {
+                part1();
+            });
 
         function part1() {
             graphviz
