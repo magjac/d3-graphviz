@@ -273,7 +273,7 @@ function _render(callback) {
     var root = this._selection;
 
     if (transitionInstance != null) {
-        // Ensure orignal SVG shape elements are restored after transition before rendering new graph
+        // Ensure original SVG shape elements are restored after transition before rendering new graph
         var jobs = this._jobs;
         if (graphvizInstance._active) {
             jobs.push(null);
