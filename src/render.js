@@ -126,8 +126,6 @@ function _render(callback) {
                             convertShape = false;
                         }
                     }
-                } else if (this.nodeName == 'ellipse' && tag == 'ellipse') {
-                    convertShape = false;
                 }
             }
             if (convertShape) {
