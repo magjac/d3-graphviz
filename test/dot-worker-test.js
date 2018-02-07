@@ -9,12 +9,9 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
 
     var window = global.window = jsdom(
         `
-            <script src="node_modules/viz.js/viz.js" type="javascript/worker"></script>
+            <script src="http://dummyhost/node_modules/viz.js/viz.js" type="javascript/worker"></script>
             <div id="graph"></div>
             `,
-        {
-            url: "http:dummyhost",
-        },
     );
     var document = global.document = window.document;
     var Blob = global.Blob = function (jsarray) {
