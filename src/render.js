@@ -222,6 +222,7 @@ function _render(callback) {
                 }
             } else {
                 if (attributeName == 'transform' && data.translation) {
+                    var onEnd = elementTransition.on("end");
                     elementTransition
                         .on("start", function () {
                             if (graphvizInstance._zoomBehavior) {
@@ -237,6 +238,7 @@ function _render(callback) {
                             }
                         })
                         .on("end", function () {
+                            onEnd.call(this);
                             // Update the zoom transform to the new translated transform
                             if (graphvizInstance._zoomBehavior) {
                                 translateZoomBehaviorTransform.call(graphvizInstance, element);
