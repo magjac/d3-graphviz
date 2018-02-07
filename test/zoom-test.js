@@ -5,69 +5,6 @@ var d3_transition = require("d3-transition");
 var d3_zoom = require("d3-zoom");
 var d3_selection = require("d3-selection");
 
-function polyfillSVGElement() {
-    if (!('width' in window.SVGElement.prototype)) {
-        Object.defineProperty(window.SVGElement.prototype, 'width', {
-            get: function() {
-                return {
-                    baseVal: {
-                            value: +this.getAttribute('width').replace('pt', ''),
-                    }
-                };
-            }
-        });
-    }
-    if (!('height' in window.SVGElement.prototype)) {
-        Object.defineProperty(window.SVGElement.prototype, 'height', {
-            get: function() {
-                return {
-                    baseVal: {
-                        value: +this.getAttribute('height').replace('pt', ''),
-                    }
-                };
-            }
-        });
-    }
-    if (!('transform' in window.SVGElement.prototype)) {
-        Object.defineProperty(window.SVGElement.prototype, 'transform', {
-            get: function() {
-                if (this.getAttribute('transform')) {
-                    var translate = this.getAttribute('transform').replace(/.*translate\((\d+[ ,]+\d+)\).*/, function(match, xy) {
-                        return xy;
-                    }).split(/[ ,]+/).map(function(v) {
-                        return +v;
-                    });
-                    var scale = this.getAttribute('transform').replace(/.*.*scale\((\d+[ ,]*\d*)\).*/, function(match, scale) {
-                        return scale;
-                    }).split(/[ ,]+/).map(function(v) {
-                        return +v;
-                    });
-                    return {
-                        baseVal: {
-                            numberOfItems: 1,
-                            consolidate: function() {
-                                return {
-                                    matrix: {
-                                        'a': scale[0],
-                                        'b': 0,
-                                        'c': 0,
-                                        'd': scale[1] || scale[0],
-                                        'e': translate[0],
-                                        'f': translate[1],
-                                    }
-                                };
-                            },
-                        },
-                    };
-                } else {
-                    return null;
-                }
-            },
-        });
-    }
-    global.SVGElement = window.SVGElement;
-}
-
 tape("zoom(false) disables zooming.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
@@ -85,8 +22,6 @@ tape("zoom(true) enables zooming.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
-
-    polyfillSVGElement();
 
     graphviz
         .zoom(true);
@@ -106,8 +41,6 @@ tape("resetZoom resets the zoom transform to the original transform.", function(
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
-
-    polyfillSVGElement();
 
     var dx = 10;
     var dy = 20;
@@ -183,8 +116,6 @@ tape("zooming rescales transforms during transitions.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
-
-    polyfillSVGElement();
 
     graphviz
         .zoom(true)
