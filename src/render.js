@@ -118,9 +118,7 @@ function _render(callback) {
                 var prevData = extractElementData(element);
                 if (this.nodeName == 'polygon' && tag == 'polygon') {
                     var prevPoints = prevData.attributes.points;
-                    if (prevPoints == null) {
-                        convertShape = false;
-                    } else if (!convertEqualSidedPolygons) {
+                    if (!convertEqualSidedPolygons) {
                         var nPrevPoints = prevPoints.split(' ').length;
                         var points = data.attributes.points;
                         var nPoints = points.split(' ').length;
