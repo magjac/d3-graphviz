@@ -115,9 +115,7 @@ export default function(src, callback) {
             }
             var childIndex = childTagIndexes[childTag]++;
             var childData = extractData(d3.select(this), childIndex, datum);
-            if (childData) {
-                datum.children.push(childData);
-            }
+            datum.children.push(childData);
         });
         return datum;
     }
