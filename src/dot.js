@@ -153,9 +153,6 @@ export default function(src, callback) {
                     var startNode = nodeDictionary[startNodeId];
                     var prevStartNode = prevNodeDictionary[startNodeId];
                     if (prevStartNode) {
-                        if (! startNode) {
-                            return;
-                        }
                         if (startNode.children[3].tag == 'g' && startNode.children[3].children[0].tag == 'a') {
                             startNode = startNode.children[3].children[0];
                         }
