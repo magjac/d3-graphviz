@@ -106,19 +106,17 @@ export default function(src, callback) {
 
         var childTagIndexes = {};
         children.each(function () {
-            if (this !== null) {
-                var childTag = this.nodeName;
-                if (childTag == 'ellipse' || childTag == 'polygon') {
-                    childTag = 'path';
-                }
-                if (childTagIndexes[childTag] == null) {
-                    childTagIndexes[childTag] = 0;
-                }
-                var childIndex = childTagIndexes[childTag]++;
-                var childData = extractData(d3.select(this), childIndex, datum);
-                if (childData) {
-                    datum.children.push(childData);
-                }
+            var childTag = this.nodeName;
+            if (childTag == 'ellipse' || childTag == 'polygon') {
+                childTag = 'path';
+            }
+            if (childTagIndexes[childTag] == null) {
+                childTagIndexes[childTag] = 0;
+            }
+            var childIndex = childTagIndexes[childTag]++;
+            var childData = extractData(d3.select(this), childIndex, datum);
+            if (childData) {
+                datum.children.push(childData);
             }
         });
         return datum;
