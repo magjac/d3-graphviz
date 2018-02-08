@@ -95,10 +95,6 @@ export function replaceElement(element, data) {
 
 export function getTranslation(element) {
     var transform = element.node().transform;
-    if (transform && transform.baseVal.numberOfItems != 0) {
-        var matrix = transform.baseVal.consolidate().matrix;
-        return {x: matrix.e, y: matrix.f};
-    } else {
-        return undefined;
-    }
+    var matrix = transform.baseVal.consolidate().matrix;
+    return {x: matrix.e, y: matrix.f};
 }
