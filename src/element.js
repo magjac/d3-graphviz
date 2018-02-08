@@ -26,7 +26,7 @@ export function extractElementData(element) {
             y: datum.attributes.cy,
         };
     }
-    if (tag == 'polygon' && datum.attributes.points) {
+    if (tag == 'polygon') {
         var points = element.attr('points').split(' ');
         var x = points.map(function(p) {return p.split(',')[0]});
         var y = points.map(function(p) {return p.split(',')[1]});

@@ -6,39 +6,37 @@ export function convertToPathData(originalData, guideData) {
         newData.tag = 'path';
         var originalAttributes = originalData.attributes;
         var newAttributes = shallowCopyObject(originalAttributes);
-        if (originalAttributes.points != null) {
-            var newPointsString = originalAttributes.points;
-            if (guideData.tag == 'polygon') {
-                var bbox = originalData.bbox;
-                bbox.cx = bbox.x + bbox.width / 2;
-                bbox.cy = bbox.y + bbox.height / 2;
-                var pointsString = originalAttributes.points;
-                var pointStrings = pointsString.split(' ');
-                var normPoints = pointStrings.map(function(p) {var xy = p.split(','); return [xy[0] - bbox.cx, xy[1] - bbox.cy]});
-                var x0 = normPoints[normPoints.length - 1][0];
-                var y0 = normPoints[normPoints.length - 1][1];
-                for (var i = 0; i < normPoints.length; i++, x0 = x1, y0 = y1) {
-                    var x1 = normPoints[i][0];
-                    var y1 = normPoints[i][1];
-                    var dx = x1 - x0;
-                    var dy = y1 - y0;
-                    if (dy == 0) {
-                        continue;
-                    } else {
-                        var x2 = x0 - y0 * dx / dy;
-                    }
-                    if (0 <= x2 && x2 < Infinity && ((x0 <= x2 && x2 <= x1) || (x1 <= x2 && x2 <= x0))) {
-                        break;
-                    }
+        var newPointsString = originalAttributes.points;
+        if (guideData.tag == 'polygon') {
+            var bbox = originalData.bbox;
+            bbox.cx = bbox.x + bbox.width / 2;
+            bbox.cy = bbox.y + bbox.height / 2;
+            var pointsString = originalAttributes.points;
+            var pointStrings = pointsString.split(' ');
+            var normPoints = pointStrings.map(function(p) {var xy = p.split(','); return [xy[0] - bbox.cx, xy[1] - bbox.cy]});
+            var x0 = normPoints[normPoints.length - 1][0];
+            var y0 = normPoints[normPoints.length - 1][1];
+            for (var i = 0; i < normPoints.length; i++, x0 = x1, y0 = y1) {
+                var x1 = normPoints[i][0];
+                var y1 = normPoints[i][1];
+                var dx = x1 - x0;
+                var dy = y1 - y0;
+                if (dy == 0) {
+                    continue;
+                } else {
+                    var x2 = x0 - y0 * dx / dy;
                 }
-                var newPointStrings = [[bbox.cx + x2, bbox.cy + 0].join(',')];
-                newPointStrings = newPointStrings.concat(pointStrings.slice(i));
-                newPointStrings = newPointStrings.concat(pointStrings.slice(0, i));
-                newPointsString = newPointStrings.join(' ');
+                if (0 <= x2 && x2 < Infinity && ((x0 <= x2 && x2 <= x1) || (x1 <= x2 && x2 <= x0))) {
+                    break;
+                }
             }
-            newAttributes['d'] = 'M' + newPointsString + 'z';
-            delete newAttributes.points;
+            var newPointStrings = [[bbox.cx + x2, bbox.cy + 0].join(',')];
+            newPointStrings = newPointStrings.concat(pointStrings.slice(i));
+            newPointStrings = newPointStrings.concat(pointStrings.slice(0, i));
+            newPointsString = newPointStrings.join(' ');
         }
+        newAttributes['d'] = 'M' + newPointsString + 'z';
+        delete newAttributes.points;
         newData.attributes = newAttributes;
     } else /* if (originalData.tag == 'ellipse') */ {
         var newData = shallowCopyObject(originalData);
