@@ -30,10 +30,10 @@
   },
   "nyc": {
     "check-coverage": true,
-    "statements": 99.2,
+    "statements": 99.3,
     "branches": 95,
     "functions": 100,
-    "lines": 99.2,
+    "lines": 99.3,
     "reporter": [
       "text-summary"
     ],

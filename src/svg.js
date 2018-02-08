@@ -40,7 +40,7 @@ export function convertToPathData(originalData, guideData) {
             delete newAttributes.points;
         }
         newData.attributes = newAttributes;
-    } else if (originalData.tag == 'ellipse') {
+    } else /* if (originalData.tag == 'ellipse') */ {
         var newData = shallowCopyObject(originalData);
         newData.tag = 'path';
         var originalAttributes = originalData.attributes;
@@ -74,8 +74,6 @@ export function convertToPathData(originalData, guideData) {
             delete newAttributes.ry;
         }
         newData.attributes = newAttributes;
-    } else {
-        var newData = originalData;
     }
     return newData;
 }
