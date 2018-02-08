@@ -74,9 +74,7 @@ export function translateZoomBehaviorTransform(selection) {
 
     // Set the original zoom transform to the translation specified in
     // the selection's data.
-    if (selection.datum().translation) {
-        this._originalTransform = zoomIdentity.translate(selection.datum().translation.x, selection.datum().translation.y);
-    }
+    this._originalTransform = zoomIdentity.translate(selection.datum().translation.x, selection.datum().translation.y);
 }
 
 export function resetZoom(transition) {
