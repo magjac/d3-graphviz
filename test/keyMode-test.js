@@ -12,10 +12,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
         'title',
         'tag-index',
         'id',
-// NOTE: The 'index' keyMode is not useful, because it may create transition between SVG objects of different types which yields error:
-// TypeError: Cannot read property 'baseVal' of undefined
-//    at parseSvg (/home/magjac/external/d3-graphviz/node_modules/d3-interpolate/build/d3-interpolate.js:303:34)
-//        'index',
+        'index',
     ];
     var delay = 500;
     var duration = 500;
@@ -104,8 +101,8 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
 
     function checkAtStarting(keyMode) {
         var counts = {
-            '.node': 3,
-            '.edge': keyMode == 'id' ? 2 : 1,
+            '.node': keyMode == 'index' ? 5 : 3,
+            '.edge': keyMode == 'id' ? 2 : keyMode == 'index' ? 3 : 1,
             'polygon': keyMode == 'index' ? 5 : 3,
             'ellipse': keyMode == 'index' ? 5 : 3,
         };
@@ -114,8 +111,8 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
 
     function checkAfterStarting(keyMode) {
         var counts = {
-            '.node': keyMode == 'tag-index' ? 2 : 3,
-            '.edge': 2,
+            '.node': keyMode == 'tag-index' ? 2 : keyMode == 'index' ? 5 : 3,
+            '.edge': keyMode == 'index' ? 3 : 2,
             'polygon': keyMode == 'index' ? 5 : 3,
             'ellipse': keyMode == 'index' ? 5 : 3,
         };
@@ -124,8 +121,8 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
 
     function checkAtEnding(keyMode) {
         var counts = {
-            '.node': keyMode == 'tag-index' ? 2 : 3,
-            '.edge': 2,
+            '.node': keyMode == 'tag-index' ? 2 : keyMode == 'index' ? 5 : 3,
+            '.edge': keyMode == 'index' ? 3 : 2,
             'polygon': keyMode == 'index' ? 5 : 3,
             'ellipse': keyMode == 'index' ? 5 : 3,
         };
