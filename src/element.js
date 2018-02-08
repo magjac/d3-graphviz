@@ -17,7 +17,8 @@ export function extractElementData(element) {
     }
     var transform = element.node().transform;
     if (transform) {
-        datum.translation = getTranslation(element);
+        var matrix = transform.baseVal.consolidate().matrix;
+        datum.translation = {x: matrix.e, y: matrix.f};
     }
     if (tag == 'ellipse' && datum.attributes.cx) {
         datum.center = {
@@ -91,10 +92,4 @@ export function replaceElement(element, data) {
     });
     element.remove();
     return newElement;
-}
-
-export function getTranslation(element) {
-    var transform = element.node().transform;
-    var matrix = transform.baseVal.consolidate().matrix;
-    return {x: matrix.e, y: matrix.f};
 }
