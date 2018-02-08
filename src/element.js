@@ -20,7 +20,7 @@ export function extractElementData(element) {
         var matrix = transform.baseVal.consolidate().matrix;
         datum.translation = {x: matrix.e, y: matrix.f};
     }
-    if (tag == 'ellipse' && datum.attributes.cx) {
+    if (tag == 'ellipse') {
         datum.center = {
             x: datum.attributes.cx,
             y: datum.attributes.cy,
