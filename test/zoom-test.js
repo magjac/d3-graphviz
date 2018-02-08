@@ -147,6 +147,31 @@ tape("zooming rescales transforms during transitions.", function(test) {
             'The zoom transform is equal to the "g" transform after transition'
         );
 
+        graphviz
+            .renderDot('digraph {a -> b; b -> c}')
+            .on('transitionStart', function() {
+                test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when transition starts');
+            })
+            .on('end', stage3.bind('null', matrix));
+
+        test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
+
+        test.deepEqual(
+            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoom.zoomIdentity.translate(matrix.e, matrix.f).scale(matrix.a),
+            'The zoom transform is unchanged before 2nd transition'
+        );
+    }
+
+    function stage3(matrix1) {
+        matrix2 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
+        test.notDeepEqual(matrix2, matrix1, 'The "g" transform changes when the graph changes');
+        test.deepEqual(
+            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoom.zoomIdentity.translate(matrix2.e, matrix2.f).scale(matrix2.a),
+            'The zoom transform is equal to the "g" transform after 2nd transition'
+        );
+
         test.end();
     }
 });
