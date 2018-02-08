@@ -54,9 +54,7 @@ export function getTranslatedZoomTransform(selection) {
     if (oldTranslation) {
         t = t.translate(-oldTranslation.x, -oldTranslation.y);
     }
-    if (newTranslation) {
-        t = t.translate(newTranslation.x, newTranslation.y);
-    }
+    t = t.translate(newTranslation.x, newTranslation.y);
     return t;
 }
 
