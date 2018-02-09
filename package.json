@@ -31,7 +31,7 @@
   "nyc": {
     "check-coverage": true,
     "statements": 99.5,
-    "branches": 98,
+    "branches": 99.0,
     "functions": 100,
     "lines": 99.5,
     "reporter": [

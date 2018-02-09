@@ -252,13 +252,11 @@ function _render(callback) {
         if (convertShape) {
             elementTransition
                 .on("end", function (d, i, nodes) {
-                    if (this.nodeName != d.tag) {
-                        pathElement = d3.select(this);
-                        var newElement = replaceElement(pathElement, d);
-                        newElement.data([d], function () {
-                            return d.key;
-                        });
-                    }
+                    pathElement = d3.select(this);
+                    var newElement = replaceElement(pathElement, d);
+                    newElement.data([d], function () {
+                        return d.key;
+                    });
                 })
         }
         if (data.text) {
