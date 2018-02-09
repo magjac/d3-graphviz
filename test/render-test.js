@@ -16,15 +16,15 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
     graphviz
         .zoom(false)
         .transition(d3_transition.transition().duration(0))
-        .dot('digraph {a -> b; c}')
+        .dot('digraph {a -> b; c; d}')
         .render();
 
         test.ok(graphviz._active, 'Rendering is active after the 1st rendering has been initiated');
 
-        test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
+        test.equal(d3.selectAll('.node').size(), 4, 'Number of initial nodes');
         test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
         test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+        test.equal(d3.selectAll('ellipse').size(), 4, 'Number of initial ellipses');
         test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
         graphviz
@@ -33,20 +33,20 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
             .on("end", part1_end)
             .render();
 
-        test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after 2nd rendering has been initiated while 1st is not yet finished');
+        test.equal(d3.selectAll('.node').size(), 4, 'Number of nodes immediately after 2nd rendering has been initiated while 1st is not yet finished');
         test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after 2nd rendering has been initiated while 1st is not yet finished');
         test.equal(d3.selectAll('polygon').size(), 2, 'Number of polygons immediately after 2nd rendering has been initiated while 1st is not yet finished');
-        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after 2nd rendering has been initiated while 1st is not yet finished');
+        test.equal(d3.selectAll('ellipse').size(), 4, 'Number of ellipses immediately after 2nd rendering has been initiated while 1st is not yet finished');
         test.equal(d3.selectAll('path').size(), 1, 'Number of paths immediately after 2nd rendering has been initiated while 1st is not yet finished');
 
     function part1_end() {
 
         test.ok(graphviz._active, 'Rendering is still active after the 1st rendering has finished, but 2nd has not');
 
-        test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes after 1st transition');
+        test.equal(d3.selectAll('.node').size(), 4, 'Number of nodes after 1st transition');
         test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after 1st transition');
         test.equal(d3.selectAll('polygon').size(), 1, 'Number of polygons after 1st transition');
-        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses after 1st transition');
+        test.equal(d3.selectAll('ellipse').size(), 4, 'Number of ellipses after 1st transition');
         test.equal(d3.selectAll('path').size(), 4, 'Number of paths after 1st transition');
 
         graphviz
