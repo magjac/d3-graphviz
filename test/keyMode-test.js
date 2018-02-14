@@ -21,45 +21,63 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
           .append('div')
             .attr('id', 'graph-' + keyMode)
         var graphviz = d3_graphviz.graphviz("#graph-" + keyMode);
-        graphviz
-            .tweenShapes(false)
-            .zoom(false)
-            .keyMode(keyMode)
-            .dot('digraph {a -> b; c}')
-            .render();
-        checkInitalRendering(keyMode);
-        transition1 = d3_transition.transition().delay(delay).duration(duration);
-        graphviz
-            .keyMode(keyMode)
-            .dot('digraph {a -> b; b -> a}')
-            .transition(transition1)
-            .fade(false)
-            .tweenPaths(false)
-            .render();
+        function render_1st() {
+            graphviz
+                .tweenShapes(false)
+                .zoom(false)
+                .keyMode(keyMode)
+                .dot('digraph {a -> b; c}')
+                .transition(function () {
+                    return d3_transition.transition().delay(delay).duration(duration);
+                })
+                .render()
+                .on("end", function() {
+                    checkInitalRendering(keyMode);
+                    render_2nd();
+                });
+        }
 
-        checkBeforeScheduling(keyMode);
-        d3_timer.timeout(function(elapsed) {
-            checkBeforeStarting(keyMode)
-        }, delay / 2);
-        transition1
-            .on('start', function() {
-                checkAtStarting(keyMode);
-               });
-        d3_timer.timeout(function(elapsed) {
-            checkAfterStarting(keyMode)
-        }, delay + duration / 2);
-        transition1
-            .on('end', function() {
-                checkAtEnding(keyMode);
-               });
-        d3_timer.timeout(function(elapsed) {
-            checkAfterEnding(keyMode)
-        }, delay + duration + delay);
+        render_1st();
+
+        function render_2nd() {
+            graphviz
+                .keyMode(keyMode)
+                .dot('digraph {a -> b; b -> a}')
+                .transition(function () {
+                    d3_transition.transition("helper-" + keyMode).delay(delay).duration(0)
+                        .transition().delay(0).duration(0)
+                        .on("start", function() {
+                            checkAtStarting(keyMode);
+                        })
+                        .transition().delay(0).duration(0)
+                        .on("start", function() {
+                            checkAfterStarting(keyMode);
+                        });
+                    return d3_transition.transition("main-" + keyMode).delay(delay).duration(duration);
+                })
+                .fade(false)
+                .tweenPaths(false)
+                .render()
+                .on("renderEnd", function() {
+                    checkBeforeScheduling(keyMode);
+                })
+                .on("transitionStart", function() {
+                    checkBeforeScheduling(keyMode);
+                })
+                .on("transitionEnd", function() {
+                    checkAtEnding(keyMode);
+                })
+                .on("restoreEnd", function() {
+                    checkAfterEnding(keyMode)
+                })
+                .on("end", function() {
+                    checkAfterEnding(keyMode)
+                    if (keyMode == keyModes[keyModes.length -1]) {
+                        endTest()
+                    }
+                });
+        }
     });
-
-    d3_timer.timeout(function(elapsed) {
-        endTest()
-    }, delay + duration + delay);
 
     function check(counts, state, keyMode) {
         for (name in counts) {
@@ -101,8 +119,8 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
 
     function checkAtStarting(keyMode) {
         var counts = {
-            '.node': keyMode == 'index' ? 5 : 3,
-            '.edge': keyMode == 'id' ? 2 : keyMode == 'index' ? 3 : 1,
+            '.node': 3,
+            '.edge': 1,
             'polygon': keyMode == 'index' ? 5 : 3,
             'ellipse': keyMode == 'index' ? 5 : 3,
         };
