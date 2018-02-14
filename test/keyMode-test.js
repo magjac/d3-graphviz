@@ -14,6 +14,9 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
         'id',
         'index',
     ];
+    const nCheckPoints = 8;
+    const nItemsPerCheckPoint = 4;
+    test.plan(keyModes.length * nCheckPoints * nItemsPerCheckPoint);
     var delay = 500;
     var duration = 500;
     keyModes.forEach(function (keyMode) {
