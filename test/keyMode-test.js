@@ -19,7 +19,11 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
     test.plan(keyModes.length * nCheckPoints * nItemsPerCheckPoint);
     var delay = 500;
     var duration = 500;
-    keyModes.forEach(function (keyMode) {
+    keyModeIndex = 0;
+    renderKeyMode();
+
+    function renderKeyMode() {
+        keyMode = keyModes[keyModeIndex]
         d3.select('#main')
           .append('div')
             .attr('id', 'graph-' + keyMode)
@@ -77,10 +81,13 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
                     checkAfterEnding(keyMode)
                     if (keyMode == keyModes[keyModes.length -1]) {
                         endTest()
+                    } else {
+                        keyModeIndex += 1;
+                        renderKeyMode()
                     }
                 });
         }
-    });
+    }
 
     function check(counts, state, keyMode) {
         for (name in counts) {
