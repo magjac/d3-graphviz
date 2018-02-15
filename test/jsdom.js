@@ -67,7 +67,14 @@ module.exports = function(html, options) {
                         },
                     };
                 } else {
-                    return null;
+                    return {
+                        baseVal: {
+                            numberOfItems: 0,
+                            consolidate: function() {
+                                return null;
+                            },
+                        },
+                    };
                 }
             },
         });

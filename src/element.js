@@ -16,7 +16,7 @@ export function extractElementData(element) {
         }
     }
     var transform = element.node().transform;
-    if (transform) {
+    if (transform && transform.baseVal.numberOfItems != 0) {
         var matrix = transform.baseVal.consolidate().matrix;
         datum.translation = {x: matrix.e, y: matrix.f};
     }
