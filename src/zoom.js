@@ -1,5 +1,6 @@
 import * as d3 from "d3-selection";
 import {zoom, zoomTransform, zoomIdentity} from "d3-zoom";
+import {interpolate} from "d3-interpolate";
 
 export default function(enable) {
 
@@ -27,7 +28,7 @@ export function createZoomBehavior() {
     var extent = [0.1, 10];
     var zoomBehavior = zoom()
         .scaleExtent(extent)
-        .interpolate(d3.interpolate)
+        .interpolate(interpolate)
         .on("zoom", zoomed);
     this._zoomBehavior = zoomBehavior;
     var g = d3.select(svg.node().querySelector("g"));
@@ -40,16 +41,6 @@ export function createZoomBehavior() {
     return this;
 };
 
-export function getTranslation(g) {
-    var transform = g.node().transform;
-    if (transform && transform.baseVal.numberOfItems != 0) {
-        var matrix = transform.baseVal.consolidate().matrix;
-        return {x: matrix.e, y: matrix.f};
-    } else {
-        return {x: 0, y: 0};
-    }
-}
-
 export function getTranslatedZoomTransform(selection) {
 
     // Get the current zoom transform for the top level svg and
@@ -59,9 +50,12 @@ export function getTranslatedZoomTransform(selection) {
     // normally the top level g element of the graph.
     var oldTranslation = this._translation;
     var newTranslation = selection.datum().translation;
-    var dx = newTranslation.x - oldTranslation.x;
-    var dy = newTranslation.y - oldTranslation.y;
-    return zoomTransform(this._zoomSelection.node()).translate(dx, dy);
+    var t = zoomTransform(this._zoomSelection.node());
+    if (oldTranslation) {
+        t = t.translate(-oldTranslation.x, -oldTranslation.y);
+    }
+    t = t.translate(newTranslation.x, newTranslation.y);
+    return t;
 }
 
 export function translateZoomBehaviorTransform(selection) {

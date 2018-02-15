@@ -1,5 +1,4 @@
 import * as d3 from "d3-selection";
-import {getTranslation} from "./zoom";
 
 export function extractElementData(element) {
 
@@ -18,18 +17,16 @@ export function extractElementData(element) {
     }
     var transform = element.node().transform;
     if (transform) {
-        var translation = getTranslation(element);
-        if (translation.x != 0 || translation.y != 0) {
-            datum.translation = translation;
-        }
+        var matrix = transform.baseVal.consolidate().matrix;
+        datum.translation = {x: matrix.e, y: matrix.f};
     }
-    if (tag == 'ellipse' && datum.attributes.cx) {
+    if (tag == 'ellipse') {
         datum.center = {
             x: datum.attributes.cx,
             y: datum.attributes.cy,
         };
     }
-    if (tag == 'polygon' && datum.attributes.points) {
+    if (tag == 'polygon') {
         var points = element.attr('points').split(' ');
         var x = points.map(function(p) {return p.split(',')[0]});
         var y = points.map(function(p) {return p.split(',')[1]});
@@ -50,11 +47,7 @@ export function extractElementData(element) {
         };
     }
     if (tag == 'path') {
-        if (element.node().getTotalLength) {
-            datum.totalLength = element.node().getTotalLength();
-        } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
-            datum.totalLength = 100;
-        }
+        datum.totalLength = element.node().getTotalLength();
     }
     if (tag == '#text') {
         datum.text = element.text();
@@ -80,11 +73,9 @@ export function createElementWithAttributes(data) {
     var elementNode = createElement(data);
     var element = d3.select(elementNode);
     var attributes = data.attributes;
-    if (attributes) {
-        for (var attributeName of Object.keys(attributes)) {
-            var attributeValue = attributes[attributeName];
-            element.attr(attributeName, attributeValue);
-        }
+    for (var attributeName of Object.keys(attributes)) {
+        var attributeValue = attributes[attributeName];
+        element.attr(attributeName, attributeValue);
     }
     return elementNode;
 }

@@ -60,6 +60,10 @@ var basic_data = {
                 "class": "graph",
                 "transform": "scale(1 1) rotate(0) translate(4 112)"
             },
+            "translation": {
+                "x": 4,
+                "y": 112
+            },
             "parent": "[Circular ~]",
             "children": [
                 {

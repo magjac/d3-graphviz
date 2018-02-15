@@ -118,9 +118,7 @@ function _render(callback) {
                 var prevData = extractElementData(element);
                 if (this.nodeName == 'polygon' && tag == 'polygon') {
                     var prevPoints = prevData.attributes.points;
-                    if (prevPoints == null) {
-                        convertShape = false;
-                    } else if (!convertEqualSidedPolygons) {
+                    if (!convertEqualSidedPolygons) {
                         var nPrevPoints = prevPoints.split(' ').length;
                         var points = data.attributes.points;
                         var nPoints = points.split(' ').length;
@@ -128,8 +126,6 @@ function _render(callback) {
                             convertShape = false;
                         }
                     }
-                } else if (this.nodeName == 'ellipse' && tag == 'ellipse') {
-                    convertShape = false;
                 }
             }
             if (convertShape) {
@@ -188,16 +184,10 @@ function _render(callback) {
         var moveThisPolygon = growEnteringEdges && tag == 'polygon' && isEdgeElement(data) && data.offset;
         if (moveThisPolygon) {
             var edgePath = d3.select(element.node().parentNode.querySelector("path"));
-            if (edgePath.node().getPointAtLength) {
-                var p0 = edgePath.node().getPointAtLength(0);
-                var p1 = edgePath.node().getPointAtLength(data.totalLength);
-                var p2 = edgePath.node().getPointAtLength(data.totalLength - 1);
-                var angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x) * 180 / Math.PI;
-            } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
-                var p0 = {x: 0, y: 0};
-                var p1 = {x: 100, y: 100};
-                var angle1 = 0;
-            }
+            var p0 = edgePath.node().getPointAtLength(0);
+            var p1 = edgePath.node().getPointAtLength(data.totalLength);
+            var p2 = edgePath.node().getPointAtLength(data.totalLength - 1);
+            var angle1 = Math.atan2(p1.y - p2.y, p1.x - p2.x) * 180 / Math.PI;
             var x = p0.x - p1.x + data.offset.x;
             var y = p0.y - p1.y + data.offset.y;
             element
@@ -205,14 +195,9 @@ function _render(callback) {
             elementTransition
                 .attrTween("transform", function () {
                     return function (t) {
-                        if (edgePath.node().getPointAtLength) {
-                            var p = edgePath.node().getPointAtLength(data.totalLength * t);
-                            var p2 = edgePath.node().getPointAtLength(data.totalLength * t + 1);
-                            var angle = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI - angle1;
-                        } else { // Test workaround until https://github.com/tmpvar/jsdom/issues/1330 is fixed
-                            var p = {x: 100.0 * t, y: 100.0 *t};
-                            var angle = 0;
-                        }
+                        var p = edgePath.node().getPointAtLength(data.totalLength * t);
+                        var p2 = edgePath.node().getPointAtLength(data.totalLength * t + 1);
+                        var angle = Math.atan2(p2.y - p.y, p2.x - p.x) * 180 / Math.PI - angle1;
                         x = p.x - p1.x + data.offset.x * (1 - t);
                         y = p.y - p1.y + data.offset.y * (1 - t);
                         return 'translate(' + x + ',' + y + ') rotate(' + angle + ' ' + p1.x + ' ' + p1.y + ')';
@@ -237,10 +222,11 @@ function _render(callback) {
                 }
             } else {
                 if (attributeName == 'transform' && data.translation) {
+                    var onEnd = elementTransition.on("end");
                     elementTransition
                         .on("start", function () {
                             if (graphvizInstance._zoomBehavior) {
-                                // Update the transform to transition to just before the transition starts
+                                // Update the transform to transition to, just before the transition starts
                                 // in order to catch changes between the transition scheduling to its start.
                                 elementTransition
                                     .tween("attr.transform", function() {
@@ -252,6 +238,7 @@ function _render(callback) {
                             }
                         })
                         .on("end", function () {
+                            onEnd.call(this);
                             // Update the zoom transform to the new translated transform
                             if (graphvizInstance._zoomBehavior) {
                                 translateZoomBehaviorTransform.call(graphvizInstance, element);
@@ -265,13 +252,11 @@ function _render(callback) {
         if (convertShape) {
             elementTransition
                 .on("end", function (d, i, nodes) {
-                    if (this.nodeName != d.tag) {
-                        pathElement = d3.select(this);
-                        var newElement = replaceElement(pathElement, d);
-                        newElement.data([d], function () {
-                            return d.key;
-                        });
-                    }
+                    pathElement = d3.select(this);
+                    var newElement = replaceElement(pathElement, d);
+                    newElement.data([d], function () {
+                        return d.key;
+                    });
                 })
         }
         if (data.text) {
@@ -284,7 +269,7 @@ function _render(callback) {
     var root = this._selection;
 
     if (transitionInstance != null) {
-        // Ensure orignal SVG shape elements are restored after transition before rendering new graph
+        // Ensure original SVG shape elements are restored after transition before rendering new graph
         var jobs = this._jobs;
         if (graphvizInstance._active) {
             jobs.push(null);

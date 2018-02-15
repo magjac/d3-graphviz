@@ -52,6 +52,8 @@ tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DO
 //        .fade(false)
         .renderDot('digraph {graph [tooltip="G"]}');
 
+    test.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
+
     graphviz
         .tweenShapes(false)
         .tweenPaths(false)
@@ -63,7 +65,7 @@ tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DO
     transition
         .transition()
         .on("end", function() {
-            test.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
+            test.equal(d3.select('div').html(), svgDoc, "SVG after transition");
             test.end();
         });
 

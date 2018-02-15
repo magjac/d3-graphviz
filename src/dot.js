@@ -106,20 +106,16 @@ export default function(src, callback) {
 
         var childTagIndexes = {};
         children.each(function () {
-            if (this !== null) {
-                var childTag = this.nodeName;
-                if (childTag == 'ellipse' || childTag == 'polygon') {
-                    childTag = 'path';
-                }
-                if (childTagIndexes[childTag] == null) {
-                    childTagIndexes[childTag] = 0;
-                }
-                var childIndex = childTagIndexes[childTag]++;
-                var childData = extractData(d3.select(this), childIndex, datum);
-                if (childData) {
-                    datum.children.push(childData);
-                }
+            var childTag = this.nodeName;
+            if (childTag == 'ellipse' || childTag == 'polygon') {
+                childTag = 'path';
             }
+            if (childTagIndexes[childTag] == null) {
+                childTagIndexes[childTag] = 0;
+            }
+            var childIndex = childTagIndexes[childTag]++;
+            var childData = extractData(d3.select(this), childIndex, datum);
+            datum.children.push(childData);
         });
         return datum;
     }
@@ -157,9 +153,6 @@ export default function(src, callback) {
                     var startNode = nodeDictionary[startNodeId];
                     var prevStartNode = prevNodeDictionary[startNodeId];
                     if (prevStartNode) {
-                        if (! startNode) {
-                            return;
-                        }
                         if (startNode.children[3].tag == 'g' && startNode.children[3].children[0].tag == 'a') {
                             startNode = startNode.children[3].children[0];
                         }
@@ -219,7 +212,6 @@ export default function(src, callback) {
             switch (event.data.type) {
             case "done":
                 return layoutDone.call(graphvizInstance, event.data.svg);
-                break;
             case "error":
                 if (graphvizInstance._onerror) {
                     graphvizInstance._onerror(event.data.error);
@@ -230,7 +222,18 @@ export default function(src, callback) {
             }
         };
     } else {
-        layoutDone.call(this, Viz(src, vizOptions));
+        try {
+            var svgDoc = Viz(src, vizOptions);
+        }
+        catch(error) {
+            if (graphvizInstance._onerror) {
+                graphvizInstance._onerror(error.message);
+                return;
+            } else {
+                throw error.message
+            }
+        }
+        layoutDone.call(this, svgDoc);
     }
 
     function layoutDone(svgDoc) {
