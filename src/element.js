@@ -5,6 +5,11 @@ export function extractElementData(element) {
     var datum = {};
     var tag = element.node().nodeName;
     datum.tag = tag;
+    if (tag == '#text') {
+        datum.text = element.text();
+    } else if (tag == '#comment') {
+        datum.comment = element.text();
+    }
     datum.attributes = {};
     var attributes = element.node().attributes;
     if (attributes) {
@@ -55,6 +60,19 @@ export function extractElementData(element) {
         datum.comment = element.text();
     }
     return datum
+}
+
+export function extractAllElementsData(element) {
+
+    var datum = extractElementData(element);
+    datum.children = [];
+    var children = d3.selectAll(element.node().childNodes);
+    children.each(function () {
+        var childData = extractAllElementsData(d3.select(this));
+        childData.parent = datum;
+        datum.children.push(childData);
+    });
+    return datum;
 }
 
 export function createElement(data) {

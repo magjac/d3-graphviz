@@ -20,7 +20,7 @@ export default function(enable) {
                 var string = '';
                 string += 'Event ';
                 string += format(' >2')(i) + ' ';
-                string += (eventType + '             ').slice(0, maxEventTypeLength + 1) + ' ';
+                string += eventType + ' '.repeat(maxEventTypeLength - eventType.length);
                 string += format(' >5')(t - t0) + ' ';
                 if (eventType != 'initEnd') {
                     string += format(' >5')(t - times['start'][seqNo]);

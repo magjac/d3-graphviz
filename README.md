@@ -182,6 +182,8 @@ Adds or removes a *listener* to the graphviz renderer instance for the specified
 * `layoutStart` - when the layout of the DOT source starts.
 * `layoutEnd` - when the layout of the DOT source ends.
 * `dataExtractEnd` - when the extraction of data from the SVG text representation ends.
+* `dataProcessPass1End` - when the first pass of the processing of the extracted data ends.
+* `dataProcessPass2End` - when the second pass of the processing of the extracted data ends.
 * `dataProcessEnd` - when the processing of the extracted data ends.
 * `renderStart` - when the rendering preparation starts, which is just before an eventual transition factory is called.
 * `renderEnd` - when the rendering preparation ends.

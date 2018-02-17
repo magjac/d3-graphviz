@@ -1,5 +1,6 @@
 var tape = require("tape");
 var jsdom = require("./jsdom");
+var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 var stringify = require('json-stringify-safe');
 
@@ -31,6 +32,13 @@ tape("data extraction", function(test) {
     parseData(basic_data);
 
     test.deepLooseEqual(graphviz._data, basic_data, "Extracted data equals predefined data");
+
+    graphviz.render();
+    var svg = d3.select('svg');
+    data = graphviz._extractData(svg, 0, null);
+    parseData(data);
+    test.deepLooseEqual(data, basic_data, "Explicitly extracted data equals predefined data");
+
     test.end();
 });
 

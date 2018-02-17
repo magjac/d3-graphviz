@@ -85,6 +85,8 @@ export function Graphviz(selection) {
         'layoutStart',
         'layoutEnd',
         'dataExtractEnd',
+        'dataProcessPass1End',
+        'dataProcessPass2End',
         'dataProcessEnd',
         'renderStart',
         'renderEnd',
