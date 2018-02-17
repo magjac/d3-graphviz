@@ -4,6 +4,7 @@ Renders SVG from graphs described in the [DOT](http://www.graphviz.org/content/d
 
 [![Build Status](https://travis-ci.org/magjac/d3-graphviz.svg?branch=master)](https://travis-ci.org/magjac/d3-graphviz)
 [![codecov](https://codecov.io/gh/magjac/d3-graphviz/branch/master/graph/badge.svg)](https://codecov.io/gh/magjac/d3-graphviz)
+[![npm version](https://img.shields.io/npm/v/d3-graphviz.svg?style=flat)](https://www.npmjs.com/package/d3-graphviz)
 
 ## Features
 * Rendering of SVG graphs from [DOT](http://www.graphviz.org/content/dot-language) source
