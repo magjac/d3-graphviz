@@ -31,7 +31,7 @@ d3.graphviz("#graph")
     .renderDot('digraph {a -> b}');
 ```
 
-[<img src="images/a-b.png">](http://bl.ocks.org/mbostock/ad70335eeef6d167bc36fd3c04378048)
+[<img src="images/a-b.png">](http://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b)
 
 This basic example can also bee seen [here](http://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b).
 
