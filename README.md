@@ -56,6 +56,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Data Format](#data-format)
 * [Performance](#performance)
 * [Requirements](#requirements)
+* [Support](#support)
 * [Development](#development)
 * [Credits](#credits)
 
@@ -360,6 +361,22 @@ Since the author is new to both Javascipt and D3, there are probably a lot of th
 ## Requirements
 
 [d3-graphviz](https://github.com/magjac/d3-graphviz) uses a few [ES6](http://es6-features.org) language features, so it must be used with a modern browser.
+
+## Support
+
+When asking for help, please include a link to a live example that demonstrates the issue, preferably on [JSFiddle](https://jsfiddle.net/). It is often impossible to debug from code snippets alone. Isolate the issue and reduce your code as much as possible before asking for help. The less code you post, the easier it is for someone to debug, and the more likely you are to get a helpful response.
+
+### Be notified of updates
+
+By clicking the **Watch** button, you will stay tuned for updates to the library.
+
+### Getting help
+
+* For specific questions, please use [Stack Overflow tags d3.js & graphviz](https://stackoverflow.com/tags/d3.js+graphviz).
+
+### Reporting bugs
+
+If you think you have found a bug in d3-graphviz itself, please [file an issue](https://github.com/magjac/d3-graphviz/issues/new).
 
 ## Development
 
