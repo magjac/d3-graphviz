@@ -7,6 +7,7 @@ Renders SVG from graphs described in the [DOT](http://www.graphviz.org/content/d
 [![npm version](https://img.shields.io/npm/v/d3-graphviz.svg?style=flat)](https://www.npmjs.com/package/d3-graphviz)
 [![unpkg](http://img.badgesize.io/https://unpkg.com/d3-graphviz/build/d3-graphviz.js?compression=gzip&label=unpkg&style=flat&cache=false)](https://unpkg.com/d3-graphviz/build/d3-graphviz.js)
 [![unpkg min](http://img.badgesize.io/https://unpkg.com/d3-graphviz/build/d3-graphviz.min.js?compression=gzip&label=unpkg%20min&style=flat&cache=false)](https://unpkg.com/d3-graphviz/build/d3-graphviz.min.js)
+<a href="https://join.slack.com/t/d3-graphviz/shared_invite/enQtMzE2NzY5ODkyNzcyLWY5M2Q2ZWQxZjc2OTRhNzdmMDE2OTdjMWUzN2U0NjQ0YTZkMzY3MDdlMjJhYmU4NGNmNTFkNWRiMzE1MGU0ZDY"><img src="images/slack_rgb_cropped.png" height="20px"></a>
 
 ## Features
 * Rendering of SVG graphs from [DOT](http://www.graphviz.org/content/dot-language) source
@@ -373,6 +374,8 @@ By clicking the **Watch** button, you will stay tuned for updates to the library
 ### Getting help
 
 * For specific questions, please use [Stack Overflow tags d3.js & graphviz](https://stackoverflow.com/tags/d3.js+graphviz).
+
+* For general discussions regarding d3-graphviz, please use the [d3-graphviz Slack](https://join.slack.com/t/d3-graphviz/shared_invite/enQtMzE2NzY5ODkyNzcyLWY5M2Q2ZWQxZjc2OTRhNzdmMDE2OTdjMWUzN2U0NjQ0YTZkMzY3MDdlMjJhYmU4NGNmNTFkNWRiMzE1MGU0ZDY).
 
 ### Reporting bugs
 
