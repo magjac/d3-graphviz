@@ -174,18 +174,12 @@ export default function(src, callback) {
                                 break;
                             }
                         }
-                        if (typeof startShape == 'undefined') {
-                            throw Error('Unsupported start shape of node ' + startNodeId + '.\nPlease file an issue at https://github.com/magjac/d3-graphviz/issues');
-                        }
                         var prevStartShapes = prevStartNode.children;
                         for (var i = 0; i < prevStartShapes.length; i++) {
                             if (prevStartShapes[i].tag == 'polygon' || prevStartShapes[i].tag == 'ellipse') {
                                 var prevStartShape = prevStartShapes[i];
                                 break;
                             }
-                        }
-                        if (typeof prevStartShape == 'undefined') {
-                            throw Error('Unsupported previuous start shape of node ' + startNodeId + '.\nPlease file an issue at https://github.com/magjac/d3-graphviz/issues');
                         }
                         datum.offset = {
                             x: prevStartShape.center.x - startShape.center.x,
