@@ -234,7 +234,7 @@ export default function(src, callback) {
         catch(error) {
             if (graphvizInstance._onerror) {
                 graphvizInstance._onerror(error.message);
-                return;
+                return this;
             } else {
                 throw error.message
             }
