@@ -2,7 +2,6 @@ var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_transition = require("d3-transition");
-var d3_timer = require("d3-timer");
 var d3_graphviz = require("../");
 
 tape("graphviz().keyMode() affects transitions and order of rendering.", function(test) {

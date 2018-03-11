@@ -1,8 +1,6 @@
 var tape = require("tape"),
     jsdom = require("./jsdom"),
     d3 = require("d3-selection"),
-    d3_transition = require("d3-transition"),
-    d3_timer = require("d3-timer"),
     d3_graphviz = require("../");
 
 tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
