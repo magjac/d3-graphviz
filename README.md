@@ -80,21 +80,21 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 
 #### Creating a Graphviz Renderer on an Existing Selection
 
-<a name="selection_graphviz" href="#selection_graphviz">#</a> <i>selection</i>.<b>graphviz</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/graphviz.js "Source")
+<a name="selection_graphviz" href="#selection_graphviz">#</a> <i>selection</i>.<b>graphviz</b>([<i>useWorker</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/graphviz.js "Source")
 
-Returns a new graphviz renderer instance on the given *selection*.
+Returns a new graphviz renderer instance on the given *selection*. If *useWorker* is specified and falsey, no web worker is used for the layout stage.
 
 #### Creating a Graphviz Renderer Using a Selector String or a Node
 
-<a name="d3_graphviz" href="#d3_graphviz">#</a> <b>d3.graphviz</b>(<i>selector</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/graphviz.js "Source")
+<a name="d3_graphviz" href="#d3_graphviz">#</a> <b>d3.graphviz</b>(<i>selector</i>[, <i>useWorker</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/graphviz.js "Source")
 
-Creates a new graphviz renderer instance on the first element matching the given *selector* string. If the *selecor* is not a string, instead creates a new graphviz renderer instance on the specified node.
+Creates a new graphviz renderer instance on the first element matching the given *selector* string. If the *selecor* is not a string, instead creates a new graphviz renderer instance on the specified node. If *useWorker* is specified and falsey, no web worker is used for the layout stage.
 
 ### Rendering
 
 <a name="graphviz_renderDot" href="#graphviz_renderDot">#</a> <i>graphviz</i>.<b>renderDot</b>(<i>dotSrc</i>[, <i>callback</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/renderDot.js "Source")
 
-Starts rendering of an SVG graph from the specified *dotSrc* string and appends it to the selection the grapviz renderer instance was generated on. [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot) returns "immediately", while the rendering is performed in the backgound. The layout stage is performed by a web worker. If *callback* is specified and not null, it is called with the `this` context as the graphviz instance, when the graphviz renderer has finished all actions.
+Starts rendering of an SVG graph from the specified *dotSrc* string and appends it to the selection the grapviz renderer instance was generated on. [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot) returns "immediately", while the rendering is performed in the backgound. The layout stage is performed by a web worker (unless the use of a web worker was disabled when the renderer instance was created).
 
 It is also possible to do the [Graphviz](http://www.graphviz.org/content/dot-language) layout in a first separate stage and do the actual rendering of the SVG as a second step like so:
 
