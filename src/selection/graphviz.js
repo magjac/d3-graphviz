@@ -2,5 +2,5 @@ import {Graphviz} from "../graphviz";
 
 export default function() {
 
-  return new Graphviz(this);
+    return new Graphviz(this);
 }
