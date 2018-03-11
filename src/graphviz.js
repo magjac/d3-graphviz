@@ -23,8 +23,27 @@ import on from "./on";
 import onerror from "./onerror";
 import logEvents from "./logEvents";
 
-export function Graphviz(selection) {
-    if (typeof Worker != 'undefined') {
+export function Graphviz(selection, useWorker) {
+    if (typeof Worker == 'undefined') {
+        useWorker = false;
+    }
+    if (useWorker) {
+        var scripts = d3.selectAll('script');
+        var vizScript = scripts.filter(function() {
+            return d3.select(this).attr('type') == 'javascript/worker';
+        });
+        if (vizScript.size() == 0) {
+            console.warn('No script tag of type "javascript/worker" was found and "useWorker" is true. Not using web worker.');
+            useWorker = false;
+        } else {
+            this._vizURL = vizScript.attr('src');
+            if (!this._vizURL) {
+                console.warn('No "src" attribute of was found on the "javascript/worker" script tag and "useWorker" is true. Not using web worker.');
+                useWorker = false;
+            }
+        }
+    }
+    if (useWorker) {
         var js = `
             onmessage = function(event) {
                 if (event.data.vizURL) {
@@ -99,8 +118,8 @@ export function Graphviz(selection) {
     initViz.call(this);
 }
 
-export default function graphviz(selector) {
-    var g = new Graphviz(d3.select(selector));
+export default function graphviz(selector, useWorker=true) {
+    var g = new Graphviz(d3.select(selector), useWorker);
     return g;
 }
 

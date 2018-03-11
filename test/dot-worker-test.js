@@ -1,7 +1,6 @@
 var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
-var d3_transition = require("d3-transition");
 var d3_graphviz = require("../");
 var Worker = require("tiny-worker");
 
@@ -39,6 +38,7 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
         part2();
     }
 
+    test.equal(d3.select('#graph').datum(), undefined, 'No data is attached before calling dot');
     function part1() {
         graphviz
             .tweenShapes(false)
@@ -47,6 +47,7 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
             .dot('digraph {a -> b; c}')
             .render(part1_end);
     }
+    test.equal(d3.select('#graph').datum(), undefined, 'No data is attached immediately after calling dot when worker is used');
 
     function part1_end() {
         test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');

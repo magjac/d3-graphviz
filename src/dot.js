@@ -13,11 +13,7 @@ export function initViz() {
         Viz("");
         this._dispatch.call("initEnd", this);
     } else {
-        var scripts = d3.selectAll('script');
-        var vizScript = scripts.filter(function() {
-            return d3.select(this).attr('type') == 'javascript/worker';
-        });
-        var vizURL = vizScript.attr('src');
+        var vizURL = this._vizURL;
         var graphvizInstance = this;
         this._worker.onmessage = function(event) {
             graphvizInstance._dispatch.call("initEnd", this);
@@ -234,7 +230,7 @@ export default function(src, callback) {
         catch(error) {
             if (graphvizInstance._onerror) {
                 graphvizInstance._onerror(error.message);
-                return;
+                return this;
             } else {
                 throw error.message
             }

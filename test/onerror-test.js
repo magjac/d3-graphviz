@@ -1,7 +1,6 @@
 var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3_graphviz = require("../");
-var d3_selection = require("d3-selection");
 
 tape("onerror() registers dot layout error handler.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');

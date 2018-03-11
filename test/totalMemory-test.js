@@ -1,7 +1,6 @@
 var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3_graphviz = require("../");
-var d3_selection = require("d3-selection");
 
 tape("totalMemory() sets the total memory available to Viz.js.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
