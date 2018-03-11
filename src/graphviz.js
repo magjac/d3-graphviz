@@ -22,6 +22,9 @@ import {resetZoom} from "./zoom";
 import on from "./on";
 import onerror from "./onerror";
 import logEvents from "./logEvents";
+import {drawEdge} from "./draw";
+import {updateEdge} from "./draw";
+import {moveCurrentEdgeEndPoint} from "./draw";
 
 export function Graphviz(selection, useWorker) {
     if (typeof Worker == 'undefined') {
@@ -146,4 +149,7 @@ Graphviz.prototype = graphviz.prototype = {
     on: on,
     onerror: onerror,
     logEvents: logEvents,
+    drawEdge: drawEdge,
+    updateEdge: updateEdge,
+    moveCurrentEdgeEndPoint,
 };
