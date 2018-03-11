@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.js"></script>
+<script src="../node_modules/viz.js/viz.js" type="javascript/worker"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+margin = 20; // to avoid scrollbars
+
+var graphviz = d3.select("#graph").graphviz()
+    .attributer(attributer)
+    .renderDot(`strict digraph {
+        node [style="filled"]
+        a -> b}`, startApp);
+
+    function attributer(datum, index, nodes) {
+        var selection = d3.select(this);
+        if (datum.tag == "svg") {
+            var width = window.innerWidth - margin;
+            var height = window.innerHeight - margin;
+            var x = "10";
+            var y = "10";
+            var unit = 'px';
+            selection
+                .attr("width", width + unit)
+                .attr("height", height + unit);
+            datum.attributes.width = width + unit;
+            datum.attributes.height = height + unit;
+        }
+    }
+    function startApp() {
+        drawDemoEdges();
+        graphviz.currentEdge = null;
+        var nodes = d3.selectAll(".node");
+
+        // click outside of nodes
+        d3.select(document).on("click", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('document click');
+        });
+
+        // move
+        d3.select(document).on("mousemove", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('document mousemove');
+            var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+            [x0, y0] = d3.mouse(graph0.node());
+            if (graphviz.currentEdge) {
+                graphviz
+                    .moveCurrentEdgeEndPoint(x0, y0);
+            }
+        });
+
+        // click and mousedown on nodes
+        nodes.on("click mousedown", function() {
+            var event = d3.event;
+            event.preventDefault();
+            console.log('node click or mousedown');
+            graphviz.currentEdge = null;
+        });
+
+        // double-click on nodes
+        nodes.on("dblclick", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('node dblclick');
+        });
+
+        // right-click on nodes
+        nodes.on("contextmenu", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('node contextmenu');
+            var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+            [x0, y0] = d3.mouse(graph0.node());
+            graphviz
+                .drawEdge(x0, y0, x0, y0, fill="orange", stroke="purple")
+        });
+
+        // right-click outside of nodes
+        d3.select(document).on("contextmenu", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('document contextmenu');
+        });
+
+    }
+    function drawDemoEdges() {
+        graphviz
+            .drawEdge(20, -40, 40, -40, fill="red", stroke="red")
+            .drawEdge(20, -40, 20, -60, fill="blue", stroke="blue")
+            .drawEdge(20, -40, 0, -40, fill="green", stroke="green")
+            .drawEdge(20, -40, 20, -20, fill="yellow", stroke="yellow");
+    }
+
+</script>
