@@ -38,6 +38,7 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
         part2();
     }
 
+    test.equal(d3.select('#graph').datum(), undefined, 'No data is attached before calling dot');
     function part1() {
         graphviz
             .tweenShapes(false)
@@ -46,6 +47,7 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
             .dot('digraph {a -> b; c}')
             .render(part1_end);
     }
+    test.equal(d3.select('#graph').datum(), undefined, 'No data is attached immediately after calling dot when worker is used');
 
     function part1_end() {
         test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
