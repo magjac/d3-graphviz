@@ -357,7 +357,7 @@ The shape- and path-tweening operations are quite computational intensive and ca
 
 In order for animated transitions to be smooth, special considerations has been made to do the computational intensive operations before transitions start. Use [*transition*.delay](#transition_delay) to reserve time for those computations.
 
-Since the author is new to both Javascipt and D3, there are probably a lot of things that can be improved. Suggestions are welcome.
+Since the author is new to both Javascript and D3, there are probably a lot of things that can be improved. Suggestions are welcome.
 
 ## Requirements
 
