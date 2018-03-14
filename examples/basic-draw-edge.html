@@ -43,6 +43,16 @@ var graphviz = d3.select("#graph").graphviz()
             console.log('document click');
         });
 
+        // keyup outside of nodes
+        d3.select(document).on("keyup", function() {
+            var event = d3.event;
+            event.preventDefault();
+            console.log('document keyup', event);
+            if (event.keyCode == 27) {
+                graphviz.abortDrawing();
+            }
+        });
+
         // move
         d3.select(document).on("mousemove", function() {
             var event = d3.event;
