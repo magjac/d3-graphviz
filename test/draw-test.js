@@ -20,7 +20,8 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
             .drawEdge(20, -20, 20, -40, fill="blue", stroke="blue")
             .drawEdge(20, -20, 0, -20, fill="green", stroke="green")
             .drawEdge(20, -20, 20, 0, fill="yellow", stroke="yellow")
-            .moveCurrentEdgeEndPoint(50, -30);
+            .moveCurrentEdgeEndPoint(50, -30)
+            .abortDrawing();
         test.end();
     }
 
