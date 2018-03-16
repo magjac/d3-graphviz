@@ -2,7 +2,24 @@ import * as d3 from "d3-selection";
 import {path as d3_path} from "d3-path";
 import {rotate} from "./geometry";
 
-export function drawEdge(x1, y1, x2, y2, fill="black", stroke="black", strokeWidth=1) {
+function completeAttributes(attributes) {
+
+    var defaultEdgeAttributes = {
+        fill: "black",
+        stroke: "black",
+        strokeWidth: 1,
+        href: null,
+    };
+    for (var attribute in defaultEdgeAttributes) {
+        if (attributes[attribute] === undefined) {
+            attributes[attribute] = defaultEdgeAttributes[attribute];
+        }
+    }
+}
+
+export function drawEdge(x1, y1, x2, y2, attributes) {
+    attributes = attributes || {};
+    completeAttributes(attributes);
     var svg = d3.select("svg");
     var graph0 = svg.selectWithoutDataPropagation("g");
     var newEdge = graph0.append("g")
@@ -10,33 +27,30 @@ export function drawEdge(x1, y1, x2, y2, fill="black", stroke="black", strokeWid
     var a = newEdge.append("g").append("a");
     var line = a.append("path");
     var arrowHead = a.append("polygon");
-    this.currentEdge = {
+    this._currentEdge = {
         g: newEdge,
         x1: x1,
         y1: y1,
         x2: x2,
         y2: y2,
-        fill: fill,
-        stroke: stroke,
-        strokeWidth: strokeWidth,
+        attributes: attributes,
     };
-    this.updateEdge(newEdge, x1, y1, x2, y2, fill, stroke, strokeWidth);
+    _updateEdge(newEdge, x1, y1, x2, y2, attributes);
 
     return this;
 }
 
-export function updateEdge(edge, x1, y1, x2, y2, fill, stroke, strokeWidth) {
+export function updateEdge(edge, x1, y1, x2, y2, attributes) {
+    attributes = attributes || {};
+    completeAttributes(attributes);
+    _updateEdge(edge, x1, y1, x2, y2, attributes);
+}
 
-    edge = edge || this.currentEdge.g;
+function _updateEdge(edge, x1, y1, x2, y2, attributes) {
 
-    x1 = x1 || this.currentEdge.x1;
-    y1 = y1 || this.currentEdge.y1;
-    x2 = x2 || this.currentEdge.x2;
-    y2 = y2 || this.currentEdge.y2;
-
-    fill = fill || this.currentEdge.fill;
-    stroke = stroke || this.currentEdge.stroke;
-    strokeWidth = strokeWidth || this.currentEdge.strokeWidth;
+    var fill = attributes.fill;
+    var stroke = attributes.stroke;
+    var strokeWidth = attributes.strokeWidth;
 
     var shortening = 2; // avoid mouse pointing on edge
 
@@ -100,22 +114,23 @@ export function updateEdge(edge, x1, y1, x2, y2, fill, stroke, strokeWidth) {
 
 export function moveCurrentEdgeEndPoint(x2, y2) {
 
-    var edge = this.currentEdge.g;
-    var x1 = this.currentEdge.x1;
-    var y1 = this.currentEdge.y1;
+    var edge = this._currentEdge.g;
+    var x1 = this._currentEdge.x1;
+    var y1 = this._currentEdge.y1;
+    var attributes = this._currentEdge.attributes;
 
-    this.updateEdge(edge, x1, y1, x2, y2);
+    _updateEdge(edge, x1, y1, x2, y2, attributes);
 
     return this
 }
 
 export function abortDrawing() {
 
-    var edge = this.currentEdge.g;
+    var edge = this._currentEdge.g;
 
     edge.remove();
 
-    this.currentEdge = null;
+    this._currentEdge = null;
 
     return this
 }

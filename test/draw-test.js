@@ -16,10 +16,10 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
 
     function drawEdge() {
         graphviz
-            .drawEdge(20, -20, 40, -20, fill="cyan", stroke="red")
-            .drawEdge(20, -20, 20, -40, fill="blue", stroke="blue")
-            .drawEdge(20, -20, 0, -20, fill="green", stroke="green")
-            .drawEdge(20, -20, 20, 0, fill="yellow", stroke="yellow")
+            .drawEdge(20, -20, 40, -20, {fill: "cyan", stroke: "red"})
+            .drawEdge(20, -20, 20, -40, {fill: "blue", stroke: "blue"})
+            .drawEdge(20, -20, 0, -20, {fill: "green", stroke: "green"})
+            .drawEdge(20, -20, 20, 0, {fill: "yellow", stroke: "yellow"})
             .moveCurrentEdgeEndPoint(50, -30)
             .abortDrawing();
         test.end();
