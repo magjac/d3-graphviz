@@ -17,7 +17,7 @@ function completeAttributes(attributes) {
     }
 }
 
-export function drawEdge(x1, y1, x2, y2, attributes) {
+export function drawEdge(x1, y1, x2, y2, shortening=0, attributes) {
     attributes = attributes || {};
     completeAttributes(attributes);
     var svg = d3.select("svg");
@@ -37,24 +37,22 @@ export function drawEdge(x1, y1, x2, y2, attributes) {
         y2: y2,
         attributes: attributes,
     };
-    _updateEdge(newEdge, x1, y1, x2, y2, attributes);
+    _updateEdge(newEdge, x1, y1, x2, y2, shortening, attributes);
 
     return this;
 }
 
-export function updateEdge(edge, x1, y1, x2, y2, attributes) {
+export function updateEdge(edge, x1, y1, x2, y2, shortening=0, attributes) {
     attributes = attributes || {};
     completeAttributes(attributes);
-    _updateEdge(edge, x1, y1, x2, y2, attributes);
+    _updateEdge(edge, x1, y1, x2, y2, shortening, attributes);
 }
 
-function _updateEdge(edge, x1, y1, x2, y2, attributes) {
+function _updateEdge(edge, x1, y1, x2, y2, shortening, attributes) {
 
     var fill = attributes.fill;
     var stroke = attributes.stroke;
     var strokeWidth = attributes.strokeWidth;
-
-    var shortening = 2; // avoid mouse pointing on edge
 
     var arrowHeadLength = 10;
     var arrowHeadWidth = 7;
@@ -112,14 +110,14 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes) {
     return this;
 }
 
-export function moveCurrentEdgeEndPoint(x2, y2) {
+export function moveCurrentEdgeEndPoint(x2, y2, shortening=0) {
 
     var edge = this._currentEdge.g;
     var x1 = this._currentEdge.x1;
     var y1 = this._currentEdge.y1;
     var attributes = this._currentEdge.attributes;
 
-    _updateEdge(edge, x1, y1, x2, y2, attributes);
+    _updateEdge(edge, x1, y1, x2, y2, shortening, attributes);
 
     return this
 }

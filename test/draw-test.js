@@ -146,7 +146,7 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
         }
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 2;
+        margin = 0;
         var expected_x = [];
         var expected_y = [];
         expected_x.push(x2 - arrowHeadLength - margin);
@@ -162,10 +162,10 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
         }
 
         graphviz
-            .drawEdge(20, -20, 40, -20, {fill: "cyan", stroke: "red"})
-            .drawEdge(20, -20, 20, -40, {fill: "blue", stroke: "blue"})
-            .drawEdge(20, -20, 0, -20, {fill: "green", stroke: "green"})
-            .drawEdge(20, -20, 20, 0, {fill: "yellow", stroke: "yellow"})
+            .drawEdge(20, -20, 40, -20, 0, {fill: "cyan", stroke: "red"})
+            .drawEdge(20, -20, 20, -40, 0, {fill: "blue", stroke: "blue"})
+            .drawEdge(20, -20, 0, -20, 0, {fill: "green", stroke: "green"})
+            .drawEdge(20, -20, 20, 0, 0, {fill: "yellow", stroke: "yellow"})
             .moveCurrentEdgeEndPoint(50, -30);
         num_edges += 4;
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing 5 edges');
