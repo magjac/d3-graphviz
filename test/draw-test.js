@@ -124,7 +124,7 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing 5 edge');
         graphviz
-            .insertCurrentEdge('b -> a');
+            .insertCurrentEdge('b->a');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
@@ -132,7 +132,7 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
 
         newArrowHead = d3.selectAll('.edge').selectAll('polygon').filter(function(d) {
-            return d.parent.parent.parent.key == 'b -> a'
+            return d.parent.parent.parent.key == 'b->a'
         });
         points = newArrowHead.attr("points").split(' ').map(function(v) {
             point = v.split(',');
