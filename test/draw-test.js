@@ -47,14 +47,15 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
         newArrowHead = d3.selectAll('.edge').selectAll('polygon').filter(function(d) {
             return d.parent.parent.parent.key == 'b -> a'
         });
-        points = newArrowHead.attr("points").split(',').map(function(v) {
-            return +v;
+        points = newArrowHead.attr("points").split(' ').map(function(v) {
+            point = v.split(',');
+            return [Math.round(+point[0] * 1000) / 1000 , Math.round(+point[1] * 1000) / 1000];
         });
         var actual_x = [];
         var actual_y = [];
-        for (i = 0; i < points.length; i += 2) {
-            actual_x.push(points[i]);
-            actual_y.push(points[i + 1]);
+        for (i = 0; i < points.length; i += 1) {
+            actual_x.push(points[i][0]);
+            actual_y.push(points[i][1]);
         }
         arrowHeadLength = 10;
         arrowHeadWidth = 7;

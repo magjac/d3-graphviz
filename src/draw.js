@@ -99,10 +99,9 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes) {
     var allPoints = [];
     for (var i = 0; i < arrowHeadPoints.length; i++) {
         var point = arrowHeadPoints[i];
-        allPoints.push(point[0]);
-        allPoints.push(point[1]);
+        allPoints.push(point.join(','));
     }
-    var pointsAttr = allPoints.join(',');
+    var pointsAttr = allPoints.join(' ');
 
     arrowHead
         .attr("points", pointsAttr)
