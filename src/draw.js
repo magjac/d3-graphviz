@@ -56,11 +56,14 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes) {
 
     var shortening = 2; // avoid mouse pointing on edge
 
+    var arrowHeadLength = 10;
+    var arrowHeadWidth = 7;
+
     var arrowHeadPoints = [
-        [0, -3.5],
-        [10, 0],
-        [0, 3.5],
-        [0, -3.5],
+        [0, -arrowHeadWidth / 2],
+        [arrowHeadLength, 0],
+        [0, arrowHeadWidth / 2],
+        [0, -arrowHeadWidth / 2],
     ];
 
     var dx = x2 - x1;
@@ -85,13 +88,9 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes) {
         .attr("stroke", stroke)
         .attr("strokeWidth", strokeWidth);
 
-    var xpoints = arrowHeadPoints.map(function (points) {
-        return points[0];
-    });
-    var xmax = Math.max(...xpoints);
     for (var i = 0; i < arrowHeadPoints.length; i++) {
         var point = arrowHeadPoints[i];
-        arrowHeadPoints[i] = rotate(point[0] - xmax, point[1], cosA, sinA);
+        arrowHeadPoints[i] = rotate(point[0] - arrowHeadLength, point[1], cosA, sinA);
     }
     for (var i = 0; i < arrowHeadPoints.length; i++) {
         var point = arrowHeadPoints[i];
