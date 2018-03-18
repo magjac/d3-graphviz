@@ -186,6 +186,7 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
 
         graphviz
             .drawEdge(20, -20, 40, -20, 0, {fill: "cyan", stroke: "red"})
+            .updateCurrentEdge(31, -31, 61, -31, 2, 0, {fill: "red", stroke: "purple", "strokeWidth": 2})
             .drawEdge(20, -20, 20, -40, 0, {fill: "blue", stroke: "blue"})
             .drawEdge(20, -20, 0, -20, 0, {fill: "green", stroke: "green"})
             .drawEdge(20, -20, 20, 0, 0, {fill: "yellow", stroke: "yellow"})

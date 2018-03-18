@@ -42,10 +42,13 @@ export function drawEdge(x1, y1, x2, y2, shortening=0, attributes) {
     return this;
 }
 
-export function updateEdge(edge, x1, y1, x2, y2, shortening=0, attributes) {
+export function updateCurrentEdge(x1, y1, x2, y2, shortening=0, attributes) {
+    var edge = this._currentEdge.g
     attributes = attributes || {};
     completeAttributes(attributes);
     _updateEdge(edge, x1, y1, x2, y2, shortening, attributes);
+
+    return this;
 }
 
 function _updateEdge(edge, x1, y1, x2, y2, shortening, attributes) {

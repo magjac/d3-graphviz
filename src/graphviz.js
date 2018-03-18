@@ -23,7 +23,7 @@ import on from "./on";
 import onerror from "./onerror";
 import logEvents from "./logEvents";
 import {drawEdge} from "./draw";
-import {updateEdge} from "./draw";
+import {updateCurrentEdge} from "./draw";
 import {moveCurrentEdgeEndPoint} from "./draw";
 import {insertCurrentEdge} from "./draw";
 import {abortDrawing} from "./draw";
@@ -152,7 +152,7 @@ Graphviz.prototype = graphviz.prototype = {
     onerror: onerror,
     logEvents: logEvents,
     drawEdge: drawEdge,
-    updateEdge: updateEdge,
+    updateCurrentEdge: updateCurrentEdge,
     moveCurrentEdgeEndPoint,
     insertCurrentEdge,
     abortDrawing, abortDrawing,
