@@ -83,8 +83,10 @@ var graphviz = d3.select("#graph").graphviz()
             event.preventDefault();
             console.log('node click or mousedown');
             if (isDrawing) {
+                graphviz
+                    .insertCurrentEdge('b->a');
                 dotSrcLines = dotSrc.split('\n');
-                newEdgeString = 'b -> a [color="red"; fillcolor="orange", penwidth="1"]';
+                newEdgeString = 'b -> a [color="red"; fillcolor="orange", penwidth="1", URL="dummy"]';
                 dotSrcLines.splice(-1, 0, newEdgeString);
                 dotSrc = dotSrcLines.join('\n');
                 graphviz
