@@ -24,6 +24,8 @@ export function drawEdge(x1, y1, x2, y2, attributes) {
     var graph0 = svg.selectWithoutDataPropagation("g");
     var newEdge = graph0.append("g")
         .attr("class", "edge");
+    var title = newEdge.insert('title', ':first-child')
+        .text("");
     var a = newEdge.append("g").append("a");
     var line = a.append("path");
     var arrowHead = a.append("polygon");
