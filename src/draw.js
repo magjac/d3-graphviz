@@ -56,8 +56,8 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes) {
 
     var arrowHeadPoints = [
         [0, -3.5],
-        [0, 3.5],
         [10, 0],
+        [0, 3.5],
         [0, -3.5],
     ];
 
