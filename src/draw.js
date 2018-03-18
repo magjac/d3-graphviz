@@ -56,6 +56,7 @@ function _updateEdge(edge, x1, y1, x2, y2, shortening, attributes) {
 
     var arrowHeadLength = 10;
     var arrowHeadWidth = 7;
+    var margin = 0.174;
 
     var arrowHeadPoints = [
         [0, -arrowHeadWidth / 2],
@@ -69,8 +70,8 @@ function _updateEdge(edge, x1, y1, x2, y2, shortening, attributes) {
     var length = Math.sqrt(dx * dx + dy * dy);
     var cosA = dx / length;
     var sinA = dy / length;
-    x2 = x1 + (length - shortening) * cosA;
-    y2 = y1 + (length - shortening) * sinA;
+    x2 = x1 + (length - shortening - arrowHeadLength - margin) * cosA;
+    y2 = y1 + (length - shortening - arrowHeadLength - margin) * sinA;
 
     var a = edge.selectWithoutDataPropagation("g").selectWithoutDataPropagation("a");
     var line = a.selectWithoutDataPropagation("path");
@@ -86,9 +87,11 @@ function _updateEdge(edge, x1, y1, x2, y2, shortening, attributes) {
         .attr("stroke", stroke)
         .attr("strokeWidth", strokeWidth);
 
+    x2 = x1 + (length - shortening - arrowHeadLength) * cosA;
+    y2 = y1 + (length - shortening - arrowHeadLength) * sinA;
     for (var i = 0; i < arrowHeadPoints.length; i++) {
         var point = arrowHeadPoints[i];
-        arrowHeadPoints[i] = rotate(point[0] - arrowHeadLength, point[1], cosA, sinA);
+        arrowHeadPoints[i] = rotate(point[0], point[1], cosA, sinA);
     }
     for (var i = 0; i < arrowHeadPoints.length; i++) {
         var point = arrowHeadPoints[i];
