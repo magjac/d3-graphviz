@@ -23,6 +23,15 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
             .drawEdge(20, -20, 20, 0, {fill: "yellow", stroke: "yellow"})
             .moveCurrentEdgeEndPoint(50, -30)
             .abortDrawing();
+        graphviz
+            .drawEdge(30, -30, 60, -30)
+            .insertCurrentEdge('b -> a');
+        graphviz
+            .dot('digraph {a -> b; b -> a}')
+            .render(endTest);
+    }
+
+    function endTest() {
         test.end();
     }
 

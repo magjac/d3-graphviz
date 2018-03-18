@@ -136,3 +136,69 @@ export function abortDrawing() {
 
     return this
 }
+
+export function insertCurrentEdge(name) {
+
+    var edge = this._currentEdge.g;
+
+    var title = edge.selectWithoutDataPropagation("title");
+    title
+        .text(name);
+    var text = title.selectAll(function() {
+        return title.node().childNodes;
+    });
+    var ga = edge.selectWithoutDataPropagation("g");
+    var a = ga.selectWithoutDataPropagation("a");
+    var line = a.selectWithoutDataPropagation("path");
+    var arrowHead = a.selectWithoutDataPropagation("polygon");
+
+    var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+    var graph0Datum = graph0.datum();
+    var edgeData = this._extractData(edge, graph0Datum.children.length, graph0.datum());
+    var gDatum = edgeData;
+    var titleDatum = gDatum.children[0];
+    var textDatum = titleDatum.children[0];
+    var gaDatum = gDatum.children[1];
+    var aDatum = gaDatum.children[0];
+    var pathDatum = aDatum.children[0];
+    var polygonDatum = aDatum.children[1];
+    graph0Datum.children.push(gDatum);
+
+    edge.datum(gDatum);
+    edge.data([gDatum], function (d) {
+        return d.key;
+    });
+
+    title.datum(titleDatum);
+    title.data([titleDatum], function (d) {
+        return [d.key];
+    });
+
+    text.datum(textDatum);
+    text.data([textDatum], function (d) {
+        return [d.key];
+    });
+
+    ga.datum(gaDatum);
+    ga.data([gaDatum], function (d) {
+        return [d.key];
+    });
+
+    a.datum(aDatum);
+    a.data([aDatum], function (d) {
+        return [d.key];
+    });
+
+    line.datum(pathDatum);
+    line.data([pathDatum], function (d) {
+        return [d.key];
+    });
+
+    arrowHead.datum(polygonDatum);
+    arrowHead.data([polygonDatum], function (d) {
+        return [d.key];
+    });
+
+    return this
+
+}
