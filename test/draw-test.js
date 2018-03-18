@@ -111,6 +111,9 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
         test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        arrowHeadLength = 10;
+        arrowHeadWidth = 7;
+        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -131,6 +134,29 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
 
+        line = d3.selectAll('.edge').selectAll('path').filter(function(d) {
+            return d.parent.parent.parent.key == 'b->a'
+        });
+        points = line.attr("d").split(/[MCL ]/).map(function(v) {
+            point = v.split(',');
+            return [Math.round(+point[0] * 1000) / 1000 , Math.round(+point[1] * 1000) / 1000];
+        });
+        var actual_x = [];
+        var actual_y = [];
+        for (i = 1; i < points.length; i += 1) {
+            actual_x.push(points[i][0]);
+            actual_y.push(points[i][1]);
+        }
+        var expected_x = [];
+        var expected_y = [];
+        expected_x.push(x1);
+        expected_y.push(y1);
+        expected_x.push(Math.round((x2 - margin - arrowHeadLength) * 1000) / 1000);
+        expected_y.push(y2);
+        for (i = 0; i < expected_x.length; i++) {
+            test.deepLooseEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
+        }
+
         newArrowHead = d3.selectAll('.edge').selectAll('polygon').filter(function(d) {
             return d.parent.parent.parent.key == 'b->a'
         });
@@ -144,18 +170,15 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
             actual_x.push(points[i][0]);
             actual_y.push(points[i][1]);
         }
-        arrowHeadLength = 10;
-        arrowHeadWidth = 7;
-        margin = 0;
         var expected_x = [];
         var expected_y = [];
-        expected_x.push(x2 - arrowHeadLength - margin);
+        expected_x.push(x2 - arrowHeadLength);
         expected_y.push(y2 - arrowHeadWidth / 2);
-        expected_x.push(x2 - margin);
+        expected_x.push(x2);
         expected_y.push(y2);
-        expected_x.push(x2 - arrowHeadLength - margin);
+        expected_x.push(x2 - arrowHeadLength);
         expected_y.push(y2 + arrowHeadWidth / 2);
-        expected_x.push(x2 - arrowHeadLength - margin);
+        expected_x.push(x2 - arrowHeadLength);
         expected_y.push(y2 - arrowHeadWidth / 2);
         for (i = 0; i < expected_x.length; i++) {
             test.deepLooseEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
