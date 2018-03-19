@@ -76,7 +76,6 @@ var graphviz = d3.select("#graph").graphviz()
             var event = d3.event;
             event.preventDefault();
             console.log('node click or mousedown');
-            isDrawing = false;
         });
 
         // double-click on nodes
@@ -85,6 +84,7 @@ var graphviz = d3.select("#graph").graphviz()
             event.preventDefault();
             event.stopPropagation();
             console.log('node dblclick');
+            isDrawing = false;
         });
 
         // right-click on nodes

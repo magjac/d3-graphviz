@@ -83,6 +83,14 @@ var graphviz = d3.select("#graph").graphviz()
             var event = d3.event;
             event.preventDefault();
             console.log('node click or mousedown');
+        });
+
+        // double-click on nodes
+        nodes.on("dblclick", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('node dblclick');
             if (isDrawing) {
                 var endNode = d3.select(this);
                 var startNodeName = startNode.selectWithoutDataPropagation("title").text();
@@ -97,14 +105,6 @@ var graphviz = d3.select("#graph").graphviz()
                     .renderDot(dotSrc, startApp);
             }
             isDrawing = false;
-        });
-
-        // double-click on nodes
-        nodes.on("dblclick", function() {
-            var event = d3.event;
-            event.preventDefault();
-            event.stopPropagation();
-            console.log('node dblclick');
         });
 
         // right-click on nodes
