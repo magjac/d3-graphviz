@@ -24,6 +24,7 @@ export function drawEdge(x1, y1, x2, y2, shortening=0, attributes) {
     var svg = d3.select("svg");
     var graph0 = svg.selectWithoutDataPropagation("g");
     var newEdge = graph0.append("g")
+        .datum(null)
         .attr("class", "edge");
     var title = newEdge.insert('title', ':first-child')
         .text("");
