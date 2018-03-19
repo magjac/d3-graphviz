@@ -18,7 +18,7 @@ function completeAttributes(attributes, defaultAttributes=defaultEdgeAttributes)
     }
 }
 
-export function drawEdge(x1, y1, x2, y2, shortening=0, attributes) {
+export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
     attributes = attributes || {};
     completeAttributes(attributes);
     var svg = d3.select("svg");
@@ -39,12 +39,12 @@ export function drawEdge(x1, y1, x2, y2, shortening=0, attributes) {
         y2: y2,
         attributes: attributes,
     };
-    _updateEdge(newEdge, x1, y1, x2, y2, shortening, attributes);
+    _updateEdge(newEdge, x1, y1, x2, y2, attributes, options);
 
     return this;
 }
 
-export function updateCurrentEdge(x1, y1, x2, y2, shortening=0, attributes) {
+export function updateCurrentEdge(x1, y1, x2, y2, attributes, options={}) {
     var edge = this._currentEdge.g
     attributes = attributes || {};
     completeAttributes(attributes, this._currentEdge.attributes);
@@ -53,18 +53,18 @@ export function updateCurrentEdge(x1, y1, x2, y2, shortening=0, attributes) {
     this._currentEdge.x2 = x2;
     this._currentEdge.y2 = y2;
     this._currentEdge.attributes = attributes;
-    _updateEdge(edge, x1, y1, x2, y2, shortening, attributes);
+    _updateEdge(edge, x1, y1, x2, y2, attributes, options);
 
     return this;
 }
 
-function _updateEdge(edge, x1, y1, x2, y2, shortening, attributes) {
+function _updateEdge(edge, x1, y1, x2, y2, attributes, options) {
 
     var id = attributes.id;
     var fill = attributes.fill;
     var stroke = attributes.stroke;
     var strokeWidth = attributes.strokeWidth;
-
+    var shortening = options.shortening || 0;
     var arrowHeadLength = 10;
     var arrowHeadWidth = 7;
     var margin = 0.174;
@@ -127,7 +127,7 @@ function _updateEdge(edge, x1, y1, x2, y2, shortening, attributes) {
     return this;
 }
 
-export function moveCurrentEdgeEndPoint(x2, y2, shortening=0) {
+export function moveCurrentEdgeEndPoint(x2, y2, options={}) {
 
     var edge = this._currentEdge.g;
     var x1 = this._currentEdge.x1;
@@ -136,7 +136,7 @@ export function moveCurrentEdgeEndPoint(x2, y2, shortening=0) {
 
     this._currentEdge.x2 = x2;
     this._currentEdge.y2 = y2;
-    _updateEdge(edge, x1, y1, x2, y2, shortening, attributes);
+    _updateEdge(edge, x1, y1, x2, y2, attributes, options);
 
     return this
 }
