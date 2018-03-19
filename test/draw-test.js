@@ -351,18 +351,18 @@ tape("updateCurrentEdge modifies the start and end points and the attributes of 
         test.equal(line.attr("strokeWidth"), '1', 'Default stroke width is 1');
 
         graphviz
-            .updateCurrentEdge(21, -21, 41, -21, {fill: "red", stroke: "purple", "strokeWidth": 2, id: "drawn-edge"});
+            .updateCurrentEdge(21, -21, 41, -21, {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-edge"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
         test.equal(line.attr("fill"), 'red', 'Fill color of a drawn edge is updated to red');
         test.equal(line.attr("stroke"), 'purple', 'Stroke color is updated to purple');
         test.equal(line.attr("strokeWidth"), '2', 'Stroke width is updated to 2');
 
         graphviz
-            .updateCurrentEdge(21, -21, 41, -21, {stroke: "green"});
+            .updateCurrentEdge(21, -21, 41, -21, {color: "green"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(line.attr("fill"), 'red', 'Fill color is not updated when only stroke is changed');
+        test.equal(line.attr("fill"), 'red', 'Fill color is not updated when only color is changed');
         test.equal(line.attr("stroke"), 'green', 'Stroke color is updated to green');
-        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is not updated when only stroke is changed');
+        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is not updated when only color is changed');
 
         graphviz
             .updateCurrentEdge(22, -22, 42, -22);
@@ -416,7 +416,7 @@ tape("moveCurrentEdgeEndPoint modifies the end points of an edge", function(test
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         test.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
         graphviz
-            .updateCurrentEdge(21, -21, 41, -21, {fill: "red", stroke: "purple", "strokeWidth": 2, id: "drawn-edge"});
+            .updateCurrentEdge(21, -21, 41, -21, {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-edge"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after modifying the currently drawn edge');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after modifying the currently drawn edge');
@@ -425,7 +425,7 @@ tape("moveCurrentEdgeEndPoint modifies the end points of an edge", function(test
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after modifying the currently drawn edge');
 
         graphviz
-            .updateCurrentEdge(22, -22, 1000, -2000, {fill: "red", stroke: "purple", "strokeWidth": 2, id: "drawn-edge"})
+            .updateCurrentEdge(22, -22, 1000, -2000, {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-edge"})
             .moveCurrentEdgeEndPoint(42, -22);
         test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
 

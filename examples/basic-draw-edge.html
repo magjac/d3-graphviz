@@ -96,7 +96,7 @@ var graphviz = d3.select("#graph").graphviz()
             var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
             [x0, y0] = d3.mouse(graph0.node());
             graphviz
-                .drawEdge(x0, y0, x0, y0, {fill: "orange", stroke: "purple"})
+                .drawEdge(x0, y0, x0, y0, {fillcolor: "orange", color: "purple"})
             isDrawing = true;
         });
 
@@ -112,10 +112,10 @@ var graphviz = d3.select("#graph").graphviz()
     function drawDemoEdges() {
         graphviz
             .drawEdge(20, -20, 40, -20)
-            .drawEdge(20, -20, 40, -20, {fill: "cyan", stroke: "red"})
-            .drawEdge(20, -20, 20, -40, {fill: "blue", stroke: "blue"})
-            .drawEdge(20, -20, 0, -20, {fill: "green", stroke: "green"})
-            .drawEdge(20, -20, 20, 0, {fill: "yellow", stroke: "yellow"})
+            .drawEdge(20, -20, 40, -20, {fillcolor: "cyan", color: "red"})
+            .drawEdge(20, -20, 20, -40, {fillcolor: "blue", color: "blue"})
+            .drawEdge(20, -20, 0, -20, {fillcolor: "green", color: "green"})
+            .drawEdge(20, -20, 20, 0, {fillcolor: "yellow", color: "yellow"})
     }
 
 </script>

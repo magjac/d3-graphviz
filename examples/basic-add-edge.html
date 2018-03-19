@@ -117,7 +117,7 @@ var graphviz = d3.select("#graph").graphviz()
             var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
             [x0, y0] = d3.mouse(graph0.node());
             graphviz
-                .drawEdge(x0, y0, x0, y0, {fill: "orange", stroke: "purple"})
+                .drawEdge(x0, y0, x0, y0, {fillcolor: "orange", color: "purple"})
             isDrawing = true;
         });
 

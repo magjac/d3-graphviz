@@ -4,10 +4,10 @@ import {rotate} from "./geometry";
 
 var defaultEdgeAttributes = {
     id: null,
-    fill: "black",
-    stroke: "black",
-    strokeWidth: 1,
-    href: null,
+    fillcolor: "black",
+    color: "black",
+    penwidth: 1,
+    URL: null,
 };
 
 function completeAttributes(attributes, defaultAttributes=defaultEdgeAttributes) {
@@ -61,9 +61,9 @@ export function updateCurrentEdge(x1, y1, x2, y2, attributes, options={}) {
 function _updateEdge(edge, x1, y1, x2, y2, attributes, options) {
 
     var id = attributes.id;
-    var fill = attributes.fill;
-    var stroke = attributes.stroke;
-    var strokeWidth = attributes.strokeWidth;
+    var fill = attributes.fillcolor;
+    var stroke = attributes.color;
+    var strokeWidth = attributes.penwidth;
     var shortening = options.shortening || 0;
     var arrowHeadLength = 10;
     var arrowHeadWidth = 7;
