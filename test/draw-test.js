@@ -306,7 +306,7 @@ tape("abortDrawing() removes the edge currently being drawn", function(test) {
 
 });
 
-tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function(test) {
+tape("updateCurrentEdge modifies the start and end points and the attributes of an edge", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -334,48 +334,101 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
         x2 = 40;
         y2 = -20;
         graphviz
-            .drawEdge(x1, y1, x2, y2);
+            .drawEdge(x1, y1, x2, y2, 0, {id: 'drawn-edge'});
         num_edges += 1;
+        var edge = d3.select('#drawn-edge');
+        test.equal(edge.size(), 1, 'An edge with the specified id attribute is present');
+        var line = edge.selectWithoutDataPropagation("path");
+        var arrowHead = edge.selectWithoutDataPropagation("polygon");
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        test.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
+        test.equal(line.attr("fill"), 'black', 'Default fill color of a drawn edge line is black');
+        test.equal(line.attr("stroke"), 'black', 'Default stroke color of a drawn edge line is black');
+        test.equal(line.attr("strokeWidth"), '1', 'Default stroke width is 1');
 
         graphviz
-            .drawEdge(20, -20, 40, -20, 0, {fill: "cyan", stroke: "red"})
-            .updateCurrentEdge(31, -31, 61, -31, 2, 0, {fill: "red", stroke: "purple", "strokeWidth": 2})
-            .drawEdge(20, -20, 20, -40, 0, {fill: "blue", stroke: "blue"})
-            .drawEdge(20, -20, 0, -20, 0, {fill: "green", stroke: "green"})
-            .drawEdge(20, -20, 20, 0, 0, {fill: "yellow", stroke: "yellow"})
-            .moveCurrentEdgeEndPoint(50, -30);
-        num_edges += 4;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing 5 edges');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing 5 edges');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing 5 edges');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing 5 edges');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing 5 edges');
+            .updateCurrentEdge(21, -21, 41, -21, 0, {fill: "red", stroke: "purple", "strokeWidth": 2, id: "drawn-edge"});
+        test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
+        test.equal(line.attr("fill"), 'red', 'Fill color of a drawn edge is updated to red');
+        test.equal(line.attr("stroke"), 'purple', 'Stroke color is updated to purple');
+        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is updated to 2');
+
         graphviz
-            .drawEdge(30, -30, 60, -30)
-            .insertCurrentEdge('b -> a');
-        num_edges += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
+            .updateCurrentEdge(21, -21, 41, -21, 0, {stroke: "green"});
+        test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
+        test.equal(line.attr("fill"), 'red', 'Fill color is not updated when only stroke is changed');
+        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated to green');
+        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is not updated when only stroke is changed');
+
         graphviz
-            .dot('digraph {a -> b; b -> a}')
-            .render(endTest);
+            .updateCurrentEdge(22, -22, 42, -22);
+        test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
+        test.equal(line.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
+        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
+        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is not updated  when no attribute is given');
+
+        test.end();
     }
 
-    function endTest() {
-        num_edges = 2;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after re-rendering with the inserted edge');
+});
+
+tape("moveCurrentEdgeEndPoint modifies the end points of an edge", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    var num_nodes = 2;
+    var num_edges = 1;
+
+    graphviz
+        .zoom(false)
+        .logEvents(true)
+        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+        .render(drawEdge);
+
+    function drawEdge() {
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        arrowHeadLength = 10;
+        arrowHeadWidth = 7;
+        margin = 0.174;
+        x1 = 20;
+        y1 = -20;
+        x2 = 40;
+        y2 = -20;
+        graphviz
+            .drawEdge(x1, y1, x2, y2, 0, {id: 'drawn-edge'});
+        num_edges += 1;
+        var edge = d3.select('#drawn-edge');
+        test.equal(edge.size(), 1, 'An edge with the specified id attribute is present');
+        var arrowHead = edge.selectWithoutDataPropagation("polygon");
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        test.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
+        graphviz
+            .updateCurrentEdge(21, -21, 41, -21, 0, {fill: "red", stroke: "purple", "strokeWidth": 2, id: "drawn-edge"});
+        test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after modifying the currently drawn edge');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after modifying the currently drawn edge');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after modifying the currently drawn edge');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after modifying the currently drawn edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after modifying the currently drawn edge');
+
+        graphviz
+            .updateCurrentEdge(22, -22, 1000, -2000, 0, {fill: "red", stroke: "purple", "strokeWidth": 2, id: "drawn-edge"})
+            .moveCurrentEdgeEndPoint(42, -22);
+        test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
+
         test.end();
     }
 
