@@ -10,6 +10,7 @@
 margin = 20; // to avoid scrollbars
 
 var isDrawing = false;
+var startNode;
 
 var dotSrc = `strict digraph {
     node [style="filled"]
@@ -84,10 +85,13 @@ var graphviz = d3.select("#graph").graphviz()
             event.preventDefault();
             console.log('node click or mousedown');
             if (isDrawing) {
+                var endNode = d3.select(this);
+                var startNodeName = startNode.selectWithoutDataPropagation("title").text();
+                var endNodeName = endNode.selectWithoutDataPropagation("title").text();
                 graphviz
-                    .insertCurrentEdge('b->a');
+                    .insertCurrentEdge(startNodeName + '->' + endNodeName);
                 dotSrcLines = dotSrc.split('\n');
-                newEdgeString = 'b -> a [color="red"; fillcolor="orange", penwidth="1", URL="dummy"]';
+                newEdgeString = startNodeName + ' -> ' + endNodeName + ' [color="red"; fillcolor="orange", penwidth="1", URL="dummy"]';
                 dotSrcLines.splice(-1, 0, newEdgeString);
                 dotSrc = dotSrcLines.join('\n');
                 graphviz
@@ -110,6 +114,7 @@ var graphviz = d3.select("#graph").graphviz()
             event.preventDefault();
             event.stopPropagation();
             console.log('node contextmenu');
+            startNode = d3.select(this);
             var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
             [x0, y0] = d3.mouse(graph0.node());
             graphviz
