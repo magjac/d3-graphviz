@@ -244,6 +244,68 @@ tape("insertCurrentEdge() inserts the currently drawn edge into the joined data 
 
 });
 
+tape("abortDrawing() removes the edge currently being drawn", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    var num_nodes = 2;
+    var num_edges = 1;
+
+    graphviz
+        .zoom(false)
+        .logEvents(true)
+        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+        .render(drawEdge);
+
+    function drawEdge() {
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        arrowHeadLength = 10;
+        arrowHeadWidth = 7;
+        margin = 0.174;
+        x1 = 20;
+        y1 = -20;
+        x2 = 40;
+        y2 = -20;
+        graphviz
+            .drawEdge(x1, y1, x2, y2);
+        num_edges += 1;
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing 5 edge');
+
+        graphviz
+            .abortDrawing();
+        num_edges -= 1;
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after aborting drawing of the current edge');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after aborting drawing of the current edge');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons aborting drawing of the current edge');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses aborting drawing of the current edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after aborting drawing of the current edge');
+
+        graphviz
+            .dot('digraph {a -> b; b -> a}')
+            .render(endTest);
+    }
+
+    function endTest() {
+        num_edges = 2;
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after re-rendering with the inserted edge');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after re-rendering with the inserted edge');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after re-rendering with the inserted edge');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after re-rendering with the inserted edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after re-rendering with the inserted edge');
+        test.end();
+    }
+
+});
+
 tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
@@ -293,14 +355,6 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing 5 edges');
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing 5 edges');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing 5 edges');
-        graphviz
-            .abortDrawing();
-        num_edges -= 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after aborting drawing of the current edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after aborting drawing of the current edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons aborting drawing of the current edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses aborting drawing of the current edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after aborting drawing of the current edge');
         graphviz
             .drawEdge(30, -30, 60, -30)
             .insertCurrentEdge('b -> a');
