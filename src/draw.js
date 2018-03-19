@@ -2,18 +2,18 @@ import * as d3 from "d3-selection";
 import {path as d3_path} from "d3-path";
 import {rotate} from "./geometry";
 
-function completeAttributes(attributes) {
+var defaultEdgeAttributes = {
+    id: null,
+    fill: "black",
+    stroke: "black",
+    strokeWidth: 1,
+    href: null,
+};
 
-    var defaultEdgeAttributes = {
-        id: null,
-        fill: "black",
-        stroke: "black",
-        strokeWidth: 1,
-        href: null,
-    };
-    for (var attribute in defaultEdgeAttributes) {
+function completeAttributes(attributes, defaultAttributes=defaultEdgeAttributes) {
+    for (var attribute in defaultAttributes) {
         if (attributes[attribute] === undefined) {
-            attributes[attribute] = defaultEdgeAttributes[attribute];
+            attributes[attribute] = defaultAttributes[attribute];
         }
     }
 }
@@ -46,7 +46,12 @@ export function drawEdge(x1, y1, x2, y2, shortening=0, attributes) {
 export function updateCurrentEdge(x1, y1, x2, y2, shortening=0, attributes) {
     var edge = this._currentEdge.g
     attributes = attributes || {};
-    completeAttributes(attributes);
+    completeAttributes(attributes, this._currentEdge.attributes);
+    this._currentEdge.x1 = x1;
+    this._currentEdge.y1 = y1;
+    this._currentEdge.x2 = x2;
+    this._currentEdge.y2 = y2;
+    this._currentEdge.attributes = attributes;
     _updateEdge(edge, x1, y1, x2, y2, shortening, attributes);
 
     return this;
@@ -128,6 +133,8 @@ export function moveCurrentEdgeEndPoint(x2, y2, shortening=0) {
     var y1 = this._currentEdge.y1;
     var attributes = this._currentEdge.attributes;
 
+    this._currentEdge.x2 = x2;
+    this._currentEdge.y2 = y2;
     _updateEdge(edge, x1, y1, x2, y2, shortening, attributes);
 
     return this
