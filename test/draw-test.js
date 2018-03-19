@@ -125,7 +125,7 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing 5 edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         graphviz
             .insertCurrentEdge('b->a');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
@@ -219,7 +219,7 @@ tape("insertCurrentEdge() inserts the currently drawn edge into the joined data 
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing 5 edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         graphviz
             .insertCurrentEdge('b->a');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
@@ -278,7 +278,7 @@ tape("abortDrawing() removes the edge currently being drawn", function(test) {
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing 5 edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
 
         graphviz
             .abortDrawing();
@@ -340,7 +340,7 @@ tape("drawEdge and moveCurrentEdgeEndPoint draws and modifies an edge", function
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing 5 edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
 
         graphviz
             .drawEdge(20, -20, 40, -20, 0, {fill: "cyan", stroke: "red"})
