@@ -42,7 +42,6 @@ var graphviz = d3.select("#graph").graphviz()
     }
 
     function startApp() {
-        drawDemoEdges();
         var nodes = d3.selectAll(".node");
 
         // click outside of nodes
@@ -130,14 +129,6 @@ var graphviz = d3.select("#graph").graphviz()
             console.log('document contextmenu');
         });
 
-    }
-    function drawDemoEdges() {
-        graphviz
-            .drawEdge(20, -20, 40, -20)
-            .drawEdge(20, -20, 40, -20, 0, {fill: "cyan", stroke: "red"})
-            .drawEdge(20, -20, 20, -40, 0, {fill: "blue", stroke: "blue"})
-            .drawEdge(20, -20, 0, -20, 0, {fill: "green", stroke: "green"})
-            .drawEdge(20, -20, 20, 0, 0, {fill: "yellow", stroke: "yellow"})
     }
 
 </script>
