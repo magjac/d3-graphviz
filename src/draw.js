@@ -5,6 +5,7 @@ import {rotate} from "./geometry";
 function completeAttributes(attributes) {
 
     var defaultEdgeAttributes = {
+        id: null,
         fill: "black",
         stroke: "black",
         strokeWidth: 1,
@@ -53,6 +54,7 @@ export function updateCurrentEdge(x1, y1, x2, y2, shortening=0, attributes) {
 
 function _updateEdge(edge, x1, y1, x2, y2, shortening, attributes) {
 
+    var id = attributes.id;
     var fill = attributes.fill;
     var stroke = attributes.stroke;
     var strokeWidth = attributes.strokeWidth;
@@ -79,6 +81,9 @@ function _updateEdge(edge, x1, y1, x2, y2, shortening, attributes) {
     var a = edge.selectWithoutDataPropagation("g").selectWithoutDataPropagation("a");
     var line = a.selectWithoutDataPropagation("path");
     var arrowHead = a.selectWithoutDataPropagation("polygon");
+
+    edge
+        .attr("id", id);
 
     var path1 = d3_path();
     path1.moveTo(x1, y1);
