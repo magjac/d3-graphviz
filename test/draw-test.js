@@ -2,7 +2,6 @@ var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
-var d3_transition = require("d3-transition");
 
 tape("Check our understanding of how Graphviz draws edges.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
