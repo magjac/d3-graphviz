@@ -98,7 +98,7 @@ var graphviz = d3.select("#graph").graphviz()
                 graphviz
                     .insertCurrentEdge(startNodeName + '->' + endNodeName);
                 dotSrcLines = dotSrc.split('\n');
-                newEdgeString = startNodeName + ' -> ' + endNodeName + ' [color="red"; fillcolor="orange", penwidth="1", URL="dummy"]';
+                newEdgeString = startNodeName + ' -> ' + endNodeName + ' [color="red"; fillcolor="orange"; penwidth="1"]';
                 dotSrcLines.splice(-1, 0, newEdgeString);
                 dotSrc = dotSrcLines.join('\n');
                 graphviz

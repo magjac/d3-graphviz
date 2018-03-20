@@ -8,6 +8,7 @@ var defaultEdgeAttributes = {
     color: "black",
     penwidth: 1,
     URL: null,
+    tooltip: null,
 };
 
 function completeAttributes(attributes, defaultAttributes=defaultEdgeAttributes) {
@@ -28,9 +29,20 @@ export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
         .attr("class", "edge");
     var title = newEdge.insert('title', ':first-child')
         .text("");
-    var a = newEdge.append("g").append("a");
-    var line = a.append("path");
-    var arrowHead = a.append("polygon");
+    if (attributes.URL || attributes.tooltip) {
+        var a = newEdge.append("g").append("a");
+        if (attributes.URL) {
+            a.attr("href", attributes.URL);
+        }
+        if (attributes.tooltip) {
+            a.attr('title', attributes.tooltip);
+        }
+        var line = a.append("path");
+        var arrowHead = a.append("polygon");
+    } else {
+        var line = newEdge.append("path");
+        var arrowHead = newEdge.append("polygon");
+    }
     this._currentEdge = {
         g: newEdge,
         x1: x1,
@@ -84,9 +96,14 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes, options) {
     x2 = x1 + (length - shortening - arrowHeadLength - margin) * cosA;
     y2 = y1 + (length - shortening - arrowHeadLength - margin) * sinA;
 
-    var a = edge.selectWithoutDataPropagation("g").selectWithoutDataPropagation("a");
-    var line = a.selectWithoutDataPropagation("path");
-    var arrowHead = a.selectWithoutDataPropagation("polygon");
+    if (attributes.URL || attributes.tooltip) {
+        var a = edge.selectWithoutDataPropagation("g").selectWithoutDataPropagation("a");
+        var line = a.selectWithoutDataPropagation("path");
+        var arrowHead = a.selectWithoutDataPropagation("polygon");
+    } else {
+        var line = edge.selectWithoutDataPropagation("path");
+        var arrowHead = edge.selectWithoutDataPropagation("polygon");
+    }
 
     edge
         .attr("id", id);
@@ -155,6 +172,7 @@ export function abortDrawing() {
 export function insertCurrentEdge(name) {
 
     var edge = this._currentEdge.g;
+    var attributes = this._currentEdge.attributes;
 
     var title = edge.selectWithoutDataPropagation("title");
     title
@@ -162,21 +180,31 @@ export function insertCurrentEdge(name) {
     var text = title.selectAll(function() {
         return title.node().childNodes;
     });
-    var ga = edge.selectWithoutDataPropagation("g");
-    var a = ga.selectWithoutDataPropagation("a");
-    var line = a.selectWithoutDataPropagation("path");
-    var arrowHead = a.selectWithoutDataPropagation("polygon");
+    if (attributes.URL || attributes.tooltip) {
+        var ga = edge.selectWithoutDataPropagation("g");
+        var a = ga.selectWithoutDataPropagation("a");
+        var line = a.selectWithoutDataPropagation("path");
+        var arrowHead = a.selectWithoutDataPropagation("polygon");
 
+    } else {
+        var line = edge.selectWithoutDataPropagation("path");
+        var arrowHead = edge.selectWithoutDataPropagation("polygon");
+    }
     var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
     var graph0Datum = graph0.datum();
     var edgeData = this._extractData(edge, graph0Datum.children.length, graph0.datum());
     var gDatum = edgeData;
     var titleDatum = gDatum.children[0];
     var textDatum = titleDatum.children[0];
-    var gaDatum = gDatum.children[1];
-    var aDatum = gaDatum.children[0];
-    var pathDatum = aDatum.children[0];
-    var polygonDatum = aDatum.children[1];
+    if (attributes.URL || attributes.tooltip) {
+        var gaDatum = gDatum.children[1];
+        var aDatum = gaDatum.children[0];
+        var pathDatum = aDatum.children[0];
+        var polygonDatum = aDatum.children[1];
+    } else {
+        var pathDatum = gDatum.children[1];
+        var polygonDatum = gDatum.children[2];
+    }
     graph0Datum.children.push(gDatum);
 
     edge.datum(gDatum);
@@ -194,15 +222,17 @@ export function insertCurrentEdge(name) {
         return [d.key];
     });
 
-    ga.datum(gaDatum);
-    ga.data([gaDatum], function (d) {
-        return [d.key];
-    });
+    if (attributes.URL || attributes.tooltip) {
+        ga.datum(gaDatum);
+        ga.data([gaDatum], function (d) {
+            return [d.key];
+        });
 
-    a.datum(aDatum);
-    a.data([aDatum], function (d) {
-        return [d.key];
-    });
+        a.datum(aDatum);
+        a.data([aDatum], function (d) {
+            return [d.key];
+        });
+    }
 
     line.datum(pathDatum);
     line.data([pathDatum], function (d) {
