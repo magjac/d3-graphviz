@@ -65,19 +65,7 @@ var graphviz = d3.select("#graph").graphviz()
                 graphviz.abortDrawingEdge();
             }
             if (event.keyCode == 46) {
-                selectedEdge.style("display", "none");
-                edgeName = selectedEdge.selectWithoutDataPropagation("title").text();
-                edgeName = edgeName.replace('->', ' -> ');
-                dotSrcLines = dotSrc.split('\n');
-                while (true) {
-                    var i = dotSrcLines.findIndex(function (element, index) {
-                        return element.indexOf(edgeName) >= 0;
-                    });
-                    if (i < 0)
-                        break;
-                    dotSrcLines.splice(i, 1);
-                }
-                dotSrc = dotSrcLines.join('\n');
+                deleteSelectedEdge();
                 graphviz
                     .renderDot(dotSrc, startApp);
             }
@@ -168,6 +156,22 @@ var graphviz = d3.select("#graph").graphviz()
         selectedEdgeStroke = selectedEdge.selectAll('polygon').attr("stroke");
         selectedEdge.selectAll('path, polygon').attr("stroke", "red");
         selectedEdge.selectAll('polygon').attr("fill", "red");
+    }
+
+    function deleteSelectedEdge() {
+        selectedEdge.style("display", "none");
+        edgeName = selectedEdge.selectWithoutDataPropagation("title").text();
+        edgeName = edgeName.replace('->', ' -> ');
+        dotSrcLines = dotSrc.split('\n');
+        while (true) {
+            var i = dotSrcLines.findIndex(function (element, index) {
+                return element.indexOf(edgeName) >= 0;
+            });
+            if (i < 0)
+                break;
+            dotSrcLines.splice(i, 1);
+        }
+        dotSrc = dotSrcLines.join('\n');
     }
 
 </script>
