@@ -107,7 +107,7 @@ var graphviz = d3.select("#graph").graphviz()
                 graphviz
                     .insertCurrentEdge(startNodeName + '->' + endNodeName);
                 dotSrcLines = dotSrc.split('\n');
-                newEdgeString = startNodeName + ' -> ' + endNodeName + ' [color="red"; fillcolor="orange"; penwidth="1"]';
+                newEdgeString = startNodeName + ' -> ' + endNodeName + ' [color="#800080"; fillcolor="orange"; penwidth="1"]';
                 dotSrcLines.splice(-1, 0, newEdgeString);
                 dotSrc = dotSrcLines.join('\n');
                 graphviz
@@ -126,7 +126,7 @@ var graphviz = d3.select("#graph").graphviz()
             var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
             [x0, y0] = d3.mouse(graph0.node());
             graphviz
-                .drawEdge(x0, y0, x0, y0, {fillcolor: "orange", color: "purple"})
+                .drawEdge(x0, y0, x0, y0, {fillcolor: "orange", color: "#800080"})
             isDrawing = true;
         });
 
