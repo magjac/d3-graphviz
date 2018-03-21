@@ -54,6 +54,7 @@ var graphviz = d3.select("#graph").graphviz()
             event.preventDefault();
             event.stopPropagation();
             console.log('document click');
+            unSelectEdge();
         });
 
         // keyup outside of nodes
@@ -63,6 +64,7 @@ var graphviz = d3.select("#graph").graphviz()
             console.log('document keyup', event);
             if (event.keyCode == 27) {
                 graphviz.abortDrawingEdge();
+                unSelectEdge();
             }
             if (event.keyCode == 46) {
                 deleteSelectedEdge();
@@ -92,6 +94,7 @@ var graphviz = d3.select("#graph").graphviz()
             var event = d3.event;
             event.preventDefault();
             console.log('node click or mousedown');
+            unSelectEdge();
         });
 
         // double-click on nodes
@@ -100,6 +103,7 @@ var graphviz = d3.select("#graph").graphviz()
             event.preventDefault();
             event.stopPropagation();
             console.log('node dblclick');
+            unSelectEdge();
             if (isDrawing) {
                 var endNode = d3.select(this);
                 var startNodeName = startNode.selectWithoutDataPropagation("title").text();
@@ -122,6 +126,7 @@ var graphviz = d3.select("#graph").graphviz()
             event.preventDefault();
             event.stopPropagation();
             console.log('node contextmenu');
+            unSelectEdge();
             startNode = d3.select(this);
             var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
             [x0, y0] = d3.mouse(graph0.node());
@@ -134,6 +139,7 @@ var graphviz = d3.select("#graph").graphviz()
         edges.on("click mousedown", function() {
             var event = d3.event;
             event.preventDefault();
+            event.stopPropagation();
             console.log('node click or mousedown');
             selectEdge(d3.select(this));
         });
@@ -144,18 +150,24 @@ var graphviz = d3.select("#graph").graphviz()
             event.preventDefault();
             event.stopPropagation();
             console.log('document contextmenu');
+            unSelectEdge();
         });
 
     }
 
     function selectEdge(edge) {
-        selectedEdge.selectAll('path, polygon').attr("stroke", selectedEdgeStroke);
-        selectedEdge.selectAll('polygon').attr("fill", selectedEdgeFill);
+        unSelectEdge();
         selectedEdge = edge;
         selectedEdgeFill = selectedEdge.selectAll('polygon').attr("fill");
         selectedEdgeStroke = selectedEdge.selectAll('polygon').attr("stroke");
         selectedEdge.selectAll('path, polygon').attr("stroke", "red");
         selectedEdge.selectAll('polygon').attr("fill", "red");
+    }
+
+    function unSelectEdge() {
+        selectedEdge.selectAll('path, polygon').attr("stroke", selectedEdgeStroke);
+        selectedEdge.selectAll('polygon').attr("fill", selectedEdgeFill);
+        selectedEdge = d3.select(null);
     }
 
     function deleteSelectedEdge() {
