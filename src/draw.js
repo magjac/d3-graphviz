@@ -158,7 +158,7 @@ export function moveCurrentEdgeEndPoint(x2, y2, options={}) {
     return this
 }
 
-export function abortDrawing() {
+export function abortDrawingEdge() {
 
     var edge = this._currentEdge.g;
 

@@ -26,7 +26,7 @@ import {drawEdge} from "./draw";
 import {updateCurrentEdge} from "./draw";
 import {moveCurrentEdgeEndPoint} from "./draw";
 import {insertCurrentEdge} from "./draw";
-import {abortDrawing} from "./draw";
+import {abortDrawingEdge} from "./draw";
 
 export function Graphviz(selection, useWorker) {
     if (typeof Worker == 'undefined') {
@@ -155,5 +155,5 @@ Graphviz.prototype = graphviz.prototype = {
     updateCurrentEdge: updateCurrentEdge,
     moveCurrentEdgeEndPoint,
     insertCurrentEdge,
-    abortDrawing, abortDrawing,
+    abortDrawingEdge, abortDrawingEdge,
 };

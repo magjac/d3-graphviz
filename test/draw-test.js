@@ -437,7 +437,7 @@ tape("insertCurrentEdge() inserts the currently drawn edge into the joined data 
 
 });
 
-tape("abortDrawing() removes the edge currently being drawn", function(test) {
+tape("abortDrawingEdge() removes the edge currently being drawn", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -474,7 +474,7 @@ tape("abortDrawing() removes the edge currently being drawn", function(test) {
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
 
         graphviz
-            .abortDrawing();
+            .abortDrawingEdge();
         num_edges -= 1;
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after aborting drawing of the current edge');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after aborting drawing of the current edge');
