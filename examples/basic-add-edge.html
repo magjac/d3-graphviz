@@ -11,6 +11,7 @@ margin = 20; // to avoid scrollbars
 
 var isDrawing = false;
 var startNode;
+var selectedEdge;
 
 var dotSrc = `strict digraph {
     node [style="filled"]
@@ -43,6 +44,7 @@ var graphviz = d3.select("#graph").graphviz()
 
     function startApp() {
         var nodes = d3.selectAll(".node");
+        var edges = d3.selectAll(".edge");
 
         // click outside of nodes
         d3.select(document).on("click", function() {
@@ -119,6 +121,17 @@ var graphviz = d3.select("#graph").graphviz()
             graphviz
                 .drawEdge(x0, y0, x0, y0, {fillcolor: "orange", color: "purple"})
             isDrawing = true;
+        });
+
+        // click and mousedown on edges
+        edges.on("click mousedown", function() {
+            var event = d3.event;
+            event.preventDefault();
+            console.log('node click or mousedown');
+            edge = d3.select(this);
+            edge.selectAll('path, polygon').attr("stroke", "red");
+            edge.selectAll('path, polygon').attr("fill", "red");
+            selectedEdge = edge;
         });
 
         // right-click outside of nodes
