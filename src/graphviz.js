@@ -22,11 +22,11 @@ import {resetZoom} from "./zoom";
 import on from "./on";
 import onerror from "./onerror";
 import logEvents from "./logEvents";
-import {drawEdge} from "./draw";
-import {updateCurrentEdge} from "./draw";
-import {moveCurrentEdgeEndPoint} from "./draw";
-import {insertCurrentEdge} from "./draw";
-import {abortDrawingEdge} from "./draw";
+import {drawEdge} from "./drawEdge";
+import {updateCurrentEdge} from "./drawEdge";
+import {moveCurrentEdgeEndPoint} from "./drawEdge";
+import {insertCurrentEdge} from "./drawEdge";
+import {abortDrawingEdge} from "./drawEdge";
 
 export function Graphviz(selection, useWorker) {
     if (typeof Worker == 'undefined') {
