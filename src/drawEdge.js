@@ -244,6 +244,8 @@ export function insertCurrentEdge(name) {
         return [d.key];
     });
 
+    this._currentEdge = null;
+
     return this
 
 }
