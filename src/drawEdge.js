@@ -57,6 +57,9 @@ export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
 }
 
 export function updateCurrentEdge(x1, y1, x2, y2, attributes, options={}) {
+    if (!this._currentEdge)  {
+        throw Error('No edge is currently being drawn');
+    }
     var edge = this._currentEdge.g
     attributes = attributes || {};
     completeAttributes(attributes, this._currentEdge.attributes);
@@ -146,6 +149,9 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes, options) {
 
 export function moveCurrentEdgeEndPoint(x2, y2, options={}) {
 
+    if (!this._currentEdge)  {
+        throw Error('No edge is currently being drawn');
+    }
     var edge = this._currentEdge.g;
     var x1 = this._currentEdge.x1;
     var y1 = this._currentEdge.y1;
@@ -170,6 +176,10 @@ export function abortDrawingEdge() {
 }
 
 export function insertCurrentEdge(name) {
+
+    if (!this._currentEdge)  {
+        throw Error('No edge is currently being drawn');
+    }
 
     var edge = this._currentEdge.g;
     var attributes = this._currentEdge.attributes;
