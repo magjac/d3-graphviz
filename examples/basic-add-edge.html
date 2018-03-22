@@ -7,7 +7,7 @@
 <div id="graph" style="text-align: center;"></div>
 <script>
 
-margin = 20; // to avoid scrollbars
+var margin = 20; // to avoid scrollbars
 
 var isDrawing = false;
 var startNode;
@@ -81,7 +81,7 @@ var graphviz = d3.select("#graph").graphviz()
             event.stopPropagation();
             console.log('document mousemove');
             var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
-            [x0, y0] = d3.mouse(graph0.node());
+            var [x0, y0] = d3.mouse(graph0.node());
             var shortening = 2; // avoid mouse pointing on edge
             if (isDrawing) {
                 graphviz
@@ -110,8 +110,8 @@ var graphviz = d3.select("#graph").graphviz()
                 var endNodeName = endNode.selectWithoutDataPropagation("title").text();
                 graphviz
                     .insertCurrentEdge(startNodeName + '->' + endNodeName);
-                dotSrcLines = dotSrc.split('\n');
-                newEdgeString = startNodeName + ' -> ' + endNodeName + ' [color="#800080"; fillcolor="orange"; penwidth="1"]';
+                var dotSrcLines = dotSrc.split('\n');
+                var newEdgeString = startNodeName + ' -> ' + endNodeName + ' [color="#800080"; fillcolor="orange"; penwidth="1"]';
                 dotSrcLines.splice(-1, 0, newEdgeString);
                 dotSrc = dotSrcLines.join('\n');
                 graphviz
@@ -129,7 +129,7 @@ var graphviz = d3.select("#graph").graphviz()
             unSelectEdge();
             startNode = d3.select(this);
             var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
-            [x0, y0] = d3.mouse(graph0.node());
+            var [x0, y0] = d3.mouse(graph0.node());
             graphviz
                 .drawEdge(x0, y0, x0, y0, {fillcolor: "orange", color: "#800080"})
             isDrawing = true;
@@ -173,9 +173,9 @@ var graphviz = d3.select("#graph").graphviz()
     function deleteSelectedEdge() {
         selectedEdge.style("display", "none");
         if (selectedEdge.size() != 0) {
-            edgeName = selectedEdge.selectWithoutDataPropagation("title").text();
+            var edgeName = selectedEdge.selectWithoutDataPropagation("title").text();
             edgeName = edgeName.replace('->', ' -> ');
-            dotSrcLines = dotSrc.split('\n');
+            var dotSrcLines = dotSrc.split('\n');
             while (true) {
                 var i = dotSrcLines.findIndex(function (element, index) {
                     return element.indexOf(edgeName) >= 0;
