@@ -20,3 +20,12 @@ tape("selection.selectWithoutDataPropagation() selects without propagating data"
 
     test.end();
 });
+
+tape("selection.selectWithoutDataPropagation() on empty selection", function(test) {
+    var window = global.window = jsdom('<div id="parent"><div id="child1"></div><div id="child2"></div></div>');
+    var document = global.document = window.document;
+
+    test.equal(d3_selection.select(null).selectWithoutDataPropagation("dummy").size(), 0, 'selection.select() returns empty selection when applied to an empty selection');
+
+    test.end();
+});
