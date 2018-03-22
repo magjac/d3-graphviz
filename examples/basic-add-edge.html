@@ -70,6 +70,7 @@ var graphviz = d3.select("#graph").graphviz()
             }
             if (event.keyCode == 46) {
                 deleteSelectedEdge();
+                graphviz.abortDrawingEdge();
                 graphviz
                     .renderDot(dotSrc, startApp);
             }
