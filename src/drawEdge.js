@@ -166,6 +166,10 @@ export function moveCurrentEdgeEndPoint(x2, y2, options={}) {
 
 export function abortDrawingEdge() {
 
+    if (!this._currentEdge)  {
+        return this;
+    }
+
     var edge = this._currentEdge.g;
 
     edge.remove();
