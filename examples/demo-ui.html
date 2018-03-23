@@ -24,9 +24,9 @@ var selectedNodeFill;
 var nodeIndex;
 
 var dotSrc = `strict digraph {
-    node [shape="box" style="filled"]
-    a [shape="ellipse" style="filled"]
-    b
+    node [style="filled"]
+    a [shape="ellipse" fillcolor="` + d3.schemeCategory10[0] + `"]
+    b [shape="polygon" fillcolor="` + d3.schemeCategory10[1] + `"]
 }`;
 
 var graphviz = d3.select("#graph").graphviz()
