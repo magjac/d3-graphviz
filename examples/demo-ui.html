@@ -17,6 +17,9 @@ var startNode;
 var selectedEdge = d3.select(null);
 var selectedEdgeFill;
 var selectedEdgeStroke;
+var selectedNode = d3.select(null);
+var selectedNodeStroke;
+var selectedNodeFill;
 
 var dotSrc = `strict digraph {
     node [shape="box" style="filled"]
@@ -132,7 +135,10 @@ function startApp() {
         var event = d3.event;
         event.preventDefault();
         console.log('node click or mousedown');
-        unSelectEdge();
+        if (!isDrawingEdge && event.which == 1) {
+            unSelectEdge();
+            selectNode(d3.select(this));
+        }
     });
 
     // double-click on nodes
@@ -167,6 +173,7 @@ function startApp() {
         event.stopPropagation();
         console.log('node contextmenu');
         unSelectEdge();
+        unSelectNode();
         startNode = d3.select(this);
         var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
         var [x0, y0] = d3.mouse(graph0.node());
@@ -185,6 +192,7 @@ function startApp() {
         event.preventDefault();
         event.stopPropagation();
         console.log('node click or mousedown');
+        unSelectNode();
         selectEdge(d3.select(this));
     });
 
@@ -230,6 +238,21 @@ function deleteSelectedEdge() {
         }
         dotSrc = dotSrcLines.join('\n');
     }
+}
+
+function selectNode(node) {
+    unSelectNode();
+    selectedNode = node;
+    selectedNodeFill = selectedNode.selectAll('polygon, ellipse').attr("fill");
+    selectedNodeStroke = selectedNode.selectAll('polygon, ellipse').attr("stroke");
+    selectedNode.selectAll('polygon, ellipse').attr("stroke", "red");
+    selectedNode.selectAll('polygon, ellipse').attr("fill", "red");
+}
+
+function unSelectNode() {
+    selectedNode.selectAll('polygon, ellipse').attr("stroke", selectedNodeStroke);
+    selectedNode.selectAll('polygon, ellipse').attr("fill", selectedNodeFill);
+    selectedNode = d3.select(null);
 }
 
 </script>
