@@ -21,6 +21,8 @@ var selectedNode = d3.select(null);
 var selectedNodeStroke;
 var selectedNodeFill;
 
+var nodeIndex;
+
 var dotSrc = `strict digraph {
     node [shape="box" style="filled"]
     a [shape="ellipse" style="filled"]
@@ -76,14 +78,18 @@ function startApp() {
             var x2 = x0 + width / 2;
             var y1 = y0 + height / 2;
             var y2 = y0 - height / 2;
-            var numNodes = d3.selectAll('.node').size();
+            if (nodeIndex == null) {
+                nodeIndex = d3.selectAll('.node').size();
+            } else {
+                nodeIndex += 1;
+            }
             var shapes = ['ellipse', 'polygon'];
-            var shape = shapes[numNodes % shapes.length];
+            var shape = shapes[nodeIndex % shapes.length];
             var numLetters = 'z'.charCodeAt(0) - 'a'.charCodeAt(0) + 1;
-            var letter = String.fromCharCode('a'.charCodeAt(0) + (numNodes % numLetters));
-            var digit = Math.floor(numNodes / numLetters) || '';
+            var letter = String.fromCharCode('a'.charCodeAt(0) + (nodeIndex % numLetters));
+            var digit = Math.floor(nodeIndex / numLetters) || '';
             var nodeName = letter + digit;
-            var fillcolor = d3.schemeCategory10[numNodes % 10];
+            var fillcolor = d3.schemeCategory10[nodeIndex % 10];
             var color = 'black';
             graphviz
                 .drawNode(x1, y1, width, height, nodeName, shape, {text: nodeName, fillcolor: fillcolor, color: color})
