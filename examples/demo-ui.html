@@ -22,6 +22,7 @@ var selectedNodeStroke;
 var selectedNodeFill;
 
 var nodeIndex;
+var edgeIndex;
 
 var dotSrc = `strict digraph {
     node [style="filled"]
@@ -159,9 +160,8 @@ function startApp() {
             var endNodeName = endNode.selectWithoutDataPropagation("title").text();
             graphviz
                 .insertCurrentEdge(startNodeName + '->' + endNodeName);
-            var numEdges = d3.selectAll('.edge').size();
-            var fillcolor = d3.schemePaired[((numEdges - 1) * 2) % 12];
-            var color = d3.schemePaired[((numEdges - 1) * 2 + 1) % 12];
+            var fillcolor = d3.schemePaired[(edgeIndex * 2) % 12];
+            var color = d3.schemePaired[(edgeIndex * 2 + 1) % 12];
             var dotSrcLines = dotSrc.split('\n');
             var newEdgeString = startNodeName + ' -> ' + endNodeName + ' [color="' + color + '"; fillcolor="' + fillcolor + '"; penwidth="1"]';
             dotSrcLines.splice(-1, 0, newEdgeString);
@@ -182,9 +182,13 @@ function startApp() {
         startNode = d3.select(this);
         var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
         var [x0, y0] = d3.mouse(graph0.node());
-        var numEdges = d3.selectAll('.edge').size();
-        var fillcolor = d3.schemePaired[(numEdges * 2) % 12];
-        var color = d3.schemePaired[(numEdges * 2 + 1) % 12];
+            if (edgeIndex == null) {
+                edgeIndex = d3.selectAll('.edge').size();
+            } else {
+                edgeIndex += 1;
+            }
+        var fillcolor = d3.schemePaired[(edgeIndex * 2) % 12];
+        var color = d3.schemePaired[(edgeIndex * 2 + 1) % 12];
 
         graphviz
             .drawEdge(x0, y0, x0, y0, {fillcolor: fillcolor, color: color});
