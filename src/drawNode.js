@@ -9,6 +9,10 @@ var defaultNodeAttributes = {
     penwidth: 1,
     URL: null,
     tooltip: null,
+    labeljust: "c",
+    fontname: "Times,serif",
+    fontsize: "14.00",
+    fontcolor: "black",
 };
 
 var svgShapes = {
@@ -90,6 +94,16 @@ function _updateNode(node, x, y, width, height, nodeId, shape, attributes, optio
     var fill = attributes.fillcolor;
     var stroke = attributes.color;
     var strokeWidth = attributes.penwidth;
+    if (attributes.labeljust == 'l') {
+        var textAnchor = 'start';
+    } else if (attributes.labeljust == 'r') {
+        var textAnchor = 'end';
+    } else {
+        var textAnchor = 'middle';
+    }
+    var fontFamily = attributes.fontname;
+    var fontSize = attributes.fontsize;
+    var fontColor = attributes.fontcolor;
 
     var title = node.selectWithoutDataPropagation('title');
     if (attributes.URL || attributes.tooltip) {
@@ -120,13 +134,14 @@ function _updateNode(node, x, y, width, height, nodeId, shape, attributes, optio
         .attr("strokeWidth", strokeWidth);
 
     var text = subParent.selectWithoutDataPropagation('text');
+
     text
-        .attr("text-anchor", "middle")
+        .attr("text-anchor", textAnchor)
         .attr("x", x + width / 2)
         .attr("y", y + height / 2)
-        .attr("font-family", "Times,serif")
-        .attr("font-size", "14.00")
-        .attr("fill", "#000000")
+        .attr("font-family", fontFamily)
+        .attr("font-size", fontSize)
+        .attr("fill", fontColor)
         .text(nodeId);
     return this;
 }
