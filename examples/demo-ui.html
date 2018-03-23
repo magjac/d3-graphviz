@@ -109,6 +109,7 @@ function startApp() {
         }
         if (event.keyCode == 46) {
             deleteSelectedEdge();
+            deleteSelectedNode();
             graphviz.abortDrawingEdge();
             render();
         }
@@ -253,6 +254,33 @@ function unSelectNode() {
     selectedNode.selectAll('polygon, ellipse').attr("stroke", selectedNodeStroke);
     selectedNode.selectAll('polygon, ellipse').attr("fill", selectedNodeFill);
     selectedNode = d3.select(null);
+}
+
+function deleteSelectedNode() {
+    selectedNode.style("display", "none");
+    if (selectedNode.size() != 0) {
+        var nodeName = selectedNode.selectWithoutDataPropagation("title").text();
+        var dotSrcLines = dotSrc.split('\n');
+        while (true) {
+            var i = dotSrcLines.findIndex(function (element, index) {
+                var trimmedElement = element.trim();
+                if (trimmedElement == nodeName) {
+                    return true;
+                }
+                if (trimmedElement.indexOf(nodeName + ' ') == 0) {
+                    return true;
+                }
+                if (trimmedElement.indexOf(' ' + nodeName + ' ') >= 0) {
+                    return true;
+                }
+                return false;
+            });
+            if (i < 0)
+                break;
+            dotSrcLines.splice(i, 1);
+        }
+        dotSrc = dotSrcLines.join('\n');
+    }
 }
 
 </script>
