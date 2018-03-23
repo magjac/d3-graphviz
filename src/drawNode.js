@@ -27,7 +27,7 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
     }
 }
 
-export function drawNode(x1, y1, width, height, nodeId, shape='ellipse', attributes, options={}) {
+export function drawNode(x, y, width, height, nodeId, shape='ellipse', attributes, options={}) {
     attributes = attributes || {};
     completeAttributes(attributes);
     var svg = d3.select("svg");
@@ -57,34 +57,34 @@ export function drawNode(x1, y1, width, height, nodeId, shape='ellipse', attribu
         g: newNode,
         nodeId: nodeId,
         shape: shape,
-        x1: x1,
-        y1: y1,
+        x: x,
+        y: y,
         width: width,
         height: height,
         attributes: attributes,
     };
-    _updateNode(newNode, x1, y1, width, height, nodeId, shape, attributes, options);
+    _updateNode(newNode, x, y, width, height, nodeId, shape, attributes, options);
 
     return this;
 }
 
-export function updateCurrentNode(x1, y1, width, height, nodeId, shape, attributes, options={}) {
+export function updateCurrentNode(x, y, width, height, nodeId, shape, attributes, options={}) {
     var node = this._currentNode.g
     attributes = attributes || {};
     completeAttributes(attributes, this._currentNode.attributes);
     this._currentNode.nodeId = nodeId;
     this._currentNode.shape = shape;
-    this._currentNode.x1 = x1;
-    this._currentNode.y1 = y1;
+    this._currentNode.x = x;
+    this._currentNode.y = y;
     this._currentNode.width = width;
     this._currentNode.height = height;
     this._currentNode.attributes = attributes;
-    _updateNode(node, x1, y1, width, height, nodeId, shape, attributes, options);
+    _updateNode(node, x, y, width, height, nodeId, shape, attributes, options);
 
     return this;
 }
 
-function _updateNode(node, x1, y1, width, height, nodeId, shape, attributes, options) {
+function _updateNode(node, x, y, width, height, nodeId, shape, attributes, options) {
 
     var id = attributes.id;
     var fill = attributes.fillcolor;
@@ -106,13 +106,13 @@ function _updateNode(node, x1, y1, width, height, nodeId, shape, attributes, opt
     var svgShape = svgShapes[shape];
     if (svgShape == 'ellipse') {
         svgElement
-            .attr("cx", x1 + width / 2)
-            .attr("cy", y1 + height/ 2)
+            .attr("cx", x + width / 2)
+            .attr("cy", y + height/ 2)
             .attr("rx", width / 2)
             .attr("ry", height / 2)
     } else {
         svgElement
-            .attr("points", '' + (x1 + width) + ',' + (y1 - height) + ' ' + x1 + ',' + (y1 - height) + ' ' + x1 + ',' + y1 + ' ' + (x1 + width) + ',' + y1)
+            .attr("points", '' + (x + width) + ',' + (y - height) + ' ' + x + ',' + (y - height) + ' ' + x + ',' + y + ' ' + (x + width) + ',' + y)
     }
     svgElement
         .attr("fill", fill)
@@ -122,8 +122,8 @@ function _updateNode(node, x1, y1, width, height, nodeId, shape, attributes, opt
     var text = subParent.selectWithoutDataPropagation('text');
     text
         .attr("text-anchor", "middle")
-        .attr("x", x1 + width / 2)
-        .attr("y", y1 + height / 2)
+        .attr("x", x + width / 2)
+        .attr("y", y + height / 2)
         .attr("font-family", "Times,serif")
         .attr("font-size", "14.00")
         .attr("fill", "#000000")
