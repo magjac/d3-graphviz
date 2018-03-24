@@ -38,7 +38,7 @@ tape("Check our understanding of how Graphviz draws nodes.", function(test) {
 
 });
 
-tape("drawNode() draws an node in the same way as Graphviz does", function(test) {
+tape("drawNode() draws a node in the same way as Graphviz does", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -90,7 +90,7 @@ tape("drawNode() draws an node in the same way as Graphviz does", function(test)
 
 });
 
-tape("drawNode() draws an node with an URL attribute in the same way as Graphviz does", function(test) {
+tape("drawNode() draws a node with an URL attribute in the same way as Graphviz does", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -113,11 +113,11 @@ tape("drawNode() draws an node with an URL attribute in the same way as Graphviz
         graphviz
             .drawNode(0, -36, 54, 36, 'c', 'ellipse', {URL: "dummy2"});
         num_nodes += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an node');
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
         graphviz
             .insertCurrentNode('c');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
@@ -140,7 +140,7 @@ tape("drawNode() draws an node with an URL attribute in the same way as Graphviz
 
 });
 
-tape("drawNode() draws an node with an tooltip attribute in the same way as Graphviz does", function(test) {
+tape("drawNode() draws a node with an tooltip attribute in the same way as Graphviz does", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -163,11 +163,11 @@ tape("drawNode() draws an node with an tooltip attribute in the same way as Grap
         graphviz
             .drawNode(0, -36, 54, 36, 'd', 'ellipse', {tooltip: "dummy2"});
         num_nodes += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an node');
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
         graphviz
             .insertCurrentNode('d');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
@@ -213,11 +213,11 @@ tape("insertCurrentNode() inserts the currently drawn node into the joined data 
         graphviz
             .drawNode(0, -36, 54, 36, 'e', 'ellipse', {URL: "dummy2"});
         num_nodes += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an node');
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
         graphviz
             .insertCurrentNode('e');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
