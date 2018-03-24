@@ -72,12 +72,12 @@ export function drawNode(x, y, width, height, nodeId, shape='ellipse', attribute
     return this;
 }
 
-export function updateCurrentNode(x, y, width, height, nodeId, shape, attributes, options={}) {
+export function updateCurrentNode(x, y, width, height, nodeId, attributes, options={}) {
     var node = this._currentNode.g
     attributes = attributes || {};
     completeAttributes(attributes, this._currentNode.attributes);
     this._currentNode.nodeId = nodeId;
-    this._currentNode.shape = shape;
+    var shape = this._currentNode.shape;
     this._currentNode.x = x;
     this._currentNode.y = y;
     this._currentNode.width = width;
