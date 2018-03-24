@@ -297,3 +297,93 @@ tape("abortDrawingNode() removes the node currently being drawn", function(test)
     }
 
 });
+
+tape("updateCurrentNode modifies the position, size and attributes of a node", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    var num_nodes = 2;
+    var num_edges = 1;
+
+    graphviz
+        .zoom(false)
+        .logEvents(true)
+        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+        .render(drawNode);
+
+    function drawNode() {
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        x = 20;
+        y = -20;
+        width = 40;
+        height = 20;
+        graphviz
+            .drawNode(x, y, width, height, 'f', 'ellipse', {id: 'drawn-node'});
+        num_nodes += 1;
+        var node = d3.select('#drawn-node');
+        test.equal(node.size(), 1, 'a node with the specified id attribute is present');
+        var ellipse = node.selectWithoutDataPropagation("ellipse");
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
+        test.equal(+ellipse.attr("cx"), x + width / 2, "The horizontal position of the ellipse center is updated");
+        test.equal(+ellipse.attr("cy"), y + height / 2, "The vertical position of the ellipse center is updated");
+        test.equal(+ellipse.attr("rx"), width / 2, "The horizontal radius of the ellipse is updated");
+        test.equal(+ellipse.attr("ry"), height / 2, "The vertical radius of the ellipse is updated");
+        test.equal(ellipse.attr("fill"), 'black', 'Default fill color of a drawn node ellipse is black');
+        test.equal(ellipse.attr("stroke"), 'black', 'Default stroke color of a drawn node ellipse is black');
+        test.equal(ellipse.attr("strokeWidth"), '1', 'Default stroke width is 1');
+
+        x += 1;
+        y -= 1;
+        width += 1;
+        height += 1;
+        graphviz
+            .updateCurrentNode(x, y, width, height, 'f', {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-node"});
+        test.equal(+ellipse.attr("cx"), x + width / 2, "The horizontal position of the ellipse center is updated");
+        test.equal(+ellipse.attr("cy"), y + height / 2, "The vertical position of the ellipse center is updated");
+        test.equal(+ellipse.attr("rx"), width / 2, "The horizontal radius of the ellipse is updated");
+        test.equal(+ellipse.attr("ry"), height / 2, "The vertical radius of the ellipse is updated");
+        test.equal(ellipse.attr("fill"), 'red', 'Fill color of a drawn node is updated to red');
+        test.equal(ellipse.attr("stroke"), 'purple', 'Stroke color is updated to purple');
+        test.equal(ellipse.attr("strokeWidth"), '2', 'Stroke width is updated to 2');
+
+        x += 1;
+        y -= 1;
+        width += 1;
+        height += 1;
+        graphviz
+            .updateCurrentNode(x, y, width, height, 'f', {color: "green"});
+        test.equal(+ellipse.attr("cx"), x + width / 2, "The horizontal position of the ellipse center is updated");
+        test.equal(+ellipse.attr("cy"), y + height / 2, "The vertical position of the ellipse center is updated");
+        test.equal(+ellipse.attr("rx"), width / 2, "The horizontal radius of the ellipse is updated");
+        test.equal(+ellipse.attr("ry"), height / 2, "The vertical radius of the ellipse is updated");
+        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when only color is changed');
+        test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
+        test.equal(ellipse.attr("strokeWidth"), '2', 'Stroke width is not updated when only color is changed');
+
+        x += 1;
+        y -= 1;
+        width += 1;
+        height += 1;
+        graphviz
+            .updateCurrentNode(x, y, width, height, 'f');
+        test.equal(+ellipse.attr("cx"), x + width / 2, "The horizontal position of the ellipse center is updated");
+        test.equal(+ellipse.attr("cy"), y + height / 2, "The vertical position of the ellipse center is updated");
+        test.equal(+ellipse.attr("rx"), width / 2, "The horizontal radius of the ellipse is updated");
+        test.equal(+ellipse.attr("ry"), height / 2, "The vertical radius of the ellipse is updated");
+        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
+        test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
+        test.equal(ellipse.attr("strokeWidth"), '2', 'Stroke width is not updated  when no attribute is given');
+
+        test.end();
+    }
+
+});
