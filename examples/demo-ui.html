@@ -78,8 +78,8 @@ function startApp() {
             var [x0, y0] = d3.mouse(graph0.node());
             var x1 = x0 - width / 2;
             var x2 = x0 + width / 2;
-            var y1 = y0 + height / 2;
-            var y2 = y0 - height / 2;
+            var y1 = y0 - height / 2;
+            var y2 = y0 + height / 2;
             if (nodeIndex == null) {
                 nodeIndex = d3.selectAll('.node').size();
             } else {

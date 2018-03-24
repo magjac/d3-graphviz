@@ -126,7 +126,7 @@ function _updateNode(node, x, y, width, height, nodeId, shape, attributes, optio
             .attr("ry", height / 2)
     } else {
         svgElement
-            .attr("points", '' + (x + width) + ',' + (y - height) + ' ' + x + ',' + (y - height) + ' ' + x + ',' + y + ' ' + (x + width) + ',' + y)
+            .attr("points", '' + (x + width) + ',' + y + ' ' + x + ',' + y + ' ' + x + ',' + (y + height) + ' ' + (x + width) + ',' + (y + height))
     }
     svgElement
         .attr("fill", fill)
