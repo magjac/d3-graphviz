@@ -11,7 +11,7 @@ var defaultNodeAttributes = {
     tooltip: null,
     labeljust: "c",
     fontname: "Times,serif",
-    fontsize: "14.00",
+    fontsize: 14,
     fontcolor: "black",
 };
 
@@ -138,7 +138,7 @@ function _updateNode(node, x, y, width, height, nodeId, shape, attributes, optio
     text
         .attr("text-anchor", textAnchor)
         .attr("x", x + width / 2)
-        .attr("y", y + height / 2)
+        .attr("y", y + height - fontSize)
         .attr("font-family", fontFamily)
         .attr("font-size", fontSize)
         .attr("fill", fontColor)
