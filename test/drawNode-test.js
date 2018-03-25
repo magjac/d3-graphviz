@@ -365,9 +365,9 @@ tape("updateCurrentNode modifies the position, size and attributes of a node", f
         test.equal(+ellipse.attr("cy"), y + height / 2, "The vertical position of the ellipse center is updated");
         test.equal(+ellipse.attr("rx"), width / 2, "The horizontal radius of the ellipse is updated");
         test.equal(+ellipse.attr("ry"), height / 2, "The vertical radius of the ellipse is updated");
-        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when only color is changed');
+        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when not specified');
         test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
-        test.equal(ellipse.attr("strokeWidth"), '2', 'Stroke width is not updated when only color is changed');
+        test.equal(ellipse.attr("strokeWidth"), '2', 'Stroke width is not updated when not specified');
 
         x += 1;
         y -= 1;
