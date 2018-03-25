@@ -41,6 +41,7 @@
     "report-dir": "./alternative"
   },
   "devDependencies": {
+    "ace-builds": "^1.3.2",
     "codecov": "^3.0.0",
     "jsdom": "11.6.2",
     "markdown-to-html": "0.0.13",
