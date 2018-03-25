@@ -377,6 +377,7 @@ tape("updateCurrentNode modifies the position, size and attributes of a node", f
         var node = d3.select('#drawn-node');
         test.equal(node.size(), 1, 'a node with the specified id attribute is present');
         var ellipse = node.selectWithoutDataPropagation("ellipse");
+        var text = node.selectWithoutDataPropagation('text');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
@@ -395,7 +396,7 @@ tape("updateCurrentNode modifies the position, size and attributes of a node", f
         width += 1;
         height += 1;
         graphviz
-            .updateCurrentNode(x, y, width, height, 'f', {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-node"});
+            .updateCurrentNode(x, y, width, height, 'f', {fillcolor: "red", color: "purple", penwidth: 2, fontname:"Courier", fontsize:10, labeljust: 'l'});
         test.equal(+ellipse.attr("cx"), x + width / 2, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y + height / 2, "The vertical position of the ellipse center is updated");
         test.equal(+ellipse.attr("rx"), width / 2, "The horizontal radius of the ellipse is updated");
@@ -403,13 +404,16 @@ tape("updateCurrentNode modifies the position, size and attributes of a node", f
         test.equal(ellipse.attr("fill"), 'red', 'Fill color of a drawn node is updated to red');
         test.equal(ellipse.attr("stroke"), 'purple', 'Stroke color is updated to purple');
         test.equal(ellipse.attr("strokeWidth"), '2', 'Stroke width is updated to 2');
+        test.equal(text.attr("text-anchor"), 'start', 'text anchor is updated to start');
+        test.equal(text.attr("font-family"), 'Courier', 'text font family is updated to Courier');
+        test.equal(text.attr("font-size"), '10', 'text font size is updated to 10');
 
         x += 1;
         y -= 1;
         width += 1;
         height += 1;
         graphviz
-            .updateCurrentNode(x, y, width, height, 'f', {color: "green"});
+            .updateCurrentNode(x, y, width, height, 'f', {color: "green", labeljust: 'r'});
         test.equal(+ellipse.attr("cx"), x + width / 2, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y + height / 2, "The vertical position of the ellipse center is updated");
         test.equal(+ellipse.attr("rx"), width / 2, "The horizontal radius of the ellipse is updated");
@@ -417,6 +421,9 @@ tape("updateCurrentNode modifies the position, size and attributes of a node", f
         test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when not specified');
         test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
         test.equal(ellipse.attr("strokeWidth"), '2', 'Stroke width is not updated when not specified');
+        test.equal(text.attr("text-anchor"), 'end', 'text anchor is updated to end');
+        test.equal(text.attr("font-family"), 'Courier', 'text font family is not updated when not specified');
+        test.equal(text.attr("font-size"), '10', 'text font size is not updated when not specified');
 
         x += 1;
         y -= 1;
