@@ -626,3 +626,46 @@ tape("moveCurrentEdgeEndPoint modifies the end points of an edge", function(test
     }
 
 });
+
+tape("Attempts to operate on an edge without drawing one first is handled gracefully", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    var num_nodes = 2;
+    var num_edges = 1;
+
+    graphviz
+        .zoom(false)
+        .logEvents(true)
+        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+        .render(startTest);
+
+    function startTest() {
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        test.throws(function () {
+            graphviz
+                .updateCurrentEdge(21, -21, 41, -21);
+        }, "updateCurrentEdge throws error if not edge has been drawn first");
+        test.throws(function () {
+            graphviz
+                .moveCurrentEdgeEndPoint(42, -22);
+        }, "moveCurrentEdgeEndPoint throws error if not edge has been drawn first");
+        test.throws(function () {
+            graphviz
+            .insertCurrentEdge('b->a');
+        }, "insertCurrentEdge throws error if not edge has been drawn first");
+
+        test.doesNotThrow(function () {
+            graphviz
+                .abortDrawingEdge();
+        }, "abortDrawingEdge is ignored if no edge has been drawn first");
+
+        test.end();
+    }
+
+});
