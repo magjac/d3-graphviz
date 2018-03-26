@@ -44,6 +44,9 @@ var edgeIndex;
 
 var editor = ace.edit("editor");
 
+var pendingUpdate = false
+var rendering = false;
+
 var dotSrc = `strict digraph {
     node [style="filled"]
     a [shape="ellipse" fillcolor="` + d3.schemeCategory10[0] + `"]
@@ -78,7 +81,15 @@ function attributer(datum, index, nodes) {
 
 function render() {
     dotSrc = editor.getValue();
+    if (!dotSrc) {
+        return;
+    }
+    if (rendering) {
+        pendingUpdate = true;
+        return;
+    }
 
+    rendering = true;
     graphviz
         .renderDot(dotSrc, startApp);
 }
@@ -230,6 +241,11 @@ function startApp() {
         unSelectEdge();
     });
 
+    rendering = false;
+    if (pendingUpdate) {
+        pendingUpdate = false;
+        render();
+    }
 }
 
 function selectEdge(edge) {
