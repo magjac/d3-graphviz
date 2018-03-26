@@ -22,7 +22,9 @@
     b [shape="polygon" fillcolor="red"]
     a -> b [fillcolor="green"]
 }</div>
-<div id="graph" style="width: 50%; height: 100%; margin-left: 50%; text-align: center"></div>
+<div id="graph" style="width: 50%; height: 100%; margin-left: 50%; text-align: center">
+  <div id="error-message" style="position: absolute; top: 1%; left: 51%; color: red"></div>
+</div>
 <script>
 
 'use strict';
@@ -90,8 +92,19 @@ function render() {
     }
 
     rendering = true;
+    d3.select("#error-message").text("");
     graphviz
+        .onerror(handleError)
         .renderDot(dotSrc, startApp);
+}
+
+function handleError(errorMessage) {
+    d3.select("#error-message").text(errorMessage);
+    rendering = false;
+    if (pendingUpdate) {
+        pendingUpdate = false;
+        render();
+    }
 }
 
 function startApp() {
