@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html style="height: 100%">
 <meta charset="utf-8">
 <style type="text/css" media="screen">
     #editor {
@@ -10,7 +11,7 @@
         border: 1px solid lightgray;
     }
 </style>
-<body>
+<body style="height: 100%">
 <script src="https://d3js.org/d3.v5.js"></script>
 <script src="../node_modules/viz.js/viz.js" type="javascript/worker"></script>
 <script src="../build/d3-graphviz.js"></script>
@@ -21,7 +22,7 @@
     b [shape="polygon" fillcolor="red"]
     a -> b [fillcolor="green"]
 }</div>
-<div id="graph" style="width: 50%; margin-left: 50%; text-align: center"></div>
+<div id="graph" style="width: 50%; height: 100%; margin-left: 50%; text-align: center"></div>
 <script>
 
 'use strict';
@@ -51,7 +52,7 @@ var dotSrc = `strict digraph {
 }`;
 
 var graphviz = d3.select("#graph").graphviz()
-//    .attributer(attributer)
+    .attributer(attributer)
     .transition(function() {
         return d3.transition().duration(1000);
     });
@@ -62,8 +63,8 @@ editor.setValue(dotSrc);
 function attributer(datum, index, nodes) {
     var selection = d3.select(this);
     if (datum.tag == "svg") {
-        var width = window.innerWidth - margin;
-        var height = window.innerHeight - margin;
+        var width = d3.select('#graph').node().clientWidth;
+        var height = d3.select('#graph').node().clientHeight;
         var x = "10";
         var y = "10";
         var unit = 'px';
@@ -307,3 +308,4 @@ function deleteSelectedNode() {
 }
 
 </script>
+</html>
