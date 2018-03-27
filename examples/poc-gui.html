@@ -333,5 +333,17 @@ function deleteSelectedNode() {
     }
 }
 
+d3.select(window).on("resize", resizeSVG);
+
+function resizeSVG() {
+    var width = d3.select('#graph').node().clientWidth;
+    var height = d3.select('#graph').node().clientHeight;
+    d3.select("#graph").selectWithoutDataPropagation("svg")
+        .transition()
+        .duration(700)
+        .attr("width", width)
+        .attr("height", height);
+};
+
 </script>
 </html>
