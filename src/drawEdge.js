@@ -56,7 +56,7 @@ export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
     return this;
 }
 
-export function updateCurrentEdge(x1, y1, x2, y2, attributes, options={}) {
+export function updateDrawnEdge(x1, y1, x2, y2, attributes, options={}) {
     if (!this._currentEdge)  {
         throw Error('No edge is currently being drawn');
     }
@@ -147,7 +147,7 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes, options) {
     return this;
 }
 
-export function moveCurrentEdgeEndPoint(x2, y2, options={}) {
+export function moveDrawnEdgeEndPoint(x2, y2, options={}) {
 
     if (!this._currentEdge)  {
         throw Error('No edge is currently being drawn');
@@ -179,7 +179,7 @@ export function abortDrawingEdge() {
     return this
 }
 
-export function insertCurrentEdge(name) {
+export function insertDrawnEdge(name) {
 
     if (!this._currentEdge)  {
         throw Error('No edge is currently being drawn');

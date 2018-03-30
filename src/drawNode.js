@@ -72,7 +72,7 @@ export function drawNode(x, y, width, height, nodeId, shape='ellipse', attribute
     return this;
 }
 
-export function updateCurrentNode(x, y, width, height, nodeId, attributes, options={}) {
+export function updateDrawnNode(x, y, width, height, nodeId, attributes, options={}) {
     var node = this._currentNode.g
     attributes = attributes || {};
     completeAttributes(attributes, this._currentNode.attributes);
@@ -157,7 +157,7 @@ export function abortDrawingNode() {
     return this
 }
 
-export function insertCurrentNode(nodeId) {
+export function insertDrawnNode(nodeId) {
 
     var node = this._currentNode.g;
     var attributes = this._currentNode.attributes;

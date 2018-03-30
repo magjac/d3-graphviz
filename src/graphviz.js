@@ -23,13 +23,13 @@ import on from "./on";
 import onerror from "./onerror";
 import logEvents from "./logEvents";
 import {drawEdge} from "./drawEdge";
-import {updateCurrentEdge} from "./drawEdge";
-import {moveCurrentEdgeEndPoint} from "./drawEdge";
-import {insertCurrentEdge} from "./drawEdge";
+import {updateDrawnEdge} from "./drawEdge";
+import {moveDrawnEdgeEndPoint} from "./drawEdge";
+import {insertDrawnEdge} from "./drawEdge";
 import {abortDrawingEdge} from "./drawEdge";
 import {drawNode} from "./drawNode";
-import {updateCurrentNode} from "./drawNode";
-import {insertCurrentNode} from "./drawNode";
+import {updateDrawnNode} from "./drawNode";
+import {insertDrawnNode} from "./drawNode";
 import {abortDrawingNode} from "./drawNode";
 
 export function Graphviz(selection, useWorker) {
@@ -156,12 +156,12 @@ Graphviz.prototype = graphviz.prototype = {
     onerror: onerror,
     logEvents: logEvents,
     drawEdge: drawEdge,
-    updateCurrentEdge: updateCurrentEdge,
-    moveCurrentEdgeEndPoint,
-    insertCurrentEdge,
+    updateDrawnEdge: updateDrawnEdge,
+    moveDrawnEdgeEndPoint,
+    insertDrawnEdge,
     abortDrawingEdge, abortDrawingEdge,
     drawNode: drawNode,
-    updateCurrentNode: updateCurrentNode,
-    insertCurrentNode,
+    updateDrawnNode: updateDrawnNode,
+    insertDrawnNode,
     abortDrawingNode, abortDrawingNode,
 };

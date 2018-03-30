@@ -67,7 +67,7 @@ var graphviz = d3.select("#graph").graphviz()
             var shortening = 2; // avoid mouse pointing on edge
             if (isDrawing) {
                 graphviz
-                    .moveCurrentEdgeEndPoint(x0, y0, {shortening: shortening});
+                    .moveDrawnEdgeEndPoint(x0, y0, {shortening: shortening});
             }
         });
 

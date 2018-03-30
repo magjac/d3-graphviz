@@ -309,21 +309,21 @@ Draws a straight edge from (*x1*, *y1*) to (*x2*, *y2) using coordinates relativ
 
 * <b>shortening</b> - The number of points by which to draw the edge shorter than given by the coordinates. This is useful to avoid that the currently drawn edge is prohibiting mouse events on elements beneath the current mouse position. A typical such value is 2. The default value is 0.
 
-<a name="graphviz_updateCurrentEdge" href="#graphviz_updateCurrentEdge">#</a> <i>graphviz</i>.<b>updateCurrentEdge</b>(<i>x1</i>, <i>y1</i>, <i> x2</i>, <i> y2</i>[, <i> attributes</i>][, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+<a name="graphviz_updateDrawnEdge" href="#graphviz_updateDrawnEdge">#</a> <i>graphviz</i>.<b>updateDrawnEdge</b>(<i>x1</i>, <i>y1</i>, <i> x2</i>, <i> y2</i>[, <i> attributes</i>][, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
 
-Updates properties and attributes of the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge), using the same arguments. This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertCurrentEdge</b>](#graphviz_insertCurrentEdge).
+Updates properties and attributes of the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge), using the same arguments. This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnEdge</b>](#graphviz_insertDrawnEdge).
 
-<a name="graphviz_moveCurrentEdgeEndPoint" href="#graphviz_moveCurrentEdgeEndPoint">#</a> <i>graphviz</i>.<b>moveCurrentEdgeEndPoint</b>(<i> x2</i>, <i> y2</i>[, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+<a name="graphviz_moveDrawnEdgeEndPoint" href="#graphviz_moveDrawnEdgeEndPoint">#</a> <i>graphviz</i>.<b>moveDrawnEdgeEndPoint</b>(<i> x2</i>, <i> y2</i>[, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
 
-Updates the end point of the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge), accepting the same *options* argument. This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertCurrentEdge</b>](#graphviz_insertCurrentEdge).
+Updates the end point of the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge), accepting the same *options* argument. This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnEdge</b>](#graphviz_insertDrawnEdge).
 
-<a name="graphviz_insertCurrentEdge" href="#graphviz_insertCurrentEdge">#</a> <i>graphviz</i>.<b>insertCurrentEdge</b>(<i>name</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+<a name="graphviz_insertDrawnEdge" href="#graphviz_insertDrawnEdge">#</a> <i>graphviz</i>.<b>insertDrawnEdge</b>(<i>name</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
 
 Inserts the edge into the graph data, making it available for an animated transition into a subsequent new layout perfomed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *name* is typically [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) [<i>edgeop</i>](https://www.graphviz.org/doc/info/lang.html) [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html), e.g. "a -> b".
 
 <a name="graphviz_abortDrawingEdge" href="#graphviz_abortDrawingEdge">#</a> <i>graphviz</i>.<b>abortDrawingEdge</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
 
-Removes the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge). This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertCurrentEdge</b>](#graphviz_insertCurrentEdge).
+Removes the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge). This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnEdge</b>](#graphviz_insertDrawnEdge).
 
 <a name="graphviz_drawNode" href="#graphviz_drawNode">#</a> <i>graphviz</i>.<b>drawNode</b>(<i>x</i>, <i>y</i>, <i>width</i>, <i>height</i>, <i>nodeId</i>, <i>shape</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
@@ -337,17 +337,17 @@ Draws a node with [shape](https://www.graphviz.org/doc/info/shapes.html) *shape*
 * <b>rect</b>
 * <b>box</b>
 
-<a name="graphviz_updateCurrentNode" href="#graphviz_updateCurrentNode">#</a> <i>graphviz</i>.<b>updateCurrentNode</b>(<i>x</i>, <i>y</i>, <i>width</i>, <i>height</i>, <i>nodeId</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+<a name="graphviz_updateDrawnNode" href="#graphviz_updateDrawnNode">#</a> <i>graphviz</i>.<b>updateDrawnNode</b>(<i>x</i>, <i>y</i>, <i>width</i>, <i>height</i>, <i>nodeId</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
-Updates properties and attributes of the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode), using the same arguments, except for *shape* which cannot be changed after the node has been drawn. This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertCurrentNode</b>](#graphviz_insertCurrentNode).
+Updates properties and attributes of the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode), using the same arguments, except for *shape* which cannot be changed after the node has been drawn. This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
 
-<a name="graphviz_insertCurrentNode" href="#graphviz_insertCurrentNode">#</a> <i>graphviz</i>.<b>insertCurrentNode</b>(<i>nodeId</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+<a name="graphviz_insertDrawnNode" href="#graphviz_insertDrawnNode">#</a> <i>graphviz</i>.<b>insertDrawnNode</b>(<i>nodeId</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
 Inserts the node into the graph data, making it available for an animated transition into a subsequent new layout perfomed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html).
 
 <a name="graphviz_abortDrawingNode" href="#graphviz_abortDrawingNode">#</a> <i>graphviz</i>.<b>abortDrawingNode</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
-Removes the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode). This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertCurrentNode</b>](#graphviz_insertCurrentNode).
+Removes the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode). This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
 
 ### Large Graphs
 

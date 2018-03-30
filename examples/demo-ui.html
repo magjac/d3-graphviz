@@ -95,7 +95,7 @@ function startApp() {
             var color = 'black';
             graphviz
                 .drawNode(x1, y1, width, height, nodeName, shape, {text: nodeName, fillcolor: fillcolor, color: color})
-                .insertCurrentNode(nodeName);
+                .insertDrawnNode(nodeName);
             var dotSrcLines = dotSrc.split('\n');
             var newNodeString = nodeName + ' [shape="' + shape + '" color="' + color + '"; fillcolor="' + fillcolor + '"; penwidth="1"]';
             dotSrcLines.splice(-1, 0, newNodeString);
@@ -133,7 +133,7 @@ function startApp() {
         var shortening = 2; // avoid mouse pointing on edge
         if (isDrawingEdge) {
             graphviz
-                .moveCurrentEdgeEndPoint(x0, y0,  {shortening: shortening})
+                .moveDrawnEdgeEndPoint(x0, y0,  {shortening: shortening})
         }
     });
 
@@ -160,7 +160,7 @@ function startApp() {
             var startNodeName = startNode.selectWithoutDataPropagation("title").text();
             var endNodeName = endNode.selectWithoutDataPropagation("title").text();
             graphviz
-                .insertCurrentEdge(startNodeName + '->' + endNodeName);
+                .insertDrawnEdge(startNodeName + '->' + endNodeName);
             var fillcolor = d3.schemePaired[(edgeIndex * 2) % 12];
             var color = d3.schemePaired[(edgeIndex * 2 + 1) % 12];
             var dotSrcLines = dotSrc.split('\n');

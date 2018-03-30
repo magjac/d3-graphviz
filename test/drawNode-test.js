@@ -69,7 +69,7 @@ tape("drawNode() draws a node in the same way as Graphviz does", function(test) 
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         graphviz
-            .insertCurrentNode('c');
+            .insertDrawnNode('c');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
@@ -121,7 +121,7 @@ tape("drawNode() draws a polygon node", function(test) {
         test.equal(d3.selectAll('ellipse').size(), 0, 'Number of ellipses after drawing an edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         graphviz
-            .insertCurrentNode('c');
+            .insertDrawnNode('c');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges + num_nodes, 'Number of polygons after inserting the currently drawn edge');
@@ -168,7 +168,7 @@ tape("drawNode() draws a node with an URL attribute in the same way as Graphviz 
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
         graphviz
-            .insertCurrentNode('c');
+            .insertDrawnNode('c');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn node');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn node');
@@ -218,7 +218,7 @@ tape("drawNode() draws a node with an tooltip attribute in the same way as Graph
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
         graphviz
-            .insertCurrentNode('d');
+            .insertDrawnNode('d');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn node');
         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn node');
@@ -239,7 +239,7 @@ tape("drawNode() draws a node with an tooltip attribute in the same way as Graph
 
 });
 
-tape("insertCurrentNode() inserts the currently drawn node into the joined data structure so that it can be animated when the graph is re-rendered", function(test) {
+tape("insertDrawnNode() inserts the currently drawn node into the joined data structure so that it can be animated when the graph is re-rendered", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -268,7 +268,7 @@ tape("insertCurrentNode() inserts the currently drawn node into the joined data 
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
         graphviz
-            .insertCurrentNode('e');
+            .insertDrawnNode('e');
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn node');
          test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn node');
@@ -347,7 +347,7 @@ tape("abortDrawingNode() removes the node currently being drawn", function(test)
 
 });
 
-tape("updateCurrentNode modifies the position, size and attributes of a node", function(test) {
+tape("updateDrawnNode modifies the position, size and attributes of a node", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -396,7 +396,7 @@ tape("updateCurrentNode modifies the position, size and attributes of a node", f
         width += 1;
         height += 1;
         graphviz
-            .updateCurrentNode(x, y, width, height, 'f', {fillcolor: "red", color: "purple", penwidth: 2, fontname:"Courier", fontsize:10, labeljust: 'l'});
+            .updateDrawnNode(x, y, width, height, 'f', {fillcolor: "red", color: "purple", penwidth: 2, fontname:"Courier", fontsize:10, labeljust: 'l'});
         test.equal(+ellipse.attr("cx"), x + width / 2, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y + height / 2, "The vertical position of the ellipse center is updated");
         test.equal(+ellipse.attr("rx"), width / 2, "The horizontal radius of the ellipse is updated");
@@ -413,7 +413,7 @@ tape("updateCurrentNode modifies the position, size and attributes of a node", f
         width += 1;
         height += 1;
         graphviz
-            .updateCurrentNode(x, y, width, height, 'f', {color: "green", labeljust: 'r'});
+            .updateDrawnNode(x, y, width, height, 'f', {color: "green", labeljust: 'r'});
         test.equal(+ellipse.attr("cx"), x + width / 2, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y + height / 2, "The vertical position of the ellipse center is updated");
         test.equal(+ellipse.attr("rx"), width / 2, "The horizontal radius of the ellipse is updated");
@@ -430,7 +430,7 @@ tape("updateCurrentNode modifies the position, size and attributes of a node", f
         width += 1;
         height += 1;
         graphviz
-            .updateCurrentNode(x, y, width, height, 'f');
+            .updateDrawnNode(x, y, width, height, 'f');
         test.equal(+ellipse.attr("cx"), x + width / 2, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y + height / 2, "The vertical position of the ellipse center is updated");
         test.equal(+ellipse.attr("rx"), width / 2, "The horizontal radius of the ellipse is updated");
