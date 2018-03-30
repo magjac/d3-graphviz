@@ -74,6 +74,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Maintaining Object Constancy](#maintaining-object-constancy)
 * [Customizing Graph Attributes](#customizing-graph-attributes)
 * [Accessing Elements of the Generated Graph](#accessing-elements-of-the-generated-graph)
+* [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changeas)
 * [Large Graphs](#large-graphs)
 
 ### Creating a Graphviz Renderer
@@ -297,6 +298,56 @@ d3.select("#graph").graphviz()
 <a name="selection_selectWithoutDataPropagation" href="#selection_selectWithoutDataPropagation">#</a> <i>selection</i>.<b>selectWithoutDataPropagation</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/selectWithoutDataPropagation.js "Source")
 
 For each selected element, selects the first descendant element that matches the specified selector string in the same ways as  [*selection*.select](https://github.com/d3/d3-selection#selection_select), but does *not* propagate any associated data from the current element to the corresponding selected element.
+
+### Modifying an Existing Graph and Animating the Changes
+
+This API provides methods draw nodes and edges and inserting them into the graph data. The application can then animate the changes made by providing and updated DOT source and render a new layout. The API also supports removing nodes and edge from the graph and the graph data.
+
+<a name="graphviz_drawEdge" href="#graphviz_drawEdge">#</a> <i>graphviz</i>.<b>drawEdge</b>(<i>x1</i>, <i>y1</i>, <i> x2</i>, <i> y2</i>[, <i> attributes</i>][, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+
+Draws a straight edge from (*x1*, *y1*) to (*x2*, *y2) using coordinates relative to top level [G container element](https://www.w3.org/TR/SVG/struct.html#Groups) of the graph. Typically these coordinates are obtained with [d3.mouse](https://github.com/d3/d3-selection#mouse). If *attributes* is specified, it is taken to be an object containing [DOT attributes](https://www.graphviz.org/doc/info/attrs.html) as properties to be used when drawing the node. If not specified, the default values of those attributes are used. If *options* is specified, it is taken to be an object containing properties which are used as options when drawing the edge. The currently supported options are:
+
+* <b>shortening</b> - The number of points by which to draw the edge shorter than given by the coordinates. This is useful to avoid that the currently drawn edge is prohibiting mouse events on elements beneath the current mouse position. A typical such value is 2. The default value is 0.
+
+<a name="graphviz_updateCurrentEdge" href="#graphviz_updateCurrentEdge">#</a> <i>graphviz</i>.<b>updateCurrentEdge</b>(<i>x1</i>, <i>y1</i>, <i> x2</i>, <i> y2</i>[, <i> attributes</i>][, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+
+Updates properties and attributes of the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge), using the same arguments. This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertCurrentEdge</b>](#graphviz_insertCurrentEdge).
+
+<a name="graphviz_moveCurrentEdgeEndPoint" href="#graphviz_moveCurrentEdgeEndPoint">#</a> <i>graphviz</i>.<b>moveCurrentEdgeEndPoint</b>(<i> x2</i>, <i> y2</i>[, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+
+Updates the end point of the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge), accepting the same *options* argument. This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertCurrentEdge</b>](#graphviz_insertCurrentEdge).
+
+<a name="graphviz_insertCurrentEdge" href="#graphviz_insertCurrentEdge">#</a> <i>graphviz</i>.<b>insertCurrentEdge</b>(<i>name</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+
+Inserts the edge into the graph data, making it available for an animated transition into a subsequent new layout perfomed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *name* is typically [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) [<i>edgeop</i>](https://www.graphviz.org/doc/info/lang.html) [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html), e.g. "a -> b".
+
+<a name="graphviz_abortDrawingEdge" href="#graphviz_abortDrawingEdge">#</a> <i>graphviz</i>.<b>abortDrawingEdge</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+
+Removes the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge). This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertCurrentEdge</b>](#graphviz_insertCurrentEdge).
+
+<a name="graphviz_drawNode" href="#graphviz_drawNode">#</a> <i>graphviz</i>.<b>drawNode</b>(<i>x</i>, <i>y</i>, <i>width</i>, <i>height</i>, <i>nodeId</i>, <i>shape</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+
+Draws a node with [shape](https://www.graphviz.org/doc/info/shapes.html) *shape*, which a [Graphviz Node Shape](https://www.graphviz.org/doc/info/shapes.html), *width* points wide and *height* points high, with the upper left corner of its bounding box at (*x*, *y*), using coordinates relative to the top level [G container element](https://www.w3.org/TR/SVG/struct.html#Groups) of the graph. Typically these coordinates are obtained with [d3.mouse](https://github.com/d3/d3-selection#mouse). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html). If *attributes* is specified, it is taken to be an object containing [DOT attributes](https://www.graphviz.org/doc/info/attrs.html) as properties to be used when drawing the node. If not specified, the default values of those attributes are used.
+
+<b>NOTE:</b> In the current release, only the following shapes are supported:
+
+* <b>ellipse</b>
+* <b>circle</b>
+* <b>polygon</b>
+* <b>rect</b>
+* <b>box</b>
+
+<a name="graphviz_updateCurrentNode" href="#graphviz_updateCurrentNode">#</a> <i>graphviz</i>.<b>updateCurrentNode</b>(<i>x</i>, <i>y</i>, <i>width</i>, <i>height</i>, <i>nodeId</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+
+Updates properties and attributes of the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode), using the same arguments, except for *shape* which cannot be changed after the node has been drawn. This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertCurrentNode</b>](#graphviz_insertCurrentNode).
+
+<a name="graphviz_insertCurrentNode" href="#graphviz_insertCurrentNode">#</a> <i>graphviz</i>.<b>insertCurrentNode</b>(<i>nodeId</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+
+Inserts the node into the graph data, making it available for an animated transition into a subsequent new layout perfomed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html).
+
+<a name="graphviz_abortDrawingNode" href="#graphviz_abortDrawingNode">#</a> <i>graphviz</i>.<b>abortDrawingNode</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+
+Removes the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode). This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertCurrentNode</b>](#graphviz_insertCurrentNode).
 
 ### Large Graphs
 
