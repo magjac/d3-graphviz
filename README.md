@@ -74,7 +74,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Maintaining Object Constancy](#maintaining-object-constancy)
 * [Customizing Graph Attributes](#customizing-graph-attributes)
 * [Accessing Elements of the Generated Graph](#accessing-elements-of-the-generated-graph)
-* [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changeas)
+* [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changes)
 * [Large Graphs](#large-graphs)
 
 ### Creating a Graphviz Renderer
