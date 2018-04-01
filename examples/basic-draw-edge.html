@@ -51,7 +51,7 @@ var graphviz = d3.select("#graph").graphviz()
             event.preventDefault();
             console.log('document keyup', event);
             if (event.keyCode == 27) {
-                graphviz.abortDrawing();
+                graphviz.removeDrawn();
             }
             isDrawing = false;
         });

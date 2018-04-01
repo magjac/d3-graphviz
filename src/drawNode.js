@@ -149,7 +149,7 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     return this;
 }
 
-export function abortDrawingNode() {
+export function removeDrawnNode() {
 
     var node = this._currentNode.g;
 

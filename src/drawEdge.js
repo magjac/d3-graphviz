@@ -164,7 +164,7 @@ export function moveDrawnEdgeEndPoint(x2, y2, options={}) {
     return this
 }
 
-export function abortDrawingEdge() {
+export function removeDrawnEdge() {
 
     if (!this._currentEdge)  {
         return this;

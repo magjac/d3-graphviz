@@ -110,13 +110,13 @@ function startApp() {
         event.preventDefault();
         console.log('document keyup', event);
         if (event.keyCode == 27) {
-            graphviz.abortDrawingEdge();
+            graphviz.removeDrawnEdge();
             unSelectEdge();
         }
         if (event.keyCode == 46) {
             deleteSelectedEdge();
             deleteSelectedNode();
-            graphviz.abortDrawingEdge();
+            graphviz.removeDrawnEdge();
             render();
         }
         isDrawingEdge = false;

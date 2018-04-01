@@ -321,7 +321,7 @@ Updates the end point of the edge currently drawn with [<i>graphviz</i>.<b>drawE
 
 Inserts the edge into the graph data, making it available for an animated transition into a subsequent new layout perfomed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *name* is typically [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) [<i>edgeop</i>](https://www.graphviz.org/doc/info/lang.html) [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html), e.g. "a -> b".
 
-<a name="graphviz_abortDrawingEdge" href="#graphviz_abortDrawingEdge">#</a> <i>graphviz</i>.<b>abortDrawingEdge</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+<a name="graphviz_removeDrawnEdge" href="#graphviz_removeDrawnEdge">#</a> <i>graphviz</i>.<b>removeDrawnEdge</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
 
 Removes the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge). This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnEdge</b>](#graphviz_insertDrawnEdge).
 
@@ -345,7 +345,7 @@ Updates properties and attributes of the node currently drawn with [<i>graphviz<
 
 Inserts the node into the graph data, making it available for an animated transition into a subsequent new layout perfomed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html).
 
-<a name="graphviz_abortDrawingNode" href="#graphviz_abortDrawingNode">#</a> <i>graphviz</i>.<b>abortDrawingNode</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+<a name="graphviz_removeDrawnNode" href="#graphviz_removeDrawnNode">#</a> <i>graphviz</i>.<b>removeDrawnNode</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
 Removes the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode). This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
 

@@ -149,14 +149,14 @@ function startApp() {
         var event = d3.event;
         event.preventDefault();
         if (event.keyCode == 27) {
-            graphviz.abortDrawingEdge();
+            graphviz.removeDrawnEdge();
             unSelectEdge();
             unSelectNode();
         }
         if (event.keyCode == 46) {
             deleteSelectedEdge();
             deleteSelectedNode();
-            graphviz.abortDrawingEdge();
+            graphviz.removeDrawnEdge();
             editor.setValue(dotSrc);
         }
         isDrawingEdge = false;

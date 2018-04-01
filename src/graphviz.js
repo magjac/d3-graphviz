@@ -26,11 +26,11 @@ import {drawEdge} from "./drawEdge";
 import {updateDrawnEdge} from "./drawEdge";
 import {moveDrawnEdgeEndPoint} from "./drawEdge";
 import {insertDrawnEdge} from "./drawEdge";
-import {abortDrawingEdge} from "./drawEdge";
+import {removeDrawnEdge} from "./drawEdge";
 import {drawNode} from "./drawNode";
 import {updateDrawnNode} from "./drawNode";
 import {insertDrawnNode} from "./drawNode";
-import {abortDrawingNode} from "./drawNode";
+import {removeDrawnNode} from "./drawNode";
 
 export function Graphviz(selection, useWorker) {
     if (typeof Worker == 'undefined') {
@@ -159,9 +159,9 @@ Graphviz.prototype = graphviz.prototype = {
     updateDrawnEdge: updateDrawnEdge,
     moveDrawnEdgeEndPoint,
     insertDrawnEdge,
-    abortDrawingEdge, abortDrawingEdge,
+    removeDrawnEdge, removeDrawnEdge,
     drawNode: drawNode,
     updateDrawnNode: updateDrawnNode,
     insertDrawnNode,
-    abortDrawingNode, abortDrawingNode,
+    removeDrawnNode, removeDrawnNode,
 };
