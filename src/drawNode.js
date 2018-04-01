@@ -31,7 +31,7 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
     }
 }
 
-export function drawNode(x, y, width, height, nodeId, shape='ellipse', attributes, options={}) {
+export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attributes, options={}) {
     attributes = attributes || {};
     completeAttributes(attributes);
     var svg = d3.select("svg");
@@ -67,7 +67,7 @@ export function drawNode(x, y, width, height, nodeId, shape='ellipse', attribute
         height: height,
         attributes: attributes,
     };
-    _updateNode(newNode, x, y, width, height, nodeId, shape, attributes, options);
+    _updateNode(newNode, x, y, width, height, shape, nodeId, attributes, options);
 
     return this;
 }
@@ -75,6 +75,9 @@ export function drawNode(x, y, width, height, nodeId, shape='ellipse', attribute
 export function updateDrawnNode(x, y, width, height, nodeId, attributes, options={}) {
     var node = this._currentNode.g
     attributes = attributes || {};
+    if (nodeId == null) {
+        nodeId = this._currentNode.nodeId;
+    }
     completeAttributes(attributes, this._currentNode.attributes);
     this._currentNode.nodeId = nodeId;
     var shape = this._currentNode.shape;
@@ -83,12 +86,12 @@ export function updateDrawnNode(x, y, width, height, nodeId, attributes, options
     this._currentNode.width = width;
     this._currentNode.height = height;
     this._currentNode.attributes = attributes;
-    _updateNode(node, x, y, width, height, nodeId, shape, attributes, options);
+    _updateNode(node, x, y, width, height, shape, nodeId, attributes, options);
 
     return this;
 }
 
-function _updateNode(node, x, y, width, height, nodeId, shape, attributes, options) {
+function _updateNode(node, x, y, width, height, shape, nodeId, attributes, options) {
 
     var id = attributes.id;
     var fill = attributes.fillcolor;
@@ -159,6 +162,9 @@ export function abortDrawingNode() {
 
 export function insertDrawnNode(nodeId) {
 
+    if (nodeId == null) {
+        nodeId = this._currentNode.nodeId;
+    }
     var node = this._currentNode.g;
     var attributes = this._currentNode.attributes;
     var shape = this._currentNode.shape;
@@ -179,6 +185,8 @@ export function insertDrawnNode(nodeId) {
         var svgElement = node.selectWithoutDataPropagation(svgShape);
         var text = node.selectWithoutDataPropagation('text');
     }
+    text
+        .text(nodeId);
     var textText = text.selectAll(function() {
         return text.node().childNodes;
     });
