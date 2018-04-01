@@ -57,7 +57,7 @@ export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attrib
             .text("");
     }
 
-    this._currentNode = {
+    this._drawnNode = {
         g: newNode,
         nodeId: nodeId,
         shape: shape,
@@ -73,23 +73,23 @@ export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attrib
 }
 
 export function updateDrawnNode(x, y, width, height, nodeId, attributes, options={}) {
-    if (!this._currentNode)  {
+    if (!this._drawnNode)  {
         throw Error('No node has been drawn');
     }
 
-    var node = this._currentNode.g
+    var node = this._drawnNode.g
     attributes = attributes || {};
     if (nodeId == null) {
-        nodeId = this._currentNode.nodeId;
+        nodeId = this._drawnNode.nodeId;
     }
-    completeAttributes(attributes, this._currentNode.attributes);
-    this._currentNode.nodeId = nodeId;
-    var shape = this._currentNode.shape;
-    this._currentNode.x = x;
-    this._currentNode.y = y;
-    this._currentNode.width = width;
-    this._currentNode.height = height;
-    this._currentNode.attributes = attributes;
+    completeAttributes(attributes, this._drawnNode.attributes);
+    this._drawnNode.nodeId = nodeId;
+    var shape = this._drawnNode.shape;
+    this._drawnNode.x = x;
+    this._drawnNode.y = y;
+    this._drawnNode.width = width;
+    this._drawnNode.height = height;
+    this._drawnNode.attributes = attributes;
     _updateNode(node, x, y, width, height, shape, nodeId, attributes, options);
 
     return this;
@@ -155,31 +155,31 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
 
 export function removeDrawnNode() {
 
-    if (!this._currentNode)  {
+    if (!this._drawnNode)  {
         return this;
     }
 
-    var node = this._currentNode.g;
+    var node = this._drawnNode.g;
 
     node.remove();
 
-    this._currentNode = null;
+    this._drawnNode = null;
 
     return this
 }
 
 export function insertDrawnNode(nodeId) {
 
-    if (!this._currentNode)  {
+    if (!this._drawnNode)  {
         throw Error('No node has been drawn');
     }
 
     if (nodeId == null) {
-        nodeId = this._currentNode.nodeId;
+        nodeId = this._drawnNode.nodeId;
     }
-    var node = this._currentNode.g;
-    var attributes = this._currentNode.attributes;
-    var shape = this._currentNode.shape;
+    var node = this._drawnNode.g;
+    var attributes = this._drawnNode.attributes;
+    var shape = this._drawnNode.shape;
     var svgShape = svgShapes[shape];
 
     var title = node.selectWithoutDataPropagation("title");

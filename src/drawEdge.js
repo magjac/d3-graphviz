@@ -43,7 +43,7 @@ export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
         var line = newEdge.append("path");
         var arrowHead = newEdge.append("polygon");
     }
-    this._currentEdge = {
+    this._drawnEdge = {
         g: newEdge,
         x1: x1,
         y1: y1,
@@ -57,17 +57,17 @@ export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
 }
 
 export function updateDrawnEdge(x1, y1, x2, y2, attributes, options={}) {
-    if (!this._currentEdge)  {
-        throw Error('No edge is currently being drawn');
+    if (!this._drawnEdge)  {
+        throw Error('No edge has been drawn');
     }
-    var edge = this._currentEdge.g
+    var edge = this._drawnEdge.g
     attributes = attributes || {};
-    completeAttributes(attributes, this._currentEdge.attributes);
-    this._currentEdge.x1 = x1;
-    this._currentEdge.y1 = y1;
-    this._currentEdge.x2 = x2;
-    this._currentEdge.y2 = y2;
-    this._currentEdge.attributes = attributes;
+    completeAttributes(attributes, this._drawnEdge.attributes);
+    this._drawnEdge.x1 = x1;
+    this._drawnEdge.y1 = y1;
+    this._drawnEdge.x2 = x2;
+    this._drawnEdge.y2 = y2;
+    this._drawnEdge.attributes = attributes;
     _updateEdge(edge, x1, y1, x2, y2, attributes, options);
 
     return this;
@@ -149,16 +149,16 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes, options) {
 
 export function moveDrawnEdgeEndPoint(x2, y2, options={}) {
 
-    if (!this._currentEdge)  {
-        throw Error('No edge is currently being drawn');
+    if (!this._drawnEdge)  {
+        throw Error('No edge has been drawn');
     }
-    var edge = this._currentEdge.g;
-    var x1 = this._currentEdge.x1;
-    var y1 = this._currentEdge.y1;
-    var attributes = this._currentEdge.attributes;
+    var edge = this._drawnEdge.g;
+    var x1 = this._drawnEdge.x1;
+    var y1 = this._drawnEdge.y1;
+    var attributes = this._drawnEdge.attributes;
 
-    this._currentEdge.x2 = x2;
-    this._currentEdge.y2 = y2;
+    this._drawnEdge.x2 = x2;
+    this._drawnEdge.y2 = y2;
     _updateEdge(edge, x1, y1, x2, y2, attributes, options);
 
     return this
@@ -166,27 +166,27 @@ export function moveDrawnEdgeEndPoint(x2, y2, options={}) {
 
 export function removeDrawnEdge() {
 
-    if (!this._currentEdge)  {
+    if (!this._drawnEdge)  {
         return this;
     }
 
-    var edge = this._currentEdge.g;
+    var edge = this._drawnEdge.g;
 
     edge.remove();
 
-    this._currentEdge = null;
+    this._drawnEdge = null;
 
     return this
 }
 
 export function insertDrawnEdge(name) {
 
-    if (!this._currentEdge)  {
-        throw Error('No edge is currently being drawn');
+    if (!this._drawnEdge)  {
+        throw Error('No edge has been drawn');
     }
 
-    var edge = this._currentEdge.g;
-    var attributes = this._currentEdge.attributes;
+    var edge = this._drawnEdge.g;
+    var attributes = this._drawnEdge.attributes;
 
     var title = edge.selectWithoutDataPropagation("title");
     title
@@ -258,7 +258,7 @@ export function insertDrawnEdge(name) {
         return [d.key];
     });
 
-    this._currentEdge = null;
+    this._drawnEdge = null;
 
     return this
 
