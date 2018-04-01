@@ -217,6 +217,7 @@ function startApp() {
         event.stopPropagation();
         unSelectEdge();
         unSelectNode();
+        graphviz.removeDrawnEdge();
         startNode = d3.select(this);
         var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
         var [x0, y0] = d3.mouse(graph0.node());
