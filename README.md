@@ -1,6 +1,6 @@
 # d3-graphviz
 
-Renders SVG from graphs described in the [DOT](http://www.graphviz.org/content/dot-language) language using the [Viz.js](https://github.com/mdaines/viz.js/) port of [Graphviz](http://www.graphviz.org) and does animated transitions between graphs.
+Renders SVG from graphs described in the [DOT](https://www.graphviz.org/doc/info/lang.html) language using the [Viz.js](https://github.com/mdaines/viz.js/) port of [Graphviz](http://www.graphviz.org) and does animated transitions between graphs.
 
 [![Build Status](https://travis-ci.org/magjac/d3-graphviz.svg?branch=master)](https://travis-ci.org/magjac/d3-graphviz)
 [![codecov](https://codecov.io/gh/magjac/d3-graphviz/branch/master/graph/badge.svg)](https://codecov.io/gh/magjac/d3-graphviz)
@@ -10,7 +10,7 @@ Renders SVG from graphs described in the [DOT](http://www.graphviz.org/content/d
 <a href="https://join.slack.com/t/d3-graphviz/shared_invite/enQtMzMwODQzMDI5MDA5LTExYTgyYThhNzI3YjJlODRiMzQ3MWM3YWI5ZjAyMTI2MmI4YWIwMDM4ZmY5MDQzNjkzMDY4YTRmMTU1YzIzNTY"><img src="images/slack_rgb_cropped.png" height="20px"></a>
 
 ## Features
-* Rendering of SVG graphs from [DOT](http://www.graphviz.org/content/dot-language) source
+* Rendering of SVG graphs from [DOT](https://www.graphviz.org/doc/info/lang.html) source
 * Animated transition of one graph into another
 * Edge path tweening
 * Node shape tweening
@@ -20,7 +20,7 @@ Renders SVG from graphs described in the [DOT](http://www.graphviz.org/content/d
 
 Graphviz methods all return the graphviz renderer instance, allowing the concise application of multiple operations on a given graph renderer instance via method chaining.
 
-To render a graph, select an element, call [*selection*.graphviz](#selection_graphviz), and then render from a [DOT](http://www.graphviz.org/content/dot-language) source string. For example:
+To render a graph, select an element, call [*selection*.graphviz](#selection_graphviz), and then render from a [DOT](https://www.graphviz.org/doc/info/lang.html) source string. For example:
 
 ```js
 d3.select("#graph")
@@ -47,7 +47,7 @@ If you use NPM, `npm install d3-graphviz`. Otherwise, download the [latest relea
 
 ## Principles of Operation
 
-Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph specified in the [DOT](http://www.graphviz.org/content/dot-language) language and generates an SVG text representation, which is analyzed and converted into a data representation. Then [D3](https://d3js.org/) is used to join this data with a selected DOM element, render the SVG graph on that element and to animate transitioning of one graph into another.
+Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph specified in the [DOT](https://www.graphviz.org/doc/info/lang.html) language and generates an SVG text representation, which is analyzed and converted into a data representation. Then [D3](https://d3js.org/) is used to join this data with a selected DOM element, render the SVG graph on that element and to animate transitioning of one graph into another.
 
 ## Contents
 
@@ -74,6 +74,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Maintaining Object Constancy](#maintaining-object-constancy)
 * [Customizing Graph Attributes](#customizing-graph-attributes)
 * [Accessing Elements of the Generated Graph](#accessing-elements-of-the-generated-graph)
+* [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changeas)
 * [Large Graphs](#large-graphs)
 
 ### Creating a Graphviz Renderer
@@ -96,7 +97,7 @@ Creates a new graphviz renderer instance on the first element matching the given
 
 Starts rendering of an SVG graph from the specified *dotSrc* string and appends it to the selection the grapviz renderer instance was generated on. [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot) returns "immediately", while the rendering is performed in the backgound. The layout stage is performed by a web worker (unless the use of a web worker was disabled when the renderer instance was created).
 
-It is also possible to do the [Graphviz](http://www.graphviz.org/content/dot-language) layout in a first separate stage and do the actual rendering of the SVG as a second step like so:
+It is also possible to do the [Graphviz](https://www.graphviz.org/doc/info/lang.html) layout in a first separate stage and do the actual rendering of the SVG as a second step like so:
 
 ```js
 d3.select("#graph")
@@ -117,7 +118,7 @@ Starts rendering of an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>]
 
 <a name="graphviz_engine" href="#graphviz_engine">#</a> <i>graphviz</i>.<b>engine</b>(<i>engine</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/engine.js "Source")
 
-Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified *engine* string. The engine name must be set before attaching the [DOT](http://www.graphviz.org/content/dot-language) source. If it is changed after this, an eror is thrown. Supports all engines that [Viz.js](https://github.com/mdaines/viz.js/) supports. Currently these are:
+Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified *engine* string. The engine name must be set before attaching the [DOT](https://www.graphviz.org/doc/info/lang.html) source. If it is changed after this, an eror is thrown. Supports all engines that [Viz.js](https://github.com/mdaines/viz.js/) supports. Currently these are:
 
 * <b>circo</b>
 * <b>dot</b> (default)
@@ -259,14 +260,14 @@ Restores the original graph by resetting the transformation made by panning and 
 
 In order to acheive [meaningful transitions](https://bost.ocks.org/mike/constancy/#when-constancy-matter), the D3 default join-by-index [key function](https://bost.ocks.org/mike/constancy/#key-functions) is not sufficient. Four different key modes are available that may be useful in different situations:
 
-* <b>title</b> (default) - Uses the text of the SVG title element for each node and edge <b>g</b> element as generated by [Graphviz](http://www.graphviz.org). For nodes, this is "[<i>node_id</i>](http://www.graphviz.org/content/dot-language)" (not to be confused with the node attribute [<i>id</i>](http://www.graphviz.org/content/attrs#did)) and for edges it is "[<i>node_id</i>](http://www.graphviz.org/content/dot-language) [<i>edgeop</i>](http://www.graphviz.org/content/dot-language) [<i>node_id</i>](http://www.graphviz.org/content/dot-language)", e.g. "a -> b". For node and edge sub-elements, the <b>tag-index</b> key mode is used, see below.
+* <b>title</b> (default) - Uses the text of the SVG title element for each node and edge <b>g</b> element as generated by [Graphviz](http://www.graphviz.org). For nodes, this is "[<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html)" (not to be confused with the node attribute [<i>id</i>](http://www.graphviz.org/content/attrs#did)) and for edges it is "[<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) [<i>edgeop</i>](https://www.graphviz.org/doc/info/lang.html) [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html)", e.g. "a -> b". For node and edge sub-elements, the <b>tag-index</b> key mode is used, see below.
 * <b>id</b> - Uses the <b>id</b> attribute of the node and edge SVG <b>g</b> elements as generated by [Graphviz](http://www.graphviz.org). Note that unless the graph author specifies [<i>id</i>](http://www.graphviz.org/content/attrs#did) attributes for nodes and edges, [Graphviz](http://www.graphviz.org) generates a unique internal id that is unpredictable by the graph writer, making the <b>id</b> key mode not very useful. For node and edge sub-elements, the <b>tag-index</b> key mode is used, see below.
 * <b>tag-index</b> - Uses a key composed of the [SVG element](https://www.w3.org/TR/SVG/eltindex.html) tag, followed by a dash (-) and the relative index of that element within all sibling elements with the same tag. For example: ellipse-0. Normally not very useful for other than static graphs, since all nodes and edges are siblings and are generated as SVG <b>g</b> elements.
 * <b>index</b> - Uses the D3 default join-by-index key function. Not useful for other than static graphs.
 
 <a name="graphviz_keyMode" href="#graphviz_keyMode">#</a> <i>graphviz</i>.<b>keyMode</b>(<i>mode</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/keyMode.js "Source")
 
-Sets the key mode to the specified *mode* string. If *mode* is not one of the defined key modes above, an error is thrown. The key mode must be set before attaching the [DOT](http://www.graphviz.org/content/dot-language) source. If it is changed after this, an eror is thrown.
+Sets the key mode to the specified *mode* string. If *mode* is not one of the defined key modes above, an error is thrown. The key mode must be set before attaching the [DOT](https://www.graphviz.org/doc/info/lang.html) source. If it is changed after this, an eror is thrown.
 
 ### Customizing Graph Attributes
 
@@ -297,6 +298,56 @@ d3.select("#graph").graphviz()
 <a name="selection_selectWithoutDataPropagation" href="#selection_selectWithoutDataPropagation">#</a> <i>selection</i>.<b>selectWithoutDataPropagation</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/selectWithoutDataPropagation.js "Source")
 
 For each selected element, selects the first descendant element that matches the specified selector string in the same ways as  [*selection*.select](https://github.com/d3/d3-selection#selection_select), but does *not* propagate any associated data from the current element to the corresponding selected element.
+
+### Modifying an Existing Graph and Animating the Changes
+
+This API provides methods draw nodes and edges and inserting them into the graph data. The application can then animate the changes made by providing and updated DOT source and render a new layout. The API also supports removing nodes and edge from the graph and the graph data.
+
+<a name="graphviz_drawEdge" href="#graphviz_drawEdge">#</a> <i>graphviz</i>.<b>drawEdge</b>(<i>x1</i>, <i>y1</i>, <i> x2</i>, <i> y2</i>[, <i> attributes</i>][, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+
+Draws a straight edge from (*x1*, *y1*) to (*x2*, *y2) using coordinates relative to top level [G container element](https://www.w3.org/TR/SVG/struct.html#Groups) of the graph. Typically these coordinates are obtained with [d3.mouse](https://github.com/d3/d3-selection#mouse). If *attributes* is specified, it is taken to be an object containing [DOT attributes](https://www.graphviz.org/doc/info/attrs.html) as properties to be used when drawing the node. If not specified, the default values of those attributes are used. If *options* is specified, it is taken to be an object containing properties which are used as options when drawing the edge. The currently supported options are:
+
+* <b>shortening</b> - The number of points by which to draw the edge shorter than given by the coordinates. This is useful to avoid that the currently drawn edge is prohibiting mouse events on elements beneath the current mouse position. A typical such value is 2. The default value is 0.
+
+<a name="graphviz_updateDrawnEdge" href="#graphviz_updateDrawnEdge">#</a> <i>graphviz</i>.<b>updateDrawnEdge</b>(<i>x1</i>, <i>y1</i>, <i> x2</i>, <i> y2</i>[, <i> attributes</i>][, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+
+Updates properties and attributes of the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge), using the same arguments. This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnEdge</b>](#graphviz_insertDrawnEdge).
+
+<a name="graphviz_moveDrawnEdgeEndPoint" href="#graphviz_moveDrawnEdgeEndPoint">#</a> <i>graphviz</i>.<b>moveDrawnEdgeEndPoint</b>(<i> x2</i>, <i> y2</i>[, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+
+Updates the end point of the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge), accepting the same *options* argument. This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnEdge</b>](#graphviz_insertDrawnEdge).
+
+<a name="graphviz_insertDrawnEdge" href="#graphviz_insertDrawnEdge">#</a> <i>graphviz</i>.<b>insertDrawnEdge</b>(<i>name</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+
+Inserts the edge into the graph data, making it available for an animated transition into a subsequent new layout perfomed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *name* is typically [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) [<i>edgeop</i>](https://www.graphviz.org/doc/info/lang.html) [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html), e.g. "a -> b".
+
+<a name="graphviz_removeDrawnEdge" href="#graphviz_removeDrawnEdge">#</a> <i>graphviz</i>.<b>removeDrawnEdge</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
+
+Removes the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge). This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnEdge</b>](#graphviz_insertDrawnEdge).
+
+<a name="graphviz_drawNode" href="#graphviz_drawNode">#</a> <i>graphviz</i>.<b>drawNode</b>(<i>x</i>, <i>y</i>, <i>width</i>, <i>height</i>, <i>nodeId</i>, <i>shape</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+
+Draws a node with [shape](https://www.graphviz.org/doc/info/shapes.html) *shape*, which a [Graphviz Node Shape](https://www.graphviz.org/doc/info/shapes.html), *width* points wide and *height* points high, with the upper left corner of its bounding box at (*x*, *y*), using coordinates relative to the top level [G container element](https://www.w3.org/TR/SVG/struct.html#Groups) of the graph. Typically these coordinates are obtained with [d3.mouse](https://github.com/d3/d3-selection#mouse). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html). If *attributes* is specified, it is taken to be an object containing [DOT attributes](https://www.graphviz.org/doc/info/attrs.html) as properties to be used when drawing the node. If not specified, the default values of those attributes are used.
+
+<b>NOTE:</b> In the current release, only the following shapes are supported:
+
+* <b>ellipse</b>
+* <b>circle</b>
+* <b>polygon</b>
+* <b>rect</b>
+* <b>box</b>
+
+<a name="graphviz_updateDrawnNode" href="#graphviz_updateDrawnNode">#</a> <i>graphviz</i>.<b>updateDrawnNode</b>(<i>x</i>, <i>y</i>, <i>width</i>, <i>height</i>, <i>nodeId</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+
+Updates properties and attributes of the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode), using the same arguments, except for *shape* which cannot be changed after the node has been drawn. This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
+
+<a name="graphviz_insertDrawnNode" href="#graphviz_insertDrawnNode">#</a> <i>graphviz</i>.<b>insertDrawnNode</b>(<i>nodeId</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+
+Inserts the node into the graph data, making it available for an animated transition into a subsequent new layout perfomed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html).
+
+<a name="graphviz_removeDrawnNode" href="#graphviz_removeDrawnNode">#</a> <i>graphviz</i>.<b>removeDrawnNode</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+
+Removes the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode). This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
 
 ### Large Graphs
 

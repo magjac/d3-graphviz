@@ -157,11 +157,23 @@ export default function(src, callback) {
                     var startNode = nodeDictionary[startNodeId];
                     var prevStartNode = prevNodeDictionary[startNodeId];
                     if (prevStartNode) {
-                        if (startNode.children[3].tag == 'g' && startNode.children[3].children[0].tag == 'a') {
-                            startNode = startNode.children[3].children[0];
+                        var i = startNode.children.findIndex(function (element, index) {
+                            return element.tag == 'g';
+                        });
+                        if (i >= 0) {
+                            var j = startNode.children[i].children.findIndex(function (element, index) {
+                                return element.tag == 'a';
+                            });
+                            startNode = startNode.children[i].children[j];
                         }
-                        if (prevStartNode.children[3].tag == 'g' && prevStartNode.children[3].children[0].tag == 'a') {
-                            prevStartNode = prevStartNode.children[3].children[0];
+                        var i = prevStartNode.children.findIndex(function (element, index) {
+                            return element.tag == 'g';
+                        });
+                        if (i >= 0) {
+                            var j = prevStartNode.children[i].children.findIndex(function (element, index) {
+                                return element.tag == 'a';
+                            });
+                            prevStartNode = prevStartNode.children[i].children[j];
                         }
                         var startShapes = startNode.children;
                         for (var i = 0; i < startShapes.length; i++) {

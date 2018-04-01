@@ -22,6 +22,15 @@ import {resetZoom} from "./zoom";
 import on from "./on";
 import onerror from "./onerror";
 import logEvents from "./logEvents";
+import {drawEdge} from "./drawEdge";
+import {updateDrawnEdge} from "./drawEdge";
+import {moveDrawnEdgeEndPoint} from "./drawEdge";
+import {insertDrawnEdge} from "./drawEdge";
+import {removeDrawnEdge} from "./drawEdge";
+import {drawNode} from "./drawNode";
+import {updateDrawnNode} from "./drawNode";
+import {insertDrawnNode} from "./drawNode";
+import {removeDrawnNode} from "./drawNode";
 
 export function Graphviz(selection, useWorker) {
     if (typeof Worker == 'undefined') {
@@ -146,4 +155,13 @@ Graphviz.prototype = graphviz.prototype = {
     on: on,
     onerror: onerror,
     logEvents: logEvents,
+    drawEdge: drawEdge,
+    updateDrawnEdge: updateDrawnEdge,
+    moveDrawnEdgeEndPoint,
+    insertDrawnEdge,
+    removeDrawnEdge, removeDrawnEdge,
+    drawNode: drawNode,
+    updateDrawnNode: updateDrawnNode,
+    insertDrawnNode,
+    removeDrawnNode, removeDrawnNode,
 };

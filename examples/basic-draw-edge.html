@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.js"></script>
+<script src="../node_modules/viz.js/viz.js" type="javascript/worker"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+margin = 20; // to avoid scrollbars
+
+var isDrawing = false;
+
+var graphviz = d3.select("#graph").graphviz()
+    .attributer(attributer)
+    .renderDot(`strict digraph {
+        node [style="filled"]
+        a -> b}`, startApp);
+
+    function attributer(datum, index, nodes) {
+        var selection = d3.select(this);
+        if (datum.tag == "svg") {
+            var width = window.innerWidth - margin;
+            var height = window.innerHeight - margin;
+            var x = "10";
+            var y = "10";
+            var unit = 'px';
+            selection
+                .attr("width", width + unit)
+                .attr("height", height + unit);
+            datum.attributes.width = width + unit;
+            datum.attributes.height = height + unit;
+        }
+    }
+    function startApp() {
+        drawDemoEdges();
+        graphviz.currentEdge = null;
+        var nodes = d3.selectAll(".node");
+
+        // click outside of nodes
+        d3.select(document).on("click", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('document click');
+        });
+
+        // keyup outside of nodes
+        d3.select(document).on("keyup", function() {
+            var event = d3.event;
+            event.preventDefault();
+            console.log('document keyup', event);
+            if (event.keyCode == 27) {
+                graphviz.removeDrawn();
+            }
+            isDrawing = false;
+        });
+
+        // move
+        d3.select(document).on("mousemove", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('document mousemove');
+            var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+            [x0, y0] = d3.mouse(graph0.node());
+            var shortening = 2; // avoid mouse pointing on edge
+            if (isDrawing) {
+                graphviz
+                    .moveDrawnEdgeEndPoint(x0, y0, {shortening: shortening});
+            }
+        });
+
+        // click and mousedown on nodes
+        nodes.on("click mousedown", function() {
+            var event = d3.event;
+            event.preventDefault();
+            console.log('node click or mousedown');
+        });
+
+        // double-click on nodes
+        nodes.on("dblclick", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('node dblclick');
+            isDrawing = false;
+        });
+
+        // right-click on nodes
+        nodes.on("contextmenu", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('node contextmenu');
+            var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+            [x0, y0] = d3.mouse(graph0.node());
+            graphviz
+                .drawEdge(x0, y0, x0, y0, {fillcolor: "orange", color: "purple"})
+            isDrawing = true;
+        });
+
+        // right-click outside of nodes
+        d3.select(document).on("contextmenu", function() {
+            var event = d3.event;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('document contextmenu');
+        });
+
+    }
+    function drawDemoEdges() {
+        graphviz
+            .drawEdge(20, -20, 40, -20)
+            .drawEdge(20, -20, 40, -20, {fillcolor: "cyan", color: "red"})
+            .drawEdge(20, -20, 20, -40, {fillcolor: "blue", color: "blue"})
+            .drawEdge(20, -20, 0, -20, {fillcolor: "green", color: "green"})
+            .drawEdge(20, -20, 20, 0, {fillcolor: "yellow", color: "yellow"})
+    }
+
+</script>
