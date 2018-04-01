@@ -73,6 +73,10 @@ export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attrib
 }
 
 export function updateDrawnNode(x, y, width, height, nodeId, attributes, options={}) {
+    if (!this._currentNode)  {
+        throw Error('No node has been drawn');
+    }
+
     var node = this._currentNode.g
     attributes = attributes || {};
     if (nodeId == null) {
@@ -151,6 +155,10 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
 
 export function removeDrawnNode() {
 
+    if (!this._currentNode)  {
+        return this;
+    }
+
     var node = this._currentNode.g;
 
     node.remove();
@@ -161,6 +169,10 @@ export function removeDrawnNode() {
 }
 
 export function insertDrawnNode(nodeId) {
+
+    if (!this._currentNode)  {
+        throw Error('No node has been drawn');
+    }
 
     if (nodeId == null) {
         nodeId = this._currentNode.nodeId;

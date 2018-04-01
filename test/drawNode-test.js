@@ -443,3 +443,42 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
     }
 
 });
+
+tape("Attempts to operate on an node without drawing one first is handled gracefully", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    var num_nodes = 2;
+    var num_edges = 1;
+
+    graphviz
+        .zoom(false)
+        .logEvents(true)
+        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+        .render(startTest);
+
+    function startTest() {
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        test.throws(function () {
+            graphviz
+                .updateDrawnNode(21, -21, 41, -21);
+        }, "updateDrawnNode throws error if not node has been drawn first");
+        test.throws(function () {
+            graphviz
+            .insertDrawnNode('b->a');
+        }, "insertDrawnNode throws error if not node has been drawn first");
+
+        test.doesNotThrow(function () {
+            graphviz
+                .removeDrawnNode();
+        }, "removeDrawnNode is ignored if no node has been drawn first");
+
+        test.end();
+    }
+
+});
