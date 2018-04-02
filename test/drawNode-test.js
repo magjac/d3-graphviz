@@ -482,3 +482,25 @@ tape("Attempts to operate on an node without drawing one first is handled gracef
     }
 
 });
+
+tape("drawNode() throws error when attempting to draw an unsupported shape", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    graphviz
+        .zoom(false)
+        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+        .render(drawNode);
+
+    function drawNode() {
+
+        test.throws(function () {
+            graphviz
+                .drawNode(0, -36, 54, 36, 'UNSUPPORTED');
+        });
+
+        test.end();
+    }
+
+});

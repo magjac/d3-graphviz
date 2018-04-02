@@ -44,6 +44,9 @@ export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attrib
     var title = newNode.append('title')
         .text("");
     var svgShape = svgShapes[shape];
+    if (!svgShape) {
+        throw Error('Usupported shape: ' + shape);
+    }
     if (attributes.URL || attributes.tooltip) {
         var a = newNode.append("g").append("a");
         if (attributes.URL) {
