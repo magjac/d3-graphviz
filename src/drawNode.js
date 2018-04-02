@@ -99,6 +99,9 @@ export function updateDrawnNode(x, y, width, height, nodeId, attributes, options
 
 function _updateNode(node, x, y, width, height, shape, nodeId, attributes, options) {
 
+    if (shape == 'circle') {
+        height = width
+    }
     var id = attributes.id;
     var fill = attributes.fillcolor;
     var stroke = attributes.color;
