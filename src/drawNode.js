@@ -42,6 +42,7 @@ export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attrib
         .attr("class", "node");
     var title = newNode.append('title')
         .text("");
+    var svgShape = svgShapes[shape];
     if (attributes.URL || attributes.tooltip) {
         var a = newNode.append("g").append("a");
         if (attributes.URL) {
@@ -50,10 +51,10 @@ export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attrib
         if (attributes.tooltip) {
             a.attr('title', attributes.tooltip);
         }
-        var svgShape = a.append(shape);
+        var svgElement = a.append(svgShape);
         var text = a.append('text');
     } else {
-        var svgShape = newNode.append(shape);
+        var svgElement = newNode.append(svgShape);
         var text = newNode.append('text')
             .text("");
     }
@@ -119,13 +120,13 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     } else {
         var subParent = node;
     }
-    var svgElement = subParent.selectWithoutDataPropagation(shape);
+    var svgShape = svgShapes[shape];
+    var svgElement = subParent.selectWithoutDataPropagation(svgShape);
 
     node
         .attr("id", id);
 
     title.text(nodeId);
-    var svgShape = svgShapes[shape];
     if (svgShape == 'ellipse') {
         svgElement
             .attr("cx", x + width / 2)
