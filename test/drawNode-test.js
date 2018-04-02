@@ -132,7 +132,7 @@ tape("drawNode() draws a polygon node", function(test) {
             return d.parent.key == 'c'
         });
 
-        test.equal(nodeShape.attr("points"), '54,-36 0,-36 0,0 54,0');
+        test.equal(nodeShape.attr("points"), '54,-36 0,-36 0,0 54,0 54,-36');
 
         test.end();
     }
