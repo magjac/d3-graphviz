@@ -17,6 +17,7 @@ var defaultNodeAttributes = {
 
 var svgShapes = {
     ellipse: 'ellipse',
+    oval: 'ellipse',
     circle: 'ellipse',
     polygon: 'polygon',
     rect: 'polygon',
