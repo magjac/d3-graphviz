@@ -4,15 +4,15 @@ import {rotate} from "./geometry";
 
 var defaultNodeAttributes = {
     id: null,
-    fillcolor: "black",
-    color: "black",
+    fillcolor: "none",
+    color: "#000000",
     penwidth: 1,
     URL: null,
     tooltip: null,
     labeljust: "c",
     fontname: "Times,serif",
-    fontsize: 14,
-    fontcolor: "black",
+    fontsize: "14.00",
+    fontcolor: "#000000",
 };
 
 var svgShapes = {
