@@ -19,6 +19,7 @@ var svgShapes = {
     ellipse: 'ellipse',
     oval: 'ellipse',
     circle: 'ellipse',
+    point: 'ellipse',
     polygon: 'polygon',
     rect: 'polygon',
     box: 'polygon',
@@ -34,6 +35,9 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
 
 export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attributes, options={}) {
     attributes = attributes || {};
+    if (shape == 'point' && !attributes.fillcolor) {
+        attributes.fillcolor = '#000000';
+    }
     completeAttributes(attributes);
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
@@ -103,7 +107,7 @@ export function updateDrawnNode(x, y, width, height, nodeId, attributes, options
 
 function _updateNode(node, x, y, width, height, shape, nodeId, attributes, options) {
 
-    if (shape == 'circle') {
+    if (shape == 'circle' || shape == 'point') {
         height = width
     }
     var id = attributes.id;
