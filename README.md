@@ -426,7 +426,7 @@ By clicking the **Watch** button, you will stay tuned for updates to the library
 
 * For specific questions, please use [Stack Overflow tags d3.js & graphviz](https://stackoverflow.com/tags/d3.js+graphviz).
 
-* For general discussions regarding d3-graphviz, please use the [d3-graphviz Slack](https://join.slack.com/t/d3-graphviz/shared_invite/enQtMzMwODQzMDI5MDA5LTExYTgyYThhNzI3YjJlODRiMzQ3MWM3YWI5ZjAyMTI2MmI4YWIwMDM4ZmY5MDQzNjkzMDY4YTRmMTU1YzIzNTY").
+* For general discussions regarding d3-graphviz, please use the [d3-graphviz Slack](https://join.slack.com/t/d3-graphviz/shared_invite/enQtMzMwODQzMDI5MDA5LTExYTgyYThhNzI3YjJlODRiMzQ3MWM3YWI5ZjAyMTI2MmI4YWIwMDM4ZmY5MDQzNjkzMDY4YTRmMTU1YzIzNTY).
 
 ### Reporting bugs
 
