@@ -14,7 +14,6 @@ tape("Check our understanding of how Graphviz draws nodes.", function(test) {
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(endTest);
 
@@ -49,7 +48,6 @@ tape("drawNode() draws a node in the same way as Graphviz does", function(test) 
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawNode);
 
@@ -103,7 +101,6 @@ tape("drawNode() draws a polygon node", function(test) {
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; node [shape="polygon"]; a -> b;}')
         .render(drawNode);
 
@@ -155,7 +152,6 @@ tape("drawNode() draws a node with an URL attribute in the same way as Graphviz 
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b [URL="dummy"];}')
         .render(drawNode);
 
@@ -207,7 +203,6 @@ tape("drawNode() draws a node with an tooltip attribute in the same way as Graph
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b [tooltip="dummy"];}')
         .render(drawNode);
 
@@ -259,7 +254,6 @@ tape("insertDrawnNode() inserts the currently drawn node into the joined data st
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawNode);
 
@@ -311,7 +305,6 @@ tape("removeDrawnNode() removes the node currently being drawn", function(test) 
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawNode);
 
@@ -367,7 +360,6 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawNode);
 
@@ -448,7 +440,6 @@ tape("Attempts to operate on an node without drawing one first is handled gracef
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(startTest);
 
