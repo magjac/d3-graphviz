@@ -2,6 +2,7 @@ var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
+var translatePointsAttribute = require("./svg");
 
 tape("Verify that point shape is drawn exactly as Graphviz does.", function(test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
@@ -16,8 +17,10 @@ tape("Verify that point shape is drawn exactly as Graphviz does.", function(test
         .renderDot('digraph {a [shape="point"]}', function () {
             actualGraphviz
                 .renderDot('digraph {}', function () {
+                    var x = 100;
+                    var y = -100
                     actualGraphviz
-                        .drawNode(0, -3.6, 3.6, null, 'point', 'a', {id: 'node1'})
+                        .drawNode(x, y, null, null, 'point', 'a', {id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');
@@ -28,16 +31,22 @@ tape("Verify that point shape is drawn exactly as Graphviz does.", function(test
                     actualNodeTitle = actualNodeGroup.selectAll('title');
                     actualNodeShape = actualNodeGroup.selectAll('ellipse');
 
+                    var bbox = expectedNodeShape.node().getBBox();
+                    bbox.cx = bbox.x + bbox.width / 2;
+                    bbox.cy = bbox.y + bbox.height / 2;
+                    var xoffs = x - bbox.cx;
+                    var yoffs = y - bbox.cy;
+
                     test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
                     test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
                     test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
                     test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
-                    test.equal(actualNodeShape.attr("cx"), expectedNodeShape.attr("cx"), 'cx of ellipse');
-                    test.equal(actualNodeShape.attr("cy"), expectedNodeShape.attr("cy"), 'cy of ellipse');
-                    test.equal(actualNodeShape.attr("rx"), expectedNodeShape.attr("rx"), 'rx of ellipse');
-                    test.equal(actualNodeShape.attr("ry"), expectedNodeShape.attr("ry"), 'ry of ellipse');
+                    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
+                    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
+                    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
+                    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
 
                     test.end();
                 });

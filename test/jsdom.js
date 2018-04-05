@@ -19,6 +19,43 @@ module.exports = function(html, options) {
         }
         return 100.0;
     }
+    window.SVGElement.prototype.getBBox = function () {
+
+        if (this.getAttribute('points')) {
+            var points = this.getAttribute('points').split(' ');
+            var x = points.map(function(p) {return +p.split(',')[0]});
+            var y = points.map(function(p) {return +p.split(',')[1]});
+            var xmin = Math.min.apply(null, x);
+            var xmax = Math.max.apply(null, x);
+            var ymin = Math.min.apply(null, y);
+            var ymax = Math.max.apply(null, y);
+        } else if (this.getAttribute('cx')) {
+            var cx = +this.getAttribute('cx');
+            var cy = +this.getAttribute('cy');
+            var rx = +this.getAttribute('rx');
+            var ry = +this.getAttribute('ry');
+            var xmin = cx - rx;
+            var xmax = cx + rx;
+            var ymin = cy - ry;
+            var ymax = cy + ry;
+        } else if (this.getAttribute('x')) {
+            var x = +this.getAttribute('x');
+            var y = +this.getAttribute('y');
+            var xmin = x;
+            var xmax = x + 0;
+            var ymin = y;
+            var ymax = y + 0;
+        } else {
+            throw "WTF!" + this;
+        }
+        var bbox = {
+            x: xmin,
+            y: ymin,
+            width: xmax - xmin,
+            height: ymax - ymin,
+        };
+        return bbox;
+    }
     if (!('width' in window.SVGElement.prototype)) {
         Object.defineProperty(window.SVGElement.prototype, 'width', {
             get: function() {

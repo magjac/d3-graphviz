@@ -2,6 +2,7 @@ var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
+var translatePointsAttribute = require("./svg");
 
 tape("Verify that ellipse shape is drawn exactly as Graphviz does.", function(test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
@@ -13,11 +14,13 @@ tape("Verify that ellipse shape is drawn exactly as Graphviz does.", function(te
 
     expectedGraphviz
         .zoom(false)
-        .renderDot('digraph {a}', function () {
+        .renderDot('digraph {a [shape="ellipse"]}', function () {
             actualGraphviz
                 .renderDot('digraph {}', function () {
+                    var x = 100;
+                    var y = -100
                     actualGraphviz
-                        .drawNode(0, -36, 54, 36, 'ellipse', 'a', {id: 'node1'})
+                        .drawNode(x, y, null, null, 'ellipse', 'a', {id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');
@@ -30,22 +33,26 @@ tape("Verify that ellipse shape is drawn exactly as Graphviz does.", function(te
                     actualNodeShape = actualNodeGroup.selectAll('ellipse');
                     actualNodeText = actualNodeGroup.selectAll('text');
 
+                    var bbox = expectedNodeShape.node().getBBox();
+                    bbox.cx = bbox.x + bbox.width / 2;
+                    bbox.cy = bbox.y + bbox.height / 2;
+                    var xoffs = x - bbox.cx;
+                    var yoffs = y - bbox.cy;
+
                     test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
                     test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
                     test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
                     test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
-                    test.equal(actualNodeShape.attr("cx"), expectedNodeShape.attr("cx"), 'cx of ellipse');
-                    test.equal(actualNodeShape.attr("cy"), expectedNodeShape.attr("cy"), 'cy of ellipse');
-                    test.equal(actualNodeShape.attr("rx"), expectedNodeShape.attr("rx"), 'rx of ellipse');
-                    test.equal(actualNodeShape.attr("ry"), expectedNodeShape.attr("ry"), 'ry of ellipse');
+                    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
+                    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
+                    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
+                    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
 
                     test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
-                    test.equal(actualNodeText.attr("x"), expectedNodeText.attr("x"), 'x of text');
-                    // FIXME: y position is not exactly correct
-                    // test.equal(actualNodeText.attr("y"), expectedNodeText.attr("y"), 'y of text');
-                    test.equal(Math.round(actualNodeText.attr("y")), Math.round(expectedNodeText.attr("y")), 'y of text FIXME: only approximately correct');
+                    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
+                    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
                     test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
                     test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
                     test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
