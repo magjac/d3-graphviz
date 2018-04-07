@@ -21,7 +21,7 @@
     "url": "https://github.com/magjac/d3-graphviz.git"
   },
   "scripts": {
-    "pretest": "rm -rf build && mkdir build && rollup -g d3-selection:d3,d3-transition:d3,d3-interpolate:d3,d3-zoom:d3,d3-dispatch:d3,d3-format:d3,d3-timer:d3,d3-path:d3,viz.js:Viz -f umd -n d3 --sourcemap -o build/d3-graphviz.js -- index.js",
+    "pretest": "rm -rf build && mkdir build && rollup -g d3-selection:d3,d3-transition:d3,d3-interpolate:d3,d3-zoom:d3,d3-dispatch:d3,d3-format:d3,d3-timer:d3,d3-path:d3,viz.js/viz:Viz -f umd -n d3 --sourcemap -o build/d3-graphviz.js -- index.js",
     "test": "mkdir -p http:; ln -nsf .. http://dummyhost; nyc tape 'test/**/*-test.js'",
     "report": "nyc report --reporter=lcov",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
