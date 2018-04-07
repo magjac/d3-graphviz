@@ -1,5 +1,5 @@
 import * as d3 from "d3-selection";
-import {transition, attrTween} from "d3-transition";
+import {transition} from "d3-transition";
 import {timeout} from "d3-timer";
 import {interpolateTransformSvg} from "d3-interpolate";
 import {zoomTransform} from "d3-zoom";
