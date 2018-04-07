@@ -46,7 +46,7 @@
     "jsdom": "11.6.2",
     "markdown-to-html": "0.0.13",
     "nyc": "^11.4.1",
-    "rollup": "0.27",
+    "rollup": "0.46.0",
     "tape": "4",
     "tiny-worker": "^2.1.1",
     "uglify-es": "^3.0.27"
