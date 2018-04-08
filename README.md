@@ -412,7 +412,7 @@ Since the author is new to both Javascript and D3, there are probably a lot of t
 
 ## Requirements
 
-[d3-graphviz](https://github.com/magjac/d3-graphviz) uses a few [ES6](http://es6-features.org) language features, so it must be used with a modern browser.
+[d3-graphviz](https://github.com/magjac/d3-graphviz) transpiles the production build to [ES5](https://www.ecma-international.org/ecma-262/5.1/) before publishing it on [npm](https://www.npmjs.com/), so it should be possible to use it with most build tools and browsers.
 
 ## Support
 
