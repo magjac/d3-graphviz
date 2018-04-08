@@ -83,7 +83,7 @@ var graphviz = d3.select("#graph").graphviz()
             event.preventDefault();
             event.stopPropagation();
             console.log('document mousemove');
-            var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+            var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
             var [x0, y0] = d3.mouse(graph0.node());
             var shortening = 2; // avoid mouse pointing on edge
             if (isDrawing) {
@@ -131,7 +131,7 @@ var graphviz = d3.select("#graph").graphviz()
             console.log('node contextmenu');
             unSelectEdge();
             startNode = d3.select(this);
-            var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+            var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
             var [x0, y0] = d3.mouse(graph0.node());
             graphviz
                 .drawEdge(x0, y0, x0, y0, {fillcolor: "orange", color: "#800080"})

@@ -72,7 +72,7 @@ function startApp() {
         console.log('document click');
         unSelectEdge();
         if (event.which == 2) {
-            var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+            var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
             var width = 54;
             var height = 36;
             var [x0, y0] = d3.mouse(graph0.node());
@@ -128,7 +128,7 @@ function startApp() {
         event.preventDefault();
         event.stopPropagation();
         console.log('document mousemove');
-        var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+        var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
         var [x0, y0] = d3.mouse(graph0.node());
         var shortening = 2; // avoid mouse pointing on edge
         if (isDrawingEdge) {
@@ -182,7 +182,7 @@ function startApp() {
         unSelectNode();
         graphviz.removeDrawnEdge();
         startNode = d3.select(this);
-        var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+        var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
         var [x0, y0] = d3.mouse(graph0.node());
             if (edgeIndex == null) {
                 edgeIndex = d3.selectAll('.edge').size();
