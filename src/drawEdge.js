@@ -22,7 +22,8 @@ function completeAttributes(attributes, defaultAttributes=defaultEdgeAttributes)
 export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
     attributes = attributes || {};
     completeAttributes(attributes);
-    var svg = d3.select("svg");
+    var root = this._selection;
+    var svg = root.selectWithoutDataPropagation("svg");
     var graph0 = svg.selectWithoutDataPropagation("g");
     var newEdge = graph0.append("g")
         .datum(null)
@@ -204,7 +205,9 @@ export function insertDrawnEdge(name) {
         var line = edge.selectWithoutDataPropagation("path");
         var arrowHead = edge.selectWithoutDataPropagation("polygon");
     }
-    var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+    var root = this._selection;
+    var svg = root.selectWithoutDataPropagation("svg");
+    var graph0 = svg.selectWithoutDataPropagation("g");
     var graph0Datum = graph0.datum();
     var edgeData = this._extractData(edge, graph0Datum.children.length, graph0.datum());
     var gDatum = edgeData;

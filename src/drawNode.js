@@ -34,7 +34,8 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
 export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attributes, options={}) {
     attributes = attributes || {};
     completeAttributes(attributes);
-    var svg = d3.select("svg");
+    var root = this._selection;
+    var svg = root.selectWithoutDataPropagation("svg");
     var graph0 = svg.selectWithoutDataPropagation("g");
     var newNode = graph0.append("g")
         .datum(null)
@@ -203,7 +204,9 @@ export function insertDrawnNode(nodeId) {
         return text.node().childNodes;
     });
 
-    var graph0 = d3.select("svg").selectWithoutDataPropagation("g");
+    var root = this._selection;
+    var svg = root.selectWithoutDataPropagation("svg");
+    var graph0 = svg.selectWithoutDataPropagation("g");
     var graph0Datum = graph0.datum();
     var nodeData = this._extractData(node, graph0Datum.children.length, graph0.datum());
     var gDatum = nodeData;

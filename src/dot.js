@@ -1,4 +1,4 @@
-import * as Viz from "viz.js";
+import Viz from "viz.js/viz";
 import * as d3 from "d3-selection";
 import {extractAllElementsData, extractElementData, createElementWithAttributes} from "./element";
 import {convertToPathData} from "./svg";
