@@ -4,6 +4,7 @@ import {path as d3_path} from "d3-path";
 import {rotate} from "./geometry";
 import {extractAllElementsData} from "./element";
 import {translatePointsAttribute} from "./svg";
+import {insertAllElementsData} from "./element";
 
 var defaultNodeAttributes = {
     id: null,
@@ -53,28 +54,6 @@ export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attrib
     });
     newNode.attr('id', 'new1');
     newNode.datum(null);
-    // remove direct child newline text nodes
-    var newlines = d3.selectAll(newNode.node().childNodes).selectAll(function () {
-        if (this.nodeName == '#text' && d3.select(this).text() == '\n') {
-            return [this];
-        } else {
-            return [null];
-        }
-    });
-    newlines.remove();
-    // remove newline text nodes below children
-    var allChildren = newNode.selectAll('*');
-    var allTextNodes = allChildren.selectAll(function () {
-        return this.childNodes;
-    });
-    var newlines = allTextNodes.selectAll(function () {
-        if (this.nodeName == '#text' && d3.select(this).text() == '\n') {
-            return [this];
-        } else {
-            return [null];
-        }
-    });
-    newlines.remove();
 
     this._drawnNode = {
         g: newNode,
@@ -211,9 +190,6 @@ export function insertDrawnNode(nodeId) {
     var title = node.selectWithoutDataPropagation("title");
     title
         .text(nodeId);
-    var titleText = title.selectAll(function() {
-        return title.node().childNodes;
-    });
     if (attributes.URL || attributes.tooltip) {
         var ga = node.selectWithoutDataPropagation("g");
         var a = ga.selectWithoutDataPropagation("a");
@@ -225,75 +201,16 @@ export function insertDrawnNode(nodeId) {
     }
     text
         .text(nodeId);
-    var textText = text.selectAll(function() {
-        return text.node().childNodes;
-    });
 
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
     var graph0 = svg.selectWithoutDataPropagation("g");
     var graph0Datum = graph0.datum();
     var nodeData = this._extractData(node, graph0Datum.children.length, graph0.datum());
-    var gDatum = nodeData;
-    var titleDatum = gDatum.children[0];
-    var titleTextDatum = titleDatum.children[0];
-    if (attributes.URL || attributes.tooltip) {
-        var gaDatum = gDatum.children[1];
-        var aDatum = gaDatum.children[0];
-        var pathDatum = aDatum.children[0];
-        var textDatum = aDatum.children[1];
-    } else {
-        var pathDatum = gDatum.children[1];
-        var textDatum = gDatum.children[2];
-    }
-    if (shape != 'point') {
-        var textTextDatum = textDatum.children[0];
-    }
+    graph0Datum.children.push(nodeData);
 
-    graph0Datum.children.push(gDatum);
+    insertAllElementsData(node, nodeData);
 
-    node.datum(gDatum);
-    node.data([gDatum], function (d) {
-        return d.key;
-    });
-
-    title.datum(titleDatum);
-    title.data([titleDatum], function (d) {
-        return [d.key];
-    });
-    titleText.datum(titleTextDatum);
-    titleText.data([titleTextDatum], function (d) {
-        return [d.key];
-    });
-
-    if (attributes.URL || attributes.tooltip) {
-        ga.datum(gaDatum);
-        ga.data([gaDatum], function (d) {
-            return [d.key];
-        });
-
-        a.datum(aDatum);
-        a.data([aDatum], function (d) {
-            return [d.key];
-        });
-    }
-
-    svgElement.datum(pathDatum);
-    svgElement.data([pathDatum], function (d) {
-        return [d.key];
-    });
-
-    if (shape != 'point') {
-        text.datum(textDatum);
-        text.data([textDatum], function (d) {
-            return [d.key];
-        });
-
-        textText.datum(textTextDatum);
-        textText.data([textTextDatum], function (d) {
-            return [d.key];
-        });
-    }
     return this
 
 }

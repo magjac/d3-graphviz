@@ -129,3 +129,18 @@ export function replaceElement(element, data) {
     element.remove();
     return newElement;
 }
+
+export function insertElementData(element, datum) {
+    element.datum(datum);
+    element.data([datum], function (d) {
+        return d.key;
+    });
+}
+
+export function insertAllElementsData(element, datum) {
+    insertElementData(element, datum);
+    var children = d3.selectAll(element.node().childNodes);
+    children.each(function (d, i) {
+        insertAllElementsData(d3.select(this), datum.children[i]);
+    });
+}
