@@ -45,6 +45,16 @@ module.exports = function(html, options) {
             var xmax = x + 0;
             var ymin = y;
             var ymax = y + 0;
+        } else if (this.getAttribute('d')) {
+            var d = this.getAttribute('d');
+            var points = d.split(/[A-Z ]/);
+            points.shift();
+            var x = points.map(function(p) {return +p.split(',')[0]});
+            var y = points.map(function(p) {return +p.split(',')[1]});
+            var xmin = Math.min.apply(null, x);
+            var xmax = Math.max.apply(null, x);
+            var ymin = Math.min.apply(null, y);
+            var ymax = Math.max.apply(null, y);
         } else {
             throw "WTF!" + this;
         }

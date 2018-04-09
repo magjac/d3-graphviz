@@ -4,6 +4,7 @@ import {path as d3_path} from "d3-path";
 import {rotate} from "./geometry";
 import {extractAllElementsData} from "./element";
 import {translatePointsAttribute} from "./svg";
+import {translateDAttribute} from "./svg";
 import {insertAllElementsData} from "./element";
 
 var defaultNodeAttributes = {
@@ -106,7 +107,7 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     } else {
         var subParent = node;
     }
-    var svgElement = subParent.selectWithoutDataPropagation('ellipse,polygon');
+    var svgElement = subParent.selectWithoutDataPropagation('ellipse,polygon,path');
 
     node
         .attr("id", id);
@@ -119,10 +120,14 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
         svgElement
             .attr("cx", x)
             .attr("cy", y);
-    } else {
+    } else if (svgElement.node().nodeName == 'polygon') {
         var pointsString = svgElement.attr('points');
         svgElement
             .attr("points", translatePointsAttribute(pointsString, x - bbox.cx, y - bbox.cy));
+    } else {
+        var d = svgElement.attr('d');
+        svgElement
+            .attr("d", translateDAttribute(d, x - bbox.cx, y - bbox.cy));
     }
     svgElement
         .attr("fill", fill)
@@ -178,10 +183,10 @@ export function insertDrawnNode(nodeId) {
     if (attributes.URL || attributes.tooltip) {
         var ga = node.selectWithoutDataPropagation("g");
         var a = ga.selectWithoutDataPropagation("a");
-        var svgElement = a.selectWithoutDataPropagation('ellipse,polygon');
+        var svgElement = a.selectWithoutDataPropagation('ellipse,polygon,path');
         var text = a.selectWithoutDataPropagation('text');
     } else {
-        var svgElement = node.selectWithoutDataPropagation('ellipse,polygon');
+        var svgElement = node.selectWithoutDataPropagation('ellipse,polygon,path');
         var text = node.selectWithoutDataPropagation('text');
     }
     text
