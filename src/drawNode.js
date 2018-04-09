@@ -19,19 +19,6 @@ var defaultNodeAttributes = {
     fontcolor: "#000000",
 };
 
-var svgShapes = {
-    ellipse: 'ellipse',
-    oval: 'ellipse',
-    circle: 'ellipse',
-    point: 'ellipse',
-    polygon: 'polygon',
-    rect: 'polygon',
-    box: 'polygon',
-    egg: 'polygon',
-    triangle: 'polygon',
-    star: 'polygon',
-}
-
 function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes) {
     for (var attribute in defaultAttributes) {
         if (attributes[attribute] === undefined) {
@@ -119,8 +106,7 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     } else {
         var subParent = node;
     }
-    var svgShape = svgShapes[shape];
-    var svgElement = subParent.selectWithoutDataPropagation(svgShape);
+    var svgElement = subParent.selectWithoutDataPropagation('ellipse,polygon');
 
     node
         .attr("id", id);
@@ -129,7 +115,7 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     var bbox = svgElement.node().getBBox();
     bbox.cx = bbox.x + bbox.width / 2;
     bbox.cy = bbox.y + bbox.height / 2;
-    if (svgShape == 'ellipse') {
+    if (svgElement.node().nodeName == 'ellipse') {
         svgElement
             .attr("cx", x)
             .attr("cy", y);
@@ -185,7 +171,6 @@ export function insertDrawnNode(nodeId) {
     var node = this._drawnNode.g;
     var attributes = this._drawnNode.attributes;
     var shape = this._drawnNode.shape;
-    var svgShape = svgShapes[shape];
 
     var title = node.selectWithoutDataPropagation("title");
     title
@@ -193,10 +178,10 @@ export function insertDrawnNode(nodeId) {
     if (attributes.URL || attributes.tooltip) {
         var ga = node.selectWithoutDataPropagation("g");
         var a = ga.selectWithoutDataPropagation("a");
-        var svgElement = a.selectWithoutDataPropagation(svgShape);
+        var svgElement = a.selectWithoutDataPropagation('ellipse,polygon');
         var text = a.selectWithoutDataPropagation('text');
     } else {
-        var svgElement = node.selectWithoutDataPropagation(svgShape);
+        var svgElement = node.selectWithoutDataPropagation('ellipse,polygon');
         var text = node.selectWithoutDataPropagation('text');
     }
     text
