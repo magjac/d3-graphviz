@@ -107,32 +107,35 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     } else {
         var subParent = node;
     }
-    var svgElement = subParent.selectWithoutDataPropagation('ellipse,polygon,path');
+    var svgElements = subParent.selectAll('ellipse,polygon,path');
 
     node
         .attr("id", id);
 
     title.text(nodeId);
-    var bbox = svgElement.node().getBBox();
+    var bbox = svgElements.node().getBBox();
     bbox.cx = bbox.x + bbox.width / 2;
     bbox.cy = bbox.y + bbox.height / 2;
-    if (svgElement.node().nodeName == 'ellipse') {
+    svgElements.each(function() {
+        var svgElement = d3.select(this);
+        if (svgElement.node().nodeName == 'ellipse') {
+            svgElement
+                .attr("cx", x)
+                .attr("cy", y);
+        } else if (svgElement.node().nodeName == 'polygon') {
+            var pointsString = svgElement.attr('points');
+            svgElement
+                .attr("points", translatePointsAttribute(pointsString, x - bbox.cx, y - bbox.cy));
+        } else {
+            var d = svgElement.attr('d');
+            svgElement
+                .attr("d", translateDAttribute(d, x - bbox.cx, y - bbox.cy));
+        }
         svgElement
-            .attr("cx", x)
-            .attr("cy", y);
-    } else if (svgElement.node().nodeName == 'polygon') {
-        var pointsString = svgElement.attr('points');
-        svgElement
-            .attr("points", translatePointsAttribute(pointsString, x - bbox.cx, y - bbox.cy));
-    } else {
-        var d = svgElement.attr('d');
-        svgElement
-            .attr("d", translateDAttribute(d, x - bbox.cx, y - bbox.cy));
-    }
-    svgElement
-        .attr("fill", fill)
-        .attr("stroke", stroke)
-        .attr("strokeWidth", strokeWidth);
+            .attr("fill", fill)
+            .attr("stroke", stroke)
+            .attr("strokeWidth", strokeWidth);
+    });
 
     if (shape != 'point') {
         var text = subParent.selectWithoutDataPropagation('text');

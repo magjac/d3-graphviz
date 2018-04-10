@@ -25,15 +25,15 @@ tape("Verify that cylinder shape is drawn exactly as Graphviz does.", function(t
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');
                     expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    expectedNodeShape = expectedNodeGroup.selectAll('path');
+                    expectedNodeShapes = expectedNodeGroup.selectAll('path');
                     expectedNodeText = expectedNodeGroup.selectAll('text');
 
                     actualNodeGroup = actualGraph.selectAll('.node');
                     actualNodeTitle = actualNodeGroup.selectAll('title');
-                    actualNodeShape = actualNodeGroup.selectAll('path');
+                    actualNodeShapes = actualNodeGroup.selectAll('path');
                     actualNodeText = actualNodeGroup.selectAll('text');
 
-                    var bbox = expectedNodeShape.node().getBBox();
+                    var bbox = expectedNodeShapes.node().getBBox();
                     bbox.cx = bbox.x + bbox.width / 2;
                     bbox.cy = bbox.y + bbox.height / 2;
                     var xoffs = x - bbox.cx;
@@ -43,10 +43,13 @@ tape("Verify that cylinder shape is drawn exactly as Graphviz does.", function(t
 
                     test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
-                    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of path 1');
-                    test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of path 1');
-                    test.equal(actualNodeShape.attr("d"), translateDAttribute(expectedNodeShape.attr("d"), xoffs, yoffs), 'd of path 1');
-
+                    actualNodeShapes.each(function(d, i, nodes) {
+                        var actualNodeShape = d3.select(this);
+                        var expectedNodeShape = d3.select(expectedNodeShapes.nodes()[i]);
+                        test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of path ' + (i + 1));
+                        test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of path '  + (i + 1));
+                        test.equal(actualNodeShape.attr("d"), translateDAttribute(expectedNodeShape.attr("d"), xoffs, yoffs), 'd of path ' + (i + 1));
+                    });
                     test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
                     test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
                     test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
