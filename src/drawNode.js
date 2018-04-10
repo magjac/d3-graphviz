@@ -107,7 +107,7 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     } else {
         var subParent = node;
     }
-    var svgElements = subParent.selectAll('ellipse,polygon,path');
+    var svgElements = subParent.selectAll('ellipse,polygon,path,polyline');
 
     node
         .attr("id", id);
@@ -118,11 +118,11 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     bbox.cy = bbox.y + bbox.height / 2;
     svgElements.each(function() {
         var svgElement = d3.select(this);
-        if (svgElement.node().nodeName == 'ellipse') {
+        if (svgElement.attr("cx")) {
             svgElement
                 .attr("cx", x)
                 .attr("cy", y);
-        } else if (svgElement.node().nodeName == 'polygon') {
+        } else if (svgElement.attr("points")) {
             var pointsString = svgElement.attr('points');
             svgElement
                 .attr("points", translatePointsAttribute(pointsString, x - bbox.cx, y - bbox.cy));
@@ -186,10 +186,10 @@ export function insertDrawnNode(nodeId) {
     if (attributes.URL || attributes.tooltip) {
         var ga = node.selectWithoutDataPropagation("g");
         var a = ga.selectWithoutDataPropagation("a");
-        var svgElement = a.selectWithoutDataPropagation('ellipse,polygon,path');
+        var svgElement = a.selectWithoutDataPropagation('ellipse,polygon,path,polyline');
         var text = a.selectWithoutDataPropagation('text');
     } else {
-        var svgElement = node.selectWithoutDataPropagation('ellipse,polygon,path');
+        var svgElement = node.selectWithoutDataPropagation('ellipse,polygon,path,polyline');
         var text = node.selectWithoutDataPropagation('text');
     }
     text
