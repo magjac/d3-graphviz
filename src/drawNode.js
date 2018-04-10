@@ -20,6 +20,13 @@ var defaultNodeAttributes = {
     fontcolor: "#000000",
 };
 
+var multiFillShapes = [
+    'fivepoverhang',
+    'threepoverhang',
+    'noverhang',
+    'assembly',
+];
+
 function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes) {
     for (var attribute in defaultAttributes) {
         if (attributes[attribute] === undefined) {
@@ -116,7 +123,7 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     var bbox = svgElements.node().getBBox();
     bbox.cx = bbox.x + bbox.width / 2;
     bbox.cy = bbox.y + bbox.height / 2;
-    svgElements.each(function() {
+    svgElements.each(function(data, index) {
         var svgElement = d3.select(this);
         if (svgElement.attr("cx")) {
             svgElement
@@ -131,10 +138,12 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
             svgElement
                 .attr("d", translateDAttribute(d, x - bbox.cx, y - bbox.cy));
         }
-        svgElement
-            .attr("fill", fill)
-            .attr("stroke", stroke)
-            .attr("strokeWidth", strokeWidth);
+        if (index == 0 || multiFillShapes.includes(shape)) {
+            svgElement
+                .attr("fill", fill)
+                .attr("stroke", stroke)
+                .attr("strokeWidth", strokeWidth);
+        }
     });
 
     if (shape != 'point') {
