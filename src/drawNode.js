@@ -115,6 +115,7 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
         var subParent = node;
     }
     var svgElements = subParent.selectAll('ellipse,polygon,path,polyline');
+    var text = node.selectWithoutDataPropagation("text");
 
     node
         .attr("id", id);
@@ -146,8 +147,7 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
         }
     });
 
-    if (shape != 'point') {
-        var text = subParent.selectWithoutDataPropagation('text');
+    if (text.size() != 0) {
 
         text
             .attr("text-anchor", textAnchor)
