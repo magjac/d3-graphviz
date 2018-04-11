@@ -121,9 +121,20 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
         .attr("id", id);
 
     title.text(nodeId);
-    var bbox = svgElements.node().getBBox();
-    bbox.cx = bbox.x + bbox.width / 2;
-    bbox.cy = bbox.y + bbox.height / 2;
+    if (svgElements.size() != 0) {
+        var bbox = svgElements.node().getBBox();
+        bbox.cx = bbox.x + bbox.width / 2;
+        bbox.cy = bbox.y + bbox.height / 2;
+    } else if (text.size() != 0) {
+        bbox = {
+            x: +text.attr('x'),
+            y: +text.attr('y'),
+            width: 0,
+            height: 0,
+            cx: +text.attr('x'),
+            cy: +text.attr('y'),
+        }
+    }
     svgElements.each(function(data, index) {
         var svgElement = d3.select(this);
         if (svgElement.attr("cx")) {
