@@ -167,9 +167,12 @@ function _render(callback) {
                 .attr("stroke-dasharray", totalLength + " " + totalLength)
                 .attr("stroke-dashoffset", totalLength)
                 .attr('transform', 'translate(' + data.offset.x + ',' + data.offset.y + ')');
+            attributes["stroke-dasharray"] = false;
+            attributes["stroke-dashoffset"] = 0;
+            attributes['transform'] = 'translate(0,0)';
             elementTransition
-                .attr("stroke-dashoffset", 0)
-                .attr('transform', 'translate(0,0)')
+                .attr("stroke-dashoffset", attributes["stroke-dashoffset"])
+                .attr('transform', attributes['transform'])
                 .on("start", function() {
                     d3.select(this)
                         .style('opacity', null);
@@ -192,6 +195,7 @@ function _render(callback) {
             var y = p0.y - p1.y + data.offset.y;
             element
                 .attr('transform', 'translate(' + x + ',' + y + ')');
+            attributes['transform'] = false;
             elementTransition
                 .attrTween("transform", function () {
                     return function (t) {
@@ -212,6 +216,21 @@ function _render(callback) {
                 });
         }
         var tweenThisPath = tweenPaths && transitionInstance && tag == 'path' && element.attr('d') != null;
+        var currentAttributes = element.node().attributes;
+        if (currentAttributes) {
+            for (var i = 0; i < currentAttributes.length; i++) {
+                var currentAttribute = currentAttributes[i];
+                var name = currentAttribute.name;
+                if (name.split(':')[0] != 'xmlns' && currentAttribute.namespaceURI) {
+                    var namespaceURIParts = currentAttribute.namespaceURI.split('/');
+                    var namespace = namespaceURIParts[namespaceURIParts.length - 1];
+                    name = namespace + ':' + name;
+                }
+                if (!(name in attributes)) {
+                    attributes[name] = null;
+                }
+            }
+        }
         for (var attributeName of Object.keys(attributes)) {
             var attributeValue = attributes[attributeName];
             if (tweenThisPath && attributeName == 'd') {
@@ -245,8 +264,10 @@ function _render(callback) {
                             }
                         })
                 }
-                elementTransition
-                    .attr(attributeName, attributeValue);
+                if (attributeValue !== false) {
+                    elementTransition
+                        .attr(attributeName, attributeValue);
+                }
             }
         }
         if (convertShape) {
