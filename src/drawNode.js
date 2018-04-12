@@ -107,6 +107,11 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     var fontFamily = attributes.fontname;
     var fontSize = attributes.fontsize;
     var fontColor = attributes.fontcolor;
+    if ('label' in attributes) {
+        var label = attributes['label'];
+    } else {
+        var label = nodeId;
+    }
 
     var title = node.selectWithoutDataPropagation('title');
     if (attributes.URL || attributes.tooltip) {
@@ -167,7 +172,7 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
             .attr("font-family", fontFamily)
             .attr("font-size", fontSize)
             .attr("fill", fontColor)
-            .text(nodeId);
+            .text(label);
     }
     return this;
 }
@@ -213,7 +218,7 @@ export function insertDrawnNode(nodeId) {
         var text = node.selectWithoutDataPropagation('text');
     }
     text
-        .text(nodeId);
+        .text(attributes.label || nodeId);
 
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
