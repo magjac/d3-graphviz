@@ -64,3 +64,52 @@ tape("Verify that none shape is drawn exactly as Graphviz does.", function(test)
                 });
         });
 });
+
+tape("Verify that none shape without label is drawn exactly as Graphviz does.", function(test) {
+    var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
+    var document = global.document = window.document;
+    var expectedGraph = d3.select("#expected-graph");
+    var actualGraph = d3.select("#actual-graph");
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph");
+    var actualGraphviz = d3_graphviz.graphviz("#actual-graph");
+
+    expectedGraphviz
+        .zoom(false)
+        .renderDot('digraph {a [shape="none" label=""]}', function () {
+            actualGraphviz
+                .renderDot('digraph {}', function () {
+                    var x = 27;
+                    var y = -13.8;
+                    actualGraphviz
+                        .drawNode(x, y, null, null, 'none', 'a', {id: 'node1', label: ''})
+                        .insertDrawnNode('a');
+
+                    expectedNodeGroup = expectedGraph.selectAll('.node');
+                    expectedNodeTitle = expectedNodeGroup.selectAll('title');
+                    expectedNodeShape = expectedNodeGroup.selectAll('polygon');
+                    expectedNodeText = expectedNodeGroup.selectAll('text');
+
+                    actualNodeGroup = actualGraph.selectAll('.node');
+                    actualNodeTitle = actualNodeGroup.selectAll('title');
+                    actualNodeShape = actualNodeGroup.selectAll('polygon');
+                    actualNodeText = actualNodeGroup.selectAll('text');
+
+                    test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
+
+                    test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
+
+                    test.equal(actualNodeShape.size(), 0, 'no svg shape elements');
+                    test.equal(actualNodeShape.size(), expectedNodeShape.size(), 'same number of svg shape elementes');
+
+                    test.equal(actualNodeText.size(), 0, 'no text elements');
+                    test.equal(actualNodeText.size(), expectedNodeText.size(), 'same number of svg text elements');
+
+                    var actualNodeGroupDatum = actualNodeGroup.datum();
+                    var expectedNodeGroupDatum = expectedNodeGroup.datum();
+                    delete expectedNodeGroupDatum.parent;
+                    deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+
+                    test.end();
+                });
+        });
+});
