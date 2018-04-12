@@ -1,5 +1,6 @@
 var tape = require("tape");
 var jsdom = require("./jsdom");
+var deepEqualData = require("./deepEqualData");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 
@@ -16,8 +17,8 @@ tape("Verify that none shape is drawn exactly as Graphviz does.", function(test)
         .renderDot('digraph {a [shape="none"]}', function () {
             actualGraphviz
                 .renderDot('digraph {}', function () {
-                    var x = 100;
-                    var y = -100
+                    var x = 27;
+                    var y = -13.8;
                     actualGraphviz
                         .drawNode(x, y, null, null, 'none', 'a', {id: 'node1'})
                         .insertDrawnNode('a');
@@ -53,6 +54,11 @@ tape("Verify that none shape is drawn exactly as Graphviz does.", function(test)
                     test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
 
                     test.equal(actualNodeText.text(), expectedNodeText.text(), 'text of node group');
+
+                    var actualNodeGroupDatum = actualNodeGroup.datum();
+                    var expectedNodeGroupDatum = expectedNodeGroup.datum();
+                    delete expectedNodeGroupDatum.parent;
+                    deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
 
                     test.end();
                 });
