@@ -2,7 +2,6 @@ var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
-var translatePointsAttribute = require("./svg");
 
 tape("Verify that none shape is drawn exactly as Graphviz does.", function(test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
