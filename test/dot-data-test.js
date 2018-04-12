@@ -1,5 +1,6 @@
 var tape = require("tape");
 var jsdom = require("./jsdom");
+var deepEqualData = require("./deepEqualData");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 var stringify = require('json-stringify-safe');
@@ -9,35 +10,22 @@ tape("data extraction", function(test) {
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
-    function parseData(parent) {
-
-        for (i in parent.children) {
-            child = parent.children[i]
-            if (typeof child.parent != 'string') {
-                test.equal(parent, child.parent,
-                           'Parent of "' + child.tag + '" "' + child.id + '" is "' +
-                           parent.tag + '" "' + parent.id + '"');
-            }
-            delete child.parent
-            parseData(child)
-        }
-    }
-
     graphviz
         .zoom(false)
         .dot('digraph {a -> b;}');
 
     delete graphviz._data.parent;
-    parseData(graphviz._data);
-    parseData(basic_data);
 
-    test.deepLooseEqual(graphviz._data, basic_data, "Extracted data equals predefined data");
+    var actualData = graphviz._data;
+    var expectedData = JSON.parse(JSON.stringify(basic_data))
+
+    deepEqualData(test, actualData, expectedData, "Extracted data equals predefined data");
 
     graphviz.render();
     var svg = d3.select('svg');
-    data = graphviz._extractData(svg, 0, null);
-    parseData(data);
-    test.deepLooseEqual(data, basic_data, "Explicitly extracted data equals predefined data");
+    actualData = graphviz._extractData(svg, 0, null);
+    var expectedData = JSON.parse(JSON.stringify(basic_data));
+    deepEqualData(test, actualData, expectedData, "Explicitly extracted data equals predefined data");
 
     test.end();
 });
