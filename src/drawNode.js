@@ -246,7 +246,10 @@ function createNode(shape, nodeId, attributes) {
             attributesString += ' "' + name + '"="' + attributes[name] + '"';
         }
     }
-    var dotSrc = 'graph {"' + nodeId + '" [shape=' + shape + attributesString + ']}';
+    if (shape) {
+        attributesString += ' shape=' + shape;
+    }
+    var dotSrc = 'graph {"' + nodeId + '" [' + attributesString + ']}';
     var svgDoc = Viz(dotSrc, {format: 'svg'});
     var parser = new window.DOMParser();
     var doc = parser.parseFromString(svgDoc, "image/svg+xml");
