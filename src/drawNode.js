@@ -28,6 +28,23 @@ var multiFillShapes = [
 ];
 
 function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes) {
+    if (attributes.style == 'filled' && !attributes.fillcolor) {
+        if (attributes.color) {
+            attributes.fillcolor = attributes.color;
+        } else {
+            attributes.fillcolor = '#d3d3d3';
+        }
+    }
+    if (attributes.style == 'filled' && !attributes.color) {
+        if (attributes.shape == 'none') {
+            attributes.color = 'transparent';
+        } else {
+            attributes.color = '#000000';
+        }
+    }
+    if (attributes.shape == 'point' && !attributes.fillcolor) {
+        attributes.fillcolor = '#000000';
+    }
     for (var attribute in defaultAttributes) {
         if (attributes[attribute] === undefined) {
             attributes[attribute] = defaultAttributes[attribute];
@@ -37,15 +54,7 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
 
 export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attributes, options={}) {
     attributes = attributes || {};
-    if (attributes.style == 'filled' && !attributes.color) {
-        attributes.color = '#000000';
-    }
-    if (attributes.style == 'filled' && !attributes.fillcolor) {
-        attributes.fillcolor = '#d3d3d3';
-    }
-    if (shape == 'point' && !attributes.fillcolor) {
-        attributes.fillcolor = '#000000';
-    }
+    attributes.shape = shape;
     completeAttributes(attributes);
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
