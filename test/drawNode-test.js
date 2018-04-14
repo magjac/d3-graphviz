@@ -387,7 +387,7 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
         test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
         test.equal(ellipse.attr("fill"), 'none', 'Default fill color of a drawn node ellipse is none');
         test.equal(ellipse.attr("stroke"), '#000000', 'Default stroke color of a drawn node ellipse is #000000');
-        test.equal(ellipse.attr("strokeWidth"), '1', 'Default stroke width is 1');
+        test.equal(ellipse.attr("strokeWidth"), null, 'Default is to not set stroke width');
 
         x += 1;
         y -= 1;

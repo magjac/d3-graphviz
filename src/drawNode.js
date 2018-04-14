@@ -11,7 +11,7 @@ var defaultNodeAttributes = {
     id: null,
     fillcolor: "none",
     color: "#000000",
-    penwidth: 1,
+    penwidth: null,
     URL: null,
     tooltip: null,
     labeljust: "c",
