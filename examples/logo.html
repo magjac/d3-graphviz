@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="../node_modules/viz.js/viz.js" type="javascript/worker"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+var dotIndex = 0;
+var graphviz = d3.select("#graph").graphviz()
+    .transition(function () {
+        return d3.transition("main")
+            .ease(d3.easeLinear)
+            .delay(500)
+            .duration(1500);
+    })
+    .logEvents(true)
+    .on("initEnd", render);
+
+function render() {
+    var dotLines = dots[dotIndex];
+    var dot = dotLines.join('');
+    graphviz
+        .renderDot(dot)
+        .on("end", function () {
+            dotIndex += 1;
+            if (dotIndex < dots.length) {
+                render();
+            }
+        });
+}
+
+var dots = [
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    "graphviz"      [fillcolor="#d62728", shape="ellipse"]',
+        '    "D3"            [fillcolor="#1f77b4", shape="hexagon"]',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    "graphviz"      [fillcolor="#d62728", shape="ellipse"]',
+        '    "D3"            [fillcolor="#1f77b4", shape="hexagon"]',
+        '    "d3-graphviz"   [fillcolor="#2ca02c", shape="egg"]',
+        '    "D3" -> "d3-graphviz"',
+        '    "graphviz" -> "d3-graphviz"',
+        '}'
+    ],
+];
+
+</script>
