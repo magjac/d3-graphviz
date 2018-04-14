@@ -6,6 +6,7 @@ import {extractAllElementsData} from "./element";
 import {translatePointsAttribute} from "./svg";
 import {translateDAttribute} from "./svg";
 import {insertAllElementsData} from "./element";
+import {roundTo4Decimals} from "./utils";
 
 var defaultNodeAttributes = {
     id: null,
@@ -159,8 +160,8 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
         var svgElement = d3.select(this);
         if (svgElement.attr("cx")) {
             svgElement
-                .attr("cx", x)
-                .attr("cy", y);
+                .attr("cx", roundTo4Decimals(x))
+                .attr("cy", roundTo4Decimals(y));
         } else if (svgElement.attr("points")) {
             var pointsString = svgElement.attr('points');
             svgElement
@@ -182,8 +183,8 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
 
         text
             .attr("text-anchor", textAnchor)
-            .attr("x", +text.attr("x") + x - bbox.cx)
-            .attr("y", +text.attr("y") + y - bbox.cy)
+            .attr("x", roundTo4Decimals(+text.attr("x") + x - bbox.cx))
+            .attr("y", roundTo4Decimals(+text.attr("y") + y - bbox.cy))
             .attr("font-family", fontFamily)
             .attr("font-size", fontSize)
             .attr("fill", fontColor)

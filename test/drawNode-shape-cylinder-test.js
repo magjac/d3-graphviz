@@ -51,8 +51,8 @@ tape("Verify that cylinder shape is drawn exactly as Graphviz does.", function(t
                         test.equal(actualNodeShape.attr("d"), translateDAttribute(expectedNodeShape.attr("d"), xoffs, yoffs), 'd of path ' + (i + 1));
                     });
                     test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
-                    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
-                    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
+                    test.equal(+actualNodeText.attr("x") - xoffs, +expectedNodeText.attr("x"), 'x of text');
+                    test.equal(+actualNodeText.attr("y") - yoffs, +expectedNodeText.attr("y"), 'y of text');
                     test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
                     test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
                     test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');

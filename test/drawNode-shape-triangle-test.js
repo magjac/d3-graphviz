@@ -3,6 +3,7 @@ var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 var translatePointsAttribute = require("./svg").translatePointsAttribute;
+var roundTo4Decimals = require("./utils").roundTo4Decimals;
 
 tape("Verify that triangle shape is drawn exactly as Graphviz does.", function(test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
@@ -45,11 +46,11 @@ tape("Verify that triangle shape is drawn exactly as Graphviz does.", function(t
 
                     test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of polygon');
                     test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of polygon');
-                    test.equal(actualNodeShape.attr("points"), translatePointsAttribute(expectedNodeShape.attr("points"), xoffs, yoffs), 'points of polygon');
+                    test.equal(translatePointsAttribute(actualNodeShape.attr("points"), -xoffs, -yoffs), expectedNodeShape.attr("points"), 'points of polygon');
 
                     test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
-                    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
-                    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
+                    test.equal(roundTo4Decimals(+actualNodeText.attr("x") - xoffs), +expectedNodeText.attr("x"), 'x of text');
+                    test.equal(roundTo4Decimals(+actualNodeText.attr("y") - yoffs), +expectedNodeText.attr("y"), 'y of text');
                     test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
                     test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
                     test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
