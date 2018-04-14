@@ -37,6 +37,9 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
 
 export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attributes, options={}) {
     attributes = attributes || {};
+    if (attributes.style == 'filled' && !attributes.color) {
+        attributes.color = '#000000';
+    }
     if (shape == 'point' && !attributes.fillcolor) {
         attributes.fillcolor = '#000000';
     }
