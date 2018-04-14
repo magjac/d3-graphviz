@@ -40,6 +40,9 @@ export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attrib
     if (attributes.style == 'filled' && !attributes.color) {
         attributes.color = '#000000';
     }
+    if (attributes.style == 'filled' && !attributes.fillcolor) {
+        attributes.fillcolor = '#d3d3d3';
+    }
     if (shape == 'point' && !attributes.fillcolor) {
         attributes.fillcolor = '#000000';
     }
