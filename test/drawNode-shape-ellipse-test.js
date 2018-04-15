@@ -20,7 +20,7 @@ tape("Verify that ellipse shape is drawn exactly as Graphviz does.", function(te
                     var x = 27;
                     var y = -18;
                     actualGraphviz
-                        .drawNode(x, y, null, null, 'ellipse', 'a', {id: 'node1'})
+                        .drawNode(x, y, 'ellipse', 'a', {id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

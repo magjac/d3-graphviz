@@ -20,7 +20,7 @@ tape("Verify that circle shape is drawn exactly as Graphviz does.", function(tes
                     var x = 18;
                     var y = -18;
                     actualGraphviz
-                        .drawNode(x, y, null, null, 'circle', 'a', {id: 'node1'})
+                        .drawNode(x, y, 'circle', 'a', {id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

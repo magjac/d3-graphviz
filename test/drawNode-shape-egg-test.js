@@ -21,7 +21,7 @@ tape("Verify that egg shape is drawn exactly as Graphviz does.", function(test) 
                     var x = 28.74345;
                     var y = -18;
                     actualGraphviz
-                        .drawNode(x, y, null, null, 'egg', 'a', {id: 'node1'})
+                        .drawNode(x, y, 'egg', 'a', {id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

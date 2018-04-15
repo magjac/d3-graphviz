@@ -53,7 +53,7 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
     }
 }
 
-export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attributes, options={}) {
+export function drawNode(x, y, shape='ellipse', nodeId="", attributes, options={}) {
     attributes = attributes || {};
     attributes.shape = shape;
     completeAttributes(attributes);
@@ -72,16 +72,14 @@ export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attrib
         shape: shape,
         x: x,
         y: y,
-        width: width,
-        height: height,
         attributes: attributes,
     };
-    _updateNode(newNode, x, y, width, height, shape, nodeId, attributes, options);
+    _updateNode(newNode, x, y, shape, nodeId, attributes, options);
 
     return this;
 }
 
-export function updateDrawnNode(x, y, width, height, nodeId, attributes, options={}) {
+export function updateDrawnNode(x, y, nodeId, attributes, options={}) {
     if (!this._drawnNode)  {
         throw Error('No node has been drawn');
     }
@@ -96,19 +94,14 @@ export function updateDrawnNode(x, y, width, height, nodeId, attributes, options
     var shape = this._drawnNode.shape;
     this._drawnNode.x = x;
     this._drawnNode.y = y;
-    this._drawnNode.width = width;
-    this._drawnNode.height = height;
     this._drawnNode.attributes = attributes;
-    _updateNode(node, x, y, width, height, shape, nodeId, attributes, options);
+    _updateNode(node, x, y, shape, nodeId, attributes, options);
 
     return this;
 }
 
-function _updateNode(node, x, y, width, height, shape, nodeId, attributes, options) {
+function _updateNode(node, x, y, shape, nodeId, attributes, options) {
 
-    if (shape == 'circle' || shape == 'point') {
-        height = width
-    }
     var id = attributes.id;
     var fill = attributes.fillcolor;
     var stroke = attributes.color;
