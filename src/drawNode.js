@@ -37,7 +37,7 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
         }
     }
     if (attributes.style == 'filled' && !attributes.color) {
-        if (attributes.shape == 'none') {
+        if (attributes.shape == 'none' || attributes.shape == 'plain') {
             attributes.color = 'transparent';
         } else {
             attributes.color = '#000000';
