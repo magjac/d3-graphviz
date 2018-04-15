@@ -141,9 +141,8 @@ var shapes = [
 ];
 
 var dotSrc = `strict digraph {
-    node [style="filled"]
-    a [shape="ellipse" fillcolor="` + d3.schemeCategory10[0] + `"]
-    b [shape="polygon" fillcolor="` + d3.schemeCategory10[1] + `"]
+    a [shape="ellipse" style="filled" fillcolor="` + d3.schemeCategory10[0] + `"]
+    b [shape="polygon" style="filled" fillcolor="` + d3.schemeCategory10[1] + `"]
     a -> b [fillcolor="` + d3.schemePaired[0] + `" color="` + d3.schemePaired[1] + `"]
 }`;
 
@@ -225,10 +224,10 @@ function startApp() {
             var fillcolor = d3.schemeCategory10[nodeIndex % 10];
             var color = 'black';
             graphviz
-                .drawNode(x0, y0, shape, nodeName, {fillcolor: fillcolor, color: color, id: 'drawn-node'})
+                .drawNode(x0, y0, shape, nodeName, {style: 'filled', fillcolor: fillcolor, color: color, id: 'drawn-node'})
                 .insertDrawnNode(nodeName);
             var dotSrcLines = dotSrc.split('\n');
-            var newNodeString = '    ' + nodeName + ' [shape="' + shape + '" color="' + color + '"; fillcolor="' + fillcolor + '"; penwidth="1"]';
+            var newNodeString = '    ' + nodeName + ' [style="filled" shape="' + shape + '" color="' + color + '"; fillcolor="' + fillcolor + '"; penwidth="1"]';
             dotSrcLines.splice(-1, 0, newNodeString);
             dotSrc = dotSrcLines.join('\n');
             editor.setValue(dotSrc);
