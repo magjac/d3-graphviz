@@ -227,7 +227,7 @@ function startApp() {
                 .drawNode(x0, y0, shape, nodeName, {style: 'filled', fillcolor: fillcolor, color: color, id: 'drawn-node'})
                 .insertDrawnNode(nodeName);
             var dotSrcLines = dotSrc.split('\n');
-            var newNodeString = '    ' + nodeName + ' [style="filled" shape="' + shape + '" color="' + color + '"; fillcolor="' + fillcolor + '"; penwidth="1"]';
+            var newNodeString = '    ' + nodeName + ' [style="filled" shape="' + shape + '" color="' + color + '"; fillcolor="' + fillcolor + '"]';
             dotSrcLines.splice(-1, 0, newNodeString);
             dotSrc = dotSrcLines.join('\n');
             editor.setValue(dotSrc);
