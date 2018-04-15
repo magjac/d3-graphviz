@@ -1,5 +1,6 @@
 var tape = require("tape");
 var jsdom = require("./jsdom");
+var deepEqualData = require("./deepEqualData");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 
@@ -16,8 +17,8 @@ tape("Verify that point shape is drawn exactly as Graphviz does.", function(test
         .renderDot('digraph {a [shape="point"]}', function () {
             actualGraphviz
                 .renderDot('digraph {}', function () {
-                    var x = 100;
-                    var y = -100
+                    var x = 1.8;
+                    var y = -1.8;
                     actualGraphviz
                         .drawNode(x, y, null, null, 'point', 'a', {id: 'node1'})
                         .insertDrawnNode('a');
@@ -46,6 +47,11 @@ tape("Verify that point shape is drawn exactly as Graphviz does.", function(test
                     test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
                     test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
                     test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
+
+                    var actualNodeGroupDatum = actualNodeGroup.datum();
+                    var expectedNodeGroupDatum = expectedNodeGroup.datum();
+                    delete expectedNodeGroupDatum.parent;
+                    deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape equals Graphviz generated data');
 
                     test.end();
                 });

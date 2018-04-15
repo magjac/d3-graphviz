@@ -1,5 +1,6 @@
 var tape = require("tape");
 var jsdom = require("./jsdom");
+var deepEqualData = require("./deepEqualData");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 var translatePointsAttribute = require("./svg").translatePointsAttribute;
@@ -18,8 +19,8 @@ tape("Verify that triangle shape is drawn exactly as Graphviz does.", function(t
         .renderDot('digraph {a [shape="triangle"]}', function () {
             actualGraphviz
                 .renderDot('digraph {}', function () {
-                    var x = 100;
-                    var y = -100
+                    var x = 30.64645;
+                    var y = -30.9504;
                     actualGraphviz
                         .drawNode(x, y, null, null, 'triangle', 'a', {id: 'node1'})
                         .insertDrawnNode('a');
@@ -56,6 +57,11 @@ tape("Verify that triangle shape is drawn exactly as Graphviz does.", function(t
                     test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
 
                     test.equal(actualNodeText.text(), expectedNodeText.text(), 'text of node group');
+
+                    var actualNodeGroupDatum = actualNodeGroup.datum();
+                    var expectedNodeGroupDatum = expectedNodeGroup.datum();
+                    delete expectedNodeGroupDatum.parent;
+                    deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape equals Graphviz generated data');
 
                     test.end();
                 });
