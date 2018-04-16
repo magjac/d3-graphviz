@@ -28,6 +28,12 @@ var multiFillShapes = [
     'assembly',
 ];
 
+var plainShapes = [
+    'none',
+    'plain',
+    'plaintext',
+];
+
 function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes) {
     if (attributes.style == 'filled' && !attributes.fillcolor) {
         if (attributes.color) {
@@ -36,10 +42,10 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
             attributes.fillcolor = '#d3d3d3';
         }
     }
-    if (attributes.style == 'filled' && !attributes.color) {
-        if (attributes.shape == 'none' || attributes.shape == 'plain') {
+    if (attributes.style == 'filled') {
+        if (plainShapes.includes(attributes.shape)) {
             attributes.color = 'transparent';
-        } else {
+        } else if (!attributes.color) {
             attributes.color = '#000000';
         }
     }
