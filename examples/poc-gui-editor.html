@@ -223,11 +223,26 @@ function startApp() {
             var nodeName = letter + digit;
             var fillcolor = d3.schemeCategory10[nodeIndex % 10];
             var color = 'black';
+            var attributes = {
+                style: 'filled',
+                fillcolor: fillcolor,
+                color: color,
+                id: 'drawn-node',
+            };
             graphviz
-                .drawNode(x0, y0, shape, nodeName, {style: 'filled', fillcolor: fillcolor, color: color, id: 'drawn-node'})
+                .drawNode(x0, y0, shape, nodeName, attributes)
                 .insertDrawnNode(nodeName);
             var dotSrcLines = dotSrc.split('\n');
-            var newNodeString = '    ' + nodeName + ' [style="filled" shape="' + shape + '" color="' + color + '"; fillcolor="' + fillcolor + '"]';
+            var attributesString = ''
+            for (var name of Object.keys(attributes)) {
+                if (attributes[name] != null) {
+                    attributesString += ' "' + name + '"="' + attributes[name] + '"';
+                }
+            }
+            if (shape) {
+                attributesString += ' shape=' + shape;
+            }
+            var newNodeString = '    ' + nodeName + ' [' + attributesString + ']';
             dotSrcLines.splice(-1, 0, newNodeString);
             dotSrc = dotSrcLines.join('\n');
             editor.setValue(dotSrc);
