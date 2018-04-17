@@ -177,14 +177,14 @@ export default function(src, callback) {
                         }
                         var startShapes = startNode.children;
                         for (var i = 0; i < startShapes.length; i++) {
-                            if (startShapes[i].tag == 'polygon' || startShapes[i].tag == 'ellipse') {
+                            if (startShapes[i].tag == 'polygon' || startShapes[i].tag == 'ellipse' || startShapes[i].tag == 'path') {
                                 var startShape = startShapes[i];
                                 break;
                             }
                         }
                         var prevStartShapes = prevStartNode.children;
                         for (var i = 0; i < prevStartShapes.length; i++) {
-                            if (prevStartShapes[i].tag == 'polygon' || prevStartShapes[i].tag == 'ellipse') {
+                            if (prevStartShapes[i].tag == 'polygon' || prevStartShapes[i].tag == 'ellipse' || prevStartShapes[i].tag == 'path') {
                                 var prevStartShape = prevStartShapes[i];
                                 break;
                             }

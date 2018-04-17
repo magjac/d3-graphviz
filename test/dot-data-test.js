@@ -484,6 +484,16 @@ var basic_data = {
                                 "stroke": "#000000",
                                 "d": "M27,-71.8314C27,-64.131 27,-54.9743 27,-46.4166"
                             },
+                            "bbox": {
+                                "x": 27,
+                                "y": -71.8314,
+                                "width": 0,
+                                "height": 25.4148
+                            },
+                            "center": {
+                                "x": 27,
+                                "y": -59.124
+                            },
                             "totalLength": 100,
                             "parent": "[Circular ~.children.1.children.15]",
                             "children": [],
