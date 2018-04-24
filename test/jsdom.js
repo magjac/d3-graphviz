@@ -5,6 +5,9 @@ module.exports = function(html, options) {
     var window = dom.window;
 
     window.SVGElement.prototype.getPointAtLength = function (distance) {
+        if (this.nodeName != 'path') {
+            throw 'jsdom.js: getPointAtLength: unexpected element ' + this.nodeName;
+        }
         return {
             x: distance * 100.0,
             y: distance * 100.0,
