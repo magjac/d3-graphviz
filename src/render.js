@@ -134,7 +134,7 @@ function _render(callback) {
                 }
             }
             if (convertPrevShape) {
-                var prevPathData = data.alternativeOld || data;
+                var prevPathData = data.alternativeOld;
                 var pathElement = replaceElement(element, prevPathData);
                 pathElement.data([data], function () {
                     return data.key;
