@@ -47,17 +47,23 @@ export function convertToPathData(originalData, guideData) {
         var cy = originalAttributes.cy;
         var rx = originalAttributes.rx;
         var ry = originalAttributes.ry;
-        var bbox = guideData.bbox;
-        bbox.cx = bbox.x + bbox.width / 2;
-        bbox.cy = bbox.y + bbox.height / 2;
-        var p = guideData.attributes.points.split(' ')[0].split(',');
-        var sx = p[0];
-        var sy = p[1];
-        var dx = sx - bbox.cx;
-        var dy = sy - bbox.cy;
-        var l = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-        var cosA = dx / l;
-        var sinA = -dy / l;
+        if (guideData.tag == 'polygon') {
+            var bbox = guideData.bbox;
+            bbox.cx = bbox.x + bbox.width / 2;
+            bbox.cy = bbox.y + bbox.height / 2;
+            var p = guideData.attributes.points.split(' ')[0].split(',');
+            var sx = p[0];
+            var sy = p[1];
+            var dx = sx - bbox.cx;
+            var dy = sy - bbox.cy;
+            var l = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+            var cosA = dx / l;
+            var sinA = -dy / l;
+        } else { // if (guideData.tag == 'path') {
+            // FIXME: add support for getting start position from path
+            var cosA = 1;
+            var sinA = 0;
+        }
         var x1 = rx * cosA;
         var y1 = -ry * sinA;
         var x2 = rx * (-cosA);

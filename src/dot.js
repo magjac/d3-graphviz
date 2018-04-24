@@ -80,9 +80,13 @@ export default function(src, callback) {
 
     function calculateAlternativeShapeData(datum, prevDatum) {
         if (tweenShapes && datum.id in prevDictionary) {
-            if ((prevDatum.tag == 'polygon' || prevDatum.tag == 'ellipse') && (prevDatum.tag != datum.tag || datum.tag == 'polygon')) {
-                datum.alternativeOld = convertToPathData(prevDatum, datum);
-                datum.alternativeNew = convertToPathData(datum, prevDatum);
+            if ((prevDatum.tag == 'polygon' || prevDatum.tag == 'ellipse' || prevDatum.tag == 'path') && (prevDatum.tag != datum.tag || datum.tag == 'polygon')) {
+                if (prevDatum.tag != 'path') {
+                    datum.alternativeOld = convertToPathData(prevDatum, datum);
+                }
+                if (datum.tag != 'path') {
+                    datum.alternativeNew = convertToPathData(datum, prevDatum);
+                }
             }
         }
     }
