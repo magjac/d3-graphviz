@@ -52,6 +52,26 @@ export function extractElementData(element) {
         };
     }
     if (tag == 'path') {
+        var d = element.attr('d');
+        var points = d.split(/[A-Z ]/);
+        points.shift();
+        var x = points.map(function(p) {return +p.split(',')[0]});
+        var y = points.map(function(p) {return +p.split(',')[1]});
+        var xmin = Math.min.apply(null, x);
+        var xmax = Math.max.apply(null, x);
+        var ymin = Math.min.apply(null, y);
+        var ymax = Math.max.apply(null, y);
+        var bbox = {
+            x: xmin,
+            y: ymin,
+            width: xmax - xmin,
+            height: ymax - ymin,
+        };
+        datum.bbox = bbox;
+        datum.center = {
+            x: (xmin + xmax) / 2,
+            y: (ymin + ymax) / 2,
+        };
         datum.totalLength = element.node().getTotalLength();
     }
     if (tag == '#text') {

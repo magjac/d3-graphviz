@@ -80,9 +80,13 @@ export default function(src, callback) {
 
     function calculateAlternativeShapeData(datum, prevDatum) {
         if (tweenShapes && datum.id in prevDictionary) {
-            if ((prevDatum.tag == 'polygon' || prevDatum.tag == 'ellipse') && (prevDatum.tag != datum.tag || datum.tag == 'polygon')) {
-                datum.alternativeOld = convertToPathData(prevDatum, datum);
-                datum.alternativeNew = convertToPathData(datum, prevDatum);
+            if ((prevDatum.tag == 'polygon' || prevDatum.tag == 'ellipse' || prevDatum.tag == 'path') && (prevDatum.tag != datum.tag || datum.tag == 'polygon')) {
+                if (prevDatum.tag != 'path') {
+                    datum.alternativeOld = convertToPathData(prevDatum, datum);
+                }
+                if (datum.tag != 'path') {
+                    datum.alternativeNew = convertToPathData(datum, prevDatum);
+                }
             }
         }
     }
@@ -177,14 +181,14 @@ export default function(src, callback) {
                         }
                         var startShapes = startNode.children;
                         for (var i = 0; i < startShapes.length; i++) {
-                            if (startShapes[i].tag == 'polygon' || startShapes[i].tag == 'ellipse') {
+                            if (startShapes[i].tag == 'polygon' || startShapes[i].tag == 'ellipse' || startShapes[i].tag == 'path') {
                                 var startShape = startShapes[i];
                                 break;
                             }
                         }
                         var prevStartShapes = prevStartNode.children;
                         for (var i = 0; i < prevStartShapes.length; i++) {
-                            if (prevStartShapes[i].tag == 'polygon' || prevStartShapes[i].tag == 'ellipse') {
+                            if (prevStartShapes[i].tag == 'polygon' || prevStartShapes[i].tag == 'ellipse' || prevStartShapes[i].tag == 'path') {
                                 var prevStartShape = prevStartShapes[i];
                                 break;
                             }

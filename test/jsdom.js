@@ -5,12 +5,18 @@ module.exports = function(html, options) {
     var window = dom.window;
 
     window.SVGElement.prototype.getPointAtLength = function (distance) {
+        if (this.nodeName != 'path') {
+            throw 'jsdom.js: getPointAtLength: unexpected element ' + this.nodeName;
+        }
         return {
             x: distance * 100.0,
             y: distance * 100.0,
         }
     }
     window.SVGElement.prototype.getTotalLength = function () {
+        if (this.nodeName != 'path') {
+            throw 'jsdom.js: getTotalLength: unexpected element ' + this.nodeName;
+        }
         return 100.0;
     }
     if (!('width' in window.SVGElement.prototype)) {

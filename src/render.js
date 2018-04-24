@@ -112,30 +112,37 @@ function _render(callback) {
         var tag = data.tag;
         var attributes = data.attributes;
         var convertShape = false;
-        if (tweenShapes && transitionInstance && data.alternativeOld) {
-            if (this.nodeName == 'polygon' || this.nodeName == 'ellipse') {
+        var convertPrevShape = false;
+        if (tweenShapes && transitionInstance) {
+            if ((this.nodeName == 'polygon' || this.nodeName == 'ellipse') && data.alternativeOld) {
+                convertPrevShape = true;
+            }
+            if ((tag == 'polygon' || tag == 'ellipse') && data.alternativeNew) {
                 convertShape = true;
+            }
+            if (this.nodeName == 'polygon' && tag == 'polygon') {
                 var prevData = extractElementData(element);
-                if (this.nodeName == 'polygon' && tag == 'polygon') {
-                    var prevPoints = prevData.attributes.points;
-                    if (!convertEqualSidedPolygons) {
-                        var nPrevPoints = prevPoints.split(' ').length;
-                        var points = data.attributes.points;
-                        var nPoints = points.split(' ').length;
-                        if (nPoints == nPrevPoints) {
-                            convertShape = false;
-                        }
+                var prevPoints = prevData.attributes.points;
+                if (!convertEqualSidedPolygons) {
+                    var nPrevPoints = prevPoints.split(' ').length;
+                    var points = data.attributes.points;
+                    var nPoints = points.split(' ').length;
+                    if (nPoints == nPrevPoints) {
+                        convertShape = false;
+                        convertPrevShape = false;
                     }
                 }
             }
-            if (convertShape) {
+            if (convertPrevShape) {
                 var prevPathData = data.alternativeOld;
                 var pathElement = replaceElement(element, prevPathData);
                 pathElement.data([data], function () {
                     return data.key;
                 });
-                var newPathData = data.alternativeNew;
                 element = pathElement;
+            }
+            if (convertShape) {
+                var newPathData = data.alternativeNew;
                 tag = 'path';
                 attributes = newPathData.attributes;
             }
