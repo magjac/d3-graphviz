@@ -14,6 +14,9 @@ module.exports = function(html, options) {
         }
     }
     window.SVGElement.prototype.getTotalLength = function () {
+        if (this.nodeName != 'path') {
+            throw 'jsdom.js: getTotalLength: unexpected element ' + this.nodeName;
+        }
         return 100.0;
     }
     if (!('width' in window.SVGElement.prototype)) {
