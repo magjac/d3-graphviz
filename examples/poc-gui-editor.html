@@ -312,7 +312,7 @@ function startApp() {
             var fillcolor = d3.schemePaired[(edgeIndex * 2) % 12];
             var color = d3.schemePaired[(edgeIndex * 2 + 1) % 12];
             var dotSrcLines = dotSrc.split('\n');
-            var newEdgeString = '    ' + startNodeName + ' -> ' + endNodeName + ' [color="' + color + '"; fillcolor="' + fillcolor + '"; penwidth="1"]';
+            var newEdgeString = '    ' + startNodeName + ' -> ' + endNodeName + ' [color="' + color + '"; fillcolor="' + fillcolor + '"]';
             dotSrcLines.splice(-1, 0, newEdgeString);
             dotSrc = dotSrcLines.join('\n');
             editor.setValue(dotSrc);
