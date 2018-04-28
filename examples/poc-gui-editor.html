@@ -255,6 +255,9 @@ function startApp() {
     // keyup outside of nodes
     d3.select(document).on("keyup", function() {
         var event = d3.event;
+        if (event.target.nodeName != 'BODY') {
+            return;
+        }
         event.preventDefault();
         if (event.keyCode == 27) {
             graphviz.removeDrawnEdge();
