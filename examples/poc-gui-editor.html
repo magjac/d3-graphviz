@@ -259,12 +259,12 @@ function startApp() {
             return;
         }
         event.preventDefault();
-        if (event.keyCode == 27) {
+        if (event.key == 'Escape') {
             graphviz.removeDrawnEdge();
             unSelectEdge();
             unSelectNode();
         }
-        if (event.keyCode == 46) {
+        if (event.key == 'Delete') {
             deleteSelectedEdge();
             deleteSelectedNode();
             graphviz.removeDrawnEdge();
