@@ -21,7 +21,7 @@ tape("Verify that diamond shape is drawn exactly as Graphviz does.", function(te
                     var x = 27;
                     var y = -18;
                     actualGraphviz
-                        .drawNode(x, y, 'diamond', 'a', {id: 'node1'})
+                        .drawNode(x, y, 'a', {shape: 'diamond', id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

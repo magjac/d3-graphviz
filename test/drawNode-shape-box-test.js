@@ -21,7 +21,7 @@ tape("Verify that box shape is drawn exactly as Graphviz does.", function(test) 
                     var x = 27;
                     var y = -18;
                     actualGraphviz
-                        .drawNode(x, y, 'box', 'a', {id: 'node1'})
+                        .drawNode(x, y, 'a', {shape: 'box', id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

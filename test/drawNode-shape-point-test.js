@@ -20,7 +20,7 @@ tape("Verify that point shape is drawn exactly as Graphviz does.", function(test
                     var x = 1.8;
                     var y = -1.8;
                     actualGraphviz
-                        .drawNode(x, y, 'point', 'a', {id: 'node1'})
+                        .drawNode(x, y, 'a', {shape: 'point', id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

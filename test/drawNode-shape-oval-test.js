@@ -20,7 +20,7 @@ tape("Verify that oval shape is drawn exactly as Graphviz does.", function(test)
                     var x = 27;
                     var y = -18;
                     actualGraphviz
-                        .drawNode(x, y, 'oval', 'a', {id: 'node1'})
+                        .drawNode(x, y, 'a', {shaoe: 'oval', id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

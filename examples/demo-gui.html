@@ -95,7 +95,7 @@ function startApp() {
             var fillcolor = d3.schemeCategory10[nodeIndex % 10];
             var color = 'black';
             graphviz
-                .drawNode(x1, y1, shape, nodeName, {text: nodeName, fillcolor: fillcolor, color: color})
+                .drawNode(x1, y1, nodeName, {shape: shape, text: nodeName, fillcolor: fillcolor, color: color})
                 .insertDrawnNode(nodeName);
             var dotSrcLines = dotSrc.split('\n');
             var newNodeString = nodeName + ' [shape="' + shape + '" color="' + color + '"; fillcolor="' + fillcolor + '"; penwidth="1"]';

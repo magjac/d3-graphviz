@@ -21,7 +21,7 @@ tape("Verify that none shape is drawn exactly as Graphviz does.", function(test)
                     var x = 27;
                     var y = -13.8;
                     actualGraphviz
-                        .drawNode(x, y, 'none', 'a', {id: 'node1'})
+                        .drawNode(x, y, 'a', {shape: 'none', id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');
@@ -82,7 +82,7 @@ tape("Verify that none shape without label is drawn exactly as Graphviz does.", 
                     var x = 27;
                     var y = -13.8;
                     actualGraphviz
-                        .drawNode(x, y, 'none', 'a', {id: 'node1', label: ''})
+                        .drawNode(x, y, 'a', {shape: 'none', id: 'node1', label: ''})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');
@@ -131,7 +131,7 @@ tape("Verify that none shape with style filled is drawn exactly as Graphviz does
                     var x = 27;
                     var y = -18;
                     actualGraphviz
-                        .drawNode(x, y, 'none', 'a', {id: 'node1', style: 'filled'})
+                        .drawNode(x, y, 'a', {shape: 'none', id: 'node1', style: 'filled'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');
@@ -201,7 +201,7 @@ tape("Verify that none shape with style filled and pen color specified is drawn 
                     var x = 27;
                     var y = -18;
                     actualGraphviz
-                        .drawNode(x, y, 'none', 'a', {id: 'node1', style: 'filled', color: '#0000ff'})
+                        .drawNode(x, y, 'a', {shape: 'none', id: 'node1', style: 'filled', color: '#0000ff'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

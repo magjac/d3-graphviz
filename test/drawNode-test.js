@@ -61,7 +61,7 @@ tape("drawNode() draws a node in the same way as Graphviz does", function(test) 
         var x = 100;
         var y = -100
         graphviz
-            .drawNode(x, y, 'ellipse');
+            .drawNode(x, y, '', {shape: 'ellipse'});
 
         num_nodes += 1;
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
@@ -114,7 +114,7 @@ tape("drawNode() draws a polygon node", function(test) {
         var x = 100;
         var y = -100
         graphviz
-            .drawNode(x, y, 'polygon');
+            .drawNode(x, y, '', {shape: 'polygon'});
 
         num_nodes += 1;
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
@@ -164,7 +164,7 @@ tape("drawNode() draws a node with an URL attribute in the same way as Graphviz 
         var x = 100;
         var y = -100
         graphviz
-            .drawNode(x, y, 'ellipse', 'c', {URL: "dummy2"});
+            .drawNode(x, y, 'c', {shape: 'ellipse', URL: "dummy2"});
         num_nodes += 1;
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
@@ -215,7 +215,7 @@ tape("drawNode() draws a node with an tooltip attribute in the same way as Graph
         var x = 100;
         var y = -100
         graphviz
-            .drawNode(x, y, 'ellipse', 'd', {tooltip: "dummy2"});
+            .drawNode(x, y, 'd', {shape: 'ellipse', tooltip: "dummy2"});
         num_nodes += 1;
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
@@ -264,7 +264,7 @@ tape("insertDrawnNode() inserts the currently drawn node into the joined data st
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         graphviz
-            .drawNode(0, -36, 'ellipse', 'e', {URL: "dummy2"});
+            .drawNode(0, -36, 'e', {shape: 'ellipse', URL: "dummy2"});
         num_nodes += 1;
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
@@ -372,7 +372,7 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
         x = 20;
         y = -20;
         graphviz
-            .drawNode(x, y, 'ellipse', 'f', {id: 'drawn-node'});
+            .drawNode(x, y, 'f', {shape: 'ellipse', id: 'drawn-node'});
         num_nodes += 1;
         var node = d3.select('#drawn-node');
         test.equal(node.size(), 1, 'a node with the specified id attribute is present');

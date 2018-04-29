@@ -20,7 +20,7 @@ tape("Verify that default shape is drawn exactly as Graphviz does.", function(te
                     var x = 27;
                     var y = -18
                     actualGraphviz
-                         .drawNode(x, y, null, 'a', {id: 'node1'})
+                         .drawNode(x, y, 'a', {id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');
@@ -85,7 +85,7 @@ tape("Verify that default shape with style filled is drawn exactly as Graphviz d
                     var x = 27;
                     var y = -18
                     actualGraphviz
-                         .drawNode(x, y, null, 'a', {id: 'node1', style: 'filled'})
+                         .drawNode(x, y, 'a', {id: 'node1', style: 'filled'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');
@@ -150,7 +150,7 @@ tape("Default shape with style filled without fillcolor, but with color, uses co
                     var x = 27;
                     var y = -18
                     actualGraphviz
-                        .drawNode(x, y, null, 'a', {id: 'node1', style: 'filled', color: '#0000ff'})
+                        .drawNode(x, y, 'a', {id: 'node1', style: 'filled', color: '#0000ff'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');
@@ -216,7 +216,7 @@ tape("Verify that default shape with label is drawn exactly as Graphviz does.", 
                     var x = 27;
                     var y = -18
                     actualGraphviz
-                        .drawNode(x, y, null, 'a', {id: 'node1', label: 'x'})
+                        .drawNode(x, y, 'a', {id: 'node1', label: 'x'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

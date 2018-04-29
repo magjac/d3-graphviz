@@ -21,7 +21,7 @@ tape("Verify that cylinder shape is drawn exactly as Graphviz does.", function(t
                     var x = 27;
                     var y = -18;
                     actualGraphviz
-                        .drawNode(x, y, 'cylinder', 'a', {id: 'node1'})
+                        .drawNode(x, y, 'a', {shape: 'cylinder', id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

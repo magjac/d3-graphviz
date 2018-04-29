@@ -227,12 +227,13 @@ function startApp() {
             var fillcolor = d3.schemeCategory10[nodeIndex % 10];
             var color = 'black';
             var attributes = {
+                shape: shape,
                 style: 'filled',
                 fillcolor: fillcolor,
                 color: color,
             };
             graphviz
-                .drawNode(x0, y0, shape, nodeName, attributes)
+                .drawNode(x0, y0, nodeName, attributes)
                 .insertDrawnNode(nodeName);
             var dotSrcLines = dotSrc.split('\n');
             var attributesString = ''

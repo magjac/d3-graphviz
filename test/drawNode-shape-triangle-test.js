@@ -22,7 +22,7 @@ tape("Verify that triangle shape is drawn exactly as Graphviz does.", function(t
                     var x = 30.64645;
                     var y = -30.9504;
                     actualGraphviz
-                        .drawNode(x, y, 'triangle', 'a', {id: 'node1'})
+                        .drawNode(x, y, 'a', {shape: 'triangle', id: 'node1'})
                         .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');

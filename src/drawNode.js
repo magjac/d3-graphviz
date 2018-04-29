@@ -59,15 +59,14 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
     }
 }
 
-export function drawNode(x, y, shape='ellipse', nodeId="", attributes, options={}) {
+export function drawNode(x, y, nodeId="", attributes, options={}) {
     attributes = attributes || {};
-    attributes.shape = shape;
     completeAttributes(attributes);
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
     var graph0 = svg.selectWithoutDataPropagation("g");
     var newNode = graph0.append(function() {
-        return createNode(shape, nodeId || '_', attributes).node();
+        return createNode(nodeId || '_', attributes).node();
     });
     newNode.attr('id', 'new1');
     newNode.datum(null);
@@ -75,12 +74,11 @@ export function drawNode(x, y, shape='ellipse', nodeId="", attributes, options={
     this._drawnNode = {
         g: newNode,
         nodeId: nodeId,
-        shape: shape,
         x: x,
         y: y,
         attributes: attributes,
     };
-    _updateNode(newNode, x, y, shape, nodeId, attributes, options);
+    _updateNode(newNode, x, y, nodeId, attributes, options);
 
     return this;
 }
@@ -97,16 +95,15 @@ export function updateDrawnNode(x, y, nodeId, attributes, options={}) {
     }
     completeAttributes(attributes, this._drawnNode.attributes);
     this._drawnNode.nodeId = nodeId;
-    var shape = this._drawnNode.shape;
     this._drawnNode.x = x;
     this._drawnNode.y = y;
     this._drawnNode.attributes = attributes;
-    _updateNode(node, x, y, shape, nodeId, attributes, options);
+    _updateNode(node, x, y, nodeId, attributes, options);
 
     return this;
 }
 
-function _updateNode(node, x, y, shape, nodeId, attributes, options) {
+function _updateNode(node, x, y, nodeId, attributes, options) {
 
     var id = attributes.id;
     var fill = attributes.fillcolor;
@@ -170,7 +167,7 @@ function _updateNode(node, x, y, shape, nodeId, attributes, options) {
             svgElement
                 .attr("d", translateDAttribute(d, x - bbox.cx, y - bbox.cy));
         }
-        if (index == 0 || multiFillShapes.includes(shape)) {
+        if (index == 0 || multiFillShapes.includes(attributes.shape)) {
             svgElement
                 .attr("fill", fill)
                 .attr("stroke", stroke)
@@ -218,7 +215,6 @@ export function insertDrawnNode(nodeId) {
     }
     var node = this._drawnNode.g;
     var attributes = this._drawnNode.attributes;
-    var shape = this._drawnNode.shape;
 
     var title = node.selectWithoutDataPropagation("title");
     title
@@ -248,15 +244,12 @@ export function insertDrawnNode(nodeId) {
 
 }
 
-function createNode(shape, nodeId, attributes) {
+function createNode(nodeId, attributes) {
     var attributesString = ''
     for (var name of Object.keys(attributes)) {
         if (attributes[name] != null) {
             attributesString += ' "' + name + '"="' + attributes[name] + '"';
         }
-    }
-    if (shape) {
-        attributesString += ' shape=' + shape;
     }
     var dotSrc = 'graph {"' + nodeId + '" [' + attributesString + ']}';
     var svgDoc = Viz(dotSrc, {format: 'svg'});
