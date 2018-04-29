@@ -329,13 +329,7 @@ Removes the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphvi
 
 Draws a node with the upper left corner of its bounding box at (*x*, *y*), using coordinates relative to the top level [G container element](https://www.w3.org/TR/SVG/struct.html#Groups) of the graph. Typically these coordinates are obtained with [d3.mouse](https://github.com/d3/d3-selection#mouse). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html). If *attributes* is specified, it is taken to be an object containing [DOT attributes](https://www.graphviz.org/doc/info/attrs.html) as properties to be used when drawing the node. If not specified, the default values of those attributes are used.
 
-<b>NOTE:</b> In the current release, only the following shapes are supported:
-
-* <b>ellipse</b>
-* <b>circle</b>
-* <b>polygon</b>
-* <b>rect</b>
-* <b>box</b>
+<b>NOTE:</b> User-defined shapes are not supported.
 
 <a name="graphviz_updateDrawnNode" href="#graphviz_updateDrawnNode">#</a> <i>graphviz</i>.<b>updateDrawnNode</b>(<i>x</i>, <i>y</i>, <i>nodeId</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
