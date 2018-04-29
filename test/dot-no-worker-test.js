@@ -72,10 +72,10 @@ tape('dot() performs layout in the foreground when web worker is not used.', fun
     );
 });
 
-tape('dot() performs layout in the foreground with a warning when script tag type is not "javascript/worker".', function(test) {
+tape('dot() performs layout in the foreground with a warning when script src does not end with "viz.js".', function(test) {
 
     do_test(test=test, useWorker=true, html=`
-            <script src="http://dummyhost/node_modules/viz.js/viz.js" type="text/javascript"></script>
+            <script src="http://dummyhost/node_modules/viz.js/viz-NOT.js" type="text/javascript"></script>
             <div id="graph"></div>
             `,
     );
