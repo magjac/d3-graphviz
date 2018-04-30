@@ -418,7 +418,7 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
         x += 1;
         y -= 1;
         graphviz
-            .updateDrawnNode(x, y, null, null);
+            .updateDrawnNode(x, y);
         test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
         test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');

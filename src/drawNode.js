@@ -59,8 +59,7 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
     }
 }
 
-export function drawNode(x, y, nodeId="", attributes, options={}) {
-    attributes = attributes || {};
+export function drawNode(x, y, nodeId="", attributes={}, options={}) {
     completeAttributes(attributes);
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
@@ -83,13 +82,12 @@ export function drawNode(x, y, nodeId="", attributes, options={}) {
     return this;
 }
 
-export function updateDrawnNode(x, y, nodeId, attributes, options={}) {
+export function updateDrawnNode(x, y, nodeId, attributes={}, options={}) {
     if (!this._drawnNode)  {
         throw Error('No node has been drawn');
     }
 
     var node = this._drawnNode.g
-    attributes = attributes || {};
     if (nodeId == null) {
         nodeId = this._drawnNode.nodeId;
     }
