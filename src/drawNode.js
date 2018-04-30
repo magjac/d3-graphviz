@@ -59,13 +59,13 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
     }
 }
 
-export function drawNode(x, y, nodeId="", attributes={}, options={}) {
+export function drawNode(x, y, nodeId, attributes={}, options={}) {
     completeAttributes(attributes);
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
     var graph0 = svg.selectWithoutDataPropagation("g");
     var newNode = graph0.append(function() {
-        return createNode(nodeId || '_', attributes).node();
+        return createNode(nodeId, attributes).node();
     });
     newNode.attr('id', 'new1');
     newNode.datum(null);
