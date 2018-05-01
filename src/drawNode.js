@@ -15,10 +15,10 @@ var defaultNodeAttributes = {
     penwidth: null,
     URL: null,
     tooltip: null,
-    labeljust: "c",
-    fontname: "Times,serif",
-    fontsize: "14.00",
-    fontcolor: "#000000",
+    labeljust: null,
+    fontname: null,
+    fontsize: null,
+    fontcolor: null,
 };
 
 var multiFillShapes = [
@@ -111,8 +111,10 @@ function _updateNode(node, x, y, nodeId, attributes, options) {
         var textAnchor = 'start';
     } else if (attributes.labeljust == 'r') {
         var textAnchor = 'end';
-    } else {
+    } else if (attributes.labeljust == 'c') {
         var textAnchor = 'middle';
+    } else {
+        var textAnchor = null;
     }
     var fontFamily = attributes.fontname;
     var fontSize = attributes.fontsize;
@@ -168,20 +170,35 @@ function _updateNode(node, x, y, nodeId, attributes, options) {
         if (index == 0 || multiFillShapes.includes(attributes.shape)) {
             svgElement
                 .attr("fill", fill)
-                .attr("stroke", stroke)
-                .attr("strokeWidth", strokeWidth);
+                .attr("stroke", stroke);
+            if (strokeWidth) {
+                svgElement
+                    .attr("strokeWidth", strokeWidth);
+            }
         }
     });
 
     if (text.size() != 0) {
 
+        if (textAnchor) {
+            text
+                .attr("text-anchor", textAnchor)
+        }
         text
-            .attr("text-anchor", textAnchor)
             .attr("x", roundTo4Decimals(+text.attr("x") + x - bbox.cx))
-            .attr("y", roundTo4Decimals(+text.attr("y") + y - bbox.cy))
-            .attr("font-family", fontFamily)
-            .attr("font-size", fontSize)
-            .attr("fill", fontColor)
+            .attr("y", roundTo4Decimals(+text.attr("y") + y - bbox.cy));
+        if (fontFamily) {
+            text
+                .attr("font-family", fontFamily);
+        }
+        if (fontSize) {
+            text.attr("font-size", fontSize);
+        }
+        if (fontColor) {
+            text
+                .attr("fill", fontColor);
+        }
+        text
             .text(label);
     }
     return this;

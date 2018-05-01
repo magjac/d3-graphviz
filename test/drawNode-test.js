@@ -392,7 +392,7 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
         x += 1;
         y -= 1;
         graphviz
-            .updateDrawnNode(x, y, 'f', {fillcolor: "red", color: "purple", penwidth: 2, fontname:"Courier", fontsize:10, labeljust: 'l'});
+            .updateDrawnNode(x, y, 'f', {fillcolor: "red", color: "purple", penwidth: 2, fontname:"Courier", fontsize:10, fontcolor: "red", labeljust: 'l'});
         test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
         test.equal(ellipse.attr("fill"), 'red', 'Fill color of a drawn node is updated to red');
@@ -401,6 +401,7 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
         test.equal(text.attr("text-anchor"), 'start', 'text anchor is updated to start');
         test.equal(text.attr("font-family"), 'Courier', 'text font family is updated to Courier');
         test.equal(text.attr("font-size"), '10', 'text font size is updated to 10');
+        test.equal(text.attr("fill"), 'red', 'text font color is updated to red');
 
         x += 1;
         y -= 1;
@@ -412,6 +413,19 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
         test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
         test.equal(ellipse.attr("strokeWidth"), '2', 'Stroke width is not updated when not specified');
         test.equal(text.attr("text-anchor"), 'end', 'text anchor is updated to end');
+        test.equal(text.attr("font-family"), 'Courier', 'text font family is not updated when not specified');
+        test.equal(text.attr("font-size"), '10', 'text font size is not updated when not specified');
+
+        x += 1;
+        y -= 1;
+        graphviz
+            .updateDrawnNode(x, y, 'f', {color: "green", labeljust: 'c'});
+        test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
+        test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
+        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when not specified');
+        test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
+        test.equal(ellipse.attr("strokeWidth"), '2', 'Stroke width is not updated when not specified');
+        test.equal(text.attr("text-anchor"), 'middle', 'text anchor is updated to middle');
         test.equal(text.attr("font-family"), 'Courier', 'text font family is not updated when not specified');
         test.equal(text.attr("font-size"), '10', 'text font size is not updated when not specified');
 
