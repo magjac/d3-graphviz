@@ -63,6 +63,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 
 ## API Reference
 
+* [Defining the viz.js Script Tag](#defining-the-vizjs-script-tag)
 * [Creating a Graphviz Renderer](#creating-a-graphviz-renderer)
 * [Rendering](#rendering)
 * [Images](#images)
@@ -76,6 +77,13 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Accessing Elements of the Generated Graph](#accessing-elements-of-the-generated-graph)
 * [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changes)
 * [Large Graphs](#large-graphs)
+
+### Defining the viz.js Script Tag
+
+If the drawNode() method is going to be used, when loading the viz.js script, the script type shall be "application/javascript" or "text/javascript", e.g.:
+`<script src="https://unpkg.com/viz.js@1.8.0/viz.js" type="application/javascript/"></script>`
+If the drawNode() method is not going to be used, start-up time may be reduced by using the script type "javascript/worker", e.g.:
+`<script src="https://unpkg.com/viz.js@1.8.0/viz.js" type="javascript/worker"></script>`
 
 ### Creating a Graphviz Renderer
 
