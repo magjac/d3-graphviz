@@ -67,7 +67,6 @@ export function drawNode(x, y, nodeId, attributes={}, options={}) {
     var newNode = graph0.append(function() {
         return createNode(nodeId, attributes).node();
     });
-    newNode.attr('id', 'new1');
     newNode.datum(null);
 
     this._drawnNode = {
