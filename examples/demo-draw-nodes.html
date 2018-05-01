@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../node_modules/d3/dist/d3.js"></script>
+<script src="../node_modules/viz.js/viz.js" type="text/javascript"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+'use strict';
+
+var margin = 20; // to avoid scrollbars
+
+var nodeIndex;
+var edgeIndex;
+var prevNodeName = 'b';
+
+var shapes = [
+  "box",
+  "polygon",
+  "ellipse",
+  "oval",
+
+  "circle",
+  "point",
+  "egg",
+  "triangle",
+
+  "plaintext",
+  "plain",
+  "diamond",
+  "trapezium",
+
+  "parallelogram",
+  "house",
+  "pentagon",
+  "hexagon",
+
+  "septagon",
+  "octagon",
+  "doublecircle",
+  "doubleoctagon",
+
+  "tripleoctagon",
+  "invtriangle",
+  "invtrapezium",
+  "invhouse",
+
+  "Mdiamond",
+  "Msquare",
+  "Mcircle",
+  "rect",
+
+  "rectangle",
+  "square",
+  "star",
+  "none",
+
+  "underline",
+  "cylinder",
+  "note",
+  "tab",
+
+  "folder",
+  "box3d",
+  "component",
+  "promoter",
+
+  "cds",
+  "terminator",
+  "utr",
+  "primersite",
+
+  "restrictionsite",
+  "fivepoverhang",
+  "threepoverhang",
+  "noverhang",
+
+  "assembly",
+  "signature",
+  "insulator",
+  "ribosite",
+
+  "rnastab",
+  "proteasesite",
+  "proteinstab",
+  "rpromoter",
+
+  "rarrow",
+  "larrow",
+  "lpromoter",
+];
+
+var dotSrc = `strict digraph {
+    graph [rankdir="LR"]
+    node [style="filled"]
+    a [shape="box" fillcolor="` + d3.schemeCategory10[0] + `"]
+    b [shape="polygon" fillcolor="` + d3.schemeCategory10[1] + `"]
+    a -> b [fillcolor="` + d3.schemePaired[0] + `" color="` + d3.schemePaired[1] + `"]
+}`;
+
+var graphviz = d3.select("#graph").graphviz()
+    .attributer(attributer)
+    .transition(function() {
+        return d3.transition().duration(1000);
+    });
+
+render();
+
+function attributer(datum, index, nodes) {
+    var selection = d3.select(this);
+    if (datum.tag == "svg") {
+        var width = window.innerWidth - margin;
+        var height = window.innerHeight - margin;
+        var x = "10";
+        var y = "10";
+        var unit = 'px';
+        selection
+            .attr("width", width + unit)
+            .attr("height", height + unit);
+        datum.attributes.width = width + unit;
+        datum.attributes.height = height + unit;
+    }
+}
+
+function render() {
+    graphviz
+        .renderDot(dotSrc, function () {
+            var nodes = d3.selectAll(".node");
+            var edges = d3.selectAll(".edge");
+
+            var bbox = d3.select('g').node().getBBox();
+            var [x, y] = [bbox.x + bbox.width / 2 - 27, bbox.y + bbox.height / 2 - 18];
+            if (nodeIndex == null) {
+                nodeIndex = d3.selectAll('.node').size();
+            } else {
+                nodeIndex += 1;
+            }
+            if (nodeIndex == shapes.length) {
+                return;
+            }
+            var shape = shapes[nodeIndex % shapes.length];
+            var numLetters = 'z'.charCodeAt(0) - 'a'.charCodeAt(0) + 1;
+            var letter = String.fromCharCode('a'.charCodeAt(0) + (nodeIndex % numLetters));
+            var digit = Math.floor(nodeIndex / numLetters) || '';
+            var nodeName = letter + digit;
+            var fillcolor = d3.schemeCategory10[nodeIndex % 10];
+            var color = 'black';
+            graphviz
+                .drawNode(x, y, nodeName, {shape: shape, text: nodeName, fillcolor: fillcolor, color: color})
+                .insertDrawnNode(nodeName);
+            var dotSrcLines = dotSrc.split('\n');
+            var newNodeString = nodeName + ' [shape="' + shape + '" color="' + color + '"; fillcolor="' + fillcolor + '"; penwidth="1"]';
+            dotSrcLines.splice(3, 0, newNodeString);
+            if (nodeIndex % 4 != 0) {
+                dotSrcLines.splice(-1, 0, prevNodeName + ' -> ' + nodeName);
+            }
+            dotSrc = dotSrcLines.join('\n');
+            prevNodeName = nodeName;
+            render();
+        });
+}
+
+</script>

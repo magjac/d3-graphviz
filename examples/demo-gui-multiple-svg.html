@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <body>
-<script src="https://d3js.org/d3.v5.js"></script>
+<script src="../node_modules/d3/dist/d3.js"></script>
 <script src="../node_modules/viz.js/viz.js" type="javascript/worker"></script>
 <script src="../build/d3-graphviz.js"></script>
 <div style="text-align: center">
@@ -102,7 +102,7 @@ function startApp() {
             var fillcolor = d3.schemeCategory10[nodeIndex % 10];
             var color = 'black';
             graphviz
-                .drawNode(x1, y1, width, height, shape, nodeName, {text: nodeName, fillcolor: fillcolor, color: color})
+                .drawNode(x1, y1, nodeName, {shape: shape, text: nodeName, fillcolor: fillcolor, color: color})
                 .insertDrawnNode(nodeName);
             var dotSrcLines = dotSrc.split('\n');
             var newNodeString = nodeName + ' [shape="' + shape + '" color="' + color + '"; fillcolor="' + fillcolor + '"; penwidth="1"]';

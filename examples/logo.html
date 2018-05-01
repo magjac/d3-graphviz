@@ -10,10 +10,10 @@
 var dotIndex = 0;
 var graphviz = d3.select("#graph").graphviz()
     .transition(function () {
-        return d3.transition()
+        return d3.transition("main")
             .ease(d3.easeLinear)
             .delay(500)
-            .duration(2000);
+            .duration(1500);
     })
     .logEvents(true)
     .on("initEnd", render);
@@ -22,9 +22,10 @@ function render() {
     var dotLines = dots[dotIndex];
     var dot = dotLines.join('');
     graphviz
-        .renderDot(dot, function () {
+        .renderDot(dot)
+        .on("end", function () {
             dotIndex += 1;
-            if (dotIndex != dots.length) {
+            if (dotIndex < dots.length) {
                 render();
             }
         });
@@ -34,33 +35,18 @@ var dots = [
     [
         'digraph  {',
         '    node [style="filled"]',
-        '    a [fillcolor="#d62728", shape="ellipse"]',
-        '    b [fillcolor="#1f77b4", shape="polygon"]',
-        '    a -> b',
+        '    "graphviz"      [fillcolor="#d62728", shape="ellipse"]',
+        '    "D3"            [fillcolor="#1f77b4", shape="hexagon"]',
         '}'
     ],
     [
         'digraph  {',
         '    node [style="filled"]',
-        '    a [fillcolor="#d62728", shape="polygon"]',
-        '    b [fillcolor="#1f77b4", shape="ellipse"]',
-        '    a -> b',
-        '}'
-    ],
-    [
-        'digraph  {',
-        '    node [style="filled"]',
-        '    a [fillcolor="#d62728", shape="triangle"]',
-        '    b [fillcolor="#1f77b4", shape="invtriangle"]',
-        '    a -> b',
-        '}'
-    ],
-    [
-        'digraph  {',
-        '    node [style="filled"]',
-        '    a [fillcolor="#d62728", shape="invtriangle"]',
-        '    b [fillcolor="#1f77b4", shape="triangle"]',
-        '    a -> b',
+        '    "graphviz"      [fillcolor="#d62728", shape="ellipse"]',
+        '    "D3"            [fillcolor="#1f77b4", shape="hexagon"]',
+        '    "d3-graphviz"   [fillcolor="#2ca02c", shape="egg"]',
+        '    "D3" -> "d3-graphviz"',
+        '    "graphviz" -> "d3-graphviz"',
         '}'
     ],
 ];

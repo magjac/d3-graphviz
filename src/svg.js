@@ -1,4 +1,5 @@
 import {shallowCopyObject} from "./utils";
+import {roundTo4Decimals} from "./utils";
 
 export function convertToPathData(originalData, guideData) {
     if (originalData.tag == 'polygon') {
@@ -78,4 +79,28 @@ export function convertToPathData(originalData, guideData) {
         newData.attributes = newAttributes;
     }
     return newData;
+}
+
+export function translatePointsAttribute(pointsString, x, y) {
+    var pointStrings = pointsString.split(' ');
+    var points = pointStrings.map(function(p) {return p.split(',')});
+    var points = pointStrings.map(function(p) {return [roundTo4Decimals(+x + +p.split(',')[0]), roundTo4Decimals(+y + +p.split(',')[1])]});
+    var pointStrings = points.map(function(p) {return p.join(',')});
+    var pointsString = pointStrings.join(' ');
+    pointsString = pointsString.replace(/-0\./g, '-.').replace(/ 0\./g, ' .');
+    return pointsString;
+}
+
+export function translateDAttribute(d, x, y) {
+    var pointStrings = d.split(/[A-Z ]/);
+    pointStrings.shift();
+    var commands = d.split(/[^[A-Z ]+/);
+    var points = pointStrings.map(function(p) {return p.split(',')});
+    var points = pointStrings.map(function(p) {return [roundTo4Decimals(+x + +p.split(',')[0]), roundTo4Decimals(+y + +p.split(',')[1])]});
+    var pointStrings = points.map(function(p) {return p.join(',')});
+    d = commands.reduce(function(arr, v, i) {
+        return arr.concat(v, pointStrings[i]);
+    }, []).join('');
+    d = d.replace(/-0\./g, '-.').replace(/ 0\./g, ' .');
+    return d;
 }

@@ -1,29 +1,57 @@
+import Viz from "viz.js/viz";
 import * as d3 from "d3-selection";
 import {path as d3_path} from "d3-path";
 import {rotate} from "./geometry";
+import {extractAllElementsData} from "./element";
+import {translatePointsAttribute} from "./svg";
+import {translateDAttribute} from "./svg";
+import {insertAllElementsData} from "./element";
+import {roundTo4Decimals} from "./utils";
 
 var defaultNodeAttributes = {
     id: null,
-    fillcolor: "black",
-    color: "black",
-    penwidth: 1,
+    fillcolor: "none",
+    color: "#000000",
+    penwidth: null,
     URL: null,
     tooltip: null,
-    labeljust: "c",
-    fontname: "Times,serif",
-    fontsize: 14,
-    fontcolor: "black",
+    labeljust: null,
+    fontname: null,
+    fontsize: null,
+    fontcolor: null,
 };
 
-var svgShapes = {
-    ellipse: 'ellipse',
-    circle: 'ellipse',
-    polygon: 'polygon',
-    rect: 'polygon',
-    box: 'polygon',
-}
+var multiFillShapes = [
+    'fivepoverhang',
+    'threepoverhang',
+    'noverhang',
+    'assembly',
+];
+
+var plainShapes = [
+    'none',
+    'plain',
+    'plaintext',
+];
 
 function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes) {
+    if (attributes.style == 'filled' && !attributes.fillcolor) {
+        if (attributes.color) {
+            attributes.fillcolor = attributes.color;
+        } else {
+            attributes.fillcolor = '#d3d3d3';
+        }
+    }
+    if (attributes.style == 'filled') {
+        if (plainShapes.includes(attributes.shape)) {
+            attributes.color = 'transparent';
+        } else if (!attributes.color) {
+            attributes.color = '#000000';
+        }
+    }
+    if (attributes.shape == 'point' && !attributes.fillcolor) {
+        attributes.fillcolor = '#000000';
+    }
     for (var attribute in defaultAttributes) {
         if (attributes[attribute] === undefined) {
             attributes[attribute] = defaultAttributes[attribute];
@@ -31,72 +59,48 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
     }
 }
 
-export function drawNode(x, y, width, height, shape='ellipse', nodeId="", attributes, options={}) {
-    attributes = attributes || {};
+export function drawNode(x, y, nodeId, attributes={}, options={}) {
     completeAttributes(attributes);
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
     var graph0 = svg.selectWithoutDataPropagation("g");
-    var newNode = graph0.append("g")
-        .datum(null)
-        .attr("class", "node");
-    var title = newNode.append('title')
-        .text("");
-    if (attributes.URL || attributes.tooltip) {
-        var a = newNode.append("g").append("a");
-        if (attributes.URL) {
-            a.attr("href", attributes.URL);
-        }
-        if (attributes.tooltip) {
-            a.attr('title', attributes.tooltip);
-        }
-        var svgShape = a.append(shape);
-        var text = a.append('text');
-    } else {
-        var svgShape = newNode.append(shape);
-        var text = newNode.append('text')
-            .text("");
-    }
+    var newNode = graph0.append(function() {
+        return createNode(nodeId, attributes).node();
+    });
+    newNode.datum(null);
 
     this._drawnNode = {
         g: newNode,
         nodeId: nodeId,
-        shape: shape,
         x: x,
         y: y,
-        width: width,
-        height: height,
         attributes: attributes,
     };
-    _updateNode(newNode, x, y, width, height, shape, nodeId, attributes, options);
+    _updateNode(newNode, x, y, nodeId, attributes, options);
 
     return this;
 }
 
-export function updateDrawnNode(x, y, width, height, nodeId, attributes, options={}) {
+export function updateDrawnNode(x, y, nodeId, attributes={}, options={}) {
     if (!this._drawnNode)  {
         throw Error('No node has been drawn');
     }
 
     var node = this._drawnNode.g
-    attributes = attributes || {};
     if (nodeId == null) {
         nodeId = this._drawnNode.nodeId;
     }
     completeAttributes(attributes, this._drawnNode.attributes);
     this._drawnNode.nodeId = nodeId;
-    var shape = this._drawnNode.shape;
     this._drawnNode.x = x;
     this._drawnNode.y = y;
-    this._drawnNode.width = width;
-    this._drawnNode.height = height;
     this._drawnNode.attributes = attributes;
-    _updateNode(node, x, y, width, height, shape, nodeId, attributes, options);
+    _updateNode(node, x, y, nodeId, attributes, options);
 
     return this;
 }
 
-function _updateNode(node, x, y, width, height, shape, nodeId, attributes, options) {
+function _updateNode(node, x, y, nodeId, attributes, options) {
 
     var id = attributes.id;
     var fill = attributes.fillcolor;
@@ -106,12 +110,19 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
         var textAnchor = 'start';
     } else if (attributes.labeljust == 'r') {
         var textAnchor = 'end';
-    } else {
+    } else if (attributes.labeljust == 'c') {
         var textAnchor = 'middle';
+    } else {
+        var textAnchor = null;
     }
     var fontFamily = attributes.fontname;
     var fontSize = attributes.fontsize;
     var fontColor = attributes.fontcolor;
+    if ('label' in attributes) {
+        var label = attributes['label'];
+    } else {
+        var label = nodeId;
+    }
 
     var title = node.selectWithoutDataPropagation('title');
     if (attributes.URL || attributes.tooltip) {
@@ -119,38 +130,76 @@ function _updateNode(node, x, y, width, height, shape, nodeId, attributes, optio
     } else {
         var subParent = node;
     }
-    var svgElement = subParent.selectWithoutDataPropagation(shape);
+    var svgElements = subParent.selectAll('ellipse,polygon,path,polyline');
+    var text = node.selectWithoutDataPropagation("text");
 
     node
         .attr("id", id);
 
     title.text(nodeId);
-    var svgShape = svgShapes[shape];
-    if (svgShape == 'ellipse') {
-        svgElement
-            .attr("cx", x + width / 2)
-            .attr("cy", y + height/ 2)
-            .attr("rx", width / 2)
-            .attr("ry", height / 2)
-    } else {
-        svgElement
-            .attr("points", '' + (x + width) + ',' + y + ' ' + x + ',' + y + ' ' + x + ',' + (y + height) + ' ' + (x + width) + ',' + (y + height))
+    if (svgElements.size() != 0) {
+        var bbox = svgElements.node().getBBox();
+        bbox.cx = bbox.x + bbox.width / 2;
+        bbox.cy = bbox.y + bbox.height / 2;
+    } else if (text.size() != 0) {
+        bbox = {
+            x: +text.attr('x'),
+            y: +text.attr('y'),
+            width: 0,
+            height: 0,
+            cx: +text.attr('x'),
+            cy: +text.attr('y'),
+        }
     }
-    svgElement
-        .attr("fill", fill)
-        .attr("stroke", stroke)
-        .attr("strokeWidth", strokeWidth);
+    svgElements.each(function(data, index) {
+        var svgElement = d3.select(this);
+        if (svgElement.attr("cx")) {
+            svgElement
+                .attr("cx", roundTo4Decimals(x))
+                .attr("cy", roundTo4Decimals(y));
+        } else if (svgElement.attr("points")) {
+            var pointsString = svgElement.attr('points');
+            svgElement
+                .attr("points", translatePointsAttribute(pointsString, x - bbox.cx, y - bbox.cy));
+        } else {
+            var d = svgElement.attr('d');
+            svgElement
+                .attr("d", translateDAttribute(d, x - bbox.cx, y - bbox.cy));
+        }
+        if (index == 0 || multiFillShapes.includes(attributes.shape)) {
+            svgElement
+                .attr("fill", fill)
+                .attr("stroke", stroke);
+            if (strokeWidth) {
+                svgElement
+                    .attr("strokeWidth", strokeWidth);
+            }
+        }
+    });
 
-    var text = subParent.selectWithoutDataPropagation('text');
+    if (text.size() != 0) {
 
-    text
-        .attr("text-anchor", textAnchor)
-        .attr("x", x + width / 2)
-        .attr("y", y + height - fontSize)
-        .attr("font-family", fontFamily)
-        .attr("font-size", fontSize)
-        .attr("fill", fontColor)
-        .text(nodeId);
+        if (textAnchor) {
+            text
+                .attr("text-anchor", textAnchor)
+        }
+        text
+            .attr("x", roundTo4Decimals(+text.attr("x") + x - bbox.cx))
+            .attr("y", roundTo4Decimals(+text.attr("y") + y - bbox.cy));
+        if (fontFamily) {
+            text
+                .attr("font-family", fontFamily);
+        }
+        if (fontSize) {
+            text.attr("font-size", fontSize);
+        }
+        if (fontColor) {
+            text
+                .attr("fill", fontColor);
+        }
+        text
+            .text(label);
+    }
     return this;
 }
 
@@ -180,92 +229,51 @@ export function insertDrawnNode(nodeId) {
     }
     var node = this._drawnNode.g;
     var attributes = this._drawnNode.attributes;
-    var shape = this._drawnNode.shape;
-    var svgShape = svgShapes[shape];
 
     var title = node.selectWithoutDataPropagation("title");
     title
         .text(nodeId);
-    var titleText = title.selectAll(function() {
-        return title.node().childNodes;
-    });
     if (attributes.URL || attributes.tooltip) {
         var ga = node.selectWithoutDataPropagation("g");
         var a = ga.selectWithoutDataPropagation("a");
-        var svgElement = a.selectWithoutDataPropagation(svgShape);
+        var svgElement = a.selectWithoutDataPropagation('ellipse,polygon,path,polyline');
         var text = a.selectWithoutDataPropagation('text');
     } else {
-        var svgElement = node.selectWithoutDataPropagation(svgShape);
+        var svgElement = node.selectWithoutDataPropagation('ellipse,polygon,path,polyline');
         var text = node.selectWithoutDataPropagation('text');
     }
     text
-        .text(nodeId);
-    var textText = text.selectAll(function() {
-        return text.node().childNodes;
-    });
+        .text(attributes.label || nodeId);
 
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
     var graph0 = svg.selectWithoutDataPropagation("g");
     var graph0Datum = graph0.datum();
     var nodeData = this._extractData(node, graph0Datum.children.length, graph0.datum());
-    var gDatum = nodeData;
-    var titleDatum = gDatum.children[0];
-    var titleTextDatum = titleDatum.children[0];
-    if (attributes.URL || attributes.tooltip) {
-        var gaDatum = gDatum.children[1];
-        var aDatum = gaDatum.children[0];
-        var pathDatum = aDatum.children[0];
-        var textDatum = aDatum.children[1];
-    } else {
-        var pathDatum = gDatum.children[1];
-        var textDatum = gDatum.children[2];
-    }
-    var textTextDatum = textDatum.children[0];
+    graph0Datum.children.push(nodeData);
 
-    graph0Datum.children.push(gDatum);
-
-    node.datum(gDatum);
-    node.data([gDatum], function (d) {
-        return d.key;
-    });
-
-    title.datum(titleDatum);
-    title.data([titleDatum], function (d) {
-        return [d.key];
-    });
-    titleText.datum(titleTextDatum);
-    titleText.data([titleTextDatum], function (d) {
-        return [d.key];
-    });
-
-    if (attributes.URL || attributes.tooltip) {
-        ga.datum(gaDatum);
-        ga.data([gaDatum], function (d) {
-            return [d.key];
-        });
-
-        a.datum(aDatum);
-        a.data([aDatum], function (d) {
-            return [d.key];
-        });
-    }
-
-    svgElement.datum(pathDatum);
-    svgElement.data([pathDatum], function (d) {
-        return [d.key];
-    });
-
-    text.datum(textDatum);
-    text.data([textDatum], function (d) {
-        return [d.key];
-    });
-
-    textText.datum(textTextDatum);
-    textText.data([textTextDatum], function (d) {
-        return [d.key];
-    });
+    insertAllElementsData(node, nodeData);
 
     return this
 
+}
+
+function createNode(nodeId, attributes) {
+    var attributesString = ''
+    for (var name of Object.keys(attributes)) {
+        if (attributes[name] != null) {
+            attributesString += ' "' + name + '"="' + attributes[name] + '"';
+        }
+    }
+    var dotSrc = 'graph {"' + nodeId + '" [' + attributesString + ']}';
+    var svgDoc = Viz(dotSrc, {format: 'svg'});
+    var parser = new window.DOMParser();
+    var doc = parser.parseFromString(svgDoc, "image/svg+xml");
+    var newDoc = d3.select(document.createDocumentFragment())
+        .append(function() {
+            return doc.documentElement;
+        });
+    var node = newDoc.select('.node');
+
+    return node;
 }

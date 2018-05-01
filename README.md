@@ -305,7 +305,7 @@ This API provides methods draw nodes and edges and inserting them into the graph
 
 <a name="graphviz_drawEdge" href="#graphviz_drawEdge">#</a> <i>graphviz</i>.<b>drawEdge</b>(<i>x1</i>, <i>y1</i>, <i> x2</i>, <i> y2</i>[, <i> attributes</i>][, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawEdge.js "Source")
 
-Draws a straight edge from (*x1*, *y1*) to (*x2*, *y2) using coordinates relative to top level [G container element](https://www.w3.org/TR/SVG/struct.html#Groups) of the graph. Typically these coordinates are obtained with [d3.mouse](https://github.com/d3/d3-selection#mouse). If *attributes* is specified, it is taken to be an object containing [DOT attributes](https://www.graphviz.org/doc/info/attrs.html) as properties to be used when drawing the node. If not specified, the default values of those attributes are used. If *options* is specified, it is taken to be an object containing properties which are used as options when drawing the edge. The currently supported options are:
+Draws a straight edge from (*x1*, *y1*) to (*x2*, *y2*) using coordinates relative to top level [G container element](https://www.w3.org/TR/SVG/struct.html#Groups) of the graph. Typically these coordinates are obtained with [d3.mouse](https://github.com/d3/d3-selection#mouse). If *attributes* is specified, it is taken to be an object containing [DOT attributes](https://www.graphviz.org/doc/info/attrs.html) as properties to be used when drawing the node. If not specified, the default values of those attributes are used. If *options* is specified, it is taken to be an object containing properties which are used as options when drawing the edge. The currently supported options are:
 
 * <b>shortening</b> - The number of points by which to draw the edge shorter than given by the coordinates. This is useful to avoid that the currently drawn edge is prohibiting mouse events on elements beneath the current mouse position. A typical such value is 2. The default value is 0.
 
@@ -325,21 +325,15 @@ Inserts the edge into the graph data, making it available for an animated transi
 
 Removes the edge currently drawn with [<i>graphviz</i>.<b>drawEdge</b>](#graphviz_drawEdge). This method cannot be used after the edge has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnEdge</b>](#graphviz_insertDrawnEdge).
 
-<a name="graphviz_drawNode" href="#graphviz_drawNode">#</a> <i>graphviz</i>.<b>drawNode</b>(<i>x</i>, <i>y</i>, <i>width</i>, <i>height</i>, <i>nodeId</i>, <i>shape</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+<a name="graphviz_drawNode" href="#graphviz_drawNode">#</a> <i>graphviz</i>.<b>drawNode</b>(<i>x</i>, <i>y</i>, <i>nodeId</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
-Draws a node with [shape](https://www.graphviz.org/doc/info/shapes.html) *shape*, which a [Graphviz Node Shape](https://www.graphviz.org/doc/info/shapes.html), *width* points wide and *height* points high, with the upper left corner of its bounding box at (*x*, *y*), using coordinates relative to the top level [G container element](https://www.w3.org/TR/SVG/struct.html#Groups) of the graph. Typically these coordinates are obtained with [d3.mouse](https://github.com/d3/d3-selection#mouse). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html). If *attributes* is specified, it is taken to be an object containing [DOT attributes](https://www.graphviz.org/doc/info/attrs.html) as properties to be used when drawing the node. If not specified, the default values of those attributes are used.
+Draws a node with the upper left corner of its bounding box at (*x*, *y*), using coordinates relative to the top level [G container element](https://www.w3.org/TR/SVG/struct.html#Groups) of the graph. Typically these coordinates are obtained with [d3.mouse](https://github.com/d3/d3-selection#mouse). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html). If *attributes* is specified, it is taken to be an object containing [DOT attributes](https://www.graphviz.org/doc/info/attrs.html) as properties to be used when drawing the node. If not specified, the default values of those attributes are used.
 
-<b>NOTE:</b> In the current release, only the following shapes are supported:
+<b>NOTE:</b> User-defined shapes are not supported.
 
-* <b>ellipse</b>
-* <b>circle</b>
-* <b>polygon</b>
-* <b>rect</b>
-* <b>box</b>
+<a name="graphviz_updateDrawnNode" href="#graphviz_updateDrawnNode">#</a> <i>graphviz</i>.<b>updateDrawnNode</b>(<i>x</i>, <i>y</i>, <i>nodeId</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
-<a name="graphviz_updateDrawnNode" href="#graphviz_updateDrawnNode">#</a> <i>graphviz</i>.<b>updateDrawnNode</b>(<i>x</i>, <i>y</i>, <i>width</i>, <i>height</i>, <i>nodeId</i>[, <i> attributes</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
-
-Updates properties and attributes of the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode), using the same arguments, except for *shape* which cannot be changed after the node has been drawn. This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
+Updates properties and attributes of the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode), using the same arguments. This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
 
 <a name="graphviz_insertDrawnNode" href="#graphviz_insertDrawnNode">#</a> <i>graphviz</i>.<b>insertDrawnNode</b>(<i>nodeId</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
