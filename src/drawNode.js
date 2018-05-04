@@ -1,6 +1,5 @@
 import Viz from "viz.js/viz";
 import * as d3 from "d3-selection";
-import {path as d3_path} from "d3-path";
 import {rotate} from "./geometry";
 import {extractAllElementsData} from "./element";
 import {translatePointsAttribute} from "./svg";
