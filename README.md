@@ -80,7 +80,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 
 ### Defining the viz.js Script Tag
 
-The "viz.js" script provides a function named *Viz*. If a web worker is used, this function is called from the web worker which then loads and compiles the "viz.js" script explicitly. In this case, it's unneccesary to let the browser also load and compile the script. This is accomplished by using the script tag "javascript/worker" which the browser does not identify to be Javascript and therefore does not compilet. However, there is one d3-graphviz function, [*drawNode*](#graphviz_drawNode) that calls the the *Viz* function directly and if it is going to be used, the script type must be "application/javascript" or "text/javascript".
+The "viz.js" script provides a function named *Viz*. If a web worker is used, this function is called from the web worker which then loads and compiles the "viz.js" script explicitly. In this case, it's unneccesary to let the browser also load and compile the script. This is accomplished by using the script tag "javascript/worker" which the browser does not identify to be Javascript and therefore does not compile. However, there is one d3-graphviz function, [*drawNode*](#graphviz_drawNode) that calls the the *Viz* function directly and if it is going to be used, the script type must be "application/javascript" or "text/javascript".
 
 Examples:
 
