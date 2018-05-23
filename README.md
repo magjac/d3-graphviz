@@ -94,10 +94,10 @@ This will work if a web worker is used and the [*drawNode*](#graphviz_drawNode) 
 
 The following table summarizes the recommended script type:
 
-|                          | *useWorker* = true (default) | *useWorker* = false    |
-|--------------------------|------------------------------|------------------------|
-| *drawNode()* is not used | javascript/worker            | application/javascript |
-| *drawNode()* is used     | application/javascript       | application/javascript |
+|                                 | *useWorker* = true (default) | *useWorker* = false    |
+|---------------------------------|------------------------------|------------------------|
+| <b>*drawNode()* is not used</b> | javascript/worker            | application/javascript |
+| <b>*drawNode()* is used</b>     | application/javascript       | application/javascript |
 
 ### Creating a Graphviz Renderer
 
