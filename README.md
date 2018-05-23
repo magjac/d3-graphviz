@@ -80,10 +80,24 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 
 ### Defining the viz.js Script Tag
 
-If the drawNode() method is going to be used, when loading the viz.js script, the script type shall be "application/javascript" or "text/javascript", e.g.:
-`<script src="https://unpkg.com/viz.js@1.8.0/viz.js" type="application/javascript/"></script>`
-If the drawNode() method is not going to be used, start-up time may be reduced by using the script type "javascript/worker", e.g.:
-`<script src="https://unpkg.com/viz.js@1.8.0/viz.js" type="javascript/worker"></script>`
+The "viz.js" script provides a function named *Viz*. If a web worker is used, this function is called from the web worker which then loads and compiles the "viz.js" script explicitly. In this case, it's unneccesary to let the browser also load and compile the script. This is accomplished by using the script tag "javascript/worker" which the browser does not identify to be Javascript and therefore does not compilet. However, there is one d3-graphviz function, [*drawNode*](#graphviz_drawNode) that calls the the *Viz* function directly and in this case the script type must be "application/javascript" or "text/javascript".
+
+Examples:
+
+`<script src="https://unpkg.com/viz.js@1.8.1/viz.js" type="application/javascript/"></script>`
+
+This will always work, but will not be optimal if the script is used in a web worker only.
+
+`<script src="https://unpkg.com/viz.js@1.8.1/viz.js" type="javascript/worker"></script>`
+
+This will work if a web worker is used and the [*drawNode*](#graphviz_drawNode) is not used and will give shorter page load time.
+
+The following table summarizes the recommended script type:
+
+|                          | *useWorker* = true (default) | *useWorker* = false    |
+|--------------------------|------------------------------|------------------------|
+| *drawNode()* is not used | javascript/worker            | application/javascript |
+| *drawNode()* is used     | application/javascript       | application/javascript |
 
 ### Creating a Graphviz Renderer
 
