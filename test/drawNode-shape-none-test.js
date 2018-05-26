@@ -145,13 +145,10 @@ tape("Verify that none shape with style filled is drawn exactly as Graphviz does
                     actualNodeText = actualNodeGroup.selectAll('text');
 
                     var bbox = expectedNodeShape.node().getBBox();
-                    console.log('magjac 300: bbox =', bbox);
                     bbox.cx = bbox.x + bbox.width / 2;
                     bbox.cy = bbox.y + bbox.height / 2;
                     xoffs = x - bbox.cx;
                     yoffs = y - bbox.cy;
-                    console.log('magjac 400: xoffs =', xoffs);
-                    console.log('magjac 410: yoffs =', yoffs);
 
                     test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
@@ -162,8 +159,6 @@ tape("Verify that none shape with style filled is drawn exactly as Graphviz does
 
                     test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of polygon');
                     test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of polygon');
-                    console.log('magjac 500:', actualNodeShape.attr("points"));
-                    console.log('magjac 510:', expectedNodeShape.attr("points"));
                     test.equal(actualNodeShape.attr("points"), translatePointsAttribute(expectedNodeShape.attr("points"), xoffs, yoffs), 'points of polygon');
 
                     test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
@@ -215,13 +210,10 @@ tape("Verify that none shape with style filled and pen color specified is drawn 
                     actualNodeText = actualNodeGroup.selectAll('text');
 
                     var bbox = expectedNodeShape.node().getBBox();
-                    console.log('magjac 300: bbox =', bbox);
                     bbox.cx = bbox.x + bbox.width / 2;
                     bbox.cy = bbox.y + bbox.height / 2;
                     xoffs = x - bbox.cx;
                     yoffs = y - bbox.cy;
-                    console.log('magjac 400: xoffs =', xoffs);
-                    console.log('magjac 410: yoffs =', yoffs);
 
                     test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
@@ -232,8 +224,6 @@ tape("Verify that none shape with style filled and pen color specified is drawn 
 
                     test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of polygon');
                     test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of polygon');
-                    console.log('magjac 500:', actualNodeShape.attr("points"));
-                    console.log('magjac 510:', expectedNodeShape.attr("points"));
                     test.equal(actualNodeShape.attr("points"), translatePointsAttribute(expectedNodeShape.attr("points"), xoffs, yoffs), 'points of polygon');
 
                     test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
