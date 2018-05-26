@@ -20,7 +20,7 @@ export function initViz() {
         };
         if (!vizURL.match(/^https?:\/\/|^\/\//i)) {
             // Local URL. Prepend with local domain to be usable in web worker
-            vizURL = document.location.protocol + '//' + document.location.host + '/' + vizURL;
+            vizURL = (new window.URL(vizURL, document.location.href)).href;
         }
         this._worker.postMessage({dot: "", vizURL: vizURL});
     }
