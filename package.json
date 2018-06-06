@@ -28,6 +28,7 @@
     "report": "nyc report --reporter=lcov",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "prepublishOnly": "env NODE_ENV=production npm run build && TESTRUNNER='tape' npm run do-test && uglifyjs build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
+    "publicbuild": "env NODE_ENV=production npm run build",
     "postpublish": "zip -j build/d3-graphviz.zip -- LICENSE README.md build/d3-graphviz.js build/d3-graphviz.min.js"
   },
   "nyc": {
