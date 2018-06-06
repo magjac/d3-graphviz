@@ -227,7 +227,7 @@ For advanced usage, the grahviz renderer provides methods for custom control flo
 
 Adds or removes a *listener* to the graphviz renderer instance for the specified event *typenames*. The *typenames* is one of the following string event types:
 
-* `initEnd` - when the graphviz renderer has finished initialization.
+* `initEnd` - when the graphviz renderer has finished initialization.¹
 * `start` - when analysis of the DOT source starts.
 * `layoutStart` - when the layout of the DOT source starts.
 * `layoutEnd` - when the layout of the DOT source ends.
@@ -241,6 +241,8 @@ Adds or removes a *listener* to the graphviz renderer instance for the specified
 * `transitionEnd` - when the anmiated transition ends.
 * `restoreEnd` - when possibly converted paths and shapes have been restored after the transition.
 * `end` - when the graphviz renderer has finished all actions.
+
+¹ If a web worker is not used, this event is issued before [d3.graphviz](#d3_graphviz) or [<i>selection</i>.<b>graphviz</b>](#selection_graphviz) returns which means that a *listener* registered with a subsequent  [<i>graphviz</i>.<b>on</b>](#graphviz_on) will not be called since it's registered too late.
 
 Note that these are *not* native DOM events as implemented by [*selection*.on](https://github.com/d3/d3-selection#selection_on) and [*selection*.dispatch](https://github.com/d3/d3-selection#selection_dispatch), but graphviz events!
 
