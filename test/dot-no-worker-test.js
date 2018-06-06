@@ -15,7 +15,7 @@ function do_test(test, useWorker, html) {
     }
     global.Worker = Worker;
 
-    var graphviz = d3_graphviz.graphviz("#graph", useWorker=useWorker);
+    var graphviz = d3_graphviz.graphviz("#graph", useWorker);
 
     graphviz
         .logEvents(true);
@@ -65,7 +65,7 @@ function do_test(test, useWorker, html) {
 
 tape('dot() performs layout in the foreground when web worker is not used.', function(test) {
 
-    do_test(test=test, useWorker=false, html=`
+    do_test(test=test, false, html=`
             <script src="http://dummyhost/node_modules/viz.js/viz.js" type="javascript/worker"></script>
             <div id="graph"></div>
             `,
@@ -74,7 +74,7 @@ tape('dot() performs layout in the foreground when web worker is not used.', fun
 
 tape('dot() performs layout in the foreground with a warning when script src does not end with "viz.js".', function(test) {
 
-    do_test(test=test, useWorker=true, html=`
+    do_test(test=test, true, html=`
             <script src="http://dummyhost/node_modules/viz.js/viz-NOT.js" type="text/javascript"></script>
             <div id="graph"></div>
             `,
@@ -83,7 +83,7 @@ tape('dot() performs layout in the foreground with a warning when script src doe
 
 tape('dot() performs layout in the foreground with a warning when "javascript/worker" script tag does not have a "src" attribute.', function(test) {
 
-    do_test(test=test, useWorker=true, html=`
+    do_test(test=test, true, html=`
             <script type="javascript/worker"></script>
             <div id="graph"></div>
             `,
