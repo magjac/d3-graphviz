@@ -18,7 +18,7 @@ Renders SVG from graphs described in the [DOT](https://www.graphviz.org/doc/info
 * Animated growth of entering edges
 * Panning & zooming of the generated graph
 
-Graphviz methods all return the graphviz renderer instance, allowing the concise application of multiple operations on a given graph renderer instance via method chaining.
+Graphviz methods typically return the graphviz renderer instance, allowing the concise application of multiple operations on a given graph renderer instance via method chaining.
 
 To render a graph, select an element, call [*selection*.graphviz](#selection_graphviz), and then render from a [DOT](https://www.graphviz.org/doc/info/lang.html) source string. For example:
 
@@ -103,15 +103,31 @@ The following table summarizes the recommended script type:
 
 #### Creating a Graphviz Renderer on an Existing Selection
 
-<a name="selection_graphviz" href="#selection_graphviz">#</a> <i>selection</i>.<b>graphviz</b>([<i>useWorker</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/graphviz.js "Source")
+<a name="selection_graphviz" href="#selection_graphviz">#</a> <i>selection</i>.<b>graphviz</b>([<i>options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/graphviz.js "Source")
 
-Returns a new graphviz renderer instance on the given *selection*. If *useWorker* is specified and falsey, no web worker is used for the layout stage.
+Returns a new graphviz renderer instance on the given *selection*. If *options* is specified and is an object, its properties are taken to be options to the graphviz renderer. All options except the *useWorker* option can also be changed later, using individual methods or the [<i>graphviz</i>.<b>options</b>](#graphviz_options) method, see below. The currently supported options are:
+
+| Option | Default value |
+|--------|---------------|
+| useWorker | true |
+| [engine](#graphviz_engine) | 'dot' |
+| [totalMemory](#graphviz_totalMemory) | undefined (giving [Viz.js](https://github.com/mdaines/viz.js/) default) |
+| [keyMode](#graphviz_keyMode) | 'title' |
+| [fade](#graphviz_fade) | true |
+| [tweenPaths](#graphviz_tweenPaths) | true |
+| [tweenShapes](#graphviz_tweenShapes) | true |
+| [convertEqualSidedPolygons](#graphviz_convertEqualSidedPolygons) | true |
+| [tweenPrecision](#graphviz_tweenPrecision) | 1 |
+| [growEnteringEdges](#graphviz_growEnteringEdges) | true |
+| [zoom](#graphviz_zoom) | true |
+
+If the *useWorker* option is falsey, no web worker is used for the layout stage. The rest of the options are described below. Only the specified options will be changed. The others will keep their current values. If *options* is a boolean it is taken to be the useWorker option (for backwards compatibility).
 
 #### Creating a Graphviz Renderer Using a Selector String or a Node
 
-<a name="d3_graphviz" href="#d3_graphviz">#</a> <b>d3.graphviz</b>(<i>selector</i>[, <i>useWorker</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/graphviz.js "Source")
+<a name="d3_graphviz" href="#d3_graphviz">#</a> <b>d3.graphviz</b>(<i>selector</i>[, <i>options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/graphviz.js "Source")
 
-Creates a new graphviz renderer instance on the first element matching the given *selector* string. If the *selecor* is not a string, instead creates a new graphviz renderer instance on the specified node. If *useWorker* is specified and falsey, no web worker is used for the layout stage.
+Creates a new graphviz renderer instance on the first element matching the given *selector* string. If the *selector* is not a string, instead creates a new graphviz renderer instance on the specified node. See [<i>selection</i>.<b>graphviz</b>](#selection_graphviz) for a description of the *options* argument.
 
 ### Rendering
 
@@ -155,6 +171,12 @@ Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified
 <a name="graphviz_onerror" href="#graphviz_onerror">#</a> <i>graphviz</i>.<b>onerror</b>(<i>callback</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/onerror.js "Source")
 
 If *callback* is specified and not null, it is called with the `this` context as the graphviz instance and the error message as the first argument, if the layout computation encounters an error. If *callback* is null, removes any previously registered callback.
+
+### Setting and Getting Options
+
+<a name="graphviz_options" href="#graphviz_options">#</a> <i>graphviz</i>.<b>options</b>([<i>options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/options.js "Source")
+
+If *options* is specified it is taken to be an object whose properties are used to set options to the graphviz renderer. See [<i>selection</i>.<b>graphviz</b>](#selection_graphviz) for a list of supported options. Most options can also be changed by individual methods which are described separately. If *options* is not specified, a copy of the currently set options are returned as an object.
 
 ### Images
 <a name="graphviz_addImage" href="#graphviz_images">#</a> <i>graphviz</i>.<b>addImage</b>(<i>path</i>,<i>width</i>,<i>height</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/images.js "Source")

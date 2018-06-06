@@ -32,12 +32,12 @@ export default function(callback) {
 function _render(callback) {
 
     var transitionInstance = this._transition;
-    var fade = this._fade && transitionInstance != null;
-    var tweenPaths = this._tweenPaths;
-    var tweenShapes = this._tweenShapes;
-    var convertEqualSidedPolygons = this._convertEqualSidedPolygons;
-    var tweenPrecision = this._tweenPrecision;
-    var growEnteringEdges = this._growEnteringEdges && transitionInstance != null;
+    var fade = this._options.fade && transitionInstance != null;
+    var tweenPaths = this._options.tweenPaths;
+    var tweenShapes = this._options.tweenShapes;
+    var convertEqualSidedPolygons = this._options.convertEqualSidedPolygons;
+    var tweenPrecision = this._options.tweenPrecision;
+    var growEnteringEdges = this._options.growEnteringEdges && transitionInstance != null;
     var attributer = this._attributer;
     var graphvizInstance = this;
 
@@ -347,7 +347,7 @@ function _render(callback) {
     attributeElement.call(svg.node(), data);
 
 
-    if (this._zoom && !this._zoomBehavior) {
+    if (this._options.zoom && !this._zoomBehavior) {
         createZoomBehavior.call(this);
     }
 

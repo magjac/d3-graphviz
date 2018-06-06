@@ -1,9 +1,9 @@
 export default function(engine) {
 
-    if (engine != this._engine && this._data != null) {
+    if (engine != this._options.engine && this._data != null) {
         throw Error('Too late to change engine');
     }
-    this._engine = engine;
+    this._options.engine = engine;
 
     return this;
 };

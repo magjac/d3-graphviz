@@ -1,6 +1,6 @@
 export default function(size) {
 
-    this._totalMemory = size
+    this._options.totalMemory = size
 
     return this;
 };
