@@ -13,7 +13,7 @@ tape("zoom(false) disables zooming.", function(test) {
         .zoom(false)
         .renderDot('digraph {a -> b;}');
 
-    test.notOk(graphviz._zoom, '.zoom(false) disables zooming');
+    test.notOk(graphviz._options.zoom, '.zoom(false) disables zooming');
 
     test.end();
 });
@@ -26,7 +26,7 @@ tape("zoom(true) enables zooming.", function(test) {
     graphviz
         .zoom(true);
 
-    test.ok(graphviz._zoom, '.zoom(true) enables zooming');
+    test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
     test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
 
     graphviz
@@ -50,7 +50,7 @@ tape("resetZoom resets the zoom transform to the original transform.", function(
     graphviz
         .zoom(true);
 
-    test.ok(graphviz._zoom, '.zoom(true) enables zooming');
+    test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
     test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
 
     graphviz
@@ -121,7 +121,7 @@ tape("zooming rescales transforms during transitions.", function(test) {
         .zoom(true)
         .transition(d3_transition.transition().duration(100));
 
-    test.ok(graphviz._zoom, '.zoom(true) enables zooming');
+    test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
     test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
 
     graphviz

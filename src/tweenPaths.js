@@ -1,6 +1,6 @@
 export default function(enable) {
 
-    this._tweenPaths = enable;
+    this._options.tweenPaths = enable;
 
     return this;
 };

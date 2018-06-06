@@ -1,6 +1,6 @@
 import {Graphviz} from "../graphviz";
 
-export default function(useWorker=true) {
+export default function(options) {
 
-    return new Graphviz(this, useWorker);
+    return new Graphviz(this, options);
 }
