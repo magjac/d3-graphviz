@@ -4,7 +4,7 @@ var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 var Worker = require("tiny-worker");
 
-tape("dot() performs layout in a web worker in the background.", function(test) {
+tape("dot() performs layout in a web worker in the background with text/javascript tag.", function(test) {
 
     var window = global.window = jsdom(
         `
