@@ -106,6 +106,36 @@ function _render(callback) {
 
     function attributeElement(data) {
         var element = d3.select(this);
+        if (data.tag == "svg") {
+            var options = graphvizInstance._options;
+            if (options.width != null || options.height != null) {
+                var width = options.width;
+                var height = options.height;
+                if (width == null) {
+                    width = data.attributes.width.replace('pt', '') * height / data.attributes.height.replace('pt', '');
+                }
+                if (height == null) {
+                    height = data.attributes.height.replace('pt', '') * width / data.attributes.width.replace('pt', '');
+                }
+                element
+                    .attr("width", width)
+                    .attr("height", height);
+                data.attributes.width = width;
+                data.attributes.height = height;
+                if (!options.fit) {
+                    element
+                        .attr("viewBox", `viewBox 0 0 ${width * 3 / 4 / options.scale} ${height * 3 / 4 / options.scale}`);
+                    data.attributes.viewBox = `0 0 ${width * 3 / 4 / options.scale} ${height * 3 / 4 / options.scale}`;
+                }
+            }
+            if (options.scale != 1 && (options.fit || (options.width == null && options.height == null))) {
+                width = data.attributes.viewBox.split(' ')[2];
+                height = data.attributes.viewBox.split(' ')[3];
+                element
+                    .attr("viewBox", `viewBox 0 0 ${width / options.scale} ${height / options.scale}`);
+                data.attributes.viewBox = `0 0 ${width / options.scale} ${height / options.scale}`;
+            }
+        }
         if (attributer) {
             element.each(attributer);
         }
