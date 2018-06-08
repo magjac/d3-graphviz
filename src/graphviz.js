@@ -7,6 +7,10 @@ import renderDot from "./renderDot";
 import transition from "./transition";
 import {active} from "./transition";
 import options from "./options";
+import width from "./width";
+import height from "./height";
+import scale from "./scale";
+import fit from "./fit";
 import attributer from "./attributer";
 import engine from "./engine";
 import images from "./images";
@@ -46,6 +50,10 @@ export function Graphviz(selection, options) {
         tweenPrecision: 1,
         growEnteringEdges: true,
         zoom: true,
+        width: null,
+        height: null,
+        scale: 1,
+        fit: false,
     };
     if (options instanceof Object) {
         for (var option of Object.keys(options)) {
@@ -164,6 +172,10 @@ Graphviz.prototype = graphviz.prototype = {
     transition: transition,
     active: active,
     options: options,
+    width: width,
+    height: height,
+    scale: scale,
+    fit: fit,
     attributer: attributer,
     on: on,
     onerror: onerror,
