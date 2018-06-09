@@ -7,23 +7,25 @@ var Worker = require("tiny-worker");
 
 tape("graphviz().render() adds and removes SVG elements after transition delay.", function(test) {
 
-    var window = global.window = jsdom(
-        `
-            <script src="node_modules/viz.js/viz.js" type="javascript/worker"></script>
-            <div id="graph"></div>
-            `,
-        {
-            url: "http:dummyhost",
-        },
-    );
-    var document = global.document = window.document;
-    var Blob = global.Blob = function (jsarray) {
-        return new Function(jsarray[0]);
+    function transition_test_init() {
+        var window = global.window = jsdom(
+            `
+                <script src="node_modules/viz.js/viz.js" type="javascript/worker"></script>
+                <div id="graph"></div>
+                `,
+            {
+                url: "http:dummyhost",
+            },
+        );
+        var document = global.document = window.document;
+        var Blob = global.Blob = function (jsarray) {
+            return new Function(jsarray[0]);
+        }
+        var createObjectURL = window.URL.createObjectURL = function (js) {
+            return js;
+        }
+        global.Worker = Worker;
     }
-    var createObjectURL = window.URL.createObjectURL = function (js) {
-        return js;
-    }
-    global.Worker = Worker;
 
     function transition_test(transition1, next_test) {
 
@@ -99,11 +101,13 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
     }
 
     function transition_instance_test() {
+        transition_test_init();
         transition1 = d3_transition.transition().duration(0);
         transition_test(transition1, transition_function_test);
     }
 
     function transition_function_test() {
+        transition_test_init();
         transition_test(function() {
             return d3_transition.transition().duration(0);
         });
