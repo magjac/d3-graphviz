@@ -145,10 +145,11 @@ export function Graphviz(selection, options) {
     ];
     this._dispatch = dispatch(...this._eventTypes);
     initViz.call(this);
+    selection.node().__graphviz__ = this;
 }
 
 export default function graphviz(selector, options) {
-    var g = new Graphviz(d3.select(selector), options);
+    var g = d3.select(selector).graphviz(options);
     return g;
 }
 
