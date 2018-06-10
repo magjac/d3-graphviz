@@ -69,6 +69,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Rendering](#rendering)
 * [Images](#images)
 * [Creating Transitions](#creating-transitions)
+* [Control Flow](#control-flow)
 * [Controlling Fade-In & Fade-Out](#controlling-fade-in--fade-out)
 * [Controlling Animated Growth of Entering Edges](#controlling-animated-growth-of-entering-edges)
 * [Controlling Path Tweening](#controlling-path-tweening)
