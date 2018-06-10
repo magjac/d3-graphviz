@@ -30,14 +30,14 @@ export default function(src, callback) {
 
     var graphvizInstance = this;
     var worker = this._worker;
-    var engine = this._engine;
+    var engine = this._options.engine;
     var images = this._images;
-    var totalMemory = this._totalMemory;
-    var keyMode = this._keyMode;
-    var tweenPaths = this._tweenPaths;
-    var tweenShapes = this._tweenShapes;
-    var tweenPrecision = this._tweenPrecision;
-    var growEnteringEdges = this._growEnteringEdges;
+    var totalMemory = this._options.totalMemory;
+    var keyMode = this._options.keyMode;
+    var tweenPaths = this._options.tweenPaths;
+    var tweenShapes = this._options.tweenShapes;
+    var tweenPrecision = this._options.tweenPrecision;
+    var growEnteringEdges = this._options.growEnteringEdges;
     var dictionary = {};
     var prevDictionary = this._dictionary || {};
     var nodeDictionary = {};

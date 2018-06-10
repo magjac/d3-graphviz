@@ -4,9 +4,9 @@ import {interpolate} from "d3-interpolate";
 
 export default function(enable) {
 
-    this._zoom = enable;
+    this._options.zoom = enable;
 
-    if (this._zoom && !this._zoomBehavior) {
+    if (this._options.zoom && !this._zoomBehavior) {
         createZoomBehavior.call(this);
     }
 

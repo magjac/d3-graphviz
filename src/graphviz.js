@@ -6,6 +6,11 @@ import {initViz} from "./dot";
 import renderDot from "./renderDot";
 import transition from "./transition";
 import {active} from "./transition";
+import options from "./options";
+import width from "./width";
+import height from "./height";
+import scale from "./scale";
+import fit from "./fit";
 import attributer from "./attributer";
 import engine from "./engine";
 import images from "./images";
@@ -32,7 +37,32 @@ import {updateDrawnNode} from "./drawNode";
 import {insertDrawnNode} from "./drawNode";
 import {removeDrawnNode} from "./drawNode";
 
-export function Graphviz(selection, useWorker) {
+export function Graphviz(selection, options) {
+    this._options = {
+        useWorker: true,
+        engine: 'dot',
+        totalMemory: undefined,
+        keyMode: 'title',
+        fade: true,
+        tweenPaths: true,
+        tweenShapes: true,
+        convertEqualSidedPolygons: true,
+        tweenPrecision: 1,
+        growEnteringEdges: true,
+        zoom: true,
+        width: null,
+        height: null,
+        scale: 1,
+        fit: false,
+    };
+    if (options instanceof Object) {
+        for (var option of Object.keys(options)) {
+            this._options[option] = options[option];
+        }
+    } else if (typeof options == 'boolean') {
+        this._options.useWorker = options;
+    }
+    var useWorker = this._options.useWorker;
     if (typeof Worker == 'undefined') {
         useWorker = false;
     }
@@ -95,18 +125,8 @@ export function Graphviz(selection, useWorker) {
         'tag-index',
         'index'
     ]);
-    this._engine = 'dot';
     this._images = [];
-    this._totalMemory = undefined;
-    this._keyMode = 'title';
-    this._fade = true;
-    this._tweenPaths = true;
-    this._tweenShapes = true;
-    this._convertEqualSidedPolygons = true;
-    this._tweenPrecision = 1;
-    this._growEnteringEdges = true;
     this._translation = undefined;
-    this._zoom = true;
     this._eventTypes = [
         'initEnd',
         'start',
@@ -125,10 +145,11 @@ export function Graphviz(selection, useWorker) {
     ];
     this._dispatch = dispatch(...this._eventTypes);
     initViz.call(this);
+    selection.node().__graphviz__ = this;
 }
 
-export default function graphviz(selector, useWorker=true) {
-    var g = new Graphviz(d3.select(selector), useWorker);
+export default function graphviz(selector, options) {
+    var g = d3.select(selector).graphviz(options);
     return g;
 }
 
@@ -151,6 +172,11 @@ Graphviz.prototype = graphviz.prototype = {
     renderDot: renderDot,
     transition: transition,
     active: active,
+    options: options,
+    width: width,
+    height: height,
+    scale: scale,
+    fit: fit,
     attributer: attributer,
     on: on,
     onerror: onerror,

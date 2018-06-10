@@ -32,12 +32,12 @@ export default function(callback) {
 function _render(callback) {
 
     var transitionInstance = this._transition;
-    var fade = this._fade && transitionInstance != null;
-    var tweenPaths = this._tweenPaths;
-    var tweenShapes = this._tweenShapes;
-    var convertEqualSidedPolygons = this._convertEqualSidedPolygons;
-    var tweenPrecision = this._tweenPrecision;
-    var growEnteringEdges = this._growEnteringEdges && transitionInstance != null;
+    var fade = this._options.fade && transitionInstance != null;
+    var tweenPaths = this._options.tweenPaths;
+    var tweenShapes = this._options.tweenShapes;
+    var convertEqualSidedPolygons = this._options.convertEqualSidedPolygons;
+    var tweenPrecision = this._options.tweenPrecision;
+    var growEnteringEdges = this._options.growEnteringEdges && transitionInstance != null;
     var attributer = this._attributer;
     var graphvizInstance = this;
 
@@ -106,6 +106,36 @@ function _render(callback) {
 
     function attributeElement(data) {
         var element = d3.select(this);
+        if (data.tag == "svg") {
+            var options = graphvizInstance._options;
+            if (options.width != null || options.height != null) {
+                var width = options.width;
+                var height = options.height;
+                if (width == null) {
+                    width = data.attributes.width.replace('pt', '') * height / data.attributes.height.replace('pt', '');
+                }
+                if (height == null) {
+                    height = data.attributes.height.replace('pt', '') * width / data.attributes.width.replace('pt', '');
+                }
+                element
+                    .attr("width", width)
+                    .attr("height", height);
+                data.attributes.width = width;
+                data.attributes.height = height;
+                if (!options.fit) {
+                    element
+                        .attr("viewBox", `viewBox 0 0 ${width * 3 / 4 / options.scale} ${height * 3 / 4 / options.scale}`);
+                    data.attributes.viewBox = `0 0 ${width * 3 / 4 / options.scale} ${height * 3 / 4 / options.scale}`;
+                }
+            }
+            if (options.scale != 1 && (options.fit || (options.width == null && options.height == null))) {
+                width = data.attributes.viewBox.split(' ')[2];
+                height = data.attributes.viewBox.split(' ')[3];
+                element
+                    .attr("viewBox", `viewBox 0 0 ${width / options.scale} ${height / options.scale}`);
+                data.attributes.viewBox = `0 0 ${width / options.scale} ${height / options.scale}`;
+            }
+        }
         if (attributer) {
             element.each(attributer);
         }
@@ -347,7 +377,7 @@ function _render(callback) {
     attributeElement.call(svg.node(), data);
 
 
-    if (this._zoom && !this._zoomBehavior) {
+    if (this._options.zoom && !this._zoomBehavior) {
         createZoomBehavior.call(this);
     }
 
