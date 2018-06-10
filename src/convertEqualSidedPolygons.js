@@ -1,6 +1,6 @@
 export default function(enable) {
 
-    this._convertEqualSidedPolygons = enable;
+    this._options.convertEqualSidedPolygons = enable;
 
     return this;
 };

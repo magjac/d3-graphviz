@@ -1,6 +1,6 @@
 export default function(precision) {
 
-    this._tweenPrecision = precision;
+    this._options.tweenPrecision = precision;
 
     return this;
 };
