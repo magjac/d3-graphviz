@@ -65,6 +65,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 
 * [Defining the viz.js Script Tag](#defining-the-vizjs-script-tag)
 * [Creating a Graphviz Renderer](#creating-a-graphviz-renderer)
+* [Setting and Getting Options](#setting-and-getting-options)
 * [Rendering](#rendering)
 * [Images](#images)
 * [Creating Transitions](#creating-transitions)
@@ -173,12 +174,6 @@ Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified
 <a name="graphviz_onerror" href="#graphviz_onerror">#</a> <i>graphviz</i>.<b>onerror</b>(<i>callback</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/onerror.js "Source")
 
 If *callback* is specified and not null, it is called with the `this` context as the graphviz instance and the error message as the first argument, if the layout computation encounters an error. If *callback* is null, removes any previously registered callback.
-
-### Setting and Getting Options
-
-<a name="graphviz_options" href="#graphviz_options">#</a> <i>graphviz</i>.<b>options</b>([<i>options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/options.js "Source")
-
-If *options* is specified it is taken to be an object whose properties are used to set options to the graphviz renderer. See [<i>selection</i>.<b>graphviz</b>](#selection_graphviz) for a list of supported options. Most options can also be changed by individual methods which are described separately. If *options* is not specified, a copy of the currently set options are returned as an object.
 
 ### Images
 <a name="graphviz_addImage" href="#graphviz_images">#</a> <i>graphviz</i>.<b>addImage</b>(<i>path</i>,<i>width</i>,<i>height</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/images.js "Source")
