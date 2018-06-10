@@ -134,7 +134,13 @@ If the *useWorker* option is falsey, no web worker is used for the layout stage.
 
 <a name="d3_graphviz" href="#d3_graphviz">#</a> <b>d3.graphviz</b>(<i>selector</i>[, <i>options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/graphviz.js "Source")
 
-Creates a new graphviz renderer instance on the first element matching the given *selector* string. If the *selector* is not a string, instead creates a new graphviz renderer instance on the specified node. See [<i>selection</i>.<b>graphviz</b>](#selection_graphviz) for a description of the *options* argument.
+Creates a new graphviz renderer instance on the first element matching the given *selector* string. If the *selector* is not a string, instead creates a new graphviz renderer instance on the specified node. If a graphviz renderer instance already exists on that element, instead returns the existing graphviz renderer instance. See [<i>selection</i>.<b>graphviz</b>](#selection_graphviz) for a description of the *options* argument.
+
+### Setting and Getting Options
+
+<a name="graphviz_options" href="#graphviz_options">#</a> <i>graphviz</i>.<b>options</b>([<i>options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/options.js "Source")
+
+If *options* is specified it is taken to be an object whose properties are used to set options to the graphviz renderer. See [<i>selection</i>.<b>graphviz</b>](#selection_graphviz) for a list of supported options. Most options can also be changed by individual methods which are described separately. If *options* is not specified, a copy of the currently set options are returned as an object.
 
 ### Rendering
 
