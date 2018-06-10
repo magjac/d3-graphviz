@@ -106,20 +106,24 @@ The following table summarizes the recommended script type:
 
 <a name="selection_graphviz" href="#selection_graphviz">#</a> <i>selection</i>.<b>graphviz</b>([<i>options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/graphviz.js "Source")
 
-Returns a new graphviz renderer instance on the given *selection*. If *options* is specified and is an object, its properties are taken to be options to the graphviz renderer. All options except the *useWorker* option can also be changed later, using individual methods or the [<i>graphviz</i>.<b>options</b>](#graphviz_options) method, see below. The currently supported options are:
+Returns a new graphviz renderer instance on the first element in the given *selection*. If a graphviz renderer instance already exists on that element, instead returns the existing graphviz renderer instance. If *options* is specified and is an object, its properties are taken to be options to the graphviz renderer. All options except the *useWorker* option can also be changed later, using individual methods or the [<i>graphviz</i>.<b>options</b>](#graphviz_options) method, see below. The currently supported options are:
 
 | Option | Default value |
 |--------|---------------|
 | [convertEqualSidedPolygons](#graphviz_convertEqualSidedPolygons) | true |
 | [engine](#graphviz_engine) | 'dot' |
 | [fade](#graphviz_fade) | true |
+| [fit](#graphviz_scale) | false |
 | [growEnteringEdges](#graphviz_growEnteringEdges) | true |
+| [height](#graphviz_height) | null |
 | [keyMode](#graphviz_keyMode) | 'title' |
 | [totalMemory](#graphviz_totalMemory) | undefined (giving [Viz.js](https://github.com/mdaines/viz.js/) default) |
+| [scale](#graphviz_scale) | 1 |
 | [tweenPaths](#graphviz_tweenPaths) | true |
 | [tweenPrecision](#graphviz_tweenPrecision) | 1 |
 | [tweenShapes](#graphviz_tweenShapes) | true |
 | useWorker¹ | true |
+| [width](#graphviz_width) | null |
 | [zoom](#graphviz_zoom) | true |
 
 ¹ Only has effect when the graphviz renderer instance is created.
@@ -215,6 +219,32 @@ A transition is scheduled when it is created. The above example will schedule th
 <a name="graphviz_active" href="#graphviz_active">#</a> <i>graphviz</i>.<b>active</b>([<i>name</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/transition.js "Source")
 
 Returns the active transition on the generated graph's top level <b>svg</b> with the specified *name*, if any. If no *name* is specified, null is used. Returns null if there is no such active transition on the top level <b>svg</b> node. This method is useful for creating chained transitions.
+
+### Controlling SVG Size and Graph Size
+
+The SVG size determines the area in which the graph can be panned and zoomed, while the graph size determines the area that the graph occupies before it is panned or zoomed. The default is that these two areas are the same.
+
+The size of the graph is determined in three optional steps:
+
+1. The SVG size can be set with [<i>graphviz</i>.<b>width</b>](#graphviz_width) and/or [<i>graphviz</i>.<b>height</b>](#graphviz_height).
+2. The graph can be scaled to fit the SVG size with [<i>graphviz</i>.<b>fit</b>](#graphviz_fit) or maintain its original size.
+3. The graph can be additionally scaled with a scaling factor with [<i>graphviz</i>.<b>scale</b>](#graphviz_scale).
+
+<a name="graphviz_width" href="#graphviz_width">#</a> <i>graphviz</i>.<b>width</b>(<i>width</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/width.js "Source")
+
+The SVG width attribute is set to *width* pixels. If the *height* option is not set specifically, the SVG height is automatically set to a value that preserves the current aspect ratio of the SVG.
+
+<a name="graphviz_height" href="#graphviz_height">#</a> <i>graphviz</i>.<b>height</b>(<i>height</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/height.js "Source")
+
+The SVG height attribute is set to *height* pixels. If the *width* option is not set specifically, the SVG width is automatically set to a value that preserves the current aspect ratio of the SVG.
+
+<a name="graphviz_fit" href="#graphviz_fit">#</a> <i>graphviz</i>.<b>fit</b>(<i>fit</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/height.js "Source")
+
+If *fit* is falsey (default), the viewBox attribute of the SVG is set so that the graph size (before scaling with [<i>graphviz</i>.<b>scale</b>](#graphviz_scale)) is its orignal size, i.e. unaffected by a possible SVG size change with [<i>graphviz</i>.<b>width</b>](#graphviz_width) or [<i>graphviz</i>.<b>height</b>](#graphviz_height). If *fit* is truthy, the viewBox attribute of the SVG is unchanged, which causes the graph size (before scaling with [<i>graphviz</i>.<b>scale</b>](#graphviz_scale)) to fit the SVG size. Note that unless the SVG size has been changed, this options has no effect.
+
+<a name="graphviz_scale" href="#graphviz_scale">#</a> <i>graphviz</i>.<b>scale</b>(<i>scale</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/height.js "Source")
+
+The viewBox attribute of the SVG is set so that the graph size (after a possible fit to the SVG size with [<i>graphviz</i>.<b>fit</b>](#graphviz_fit)) is scaled with *scale*. For example: If *scale* is 0.5, then if *fit* is truthy, the graph width and height is half the width and height of the SVG, while if *fit* is falsey, the graph width and height is half of its original width and height.
 
 ### Control Flow
 
