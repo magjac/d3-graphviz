@@ -109,17 +109,19 @@ Returns a new graphviz renderer instance on the given *selection*. If *options* 
 
 | Option | Default value |
 |--------|---------------|
-| useWorker | true |
-| [engine](#graphviz_engine) | 'dot' |
-| [totalMemory](#graphviz_totalMemory) | undefined (giving [Viz.js](https://github.com/mdaines/viz.js/) default) |
-| [keyMode](#graphviz_keyMode) | 'title' |
-| [fade](#graphviz_fade) | true |
-| [tweenPaths](#graphviz_tweenPaths) | true |
-| [tweenShapes](#graphviz_tweenShapes) | true |
 | [convertEqualSidedPolygons](#graphviz_convertEqualSidedPolygons) | true |
-| [tweenPrecision](#graphviz_tweenPrecision) | 1 |
+| [engine](#graphviz_engine) | 'dot' |
+| [fade](#graphviz_fade) | true |
 | [growEnteringEdges](#graphviz_growEnteringEdges) | true |
+| [keyMode](#graphviz_keyMode) | 'title' |
+| [totalMemory](#graphviz_totalMemory) | undefined (giving [Viz.js](https://github.com/mdaines/viz.js/) default) |
+| [tweenPaths](#graphviz_tweenPaths) | true |
+| [tweenPrecision](#graphviz_tweenPrecision) | 1 |
+| [tweenShapes](#graphviz_tweenShapes) | true |
+| useWorker¹ | true |
 | [zoom](#graphviz_zoom) | true |
+
+¹ Only has effect when the graphviz renderer instance is created.
 
 If the *useWorker* option is falsey, no web worker is used for the layout stage. The rest of the options are described below. Only the specified options will be changed. The others will keep their current values. If *options* is a boolean it is taken to be the useWorker option (for backwards compatibility).
 
