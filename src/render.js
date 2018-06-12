@@ -124,7 +124,7 @@ function _render(callback) {
                 data.attributes.height = height;
                 if (!options.fit) {
                     element
-                        .attr("viewBox", `viewBox 0 0 ${width * 3 / 4 / options.scale} ${height * 3 / 4 / options.scale}`);
+                        .attr("viewBox", `0 0 ${width * 3 / 4 / options.scale} ${height * 3 / 4 / options.scale}`);
                     data.attributes.viewBox = `0 0 ${width * 3 / 4 / options.scale} ${height * 3 / 4 / options.scale}`;
                 }
             }
@@ -132,7 +132,7 @@ function _render(callback) {
                 width = data.attributes.viewBox.split(' ')[2];
                 height = data.attributes.viewBox.split(' ')[3];
                 element
-                    .attr("viewBox", `viewBox 0 0 ${width / options.scale} ${height / options.scale}`);
+                    .attr("viewBox", `0 0 ${width / options.scale} ${height / options.scale}`);
                 data.attributes.viewBox = `0 0 ${width / options.scale} ${height / options.scale}`;
             }
         }
