@@ -112,16 +112,19 @@ function _render(callback) {
                 var width = options.width;
                 var height = options.height;
                 if (width == null) {
-                    width = data.attributes.width.replace('pt', '') * height / data.attributes.height.replace('pt', '');
+                    width = data.attributes.width.replace('pt', '') * 4 / 3;
+                } else {
+                    element
+                        .attr("width", width);
+                    data.attributes.width = width;
                 }
                 if (height == null) {
-                    height = data.attributes.height.replace('pt', '') * width / data.attributes.width.replace('pt', '');
+                    height = data.attributes.height.replace('pt', '') * 4 / 3;
+                } else {
+                    element
+                        .attr("height", height);
+                    data.attributes.height = height;
                 }
-                element
-                    .attr("width", width)
-                    .attr("height", height);
-                data.attributes.width = width;
-                data.attributes.height = height;
                 if (!options.fit) {
                     element
                         .attr("viewBox", `0 0 ${width * 3 / 4 / options.scale} ${height * 3 / 4 / options.scale}`);

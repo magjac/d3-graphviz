@@ -239,11 +239,11 @@ The size of the graph is determined in three optional steps:
 
 <a name="graphviz_width" href="#graphviz_width">#</a> <i>graphviz</i>.<b>width</b>(<i>width</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/width.js "Source")
 
-The SVG width attribute is set to *width* pixels. If the *height* option is not set specifically, the SVG height is automatically set to a value that preserves the current aspect ratio of the SVG.
+The SVG width attribute is set to *width* pixels.
 
 <a name="graphviz_height" href="#graphviz_height">#</a> <i>graphviz</i>.<b>height</b>(<i>height</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/height.js "Source")
 
-The SVG height attribute is set to *height* pixels. If the *width* option is not set specifically, the SVG width is automatically set to a value that preserves the current aspect ratio of the SVG.
+The SVG height attribute is set to *height* pixels.
 
 <a name="graphviz_fit" href="#graphviz_fit">#</a> <i>graphviz</i>.<b>fit</b>(<i>fit</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/height.js "Source")
 
