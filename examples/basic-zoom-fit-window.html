@@ -10,6 +10,7 @@
 margin = 20; // to avoid scrollbars
 
 graphviz = d3.select("#graph").graphviz()
+    .zoomScaleExtent([0.5, 2])
     .attributer(attributer)
     .renderDot('digraph  {a -> b}');
 

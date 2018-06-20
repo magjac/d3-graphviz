@@ -175,3 +175,17 @@ tape("zooming rescales transforms during transitions.", function(test) {
         test.end();
     }
 });
+
+tape("zoomScaleExtent() sets zoom scale extent.", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+    var extent = [0.5, 4];
+    graphviz
+        .zoomScaleExtent(extent)
+        .renderDot('digraph {a -> b;}');
+
+    test.equal(graphviz.options().zoomScaleExtent, extent, '.zoomScaleExtent(...) sets zoom scale extent');
+
+    test.end();
+});

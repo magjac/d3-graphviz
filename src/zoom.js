@@ -26,7 +26,7 @@ export function createZoomBehavior() {
         return this;
     }
     this._zoomSelection = svg;
-    var extent = [0.1, 10];
+    var extent = this._options.zoomScaleExtent;
     var zoomBehavior = zoom()
         .scaleExtent(extent)
         .interpolate(interpolate)
@@ -86,6 +86,13 @@ export function resetZoom(transition) {
     }
     selection
         .call(this._zoomBehavior.transform, this._originalTransform);
+
+    return this;
+}
+
+export function zoomScaleExtent(extent) {
+
+    this._options.zoomScaleExtent = extent;
 
     return this;
 }

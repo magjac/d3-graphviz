@@ -24,6 +24,7 @@ import tweenPrecision from "./tweenPrecision";
 import growEnteringEdges from "./growEnteringEdges";
 import zoom from "./zoom";
 import {resetZoom} from "./zoom";
+import {zoomScaleExtent} from "./zoom";
 import on from "./on";
 import onerror from "./onerror";
 import logEvents from "./logEvents";
@@ -50,6 +51,7 @@ export function Graphviz(selection, options) {
         tweenPrecision: 1,
         growEnteringEdges: true,
         zoom: true,
+        zoomScaleExtent: [0.1, 10],
         width: null,
         height: null,
         scale: 1,
@@ -167,6 +169,7 @@ Graphviz.prototype = graphviz.prototype = {
     growEnteringEdges: growEnteringEdges,
     zoom: zoom,
     resetZoom: resetZoom,
+    zoomScaleExtent: zoomScaleExtent,
     render: render,
     dot: dot,
     renderDot: renderDot,
