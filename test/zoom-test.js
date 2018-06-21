@@ -189,3 +189,17 @@ tape("zoomScaleExtent() sets zoom scale extent.", function(test) {
 
     test.end();
 });
+
+tape("zoomTranslateExtent() sets zoom translate extent.", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+    var extent = [[0, 0], [100, 100]];
+    graphviz
+        .zoomTranslateExtent(extent)
+        .renderDot('digraph {a -> b;}');
+
+    test.equal(graphviz.options().zoomTranslateExtent, extent, '.zoomTranslateExtent(...) sets zoom translate extent');
+
+    test.end();
+});

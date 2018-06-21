@@ -25,6 +25,7 @@ import growEnteringEdges from "./growEnteringEdges";
 import zoom from "./zoom";
 import {resetZoom} from "./zoom";
 import {zoomScaleExtent} from "./zoom";
+import {zoomTranslateExtent} from "./zoom";
 import on from "./on";
 import onerror from "./onerror";
 import logEvents from "./logEvents";
@@ -52,6 +53,7 @@ export function Graphviz(selection, options) {
         growEnteringEdges: true,
         zoom: true,
         zoomScaleExtent: [0.1, 10],
+        zoomTranslateExtent: [[-Infinity, -Infinity], [+Infinity, +Infinity]],
         width: null,
         height: null,
         scale: 1,
@@ -170,6 +172,7 @@ Graphviz.prototype = graphviz.prototype = {
     zoom: zoom,
     resetZoom: resetZoom,
     zoomScaleExtent: zoomScaleExtent,
+    zoomTranslateExtent: zoomTranslateExtent,
     render: render,
     dot: dot,
     renderDot: renderDot,
