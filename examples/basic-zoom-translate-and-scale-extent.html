@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../node_modules/d3/dist/d3.js"></script>
+<script src="../node_modules/viz.js/viz.js" type="javascript/worker"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+margin = 20; // to avoid scrollbars
+
+var svgWidth = window.innerWidth - margin;
+var svgHeight = window.innerHeight - margin;
+
+var graphWidth = 62; // empirically determined
+var graphHeight = 112; // empirically determined
+
+var leftPad = 20;
+var rightPad = 20 + graphWidth;
+var topPad = 20 + graphHeight;
+var bottomPad = 20;
+
+graphviz = d3.select("#graph").graphviz()
+    .zoomScaleExtent([0.01, 100])
+    .zoomTranslateExtent([[rightPad - svgWidth, bottomPad - svgHeight], [svgWidth - leftPad, svgHeight - topPad]])
+    .attributer(attributer)
+    .renderDot('digraph  {a -> b}');
+
+function attributer(datum, index, nodes) {
+    var selection = d3.select(this);
+    if (datum.tag == "svg") {
+        selection
+            .attr("width", svgWidth)
+            .attr("height", svgHeight)
+            .attr("viewBox", "0 0 " + svgWidth + " " + svgHeight);
+        datum.attributes.width = svgWidth;
+        datum.attributes.height = svgHeight;
+        datum.attributes.viewBox = " 0 0 " + svgWidth + " " + svgHeight;
+    }
+}
+
+</script>

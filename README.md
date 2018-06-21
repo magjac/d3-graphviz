@@ -127,6 +127,7 @@ Returns a new graphviz renderer instance on the first element in the given *sele
 | [width](#graphviz_width) | null |
 | [zoom](#graphviz_zoom) | true |
 | [zoomScaleExtent](#graphviz_zoomScaleExtent) | [0.1, 10] |
+| [zoomTranslateExtent](#graphviz_zoomTranslateExtent) | [[-∞, -∞], [+∞, +∞]] |
 
 ¹ Only has effect when the graphviz renderer instance is created.
 
@@ -336,6 +337,10 @@ If *enable* is true (default), enables panning and zooming, else disables pannin
 <a name="graphviz_zoomScaleExtent" href="#graphviz_zoomScaleExtent">#</a> <i>graphviz</i>.<b>zoomScaleExtent</b>([<i>extent</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
 
 Sets the scale extent to the specified array of numbers [k0, k1] where k0 is the minimum allowed scale factor and k1 is the maximum allowed scale factor. The scale extent restricts zooming in and out. For details see [*zoom*.scaleExtent](https://github.com/d3/d3-zoom#zoom_scaleExtent).
+
+<a name="graphviz_zoomTranslateExtent" href="#graphviz_zoomTranslateExtent">#</a> <i>graphviz</i>.<b>zoomTranslateExtent</b>([<i>extent</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
+
+Sets the translate extent to the specified array of points [[x0, y0], [x1, y1]], where [x0, y0] is the top-left corner of the world and [x1, y1] is the bottom-right corner of the world. The translate extent restricts panning, and may cause translation on zoom out. For details see [*zoom*.translateExtent](https://github.com/d3/d3-zoom#zoom_translateExtent).
 
 <a name="graphviz_resetZoom" href="#graphviz_resetZoom">#</a> <i>graphviz</i>.<b>resetZoom</b>([<i>transition</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
 

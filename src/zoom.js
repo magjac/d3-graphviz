@@ -28,6 +28,7 @@ export function createZoomBehavior() {
     this._zoomSelection = svg;
     var zoomBehavior = zoom()
         .scaleExtent(this._options.zoomScaleExtent)
+        .translateExtent(this._options.zoomTranslateExtent)
         .interpolate(interpolate)
         .on("zoom", zoomed);
     this._zoomBehavior = zoomBehavior;
@@ -92,6 +93,14 @@ export function resetZoom(transition) {
 export function zoomScaleExtent(extent) {
 
     this._options.zoomScaleExtent = extent;
+
+    return this;
+}
+
+export function zoomTranslateExtent(extent) {
+
+    console.log('magjac 090:', extent);
+    this._options.zoomTranslateExtent = extent;
 
     return this;
 }
