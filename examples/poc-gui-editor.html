@@ -241,9 +241,6 @@ function startApp() {
                     attributesString += ' "' + name + '"="' + attributes[name] + '"';
                 }
             }
-            if (shape) {
-                attributesString += ' shape=' + shape;
-            }
             var newNodeString = '    ' + nodeName + ' [' + attributesString + ']';
             dotSrcLines.splice(-1, 0, newNodeString);
             dotSrc = dotSrcLines.join('\n');
