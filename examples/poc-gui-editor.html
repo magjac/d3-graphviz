@@ -238,7 +238,12 @@ function startApp() {
             var attributesString = ''
             for (var name of Object.keys(attributes)) {
                 if (attributes[name] != null) {
-                    attributesString += ' "' + name + '"="' + attributes[name] + '"';
+                    let re = '^[a-zA-Z\\x80-\\xff_][a-zA-Z\\x80-\\xff_0-9]*$';
+                    let value = attributes[name];
+                    if (!value.match(re)) {
+                        value = '"' + value + '"';
+                    }
+                    attributesString += ' ' + name + '=' + value;
                 }
             }
             var newNodeString = '    ' + nodeName + ' [' + attributesString + ']';
