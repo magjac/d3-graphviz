@@ -12,23 +12,22 @@ margin = 20; // to avoid scrollbars
 var svgWidth = window.innerWidth - margin;
 var svgHeight = window.innerHeight - margin;
 
-var graphWidth = 62; // empirically determined
-var graphHeight = 112; // empirically determined
-
 var leftPad = 20;
-var rightPad = 20 + graphWidth;
-var topPad = 20 + graphHeight;
+var rightPad = 20;
+var topPad = 20;
 var bottomPad = 20;
 
 graphviz = d3.select("#graph").graphviz()
     .zoomScaleExtent([0.01, 100])
-    .zoomTranslateExtent([[rightPad - svgWidth, bottomPad - svgHeight], [svgWidth - leftPad, svgHeight - topPad]])
     .attributer(attributer)
     .renderDot('digraph  {a -> b}');
 
 function attributer(datum, index, nodes) {
     var selection = d3.select(this);
     if (datum.tag == "svg") {
+        graphWidth = +selection.datum().attributes.width.replace('pt', '');
+        graphHeight = +selection.datum().attributes.height.replace('pt', '');
+        graphviz.zoomTranslateExtent([[rightPad + graphWidth - svgWidth, bottomPad - svgHeight], [svgWidth - leftPad, svgHeight - topPad - graphHeight]])
         selection
             .attr("width", svgWidth)
             .attr("height", svgHeight)
