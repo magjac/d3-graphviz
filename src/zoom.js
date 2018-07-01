@@ -99,7 +99,6 @@ export function zoomScaleExtent(extent) {
 
 export function zoomTranslateExtent(extent) {
 
-    console.log('magjac 090:', extent);
     this._options.zoomTranslateExtent = extent;
 
     return this;
