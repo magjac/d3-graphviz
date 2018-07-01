@@ -92,12 +92,12 @@ module.exports = function(html, options) {
         Object.defineProperty(window.SVGElement.prototype, 'transform', {
             get: function() {
                 if (this.getAttribute('transform')) {
-                    var translate = this.getAttribute('transform').replace(/.*translate\((\d+[ ,]+\d+)\).*/, function(match, xy) {
+                    var translate = this.getAttribute('transform').replace(/.*translate\((-*[\d.]+[ ,]+-*[\d.]+)\).*/, function(match, xy) {
                         return xy;
                     }).split(/[ ,]+/).map(function(v) {
                         return +v;
                     });
-                    var scale = this.getAttribute('transform').replace(/.*.*scale\((\d+[ ,]*\d*)\).*/, function(match, scale) {
+                    var scale = this.getAttribute('transform').replace(/.*.*scale\((-*[\d.]+[ ,]*-*[\d.]*)\).*/, function(match, scale) {
                         return scale;
                     }).split(/[ ,]+/).map(function(v) {
                         return +v;
