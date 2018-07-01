@@ -24,6 +24,7 @@ export function extractElementData(element) {
     if (transform && transform.baseVal.numberOfItems != 0) {
         var matrix = transform.baseVal.consolidate().matrix;
         datum.translation = {x: matrix.e, y: matrix.f};
+        datum.scale = matrix.a;
     }
     if (tag == 'ellipse') {
         datum.center = {

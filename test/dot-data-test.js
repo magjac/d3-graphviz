@@ -60,6 +60,7 @@ var basic_data = {
                 "x": 4,
                 "y": 112
             },
+            "scale": 1,
             "parent": "[Circular ~]",
             "children": [
                 {
