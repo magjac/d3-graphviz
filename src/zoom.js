@@ -50,12 +50,16 @@ export function getTranslatedZoomTransform(selection) {
     // data and it's saved previous translation. The selection is
     // normally the top level g element of the graph.
     var oldTranslation = this._translation;
+    var oldScale = this._scale;
     var newTranslation = selection.datum().translation;
+    var newScale = selection.datum().scale;
     var t = zoomTransform(this._zoomSelection.node());
     if (oldTranslation) {
+        t = t.scale(1 / oldScale);
         t = t.translate(-oldTranslation.x, -oldTranslation.y);
     }
     t = t.translate(newTranslation.x, newTranslation.y);
+    t = t.scale(newScale);
     return t;
 }
 
@@ -68,12 +72,13 @@ export function translateZoomBehaviorTransform(selection) {
     // top level g element of the graph.
     this._zoomBehavior.transform(this._zoomSelection, getTranslatedZoomTransform.call(this, selection));
 
-    // Save the selections's new translation.
+    // Save the selections's new translation and scale.
     this._translation = selection.datum().translation;
+    this._scale = selection.datum().scale;
 
-    // Set the original zoom transform to the translation specified in
+    // Set the original zoom transform to the translation and scale specified in
     // the selection's data.
-    this._originalTransform = zoomIdentity.translate(selection.datum().translation.x, selection.datum().translation.y);
+    this._originalTransform = zoomIdentity.translate(selection.datum().translation.x, selection.datum().translation.y).scale(selection.datum().scale);
 }
 
 export function resetZoom(transition) {
