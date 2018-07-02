@@ -55,8 +55,8 @@ export function getTranslatedZoomTransform(selection) {
     var newScale = selection.datum().scale;
     var t = zoomTransform(this._zoomSelection.node());
     if (oldTranslation) {
-        t = t.translate(-oldTranslation.x, -oldTranslation.y);
         t = t.scale(1 / oldScale);
+        t = t.translate(-oldTranslation.x, -oldTranslation.y);
     }
     t = t.translate(newTranslation.x, newTranslation.y);
     t = t.scale(newScale);
