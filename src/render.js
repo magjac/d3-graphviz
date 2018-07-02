@@ -279,28 +279,35 @@ function _render(callback) {
                 }
             } else {
                 if (attributeName == 'transform' && data.translation) {
-                    var onEnd = elementTransition.on("end");
-                    elementTransition
-                        .on("start", function () {
-                            if (graphvizInstance._zoomBehavior) {
-                                // Update the transform to transition to, just before the transition starts
-                                // in order to catch changes between the transition scheduling to its start.
-                                elementTransition
-                                    .tween("attr.transform", function() {
-                                        var node = this;
-                                        return function(t) {
-                                            node.setAttribute("transform", interpolateTransformSvg(zoomTransform(graphvizInstance._zoomSelection.node()).toString(), getTranslatedZoomTransform.call(graphvizInstance, element).toString())(t));
-                                        };
-                                    });
-                            }
-                        })
-                        .on("end", function () {
-                            onEnd.call(this);
-                            // Update the zoom transform to the new translated transform
-                            if (graphvizInstance._zoomBehavior) {
-                                translateZoomBehaviorTransform.call(graphvizInstance, element);
-                            }
-                        })
+                    if (transitionInstance) {
+                        var onEnd = elementTransition.on("end");
+                        elementTransition
+                            .on("start", function () {
+                                if (graphvizInstance._zoomBehavior) {
+                                    // Update the transform to transition to, just before the transition starts
+                                    // in order to catch changes between the transition scheduling to its start.
+                                    elementTransition
+                                        .tween("attr.transform", function() {
+                                            var node = this;
+                                            return function(t) {
+                                                node.setAttribute("transform", interpolateTransformSvg(zoomTransform(graphvizInstance._zoomSelection.node()).toString(), getTranslatedZoomTransform.call(graphvizInstance, element).toString())(t));
+                                            };
+                                        });
+                                }
+                            })
+                            .on("end", function () {
+                                onEnd.call(this);
+                                // Update the zoom transform to the new translated transform
+                                if (graphvizInstance._zoomBehavior) {
+                                    translateZoomBehaviorTransform.call(graphvizInstance, element);
+                                }
+                            })
+                    } else {
+                        if (graphvizInstance._zoomBehavior) {
+                            // Update the transform attribute to set with the current pan translation
+                            attributeValue = getTranslatedZoomTransform.call(graphvizInstance, element).toString();
+                        }
+                    }
                 }
                 elementTransition
                     .attr(attributeName, attributeValue);
