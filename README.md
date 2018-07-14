@@ -172,7 +172,7 @@ Starts rendering of an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>]
 
 <a name="graphviz_engine" href="#graphviz_engine">#</a> <i>graphviz</i>.<b>engine</b>(<i>engine</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/engine.js "Source")
 
-Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified *engine* string. The engine name must be set before attaching the [DOT](https://www.graphviz.org/doc/info/lang.html) source. If it is changed after this, an eror is thrown. Supports all engines that [Viz.js](https://github.com/mdaines/viz.js/) supports. Currently these are:
+Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified *engine* string. In order to have effect, the engine must be set before calling [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). Supports all engines that [Viz.js](https://github.com/mdaines/viz.js/) supports. Currently these are:
 
 * <b>circo</b>
 * <b>dot</b> (default)
