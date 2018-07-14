@@ -16,14 +16,6 @@ tape("engine() selects which graphviz layout engine to use.", function(test) {
     test.ok(d3_selection.select('svg').attr('width', '62pt'), 'The "dot" engine generates an SVG with width 62pt');
     test.ok(d3_selection.select('svg').attr('height', '116pt'), 'The "dot" engine generates an SVG with height 116pt');
 
-    function changeEngine() {
-        graphviz
-            .engine('circo')
-            .renderDot('digraph {a -> b;}');
-    }
-
-    test.throws(changeEngine, 'Changing engine after layout throws error');
-
     test.end();
 });
 
