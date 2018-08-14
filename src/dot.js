@@ -55,7 +55,11 @@ export default function(src, callback) {
                     return childData.tag == 'title';
                 });
                 if (title) {
-                    datum.key = title.children[0].text;
+                    if (title.children.length > 0) {
+                        datum.key = title.children[0].text;
+                    } else {
+                        datum.key = '';
+                    }
                 }
             }
         }
@@ -130,8 +134,12 @@ export default function(src, callback) {
         if (growEnteringEdges && datum.parent) {
             if (datum.parent.attributes.class == 'node') {
                 if (tag == 'title') {
-                    var child = datum.children[0];
-                    var nodeId = child.text;
+                    if (datum.children.length > 0) {
+                      var child = datum.children[0];
+                      var nodeId = child.text;
+                    } else {
+                      var nodeId = '';
+                    }
                     nodeDictionary[nodeId] = datum.parent;
                 }
             }
