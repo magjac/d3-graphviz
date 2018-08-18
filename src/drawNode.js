@@ -59,6 +59,7 @@ function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes)
 }
 
 export function drawNode(x, y, nodeId, attributes={}, options={}) {
+    attributes = Object.assign({}, attributes);
     completeAttributes(attributes);
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
@@ -89,11 +90,11 @@ export function updateDrawnNode(x, y, nodeId, attributes={}, options={}) {
     if (nodeId == null) {
         nodeId = this._drawnNode.nodeId;
     }
+    attributes = Object.assign(this._drawnNode.attributes, attributes);
     completeAttributes(attributes, this._drawnNode.attributes);
     this._drawnNode.nodeId = nodeId;
     this._drawnNode.x = x;
     this._drawnNode.y = y;
-    this._drawnNode.attributes = attributes;
     _updateNode(node, x, y, nodeId, attributes, options);
 
     return this;
