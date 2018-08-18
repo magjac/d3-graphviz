@@ -145,3 +145,67 @@ export function insertAllElementsData(element, datum) {
         insertAllElementsData(d3.select(this), datum.children[i]);
     });
 }
+
+function insertChildren(element, index) {
+    var children = element.selectAll(function () {
+        return element.node().childNodes;
+    });
+
+    children = children
+      .data(function (d) {
+          return d.children;
+      }, function (d) {
+        return d.tag + '-' + index;
+      });
+    var childrenEnter = children
+      .enter()
+      .append(function(d) {
+          return createElement(d);
+      });
+
+    var childrenExit = children
+      .exit();
+    childrenExit = childrenExit
+        .remove()
+    children = childrenEnter
+        .merge(children);
+    var childTagIndexes = {};
+    children.each(function(childData) {
+        var childTag = childData.tag;
+        if (childTagIndexes[childTag] == null) {
+          childTagIndexes[childTag] = 0;
+        }
+        var childIndex = childTagIndexes[childTag]++;
+        attributeElement.call(this, childData, childIndex);
+    });
+}
+
+export function attributeElement(data, index=0) {
+    var element = d3.select(this);
+    var tag = data.tag;
+    var attributes = data.attributes;
+    var currentAttributes = element.node().attributes;
+    if (currentAttributes) {
+        for (var i = 0; i < currentAttributes.length; i++) {
+            var currentAttribute = currentAttributes[i];
+            var name = currentAttribute.name;
+            if (name.split(':')[0] != 'xmlns' && currentAttribute.namespaceURI) {
+                var namespaceURIParts = currentAttribute.namespaceURI.split('/');
+                var namespace = namespaceURIParts[namespaceURIParts.length - 1];
+                name = namespace + ':' + name;
+            }
+            if (!(name in attributes)) {
+                attributes[name] = null;
+            }
+        }
+    }
+    for (var attributeName of Object.keys(attributes)) {
+        element
+            .attr(attributeName, attributes[attributeName]);
+    }
+    if (data.text) {
+        element
+            .text(data.text);
+    }
+    insertChildren(element, index);
+}
