@@ -10,15 +10,19 @@ import {roundTo4Decimals} from "./utils";
 
 export function drawNode(x, y, nodeId, attributes={}, options={}) {
     attributes = Object.assign({}, attributes);
-    var root = this._selection;
-    var svg = root.selectWithoutDataPropagation("svg");
-    var graph0 = svg.selectWithoutDataPropagation("g");
-    var newNode0 = createNode(nodeId, attributes);
-    var nodeData = extractAllElementsData(newNode0);
-    var newNode = graph0.append('g')
-        .data([nodeData]);
-    attributeElement.call(newNode.node(), nodeData);
-
+    if (attributes.style && attributes.style.includes('invis')) {
+        var newNode = null;
+    } else {
+        var root = this._selection;
+        var svg = root.selectWithoutDataPropagation("svg");
+        var graph0 = svg.selectWithoutDataPropagation("g");
+        var newNode0 = createNode(nodeId, attributes);
+        var nodeData = extractAllElementsData(newNode0);
+        var newNode = graph0.append('g')
+            .data([nodeData]);
+        attributeElement.call(newNode.node(), nodeData);
+        _updateNode(newNode, x, y, nodeId, attributes, options);
+    }
     this._drawnNode = {
         g: newNode,
         nodeId: nodeId,
@@ -26,7 +30,6 @@ export function drawNode(x, y, nodeId, attributes={}, options={}) {
         y: y,
         attributes: attributes,
     };
-    _updateNode(newNode, x, y, nodeId, attributes, options);
 
     return this;
 }
@@ -44,7 +47,16 @@ export function updateDrawnNode(x, y, nodeId, attributes={}, options={}) {
     this._drawnNode.nodeId = nodeId;
     this._drawnNode.x = x;
     this._drawnNode.y = y;
-    _updateNode(node, x, y, nodeId, attributes, options);
+    if (!node && !(attributes.style && attributes.style.includes('invis'))) {
+        var root = this._selection;
+        var svg = root.selectWithoutDataPropagation("svg");
+        var graph0 = svg.selectWithoutDataPropagation("g");
+        var node = graph0.append('g');
+        this._drawnNode.g = node;
+    }
+    if (node)  {
+      _updateNode(node, x, y, nodeId, attributes, options);
+    }
 
     return this;
 }
@@ -110,7 +122,9 @@ export function removeDrawnNode() {
 
     var node = this._drawnNode.g;
 
-    node.remove();
+    if (node)  {
+        node.remove();
+    }
 
     this._drawnNode = null;
 
@@ -127,6 +141,9 @@ export function insertDrawnNode(nodeId) {
         nodeId = this._drawnNode.nodeId;
     }
     var node = this._drawnNode.g;
+    if (!node)  {
+        return this;
+    }
     var attributes = this._drawnNode.attributes;
 
     var title = node.selectWithoutDataPropagation("title");
