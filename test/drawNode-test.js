@@ -559,7 +559,7 @@ tape("Attempts to operate on a node without drawing one first is handled gracefu
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         test.throws(function () {
             graphviz
-                .updateDrawnNode(21, -21, 41, -21);
+                .updateDrawnNode(21, -21);
         }, "updateDrawnNode throws error if no node has been drawn first");
         test.throws(function () {
             graphviz
