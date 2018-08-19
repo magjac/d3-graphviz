@@ -108,3 +108,7 @@ export function zoomTranslateExtent(extent) {
 
     return this;
 }
+
+export function zoomBehavior() {
+  return this._zoomBehavior || null;
+}

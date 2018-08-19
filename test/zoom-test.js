@@ -203,3 +203,31 @@ tape("zoomTranslateExtent() sets zoom translate extent.", function(test) {
 
     test.end();
 });
+
+tape("zoomBehavior() returns the current zoom behavior if zoom is enabled.", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+    var extent = [[0, 0], [100, 100]];
+    graphviz
+        .zoom(true)
+        .renderDot('digraph {a -> b;}');
+
+    test.equal(typeof graphviz.zoomBehavior(), 'function', 'The zoom behavior is a function if zoom is enabled');
+
+    test.end();
+});
+
+tape("zoomBehavior() returns null if zoom is disabled.", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+    var extent = [[0, 0], [100, 100]];
+    graphviz
+        .zoom(false)
+        .renderDot('digraph {a -> b;}');
+
+    test.equal(graphviz.zoomBehavior(), null, 'The zoom behavior is null if zoom is disabled');
+
+    test.end();
+});
