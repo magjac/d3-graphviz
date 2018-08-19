@@ -77,6 +77,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Maintaining Object Constancy](#maintaining-object-constancy)
 * [Customizing Graph Attributes](#customizing-graph-attributes)
 * [Accessing Elements of the Generated Graph](#accessing-elements-of-the-generated-graph)
+* [Accessing the Extracted Data](#accessing-the-extracted-data)
 * [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changes)
 * [Large Graphs](#large-graphs)
 
@@ -396,6 +397,12 @@ d3.select("#graph").graphviz()
 <a name="selection_selectWithoutDataPropagation" href="#selection_selectWithoutDataPropagation">#</a> <i>selection</i>.<b>selectWithoutDataPropagation</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/selectWithoutDataPropagation.js "Source")
 
 For each selected element, selects the first descendant element that matches the specified selector string in the same ways as  [*selection*.select](https://github.com/d3/d3-selection#selection_select), but does *not* propagate any associated data from the current element to the corresponding selected element.
+
+## Accessing the Extracted Data
+
+<a name="graphviz_data" href="#graphviz_data">#</a> <i>graphviz</i>.<b>data</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/data.js "Source")
+
+Returns the data extracted by [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) or null if no such data exists.
 
 ### Modifying an Existing Graph and Animating the Changes
 
