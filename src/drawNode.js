@@ -11,7 +11,7 @@ import {roundTo4Decimals} from "./utils";
 export function drawNode(x, y, nodeId, attributes={}, options={}) {
     attributes = Object.assign({}, attributes);
     if (attributes.style && attributes.style.includes('invis')) {
-        var newNode = null;
+        var newNode = d3.select(null);
     } else {
         var root = this._selection;
         var svg = root.selectWithoutDataPropagation("svg");
@@ -47,14 +47,14 @@ export function updateDrawnNode(x, y, nodeId, attributes={}, options={}) {
     this._drawnNode.nodeId = nodeId;
     this._drawnNode.x = x;
     this._drawnNode.y = y;
-    if (!node && !(attributes.style && attributes.style.includes('invis'))) {
+    if (node.empty() && !(attributes.style && attributes.style.includes('invis'))) {
         var root = this._selection;
         var svg = root.selectWithoutDataPropagation("svg");
         var graph0 = svg.selectWithoutDataPropagation("g");
         var node = graph0.append('g');
         this._drawnNode.g = node;
     }
-    if (node)  {
+    if (!node.empty())  {
       _updateNode(node, x, y, nodeId, attributes, options);
     }
 
@@ -131,7 +131,7 @@ export function moveDrawnNode(x, y, options={}) {
     this._drawnNode.x = x;
     this._drawnNode.y = y;
 
-    if (node)  {
+    if (!node.empty())  {
         _moveNode(node, x, y, attributes, options);
     }
 
@@ -146,7 +146,7 @@ export function removeDrawnNode() {
 
     var node = this._drawnNode.g;
 
-    if (node)  {
+    if (!node.empty())  {
         node.remove();
     }
 
@@ -165,7 +165,7 @@ export function insertDrawnNode(nodeId) {
         nodeId = this._drawnNode.nodeId;
     }
     var node = this._drawnNode.g;
-    if (!node)  {
+    if (node.empty())  {
         return this;
     }
     var attributes = this._drawnNode.attributes;
