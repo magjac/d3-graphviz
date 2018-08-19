@@ -13,7 +13,6 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(endTest);
 
@@ -100,7 +99,6 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawEdge);
 
@@ -197,7 +195,6 @@ tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b [URL="dummy"];}')
         .render(drawEdge);
 
@@ -294,7 +291,6 @@ tape("drawEdge() draws an edge with an tooltip attribute in the same way as Grap
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b [tooltip="dummy"];}')
         .render(drawEdge);
 
@@ -391,7 +387,7 @@ tape("insertDrawnEdge() inserts the currently drawn edge into the joined data st
 
     graphviz
         .zoom(false)
-        .logEvents(true)
+
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawEdge);
 
@@ -447,7 +443,6 @@ tape("removeDrawnEdge() removes the edge currently being drawn", function(test) 
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawEdge);
 
@@ -509,7 +504,6 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawEdge);
 
@@ -579,7 +573,6 @@ tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) 
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawEdge);
 
@@ -637,7 +630,6 @@ tape("Attempts to operate on an edge without drawing one first is handled gracef
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(startTest);
 
