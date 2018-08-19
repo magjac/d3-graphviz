@@ -67,6 +67,12 @@ function _updateNode(node, x, y, nodeId, attributes, options) {
     var nodeData = extractAllElementsData(newNode);
     node.data([nodeData]);
     attributeElement.call(node.node(), nodeData);
+    _moveNode(node, x, y, attributes, options);
+
+    return this;
+}
+
+function _moveNode(node, x, y, attributes, options) {
     if (attributes.URL || attributes.tooltip) {
         var subParent = node.selectWithoutDataPropagation("g").selectWithoutDataPropagation("a");
     } else {
