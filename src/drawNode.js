@@ -194,6 +194,8 @@ export function insertDrawnNode(nodeId) {
 
     insertAllElementsData(node, nodeData);
 
+    this._drawnNode = null;
+
     return this
 
 }
