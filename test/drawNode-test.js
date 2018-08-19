@@ -538,7 +538,7 @@ tape("moveDrawnNode modifies the position of a node", function(test) {
 
 });
 
-tape("Attempts to operate on an node without drawing one first is handled gracefully", function(test) {
+tape("Attempts to operate on a node without drawing one first is handled gracefully", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -560,7 +560,7 @@ tape("Attempts to operate on an node without drawing one first is handled gracef
         test.throws(function () {
             graphviz
                 .updateDrawnNode(21, -21, 41, -21);
-        }, "updateDrawnNode throws error if not node has been drawn first");
+        }, "updateDrawnNode throws error if no node has been drawn first");
         test.throws(function () {
             graphviz
                 .moveDrawnNode(21, -21);
@@ -568,7 +568,7 @@ tape("Attempts to operate on an node without drawing one first is handled gracef
         test.throws(function () {
             graphviz
             .insertDrawnNode('b->a');
-        }, "insertDrawnNode throws error if not node has been drawn first");
+        }, "insertDrawnNode throws error if no node has been drawn first");
 
         test.doesNotThrow(function () {
             graphviz
