@@ -620,6 +620,60 @@ tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) 
 
 });
 
+tape("drawnEdgeSelection return a selection containing the edge currently being drawn", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    var num_nodes = 2;
+    var num_edges = 1;
+
+    graphviz
+        .zoom(false)
+        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+        .render(drawEdge);
+
+    function drawEdge() {
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        arrowHeadLength = 10;
+        arrowHeadWidth = 7;
+        margin = 0.174;
+        x1 = 20;
+        y1 = -20;
+        x2 = 40;
+        y2 = -20;
+
+        var noDrawnEdge = graphviz.drawnEdgeSelection();
+        test.ok(noDrawnEdge.empty(), "drawnEdgeSelection() returns an empty selection when no edge is currently being drawn");
+
+        graphviz
+            .drawEdge(x1, y1, x2, y2, {id: 'drawn-edge'});
+        num_edges += 1;
+        var edge = d3.select('#drawn-edge');
+        test.equal(edge.size(), 1, 'An edge with the specified id attribute is present');
+        var arrowHead = edge.selectWithoutDataPropagation("polygon");
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+
+        var drawnEdge = graphviz.drawnEdgeSelection();
+        test.equal(drawnEdge.node(), edge.node(), "drawnEdgeSelection() returns the edge currently being drawn");
+        graphviz
+            .insertDrawnEdge('b -> a');
+        var insertedDrawnEdge = graphviz.drawnEdgeSelection();
+        test.ok(insertedDrawnEdge.empty(), "drawnEdgeSelection() returns an empty selection when the drawn edge has been inserted into the data");
+
+        test.end();
+    }
+
+});
+
 tape("Attempts to operate on an edge without drawing one first is handled gracefully", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;

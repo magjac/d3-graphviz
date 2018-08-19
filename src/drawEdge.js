@@ -266,3 +266,13 @@ export function insertDrawnEdge(name) {
     return this
 
 }
+
+export function drawnEdgeSelection() {
+
+  if (this._drawnEdge) {
+    return this._drawnEdge.g;
+  } else {
+    return d3.select(null);
+  }
+
+}
