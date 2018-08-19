@@ -538,6 +538,58 @@ tape("moveDrawnNode modifies the position of a node", function(test) {
 
 });
 
+tape("drawnNodeSelection return a selection containing the node currently being drawn", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    var num_nodes = 2;
+    var num_edges = 1;
+
+    function hexColorOf(colorName) {
+        return hexColors[colorName];
+    }
+
+    graphviz
+        .zoom(false)
+        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+        .render(drawNode);
+
+    function drawNode() {
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        x = 20;
+        y = -20;
+
+        var noDrawnNode = graphviz.drawnNodeSelection();
+        test.ok(noDrawnNode.empty(), "drawnNodeSelection() returns an empty selection when no node is currently being drawn");
+
+        graphviz
+            .drawNode(x, y, 'f', {shape: 'ellipse', id: 'drawn-node'});
+        num_nodes += 1;
+        var node = d3.select('#drawn-node');
+        test.equal(node.size(), 1, 'a node with the specified id attribute is present');
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
+
+        var drawnNode = graphviz.drawnNodeSelection();
+        test.equal(drawnNode.node(), node.node(), "drawnNodeSelection() returns the node currently being drawn");
+        graphviz
+            .insertDrawnNode();
+        var insertedDrawnNode = graphviz.drawnNodeSelection();
+        test.ok(insertedDrawnNode.empty(), "drawnNodeSelection() returns an empty selection when the drawn node has been inserted into the data");
+
+        test.end();
+    }
+
+});
+
 tape("Attempts to operate on a node without drawing one first is handled gracefully", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;

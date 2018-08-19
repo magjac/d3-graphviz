@@ -200,6 +200,16 @@ export function insertDrawnNode(nodeId) {
 
 }
 
+export function drawnNodeSelection() {
+
+  if (this._drawnNode) {
+    return this._drawnNode.g;
+  } else {
+    return d3.select(null);
+  }
+
+}
+
 function createNode(nodeId, attributes) {
     var attributesString = ''
     for (var name of Object.keys(attributes)) {

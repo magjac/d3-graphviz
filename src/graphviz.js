@@ -39,6 +39,7 @@ import {updateDrawnNode} from "./drawNode";
 import {moveDrawnNode} from "./drawNode";
 import {insertDrawnNode} from "./drawNode";
 import {removeDrawnNode} from "./drawNode";
+import {drawnNodeSelection} from "./drawNode";
 
 export function Graphviz(selection, options) {
     this._options = {
@@ -199,4 +200,5 @@ Graphviz.prototype = graphviz.prototype = {
     moveDrawnNode: moveDrawnNode,
     insertDrawnNode,
     removeDrawnNode, removeDrawnNode,
+    drawnNodeSelection, drawnNodeSelection,
 };
