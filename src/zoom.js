@@ -112,3 +112,7 @@ export function zoomTranslateExtent(extent) {
 export function zoomBehavior() {
   return this._zoomBehavior || null;
 }
+
+export function zoomSelection() {
+  return this._zoomSelection || null;
+}

@@ -231,3 +231,31 @@ tape("zoomBehavior() returns null if zoom is disabled.", function(test) {
 
     test.end();
 });
+
+tape("zoomSelection() returns the current zoom selection if zoom is enabled.", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+    var extent = [[0, 0], [100, 100]];
+    graphviz
+        .zoom(true)
+        .renderDot('digraph {a -> b;}');
+
+    test.ok(graphviz.zoomSelection() instanceof d3_selection.selection, 'The zoom selection is an instance of d3.selection if zoom is enabled');
+
+    test.end();
+});
+
+tape("zoomSelection() returns null if zoom is disabled.", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+    var extent = [[0, 0], [100, 100]];
+    graphviz
+        .zoom(false)
+        .renderDot('digraph {a -> b;}');
+
+    test.equal(graphviz.zoomSelection(), null, 'The zoom selection is null if zoom is disabled');
+
+    test.end();
+});
