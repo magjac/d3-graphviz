@@ -120,6 +120,24 @@ function _moveNode(node, x, y, attributes, options) {
     return this;
 }
 
+export function moveDrawnNode(x, y, options={}) {
+
+    if (!this._drawnNode)  {
+        throw Error('No node has been drawn');
+    }
+    var node = this._drawnNode.g;
+    var attributes = this._drawnNode.attributes;
+
+    this._drawnNode.x = x;
+    this._drawnNode.y = y;
+
+    if (node)  {
+        _moveNode(node, x, y, attributes, options);
+    }
+
+    return this
+}
+
 export function removeDrawnNode() {
 
     if (!this._drawnNode)  {

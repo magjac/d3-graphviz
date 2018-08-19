@@ -425,6 +425,10 @@ Draws a node with the upper left corner of its bounding box at (*x*, *y*), using
 
 Updates properties and attributes of the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode), using the same arguments. This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
 
+<a name="graphviz_moveDrawnNode" href="#graphviz_moveDrawnNode">#</a> <i>graphviz</i>.<b>moveDrawnNode</b>(<i> x</i>, <i> y</i>[, <i> options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
+
+Updates the position of the upper left corner of the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphviz_drawNode), accepting the same *options* argument. This method cannot be used after the node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
+
 <a name="graphviz_insertDrawnNode" href="#graphviz_insertDrawnNode">#</a> <i>graphviz</i>.<b>insertDrawnNode</b>(<i>nodeId</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
 Inserts the node into the graph data, making it available for an animated transition into a subsequent new layout perfomed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html).

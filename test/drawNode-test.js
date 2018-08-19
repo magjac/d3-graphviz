@@ -486,6 +486,58 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
 
 });
 
+tape("moveDrawnNode modifies the position of a node", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    var num_nodes = 2;
+    var num_edges = 1;
+
+    function hexColorOf(colorName) {
+        return hexColors[colorName];
+    }
+
+    graphviz
+        .zoom(false)
+        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+        .render(drawNode);
+
+    function drawNode() {
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        x = 20;
+        y = -20;
+        graphviz
+            .drawNode(x, y, 'f', {shape: 'ellipse', id: 'drawn-node'});
+        num_nodes += 1;
+        var node = d3.select('#drawn-node');
+        test.equal(node.size(), 1, 'a node with the specified id attribute is present');
+        var ellipse = node.selectWithoutDataPropagation("ellipse");
+        var text = node.selectWithoutDataPropagation('text');
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
+        test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
+        test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
+
+        x += 1;
+        y -= 1;
+        graphviz
+            .moveDrawnNode(x, y);
+        test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
+        test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
+
+        test.end();
+    }
+
+});
+
 tape("Attempts to operate on an node without drawing one first is handled gracefully", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
@@ -509,6 +561,10 @@ tape("Attempts to operate on an node without drawing one first is handled gracef
             graphviz
                 .updateDrawnNode(21, -21, 41, -21);
         }, "updateDrawnNode throws error if not node has been drawn first");
+        test.throws(function () {
+            graphviz
+                .moveDrawnNode(21, -21);
+        }, "moveDrawnNode throws error if no node has been drawn first");
         test.throws(function () {
             graphviz
             .insertDrawnNode('b->a');

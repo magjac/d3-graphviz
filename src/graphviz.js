@@ -36,6 +36,7 @@ import {insertDrawnEdge} from "./drawEdge";
 import {removeDrawnEdge} from "./drawEdge";
 import {drawNode} from "./drawNode";
 import {updateDrawnNode} from "./drawNode";
+import {moveDrawnNode} from "./drawNode";
 import {insertDrawnNode} from "./drawNode";
 import {removeDrawnNode} from "./drawNode";
 
@@ -195,6 +196,7 @@ Graphviz.prototype = graphviz.prototype = {
     removeDrawnEdge, removeDrawnEdge,
     drawNode: drawNode,
     updateDrawnNode: updateDrawnNode,
+    moveDrawnNode: moveDrawnNode,
     insertDrawnNode,
     removeDrawnNode, removeDrawnNode,
 };
