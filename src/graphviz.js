@@ -2,6 +2,7 @@ import * as d3 from "d3-selection";
 import {dispatch} from "d3-dispatch";
 import render from "./render";
 import dot from "./dot";
+import data from "./data";
 import {initViz} from "./dot";
 import renderDot from "./renderDot";
 import transition from "./transition";
@@ -24,6 +25,8 @@ import tweenPrecision from "./tweenPrecision";
 import growEnteringEdges from "./growEnteringEdges";
 import zoom from "./zoom";
 import {resetZoom} from "./zoom";
+import {zoomBehavior} from "./zoom";
+import {zoomSelection} from "./zoom";
 import {zoomScaleExtent} from "./zoom";
 import {zoomTranslateExtent} from "./zoom";
 import on from "./on";
@@ -175,10 +178,13 @@ Graphviz.prototype = graphviz.prototype = {
     growEnteringEdges: growEnteringEdges,
     zoom: zoom,
     resetZoom: resetZoom,
+    zoomBehavior: zoomBehavior,
+    zoomSelection: zoomSelection,
     zoomScaleExtent: zoomScaleExtent,
     zoomTranslateExtent: zoomTranslateExtent,
     render: render,
     dot: dot,
+    data: data,
     renderDot: renderDot,
     transition: transition,
     active: active,

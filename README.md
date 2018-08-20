@@ -77,6 +77,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Maintaining Object Constancy](#maintaining-object-constancy)
 * [Customizing Graph Attributes](#customizing-graph-attributes)
 * [Accessing Elements of the Generated Graph](#accessing-elements-of-the-generated-graph)
+* [Accessing the Extracted Data](#accessing-the-extracted-data)
 * [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changes)
 * [Large Graphs](#large-graphs)
 
@@ -334,6 +335,14 @@ A demo of shape tweening can be seen [here](http://bl.ocks.org/magjac/69dc955a2e
 
 If *enable* is true (default), enables panning and zooming, else disables panning and zooming. The zoom behavior is applied to the graph's top level <b>svg</b> element.
 
+<a name="graphviz_zoomBehavior" href="#graphviz_zoomBehavior">#</a> <i>graphviz</i>.<b>zoomBehavior</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
+
+Returns the [zoom behavior](https://github.com/d3/d3-zoom#zoom) if zooming is enabled and a graph has been rendered, else returns null.
+
+<a name="graphviz_zoomSelection" href="#graphviz_zoomSelection">#</a> <i>graphviz</i>.<b>zoomSelection</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
+
+Returns the [selection](https://github.com/d3/d3-selection#selection) to which the [zoom behavior](https://github.com/d3/d3-zoom#zoom) has been applied if zooming is enabled and a graph has been rendered, else returns null.
+
 <a name="graphviz_zoomScaleExtent" href="#graphviz_zoomScaleExtent">#</a> <i>graphviz</i>.<b>zoomScaleExtent</b>([<i>extent</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/zoom.js "Source")
 
 Sets the scale extent to the specified array of numbers [k0, k1] where k0 is the minimum allowed scale factor and k1 is the maximum allowed scale factor. The scale extent restricts zooming in and out. For details see [*zoom*.scaleExtent](https://github.com/d3/d3-zoom#zoom_scaleExtent).
@@ -388,6 +397,12 @@ d3.select("#graph").graphviz()
 <a name="selection_selectWithoutDataPropagation" href="#selection_selectWithoutDataPropagation">#</a> <i>selection</i>.<b>selectWithoutDataPropagation</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/selectWithoutDataPropagation.js "Source")
 
 For each selected element, selects the first descendant element that matches the specified selector string in the same ways as  [*selection*.select](https://github.com/d3/d3-selection#selection_select), but does *not* propagate any associated data from the current element to the corresponding selected element.
+
+## Accessing the Extracted Data
+
+<a name="graphviz_data" href="#graphviz_data">#</a> <i>graphviz</i>.<b>data</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/data.js "Source")
+
+Returns the data extracted by [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) or null if no such data exists.
 
 ### Modifying an Existing Graph and Animating the Changes
 

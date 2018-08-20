@@ -1,3 +1,7 @@
+export default function() {
+    return this._data || null;
+}
+
 export function isEdgeElementParent(datum) {
     return (datum.attributes.class == 'edge' || (
         datum.tag == 'a' &&
