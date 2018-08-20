@@ -502,6 +502,18 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
     var num_nodes = 2;
     var num_edges = 1;
 
+    const hexColors = {
+        'black': '#000000',
+        'lightgray': '#d3d3d3',
+        'red': '#ff0000',
+        'purple': '#a020f0',
+        'green': '#00ff00',
+    };
+
+    function hexColorOf(colorName) {
+        return hexColors[colorName];
+    }
+
     graphviz
         .zoom(false)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
@@ -533,30 +545,36 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         test.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
-        test.equal(line.attr("fill"), 'black', 'Default fill color of a drawn edge line is black');
-        test.equal(line.attr("stroke"), 'black', 'Default stroke color of a drawn edge line is black');
-        test.equal(line.attr("strokeWidth"), '1', 'Default stroke width is 1');
+        test.equal(line.attr("fill"), 'none', 'Default fill color of a drawn edge line is black');
+        test.equal(line.attr("stroke"), hexColorOf('black'), 'Default stroke color of a drawn edge line is black');
 
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-edge"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(line.attr("fill"), 'red', 'Fill color of a drawn edge is updated to red');
-        test.equal(line.attr("stroke"), 'purple', 'Stroke color is updated to purple');
-        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is updated to 2');
+        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color of a drawn edge is updated to red');
+        test.equal(line.attr("stroke"), hexColorOf('purple'), 'Stroke color is updated to purple');
+        test.equal(line.attr("stroke-width"), '2', 'Stroke width is updated to 2');
 
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {color: "green"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(line.attr("fill"), 'red', 'Fill color is not updated when only color is changed');
-        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated to green');
-        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is not updated when only color is changed');
+        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when only color is changed');
+        test.equal(line.attr("stroke"), hexColorOf('green'), 'Stroke color is updated to green');
+        test.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated when only color is changed');
 
         graphviz
             .updateDrawnEdge(22, -22, 42, -22);
         test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
-        test.equal(line.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
-        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
-        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is not updated  when no attribute is given');
+        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when no attribute is given');
+        test.equal(line.attr("stroke"), hexColorOf('green'), 'Stroke color is updated  when no attribute is given');
+        test.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated  when no attribute is given');
+
+        graphviz
+            .updateDrawnEdge(22, -22, 42, -22, {color: null, penwidth: null});
+        test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
+        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when not specified');
+        test.equal(line.attr("stroke"), hexColorOf('black'), 'Stroke color is black when removed');
+        test.equal(line.attr("stroke-width"), null, 'Stroke width is removed when removed');
 
         test.end();
     }

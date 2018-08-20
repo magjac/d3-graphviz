@@ -1,48 +1,25 @@
+import Viz from "viz.js/viz";
 import * as d3 from "d3-selection";
 import {path as d3_path} from "d3-path";
 import {rotate} from "./geometry";
-
-var defaultEdgeAttributes = {
-    id: null,
-    fillcolor: "black",
-    color: "black",
-    penwidth: 1,
-    URL: null,
-    tooltip: null,
-};
-
-function completeAttributes(attributes, defaultAttributes=defaultEdgeAttributes) {
-    for (var attribute in defaultAttributes) {
-        if (attributes[attribute] === undefined) {
-            attributes[attribute] = defaultAttributes[attribute];
-        }
-    }
-}
+import {extractAllElementsData} from "./element";
+import {attributeElement} from "./element";
+import {insertAllElementsData} from "./element";
 
 export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
-    attributes = attributes || {};
-    completeAttributes(attributes);
-    var root = this._selection;
-    var svg = root.selectWithoutDataPropagation("svg");
-    var graph0 = svg.selectWithoutDataPropagation("g");
-    var newEdge = graph0.append("g")
-        .datum(null)
-        .attr("class", "edge");
-    var title = newEdge.insert('title', ':first-child')
-        .text("");
-    if (attributes.URL || attributes.tooltip) {
-        var a = newEdge.append("g").append("a");
-        if (attributes.URL) {
-            a.attr("href", attributes.URL);
-        }
-        if (attributes.tooltip) {
-            a.attr('title', attributes.tooltip);
-        }
-        var line = a.append("path");
-        var arrowHead = a.append("polygon");
+    attributes = Object.assign({}, attributes);
+    if (attributes.style && attributes.style.includes('invis')) {
+        var newEdge = d3.select(null);
     } else {
-        var line = newEdge.append("path");
-        var arrowHead = newEdge.append("polygon");
+        var root = this._selection;
+        var svg = root.selectWithoutDataPropagation("svg");
+        var graph0 = svg.selectWithoutDataPropagation("g");
+        var newEdge0 = createEdge(attributes);
+        var edgeData = extractAllElementsData(newEdge0);
+        var newEdge = graph0.append('g')
+            .data([edgeData]);
+        attributeElement.call(newEdge.node(), edgeData);
+        _updateEdge(newEdge, x1, y1, x2, y2, attributes, options);
     }
     this._drawnEdge = {
         g: newEdge,
@@ -52,34 +29,45 @@ export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
         y2: y2,
         attributes: attributes,
     };
-    _updateEdge(newEdge, x1, y1, x2, y2, attributes, options);
 
     return this;
 }
 
-export function updateDrawnEdge(x1, y1, x2, y2, attributes, options={}) {
+export function updateDrawnEdge(x1, y1, x2, y2, attributes={}, options={}) {
     if (!this._drawnEdge)  {
         throw Error('No edge has been drawn');
     }
     var edge = this._drawnEdge.g
-    attributes = attributes || {};
-    completeAttributes(attributes, this._drawnEdge.attributes);
+    attributes = Object.assign(this._drawnEdge.attributes, attributes);
     this._drawnEdge.x1 = x1;
     this._drawnEdge.y1 = y1;
     this._drawnEdge.x2 = x2;
     this._drawnEdge.y2 = y2;
-    this._drawnEdge.attributes = attributes;
-    _updateEdge(edge, x1, y1, x2, y2, attributes, options);
+    if (edge.empty() && !(attributes.style && attributes.style.includes('invis'))) {
+        var root = this._selection;
+        var svg = root.selectWithoutDataPropagation("svg");
+        var graph0 = svg.selectWithoutDataPropagation("g");
+        var edge = graph0.append('g');
+        this._drawnEdge.g = edge;
+    }
+    if (!edge.empty())  {
+      _updateEdge(edge, x1, y1, x2, y2, attributes, options);
+    }
 
     return this;
 }
 
 function _updateEdge(edge, x1, y1, x2, y2, attributes, options) {
 
-    var id = attributes.id;
-    var fill = attributes.fillcolor;
-    var stroke = attributes.color;
-    var strokeWidth = attributes.penwidth;
+    var newEdge = createEdge(attributes);
+    var edgeData = extractAllElementsData(newEdge);
+    edge.data([edgeData]);
+    attributeElement.call(edge.node(), edgeData);
+    _moveEdge(edge, x1, y1, x2, y2, attributes, options);
+}
+
+function _moveEdge(edge, x1, y1, x2, y2, attributes, options) {
+
     var shortening = options.shortening || 0;
     var arrowHeadLength = 10;
     var arrowHeadWidth = 7;
@@ -109,18 +97,12 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes, options) {
         var arrowHead = edge.selectWithoutDataPropagation("polygon");
     }
 
-    edge
-        .attr("id", id);
-
     var path1 = d3_path();
     path1.moveTo(x1, y1);
     path1.lineTo(x2, y2);
 
     line
-        .attr("d", path1)
-        .attr("fill", fill)
-        .attr("stroke", stroke)
-        .attr("strokeWidth", strokeWidth);
+        .attr("d", path1);
 
     x2 = x1 + (length - shortening - arrowHeadLength) * cosA;
     y2 = y1 + (length - shortening - arrowHeadLength) * sinA;
@@ -140,10 +122,7 @@ function _updateEdge(edge, x1, y1, x2, y2, attributes, options) {
     var pointsAttr = allPoints.join(' ');
 
     arrowHead
-        .attr("points", pointsAttr)
-        .attr("fill", fill)
-        .attr("stroke", stroke)
-        .attr("strokeWidth", strokeWidth);
+        .attr("points", pointsAttr);
 
     return this;
 }
@@ -160,7 +139,7 @@ export function moveDrawnEdgeEndPoint(x2, y2, options={}) {
 
     this._drawnEdge.x2 = x2;
     this._drawnEdge.y2 = y2;
-    _updateEdge(edge, x1, y1, x2, y2, attributes, options);
+    _moveEdge(edge, x1, y1, x2, y2, attributes, options);
 
     return this
 }
@@ -187,79 +166,23 @@ export function insertDrawnEdge(name) {
     }
 
     var edge = this._drawnEdge.g;
+    if (edge.empty())  {
+        return this;
+    }
     var attributes = this._drawnEdge.attributes;
 
     var title = edge.selectWithoutDataPropagation("title");
     title
         .text(name);
-    var text = title.selectAll(function() {
-        return title.node().childNodes;
-    });
-    if (attributes.URL || attributes.tooltip) {
-        var ga = edge.selectWithoutDataPropagation("g");
-        var a = ga.selectWithoutDataPropagation("a");
-        var line = a.selectWithoutDataPropagation("path");
-        var arrowHead = a.selectWithoutDataPropagation("polygon");
 
-    } else {
-        var line = edge.selectWithoutDataPropagation("path");
-        var arrowHead = edge.selectWithoutDataPropagation("polygon");
-    }
     var root = this._selection;
     var svg = root.selectWithoutDataPropagation("svg");
     var graph0 = svg.selectWithoutDataPropagation("g");
     var graph0Datum = graph0.datum();
     var edgeData = this._extractData(edge, graph0Datum.children.length, graph0.datum());
-    var gDatum = edgeData;
-    var titleDatum = gDatum.children[0];
-    var textDatum = titleDatum.children[0];
-    if (attributes.URL || attributes.tooltip) {
-        var gaDatum = gDatum.children[1];
-        var aDatum = gaDatum.children[0];
-        var pathDatum = aDatum.children[0];
-        var polygonDatum = aDatum.children[1];
-    } else {
-        var pathDatum = gDatum.children[1];
-        var polygonDatum = gDatum.children[2];
-    }
-    graph0Datum.children.push(gDatum);
+    graph0Datum.children.push(edgeData);
 
-    edge.datum(gDatum);
-    edge.data([gDatum], function (d) {
-        return d.key;
-    });
-
-    title.datum(titleDatum);
-    title.data([titleDatum], function (d) {
-        return [d.key];
-    });
-
-    text.datum(textDatum);
-    text.data([textDatum], function (d) {
-        return [d.key];
-    });
-
-    if (attributes.URL || attributes.tooltip) {
-        ga.datum(gaDatum);
-        ga.data([gaDatum], function (d) {
-            return [d.key];
-        });
-
-        a.datum(aDatum);
-        a.data([aDatum], function (d) {
-            return [d.key];
-        });
-    }
-
-    line.datum(pathDatum);
-    line.data([pathDatum], function (d) {
-        return [d.key];
-    });
-
-    arrowHead.datum(polygonDatum);
-    arrowHead.data([polygonDatum], function (d) {
-        return [d.key];
-    });
+    insertAllElementsData(edge, edgeData);
 
     this._drawnEdge = null;
 
@@ -275,4 +198,25 @@ export function drawnEdgeSelection() {
     return d3.select(null);
   }
 
+}
+
+
+function createEdge(attributes) {
+    var attributesString = ''
+    for (var name of Object.keys(attributes)) {
+        if (attributes[name] != null) {
+            attributesString += ' "' + name + '"="' + attributes[name] + '"';
+        }
+    }
+    var dotSrc = 'digraph {a -> b [' + attributesString + ']}';
+    var svgDoc = Viz(dotSrc, {format: 'svg'});
+    var parser = new window.DOMParser();
+    var doc = parser.parseFromString(svgDoc, "image/svg+xml");
+    var newDoc = d3.select(document.createDocumentFragment())
+        .append(function() {
+            return doc.documentElement;
+        });
+    var edge = newDoc.select('.edge');
+
+    return edge;
 }
