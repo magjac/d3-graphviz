@@ -5,69 +5,24 @@ import {extractAllElementsData} from "./element";
 import {translatePointsAttribute} from "./svg";
 import {translateDAttribute} from "./svg";
 import {insertAllElementsData} from "./element";
+import {attributeElement} from "./element";
 import {roundTo4Decimals} from "./utils";
 
-var defaultNodeAttributes = {
-    id: null,
-    fillcolor: "none",
-    color: "#000000",
-    penwidth: null,
-    URL: null,
-    tooltip: null,
-    labeljust: null,
-    fontname: null,
-    fontsize: null,
-    fontcolor: null,
-};
-
-var multiFillShapes = [
-    'fivepoverhang',
-    'threepoverhang',
-    'noverhang',
-    'assembly',
-];
-
-var plainShapes = [
-    'none',
-    'plain',
-    'plaintext',
-];
-
-function completeAttributes(attributes, defaultAttributes=defaultNodeAttributes) {
-    if (attributes.style == 'filled' && !attributes.fillcolor) {
-        if (attributes.color) {
-            attributes.fillcolor = attributes.color;
-        } else {
-            attributes.fillcolor = '#d3d3d3';
-        }
-    }
-    if (attributes.style == 'filled') {
-        if (plainShapes.includes(attributes.shape)) {
-            attributes.color = 'transparent';
-        } else if (!attributes.color) {
-            attributes.color = '#000000';
-        }
-    }
-    if (attributes.shape == 'point' && !attributes.fillcolor) {
-        attributes.fillcolor = '#000000';
-    }
-    for (var attribute in defaultAttributes) {
-        if (attributes[attribute] === undefined) {
-            attributes[attribute] = defaultAttributes[attribute];
-        }
-    }
-}
-
 export function drawNode(x, y, nodeId, attributes={}, options={}) {
-    completeAttributes(attributes);
-    var root = this._selection;
-    var svg = root.selectWithoutDataPropagation("svg");
-    var graph0 = svg.selectWithoutDataPropagation("g");
-    var newNode = graph0.append(function() {
-        return createNode(nodeId, attributes).node();
-    });
-    newNode.datum(null);
-
+    attributes = Object.assign({}, attributes);
+    if (attributes.style && attributes.style.includes('invis')) {
+        var newNode = d3.select(null);
+    } else {
+        var root = this._selection;
+        var svg = root.selectWithoutDataPropagation("svg");
+        var graph0 = svg.selectWithoutDataPropagation("g");
+        var newNode0 = createNode(nodeId, attributes);
+        var nodeData = extractAllElementsData(newNode0);
+        var newNode = graph0.append('g')
+            .data([nodeData]);
+        attributeElement.call(newNode.node(), nodeData);
+        _updateNode(newNode, x, y, nodeId, attributes, options);
+    }
     this._drawnNode = {
         g: newNode,
         nodeId: nodeId,
@@ -75,7 +30,6 @@ export function drawNode(x, y, nodeId, attributes={}, options={}) {
         y: y,
         attributes: attributes,
     };
-    _updateNode(newNode, x, y, nodeId, attributes, options);
 
     return this;
 }
@@ -89,41 +43,36 @@ export function updateDrawnNode(x, y, nodeId, attributes={}, options={}) {
     if (nodeId == null) {
         nodeId = this._drawnNode.nodeId;
     }
-    completeAttributes(attributes, this._drawnNode.attributes);
+    attributes = Object.assign(this._drawnNode.attributes, attributes);
     this._drawnNode.nodeId = nodeId;
     this._drawnNode.x = x;
     this._drawnNode.y = y;
-    this._drawnNode.attributes = attributes;
-    _updateNode(node, x, y, nodeId, attributes, options);
+    if (node.empty() && !(attributes.style && attributes.style.includes('invis'))) {
+        var root = this._selection;
+        var svg = root.selectWithoutDataPropagation("svg");
+        var graph0 = svg.selectWithoutDataPropagation("g");
+        var node = graph0.append('g');
+        this._drawnNode.g = node;
+    }
+    if (!node.empty())  {
+      _updateNode(node, x, y, nodeId, attributes, options);
+    }
 
     return this;
 }
 
 function _updateNode(node, x, y, nodeId, attributes, options) {
 
-    var id = attributes.id;
-    var fill = attributes.fillcolor;
-    var stroke = attributes.color;
-    var strokeWidth = attributes.penwidth;
-    if (attributes.labeljust == 'l') {
-        var textAnchor = 'start';
-    } else if (attributes.labeljust == 'r') {
-        var textAnchor = 'end';
-    } else if (attributes.labeljust == 'c') {
-        var textAnchor = 'middle';
-    } else {
-        var textAnchor = null;
-    }
-    var fontFamily = attributes.fontname;
-    var fontSize = attributes.fontsize;
-    var fontColor = attributes.fontcolor;
-    if ('label' in attributes) {
-        var label = attributes['label'];
-    } else {
-        var label = nodeId;
-    }
+    var newNode = createNode(nodeId, attributes);
+    var nodeData = extractAllElementsData(newNode);
+    node.data([nodeData]);
+    attributeElement.call(node.node(), nodeData);
+    _moveNode(node, x, y, attributes, options);
 
-    var title = node.selectWithoutDataPropagation('title');
+    return this;
+}
+
+function _moveNode(node, x, y, attributes, options) {
     if (attributes.URL || attributes.tooltip) {
         var subParent = node.selectWithoutDataPropagation("g").selectWithoutDataPropagation("a");
     } else {
@@ -132,10 +81,6 @@ function _updateNode(node, x, y, nodeId, attributes, options) {
     var svgElements = subParent.selectAll('ellipse,polygon,path,polyline');
     var text = node.selectWithoutDataPropagation("text");
 
-    node
-        .attr("id", id);
-
-    title.text(nodeId);
     if (svgElements.size() != 0) {
         var bbox = svgElements.node().getBBox();
         bbox.cx = bbox.x + bbox.width / 2;
@@ -165,41 +110,32 @@ function _updateNode(node, x, y, nodeId, attributes, options) {
             svgElement
                 .attr("d", translateDAttribute(d, x - bbox.cx, y - bbox.cy));
         }
-        if (index == 0 || multiFillShapes.includes(attributes.shape)) {
-            svgElement
-                .attr("fill", fill)
-                .attr("stroke", stroke);
-            if (strokeWidth) {
-                svgElement
-                    .attr("strokeWidth", strokeWidth);
-            }
-        }
     });
 
     if (text.size() != 0) {
-
-        if (textAnchor) {
-            text
-                .attr("text-anchor", textAnchor)
-        }
         text
             .attr("x", roundTo4Decimals(+text.attr("x") + x - bbox.cx))
             .attr("y", roundTo4Decimals(+text.attr("y") + y - bbox.cy));
-        if (fontFamily) {
-            text
-                .attr("font-family", fontFamily);
-        }
-        if (fontSize) {
-            text.attr("font-size", fontSize);
-        }
-        if (fontColor) {
-            text
-                .attr("fill", fontColor);
-        }
-        text
-            .text(label);
     }
     return this;
+}
+
+export function moveDrawnNode(x, y, options={}) {
+
+    if (!this._drawnNode)  {
+        throw Error('No node has been drawn');
+    }
+    var node = this._drawnNode.g;
+    var attributes = this._drawnNode.attributes;
+
+    this._drawnNode.x = x;
+    this._drawnNode.y = y;
+
+    if (!node.empty())  {
+        _moveNode(node, x, y, attributes, options);
+    }
+
+    return this
 }
 
 export function removeDrawnNode() {
@@ -210,7 +146,9 @@ export function removeDrawnNode() {
 
     var node = this._drawnNode.g;
 
-    node.remove();
+    if (!node.empty())  {
+        node.remove();
+    }
 
     this._drawnNode = null;
 
@@ -227,6 +165,9 @@ export function insertDrawnNode(nodeId) {
         nodeId = this._drawnNode.nodeId;
     }
     var node = this._drawnNode.g;
+    if (node.empty())  {
+        return this;
+    }
     var attributes = this._drawnNode.attributes;
 
     var title = node.selectWithoutDataPropagation("title");
@@ -253,7 +194,19 @@ export function insertDrawnNode(nodeId) {
 
     insertAllElementsData(node, nodeData);
 
+    this._drawnNode = null;
+
     return this
+
+}
+
+export function drawnNodeSelection() {
+
+  if (this._drawnNode) {
+    return this._drawnNode.g;
+  } else {
+    return d3.select(null);
+  }
 
 }
 

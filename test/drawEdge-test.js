@@ -13,7 +13,6 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(endTest);
 
@@ -100,7 +99,6 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawEdge);
 
@@ -197,7 +195,6 @@ tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b [URL="dummy"];}')
         .render(drawEdge);
 
@@ -294,7 +291,6 @@ tape("drawEdge() draws an edge with an tooltip attribute in the same way as Grap
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b [tooltip="dummy"];}')
         .render(drawEdge);
 
@@ -391,7 +387,7 @@ tape("insertDrawnEdge() inserts the currently drawn edge into the joined data st
 
     graphviz
         .zoom(false)
-        .logEvents(true)
+
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawEdge);
 
@@ -447,7 +443,6 @@ tape("removeDrawnEdge() removes the edge currently being drawn", function(test) 
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawEdge);
 
@@ -507,9 +502,20 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
     var num_nodes = 2;
     var num_edges = 1;
 
+    const hexColors = {
+        'black': '#000000',
+        'lightgray': '#d3d3d3',
+        'red': '#ff0000',
+        'purple': '#a020f0',
+        'green': '#00ff00',
+    };
+
+    function hexColorOf(colorName) {
+        return hexColors[colorName];
+    }
+
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawEdge);
 
@@ -539,30 +545,36 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         test.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
-        test.equal(line.attr("fill"), 'black', 'Default fill color of a drawn edge line is black');
-        test.equal(line.attr("stroke"), 'black', 'Default stroke color of a drawn edge line is black');
-        test.equal(line.attr("strokeWidth"), '1', 'Default stroke width is 1');
+        test.equal(line.attr("fill"), 'none', 'Default fill color of a drawn edge line is black');
+        test.equal(line.attr("stroke"), hexColorOf('black'), 'Default stroke color of a drawn edge line is black');
 
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-edge"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(line.attr("fill"), 'red', 'Fill color of a drawn edge is updated to red');
-        test.equal(line.attr("stroke"), 'purple', 'Stroke color is updated to purple');
-        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is updated to 2');
+        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color of a drawn edge is updated to red');
+        test.equal(line.attr("stroke"), hexColorOf('purple'), 'Stroke color is updated to purple');
+        test.equal(line.attr("stroke-width"), '2', 'Stroke width is updated to 2');
 
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {color: "green"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(line.attr("fill"), 'red', 'Fill color is not updated when only color is changed');
-        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated to green');
-        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is not updated when only color is changed');
+        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when only color is changed');
+        test.equal(line.attr("stroke"), hexColorOf('green'), 'Stroke color is updated to green');
+        test.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated when only color is changed');
 
         graphviz
             .updateDrawnEdge(22, -22, 42, -22);
         test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
-        test.equal(line.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
-        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
-        test.equal(line.attr("strokeWidth"), '2', 'Stroke width is not updated  when no attribute is given');
+        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when no attribute is given');
+        test.equal(line.attr("stroke"), hexColorOf('green'), 'Stroke color is updated  when no attribute is given');
+        test.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated  when no attribute is given');
+
+        graphviz
+            .updateDrawnEdge(22, -22, 42, -22, {color: null, penwidth: null});
+        test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
+        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when not specified');
+        test.equal(line.attr("stroke"), hexColorOf('black'), 'Stroke color is black when removed');
+        test.equal(line.attr("stroke-width"), null, 'Stroke width is removed when removed');
 
         test.end();
     }
@@ -579,7 +591,6 @@ tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) 
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(drawEdge);
 
@@ -627,6 +638,60 @@ tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) 
 
 });
 
+tape("drawnEdgeSelection return a selection containing the edge currently being drawn", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    var num_nodes = 2;
+    var num_edges = 1;
+
+    graphviz
+        .zoom(false)
+        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+        .render(drawEdge);
+
+    function drawEdge() {
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        arrowHeadLength = 10;
+        arrowHeadWidth = 7;
+        margin = 0.174;
+        x1 = 20;
+        y1 = -20;
+        x2 = 40;
+        y2 = -20;
+
+        var noDrawnEdge = graphviz.drawnEdgeSelection();
+        test.ok(noDrawnEdge.empty(), "drawnEdgeSelection() returns an empty selection when no edge is currently being drawn");
+
+        graphviz
+            .drawEdge(x1, y1, x2, y2, {id: 'drawn-edge'});
+        num_edges += 1;
+        var edge = d3.select('#drawn-edge');
+        test.equal(edge.size(), 1, 'An edge with the specified id attribute is present');
+        var arrowHead = edge.selectWithoutDataPropagation("polygon");
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+
+        var drawnEdge = graphviz.drawnEdgeSelection();
+        test.equal(drawnEdge.node(), edge.node(), "drawnEdgeSelection() returns the edge currently being drawn");
+        graphviz
+            .insertDrawnEdge('b -> a');
+        var insertedDrawnEdge = graphviz.drawnEdgeSelection();
+        test.ok(insertedDrawnEdge.empty(), "drawnEdgeSelection() returns an empty selection when the drawn edge has been inserted into the data");
+
+        test.end();
+    }
+
+});
+
 tape("Attempts to operate on an edge without drawing one first is handled gracefully", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
@@ -637,7 +702,6 @@ tape("Attempts to operate on an edge without drawing one first is handled gracef
 
     graphviz
         .zoom(false)
-        .logEvents(true)
         .dot('digraph {graph [rankdir="LR"]; a -> b;}')
         .render(startTest);
 
