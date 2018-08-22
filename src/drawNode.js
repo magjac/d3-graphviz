@@ -102,7 +102,7 @@ function _moveNode(node, x, y, attributes, options) {
                 .attr("cx", roundTo4Decimals(x))
                 .attr("cy", roundTo4Decimals(y));
         } else if (svgElement.attr("points")) {
-            var pointsString = svgElement.attr('points');
+            var pointsString = svgElement.attr('points').trim();
             svgElement
                 .attr("points", translatePointsAttribute(pointsString, x - bbox.cx, y - bbox.cy));
         } else {
