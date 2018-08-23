@@ -83,8 +83,13 @@ function _moveEdge(edge, x1, y1, x2, y2, attributes, options) {
     var dx = x2 - x1;
     var dy = y2 - y1;
     var length = Math.sqrt(dx * dx + dy * dy);
-    var cosA = dx / length;
-    var sinA = dy / length;
+    if (length == 0) {
+        var cosA = 1;
+        var sinA = 0;
+    } else {
+        var cosA = dx / length;
+        var sinA = dy / length;
+    }
     x2 = x1 + (length - shortening - arrowHeadLength - margin) * cosA;
     y2 = y1 + (length - shortening - arrowHeadLength - margin) * sinA;
 

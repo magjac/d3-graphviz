@@ -185,6 +185,48 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
 
 });
 
+tape("drawEdge() draws an edge even if the length is zero", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph");
+
+    var num_nodes = 2;
+    var num_edges = 0;
+
+    graphviz
+        .zoom(false)
+        .dot('digraph {graph [rankdir="LR"]; a; b;}')
+        .render(drawEdge);
+
+    function drawEdge() {
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        arrowHeadLength = 10;
+        arrowHeadWidth = 7;
+        margin = 0.174;
+        x1 = 20;
+        y1 = -20;
+        x2 = x1;
+        y2 = y1;
+        graphviz
+            .drawEdge(x1, y1, x2, y2);
+        num_edges += 1;
+        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+      test.equal(d3.select('.edge').select('polygon').attr("points"), "10,-23.5 20,-20 10,-16.5 10,-23.5", 'Number of paths after drawing an edge');
+        test.equal(d3.selectAll('path').attr("d"), "M20,-20L9.826,-20", 'Number of paths after drawing an edge');
+
+        test.end();
+    }
+
+});
+
 tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz does", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
