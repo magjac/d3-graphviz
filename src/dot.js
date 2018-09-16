@@ -36,7 +36,13 @@ export default function(src, callback) {
     var keyMode = this._options.keyMode;
     var tweenPaths = this._options.tweenPaths;
     var tweenShapes = this._options.tweenShapes;
-    var tweenPrecision = this._options.tweenPrecision;
+    if (typeof this._options.tweenPrecision == 'string' && this._options.tweenPrecision.includes('%')) {
+        var tweenPrecision = +this._options.tweenPrecision.split('%')[0] / 100;
+        var tweenPrecisionIsRelative = this._options.tweenPrecision.includes('%');
+    } else {
+        var tweenPrecision = this._options.tweenPrecision;
+        var tweenPrecisionIsRelative = false;
+    }
     var growEnteringEdges = this._options.growEnteringEdges;
     var dictionary = {};
     var prevDictionary = this._dictionary || {};
@@ -103,7 +109,7 @@ export default function(src, callback) {
             } else {
                 var oldNode = createElementWithAttributes(prevDatum);
             }
-            (datum.alternativeOld || (datum.alternativeOld = {})).points = pathTweenPoints(oldNode, attribute_d, tweenPrecision);
+            (datum.alternativeOld || (datum.alternativeOld = {})).points = pathTweenPoints(oldNode, attribute_d, tweenPrecision, tweenPrecisionIsRelative);
         }
     }
 

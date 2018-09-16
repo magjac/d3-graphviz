@@ -11,7 +11,7 @@ export function pathTween(points, d1) {
     };
 }
 
-export function pathTweenPoints(node, d1, precision) {
+export function pathTweenPoints(node, d1, precision, precisionIsRelative) {
     const path0 = node;
     const path1 = path0.cloneNode();
     const n0 = path0.getTotalLength();
@@ -20,7 +20,7 @@ export function pathTweenPoints(node, d1, precision) {
     // Uniform sampling of distance based on specified precision.
     const distances = [0];
     let i = 0;
-    const dt = precision / Math.max(n0, n1);
+    const dt = precisionIsRelative ? precision : precision / Math.max(n0, n1);
     while ((i += dt) < 1) {
       distances.push(i);
     }
