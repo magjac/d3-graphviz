@@ -36,7 +36,6 @@ function _render(callback) {
     var tweenPaths = this._options.tweenPaths;
     var tweenShapes = this._options.tweenShapes;
     var convertEqualSidedPolygons = this._options.convertEqualSidedPolygons;
-    var tweenPrecision = this._options.tweenPrecision;
     var growEnteringEdges = this._options.growEnteringEdges && transitionInstance != null;
     var attributer = this._attributer;
     var graphvizInstance = this;

@@ -315,7 +315,7 @@ If *enable* is true (default), enables path tweening, else disables path tweenin
 
 <a name="graphviz_tweenPrecision" href="#graphviz_tweenPrecision">#</a> <i>graphviz</i>.<b>tweenPrecision</b>(<i>precision</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/tweenPrecision.js "Source")
 
-Sets the precision used during path tweening to *precision* pixels. Default is 1.
+If *precision* is a number, sets the precision used during path tweening to *precision* points. The precision is the length of each path segment during tweening. If instead *precision* is a string containing '%', sets the relative precision. When using a relative precision, the absolute precision is calculated as the length of the object being tweened muliplied with the relative precision, i.e. the number of line segments during tweening will be the inverse of the relative precision. For example, a relative precision of 5% will give 20 line segments. For a path which is 200 points long, this will give a precision of 10 points. Default is an absolute precision of 1 point.
 
 ### Controlling Shape Tweening
 
