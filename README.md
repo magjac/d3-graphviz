@@ -115,7 +115,7 @@ Returns a new graphviz renderer instance on the first element in the given *sele
 | [convertEqualSidedPolygons](#graphviz_convertEqualSidedPolygons) | true |
 | [engine](#graphviz_engine) | 'dot' |
 | [fade](#graphviz_fade) | true |
-| [fit](#graphviz_scale) | false |
+| [fit](#graphviz_fit) | false |
 | [growEnteringEdges](#graphviz_growEnteringEdges) | true |
 | [height](#graphviz_height) | null |
 | [keyMode](#graphviz_keyMode) | 'title' |
