@@ -207,9 +207,11 @@ export default function(src, callback) {
                                 break;
                             }
                         }
-                        datum.offset = {
-                            x: prevStartShape.center.x - startShape.center.x,
-                            y: prevStartShape.center.y - startShape.center.y,
+                        if (prevStartShape && startShape) {
+                            datum.offset = {
+                                x: prevStartShape.center.x - startShape.center.x,
+                                y: prevStartShape.center.y - startShape.center.y,
+                            };
                         }
                     }
                 }
