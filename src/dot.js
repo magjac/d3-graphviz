@@ -195,21 +195,25 @@ export default function(src, callback) {
                         }
                         var startShapes = startNode.children;
                         for (var i = 0; i < startShapes.length; i++) {
-                            if (startShapes[i].tag == 'polygon' || startShapes[i].tag == 'ellipse' || startShapes[i].tag == 'path') {
+                            if (startShapes[i].tag == 'polygon' || startShapes[i].tag == 'ellipse' || startShapes[i].tag == 'path' || startShapes[i].tag == 'text') {
                                 var startShape = startShapes[i];
                                 break;
                             }
                         }
                         var prevStartShapes = prevStartNode.children;
                         for (var i = 0; i < prevStartShapes.length; i++) {
-                            if (prevStartShapes[i].tag == 'polygon' || prevStartShapes[i].tag == 'ellipse' || prevStartShapes[i].tag == 'path') {
+                            if (prevStartShapes[i].tag == 'polygon' || prevStartShapes[i].tag == 'ellipse' || prevStartShapes[i].tag == 'path' || prevStartShapes[i].tag == 'text') {
                                 var prevStartShape = prevStartShapes[i];
                                 break;
                             }
                         }
-                        datum.offset = {
-                            x: prevStartShape.center.x - startShape.center.x,
-                            y: prevStartShape.center.y - startShape.center.y,
+                        if (prevStartShape && startShape) {
+                            datum.offset = {
+                                x: prevStartShape.center.x - startShape.center.x,
+                                y: prevStartShape.center.y - startShape.center.y,
+                            }
+                        } else {
+                            datum.offset = {x: 0, y: 0};
                         }
                     }
                 }

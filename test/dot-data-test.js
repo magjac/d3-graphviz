@@ -230,6 +230,10 @@ var basic_data = {
                                 "font-size": "14.00",
                                 "fill": "#000000"
                             },
+                            "center": {
+                                "x": "27",
+                                "y": "-85.8",
+                            },
                             "parent": "[Circular ~.children.1.children.7]",
                             "children": [
                                 {
@@ -366,6 +370,10 @@ var basic_data = {
                                 "font-family": "Times,serif",
                                 "font-size": "14.00",
                                 "fill": "#000000"
+                            },
+                            "center": {
+                                "x": "27",
+                                "y": "-13.8",
                             },
                             "parent": "[Circular ~.children.1.children.11]",
                             "children": [
