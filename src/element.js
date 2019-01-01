@@ -75,6 +75,12 @@ export function extractElementData(element) {
         };
         datum.totalLength = element.node().getTotalLength();
     }
+    if (tag == 'text') {
+        datum.center = {
+            x: element.attr('x'),
+            y: element.attr('y'),
+        };
+    }
     if (tag == '#text') {
         datum.text = element.text();
     } else if (tag == '#comment') {
