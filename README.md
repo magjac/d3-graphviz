@@ -43,7 +43,18 @@ A more colorful demo can be seen [here](http://bl.ocks.org/magjac/4acffdb3afbc4f
 
 ## Installing
 
-If you use NPM, `npm install d3-graphviz`. Otherwise, download the [latest release](https://github.com/magjac/d3-graphviz/releases/latest).
+The easiest way to use the library in your own application is to install it with NPM: `npm install d3-graphviz`. If you don't use npm, you can download the [latest release](https://github.com/magjac/d3-graphviz/releases/latest).
+
+## Building the library
+
+You normally don't need to do this, but if you prefer, you can clone from github and build your own copy of the library with:
+```text
+git clone https://github.com/magjac/d3-graphviz.git
+cd d3-graphviz
+npm install
+npm run build
+```
+The built library will then be in `build/d3-graphviz.js`
 
 ## Principles of Operation
 
