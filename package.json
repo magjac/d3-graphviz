@@ -68,6 +68,6 @@
     "d3-timer": "^1.0.6",
     "d3-transition": "^1.1.1",
     "d3-zoom": "1.7.3",
-    "viz.js": "^1.8.2"
+    "@hpcc-js/wasm": "^0.3.3"
   }
 }

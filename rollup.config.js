@@ -16,7 +16,7 @@ export default [
             'd3-format',
             'd3-timer',
             'd3-path',
-            'viz.js/viz',
+            '@hpcc-js/wasm',
         ],
         globals: {
             'd3-selection': 'd3',
@@ -27,7 +27,7 @@ export default [
             'd3-format': 'd3',
             'd3-timer': 'd3',
             'd3-path': 'd3',
-            'viz.js/viz': 'Viz',
+            '@hpcc-js/wasm': '@hpcc-js/wasm',
         },
         plugins: [
             (process.env.NODE_ENV === 'production' && babel({
