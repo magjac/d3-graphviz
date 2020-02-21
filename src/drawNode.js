@@ -1,4 +1,4 @@
-import Viz from "viz.js/viz";
+import Viz from "./viz";
 import * as d3 from "d3-selection";
 import {rotate} from "./geometry";
 import {extractAllElementsData} from "./element";
