@@ -97,6 +97,10 @@ export function Graphviz(selection, options) {
             onmessage = function(event) {
                 if (event.data.vizURL) {
                     importScripts(event.data.vizURL);
+                    const hpccWasm = self["@hpcc-js/wasm"];
+                    hpccWasm.wasmFolder(event.data.vizURL.match(/.*\\\//));
+// This is an alternative workaround where wasmFolder() is not needed
+//                    document = {currentScript: {src: event.data.vizURL}};
                 }
                 const hpccWasm = self["@hpcc-js/wasm"];
                 try {
