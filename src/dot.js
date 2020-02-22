@@ -1,4 +1,4 @@
-import Viz from "./viz";
+import { graphviz } from "@hpcc-js/wasm";
 import * as d3 from "d3-selection";
 import {extractAllElementsData, extractElementData, createElementWithAttributes} from "./element";
 import {convertToPathData} from "./svg";
@@ -8,10 +8,12 @@ import {getEdgeTitle} from "./data";
 
 
 export function initViz() {
+
     // force JIT compilation of Viz.js
     if (this._worker == null) {
-        Viz("");
-        this._dispatch.call("initEnd", this);
+        graphviz.layout("", "svg", "dot").then(() => {
+            this._dispatch.call("initEnd", this);
+        });
     } else {
         var vizURL = this._vizURL;
         var graphvizInstance = this;
@@ -259,7 +261,9 @@ export default function(src, callback) {
         };
     } else {
         try {
-            var svgDoc = Viz(src, vizOptions);
+            graphviz.layout(src, "svg", vizOptions.engine).then((svgDoc) => {
+                layoutDone.call(this, svgDoc);
+            });
         }
         catch(error) {
             if (graphvizInstance._onerror) {
@@ -269,7 +273,6 @@ export default function(src, callback) {
                 throw error.message
             }
         }
-        layoutDone.call(this, svgDoc);
     }
 
     function layoutDone(svgDoc) {
