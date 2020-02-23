@@ -1,4 +1,5 @@
 var jsdom = require("jsdom");
+require("./polyfill_fetch");
 
 module.exports = function(html, options) {
     var dom = new jsdom.JSDOM(html, options);
