@@ -136,5 +136,9 @@ module.exports = function(html, options) {
 
     global.SVGElement = window.SVGElement;
 
+    Object.defineProperty(window.document, "currentScript", {
+        get() { return {src: './node_modules/@hpcc-js/wasm/dist/index.js'}; }
+    });
+
     return dom.window
 };
