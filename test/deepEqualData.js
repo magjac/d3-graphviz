@@ -1,4 +1,4 @@
-module.exports = function (test, expectedData, actualData, message) {
+module.exports = function (test, actualData, expectedData, message) {
 
     function parseData(parent) {
 
