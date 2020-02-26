@@ -12,11 +12,15 @@ margin = 20; // to avoid scrollbars
 var isDrawing = false;
 
 var graphviz = d3.select("#graph").graphviz()
-    .attributer(attributer)
-    .renderDot(`strict digraph {
-        node [style="filled"]
-        a -> b}`, startApp);
+    .on("initEnd", initApp);
 
+    function initApp() {
+        graphviz
+            .attributer(attributer)
+            .renderDot(`strict digraph {
+                node [style="filled"]
+                a -> b}`, startApp);
+    }
     function attributer(datum, index, nodes) {
         var selection = d3.select(this);
         if (datum.tag == "svg") {
