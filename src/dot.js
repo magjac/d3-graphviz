@@ -1,4 +1,5 @@
 import { graphviz } from "@hpcc-js/wasm";
+import { graphvizSync } from "@hpcc-js/wasm";
 import * as d3 from "d3-selection";
 import {extractAllElementsData, extractElementData, createElementWithAttributes} from "./element";
 import {convertToPathData} from "./svg";
@@ -12,7 +13,10 @@ export function initViz() {
     // force JIT compilation of Viz.js
     if (this._worker == null) {
         graphviz.layout("", "svg", "dot").then(() => {
-            this._dispatch.call("initEnd", this);
+            graphvizSync().then((graphviz1) => {
+                this.layoutSync = graphviz1.layout.bind(graphviz1);
+                this._dispatch.call("initEnd", this);
+            });
         });
     } else {
         var vizURL = this._vizURL;
