@@ -79,7 +79,7 @@ export function Graphviz(selection, options) {
     if (useWorker) {
         var scripts = d3.selectAll('script');
         var vizScript = scripts.filter(function() {
-            return d3.select(this).attr('type') == 'javascript/worker' || (d3.select(this).attr('src') && d3.select(this).attr('src').match(/.*\/viz.js$/));
+            return d3.select(this).attr('type') == 'javascript/worker' || (d3.select(this).attr('src') && d3.select(this).attr('src').match(/.*\/@hpcc-js\/wasm/));
         });
         if (vizScript.size() == 0) {
             console.warn('No script tag of type "javascript/worker" was found and "useWorker" is true. Not using web worker.');
