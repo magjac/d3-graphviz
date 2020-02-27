@@ -104,28 +104,24 @@ export function Graphviz(selection, options) {
 // This is an alternative workaround where wasmFolder() is not needed
 //                    document = {currentScript: {src: event.data.vizURL}};
                 }
-                try {
-                    const engine = event.data.options ? event.data.options.engine : 'dot';
-                    hpccWasm.graphviz.layout(event.data.dot, "svg", engine).then((svg) => {
-			if (svg) {
-			    postMessage({
-				type: "done",
-				svg: svg,
-			    });
-			} else {
-			    postMessage({
-				type: "skip",
-			    });
-			}
-                    });
-                }
-                catch(error) {
+                const engine = event.data.options ? event.data.options.engine : 'dot';
+                hpccWasm.graphviz.layout(event.data.dot, "svg", engine).then((svg) => {
+                    if (svg) {
+                        postMessage({
+                            type: "done",
+                            svg: svg,
+                        });
+                    } else {
+                        postMessage({
+                            type: "skip",
+                        });
+                    }
+                }).catch(error => {
                     postMessage({
                         type: "error",
                         error: error.message,
                     });
-                    return;
-                }
+                });
             }
         `;
         var blob = new Blob([js]);
