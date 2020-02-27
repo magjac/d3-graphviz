@@ -28,10 +28,10 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
-        x1 = 54.003;
+        margin = 0.1;
+        x1 = 54.4;
         y1 = -18;
-        x2 = 89.705;
+        x2 = 89.92;
         y2 = -18.000;
 
         line = d3.selectAll('.edge').selectAll('path').filter(function(d) {
@@ -51,9 +51,9 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
         var expected_y = [];
         expected_x.push(x1);
         expected_y.push(y1);
-        expected_x.push(62.028);
+        expected_x.push(62.39);
         expected_y.push(y1);
-        expected_x.push(70.967);
+        expected_x.push(71.31);
         expected_y.push(y1);
         expected_x.push(Math.round((x2 - margin - arrowHeadLength) * 1000) / 1000);
         expected_y.push(y2);
@@ -117,7 +117,7 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
+        margin = 0.1;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -230,7 +230,7 @@ tape("drawEdge() draws an edge even if the length is zero", function(test) {
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
       test.equal(d3.select('.edge').select('polygon').attr("points"), "10,-23.5 20,-20 10,-16.5 10,-23.5", 'Number of paths after drawing an edge');
-        test.equal(d3.selectAll('path').attr("d"), "M20,-20L9.826,-20", 'Number of paths after drawing an edge');
+        test.equal(d3.selectAll('path').attr("d"), "M20,-20L9.9,-20", 'Number of paths after drawing an edge');
 
         test.end();
     }
@@ -261,7 +261,7 @@ tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
+        margin = 0.1;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -360,7 +360,7 @@ tape("drawEdge() draws an edge with an tooltip attribute in the same way as Grap
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
+        margin = 0.1;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -566,18 +566,6 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
     var num_nodes = 2;
     var num_edges = 1;
 
-    const hexColors = {
-        'black': '#000000',
-        'lightgray': '#d3d3d3',
-        'red': '#ff0000',
-        'purple': '#a020f0',
-        'green': '#00ff00',
-    };
-
-    function hexColorOf(colorName) {
-        return hexColors[colorName];
-    }
-
     function startTest() {
         graphviz
             .zoom(false)
@@ -612,34 +600,34 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         test.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
         test.equal(line.attr("fill"), 'none', 'Default fill color of a drawn edge line is black');
-        test.equal(line.attr("stroke"), hexColorOf('black'), 'Default stroke color of a drawn edge line is black');
+        test.equal(line.attr("stroke"), 'black', 'Default stroke color of a drawn edge line is black');
 
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-edge"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color of a drawn edge is updated to red');
-        test.equal(line.attr("stroke"), hexColorOf('purple'), 'Stroke color is updated to purple');
+        test.equal(arrowHead.attr("fill"), 'red', 'Fill color of a drawn edge is updated to red');
+        test.equal(line.attr("stroke"), 'purple', 'Stroke color is updated to purple');
         test.equal(line.attr("stroke-width"), '2', 'Stroke width is updated to 2');
 
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {color: "green"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when only color is changed');
-        test.equal(line.attr("stroke"), hexColorOf('green'), 'Stroke color is updated to green');
+        test.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when only color is changed');
+        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated to green');
         test.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated when only color is changed');
 
         graphviz
             .updateDrawnEdge(22, -22, 42, -22);
         test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
-        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when no attribute is given');
-        test.equal(line.attr("stroke"), hexColorOf('green'), 'Stroke color is updated  when no attribute is given');
+        test.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
+        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
         test.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated  when no attribute is given');
 
         graphviz
             .updateDrawnEdge(22, -22, 42, -22, {color: null, penwidth: null});
         test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
-        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when not specified');
-        test.equal(line.attr("stroke"), hexColorOf('black'), 'Stroke color is black when removed');
+        test.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when not specified');
+        test.equal(line.attr("stroke"), 'black', 'Stroke color is black when removed');
         test.equal(line.attr("stroke-width"), null, 'Stroke width is removed when removed');
 
         test.end();
