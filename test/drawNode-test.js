@@ -380,18 +380,6 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
     var num_nodes = 2;
     var num_edges = 1;
 
-    const hexColors = {
-        'black': '#000000',
-        'lightgray': '#d3d3d3',
-        'red': '#ff0000',
-        'purple': '#a020f0',
-        'green': '#00ff00',
-    };
-
-    function hexColorOf(colorName) {
-        return hexColors[colorName];
-    }
-
     function startTest() {
 
         graphviz
@@ -423,7 +411,7 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
         test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
         test.equal(ellipse.attr("fill"), 'none', 'Default fill color of a drawn node ellipse is none');
-        test.equal(ellipse.attr("stroke"), '#000000', 'Default stroke color of a drawn node ellipse is #000000');
+        test.equal(ellipse.attr("stroke"), 'black', 'Default stroke color of a drawn node ellipse is black');
         test.equal(ellipse.attr("stroke-width"), null, 'Default is to not set stroke width');
 
         x += 1;
@@ -432,12 +420,12 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
             .updateDrawnNode(x, y, 'f', {style: 'filled', fillcolor: "red", color: "purple", penwidth: 2, fontname:"Courier", fontsize:10, fontcolor: "red"});
         test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
-        test.equal(ellipse.attr("fill"), hexColorOf('red'), 'Fill color of a drawn node is updated to red');
-        test.equal(ellipse.attr("stroke"), hexColorOf('purple'), 'Stroke color is updated to purple');
+        test.equal(ellipse.attr("fill"), 'red', 'Fill color of a drawn node is updated to red');
+        test.equal(ellipse.attr("stroke"), 'purple', 'Stroke color is updated to purple');
         test.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is updated to 2');
         test.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is updated to Courier');
         test.equal(text.attr("font-size"), '10.00', 'text font size is updated to 10');
-        test.equal(text.attr("fill"), hexColorOf('red'), 'text font color is updated to red');
+        test.equal(text.attr("fill"), 'red', 'text font color is updated to red');
 
         x += 1;
         y -= 1;
@@ -445,8 +433,8 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
             .updateDrawnNode(x, y, 'f', {color: "green"});
         test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
-        test.equal(ellipse.attr("fill"), hexColorOf('red'), 'Fill color is not updated when not specified');
-        test.equal(ellipse.attr("stroke"), hexColorOf('green'), 'Stroke color is updated to green');
+        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when not specified');
+        test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
         test.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is not updated when not specified');
         test.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
         test.equal(text.attr("font-size"), '10.00', 'text font size is not updated when not specified');
@@ -457,8 +445,8 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
             .updateDrawnNode(x, y, 'f', {color: "green"});
         test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
-        test.equal(ellipse.attr("fill"), hexColorOf('red'), 'Fill color is not updated when not specified');
-        test.equal(ellipse.attr("stroke"), hexColorOf('green'), 'Stroke color is updated to green');
+        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when not specified');
+        test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
         test.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is not updated when not specified');
         test.equal(text.attr("text-anchor"), 'middle', 'text anchor is updated to middle');
         test.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
@@ -470,8 +458,8 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
             .updateDrawnNode(x, y);
         test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
         test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
-        test.equal(ellipse.attr("fill"), hexColorOf('red'), 'Fill color is not updated when no attribute is given');
-        test.equal(ellipse.attr("stroke"), hexColorOf('green'), 'Stroke color is updated  when no attribute is given');
+        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
+        test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
         test.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is not updated  when no attribute is given');
 
         graphviz
@@ -490,8 +478,8 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
         test.equal(polygon.attr("points").split(' ')
                    .reduce((acc, v) => [Math.min(acc[0], v.split(',')[1]), Math.max(acc[1], v.split(',')[1])], [Number.MAX_VALUE, -Number.MAX_VALUE])
                    .reduce((sum, y) => sum + y, 0) / 2, y, "The center y value of the polygon is updated");
-        test.equal(polygon.attr("fill"), hexColorOf('red'), 'Fill color is not updated when not specified');
-        test.equal(polygon.attr("stroke"), hexColorOf('green'), 'Stroke color is updated to green');
+        test.equal(polygon.attr("fill"), 'red', 'Fill color is not updated when not specified');
+        test.equal(polygon.attr("stroke"), 'green', 'Stroke color is updated to green');
         test.equal(polygon.attr("stroke-width"), '2', 'Stroke width is not updated when not specified');
         test.equal(text.attr("text-anchor"), 'middle', 'text anchor is updated to middle');
         test.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
@@ -499,8 +487,8 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
 
         graphviz
         .updateDrawnNode(x, y, 'f', {color: null, fillcolor: null, penwidth: null});
-        test.equal(polygon.attr("fill"), hexColorOf('lightgray'), 'Fill color is lightgray when fillcolor is removed');
-        test.equal(polygon.attr("stroke"), hexColorOf('black'), 'Stroke color is black when color is removed');
+        test.equal(polygon.attr("fill"), 'lightgrey', 'Fill color is lightgray when fillcolor is removed');
+        test.equal(polygon.attr("stroke"), 'black', 'Stroke color is black when color is removed');
         test.equal(polygon.attr("stroke-width"), null, 'Stroke width is removed when removed');
         test.equal(text.attr("text-anchor"), 'middle', 'text anchor is updated to middle');
         test.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
