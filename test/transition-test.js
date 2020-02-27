@@ -10,7 +10,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
     function transition_test_init() {
         var window = global.window = jsdom(
             `
-                <script src="node_modules/viz.js/viz.js" type="javascript/worker"></script>
+                <script src="test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
                 <div id="graph"></div>
                 `,
             {
