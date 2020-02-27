@@ -5,19 +5,21 @@ var d3_graphviz = require("../");
 tape("The attributer is called during rendering.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", function () {
 
-    var tagCounts = [];
-    graphviz
-        .zoom(false)
-        .attributer(function(d) {
-            if (!(d.tag in tagCounts)) {
-                tagCounts[d.tag] = 0
-            }
-            tagCounts[d.tag] += 1
-        })
-        .dot('digraph {a -> b;}')
-        .render(part2.bind(null, tagCounts));
+            var tagCounts = [];
+            graphviz
+                .zoom(false)
+                .attributer(function(d) {
+                    if (!(d.tag in tagCounts)) {
+                        tagCounts[d.tag] = 0
+                    }
+                    tagCounts[d.tag] += 1
+                })
+                .dot('digraph {a -> b;}')
+                .render(part2.bind(null, tagCounts));
+        });
 
     function part2(tagCounts) {
         test.equal(tagCounts['svg'], 1, "The attributer is called 1 time for 'svg' elements when enabled")
