@@ -20,15 +20,6 @@ function do_test(test, useWorker, html) {
     graphviz
         .logEvents(true);
 
-    function handleError(err) {
-        test.equal(
-            err,
-            "syntax error in line 1 near 'bad'\n",
-            'A registered error handler catches syntax errors in the dot source thrown during layout'
-        );
-        part2();
-    }
-
     test.equal(graphviz._data, undefined, 'No data is attached before calling dot');
     graphviz
         .tweenShapes(false)
@@ -39,6 +30,15 @@ function do_test(test, useWorker, html) {
     test.notEqual(graphviz._data, undefined, 'Data is attached immediately after calling dot when no worker is used');
     graphviz
         .render(part1_end);
+
+    function handleError(err) {
+        test.equal(
+            err,
+            "syntax error in line 1 near 'bad'\n",
+            'A registered error handler catches syntax errors in the dot source thrown during layout'
+        );
+        part2();
+    }
 
     function part1_end() {
         test.notEqual(graphviz._data, undefined, 'Data is attached after rendering');
