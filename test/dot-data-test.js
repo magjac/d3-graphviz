@@ -8,26 +8,27 @@ var stringify = require('json-stringify-safe');
 tape("data extraction", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', () => {
+            graphviz
+                .zoom(false)
+                .dot('digraph {a -> b;}');
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {a -> b;}');
+            delete graphviz._data.parent;
 
-    delete graphviz._data.parent;
+            var actualData = graphviz._data;
+            var expectedData = JSON.parse(JSON.stringify(basic_data))
 
-    var actualData = graphviz._data;
-    var expectedData = JSON.parse(JSON.stringify(basic_data))
+            deepEqualData(test, actualData, expectedData, "Extracted data equals predefined data");
 
-    deepEqualData(test, actualData, expectedData, "Extracted data equals predefined data");
+            graphviz.render();
+            var svg = d3.select('svg');
+            actualData = graphviz._extractData(svg, 0, null);
+            var expectedData = JSON.parse(JSON.stringify(basic_data));
+            deepEqualData(test, actualData, expectedData, "Explicitly extracted data equals predefined data");
 
-    graphviz.render();
-    var svg = d3.select('svg');
-    actualData = graphviz._extractData(svg, 0, null);
-    var expectedData = JSON.parse(JSON.stringify(basic_data));
-    deepEqualData(test, actualData, expectedData, "Explicitly extracted data equals predefined data");
-
-    test.end();
+            test.end();
+        });
 });
 
 var basic_data = {
