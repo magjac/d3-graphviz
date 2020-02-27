@@ -265,9 +265,7 @@ export default function(src, callback) {
         };
     } else {
         try {
-            graphviz.layout(src, "svg", vizOptions.engine).then((svgDoc) => {
-                layoutDone.call(this, svgDoc);
-            });
+            var svgDoc = this.layoutSync(src, "svg", vizOptions.engine);
         }
         catch(error) {
             if (graphvizInstance._onerror) {
@@ -277,6 +275,7 @@ export default function(src, callback) {
                 throw error.message
             }
         }
+        layoutDone.call(this, svgDoc);
     }
 
     function layoutDone(svgDoc) {
