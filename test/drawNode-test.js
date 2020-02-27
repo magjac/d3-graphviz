@@ -508,10 +508,6 @@ tape("moveDrawnNode modifies the position of a node", function(test) {
     var num_nodes = 2;
     var num_edges = 1;
 
-    function hexColorOf(colorName) {
-        return hexColors[colorName];
-    }
-
     function startTest() {
         graphviz
             .zoom(false)
@@ -562,10 +558,6 @@ tape("drawnNodeSelection return a selection containing the node currently being 
 
     var num_nodes = 2;
     var num_edges = 1;
-
-    function hexColorOf(colorName) {
-        return hexColors[colorName];
-    }
 
     function startTest() {
         graphviz
