@@ -6,38 +6,53 @@ var tape = require("tape"),
 tape("graphviz() returns an exiting renderer.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz1 = d3_graphviz.graphviz("#graph");
+    var graphviz1 = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
+    var graphviz2;
+    var graphviz3;
 
-    test.equal(graphviz1.options().tweenShapes, true, "Options have default values when renderer is created");
+    function startTest() {
+        console.log('magjac 100: startTest');
+        test.equal(graphviz1.options().tweenShapes, true, "Options have default values when renderer is created");
 
-    graphviz1
-        .tweenShapes(false)
-        .dot('digraph {a -> b;}')
-        .render();
+        graphviz1
+            .tweenShapes(false)
+            .dot('digraph {a -> b;}')
+            .render();
 
-    test.equal(graphviz1.options().tweenShapes, false, "Options are changed when set on the created renderer");
+        test.equal(graphviz1.options().tweenShapes, false, "Options are changed when set on the created renderer");
 
-    // Attempt to create a new renderer on the same element
+        // Attempt to create a new renderer on the same element
 
-    var graphviz2 = d3_graphviz.graphviz("#graph");
+        graphviz2 = d3_graphviz.graphviz("#graph")
+            .on("initEnd", startTest2);
+    }
 
-    test.equal(graphviz1, graphviz2, "The returned renderer is the same as the one originally created");
-    test.equal(graphviz2.options().tweenShapes, false, "Options set on the originally created renderer is preserved");
+    function startTest2() {
+        console.log('magjac 200: startTest2');
+        test.equal(graphviz1, graphviz2, "The returned renderer is the same as the one originally created");
+        test.equal(graphviz2.options().tweenShapes, false, "Options set on the originally created renderer is preserved");
 
-    graphviz2
-        .dot('digraph {a -> b; a -> c}')
-        .render();
+        graphviz2
+            .dot('digraph {a -> b; a -> c}')
+            .render();
 
-    // Attempt to create another new renderer on the same element with different options
+        // Attempt to create another new renderer on the same element with different options
 
-    var graphviz3 = d3_graphviz.graphviz("#graph", {tweenShapes: true});
+        graphviz3 = d3_graphviz.graphviz("#graph", {tweenShapes: true})
+            .on("initEnd", startTest3);
+    }
 
-    test.equal(graphviz1, graphviz3, "The returned renderer is the same as the one originally created");
-    test.equal(graphviz3.options().tweenShapes, true, "Options are changed if specified when creating the new renderer");
+    function startTest3() {
+        console.log('magjac 300: startTest3');
 
-    graphviz3
-        .dot('digraph {a -> b; a -> c; a -> d}')
-        .render();
+        test.equal(graphviz1, graphviz3, "The returned renderer is the same as the one originally created");
+        test.equal(graphviz3.options().tweenShapes, true, "Options are changed if specified when creating the new renderer");
 
-    test.end();
+        graphviz3
+            .dot('digraph {a -> b; a -> c; a -> d}')
+            .render();
+
+        test.end();
+    }
 });
