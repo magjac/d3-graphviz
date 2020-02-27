@@ -8,7 +8,7 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
 
     var window = global.window = jsdom(
         `
-            <script src="http://dummyhost/node_modules/viz.js/viz.js" type="javascript/worker"></script>
+            <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
             <div id="graph"></div>
             `,
     );
