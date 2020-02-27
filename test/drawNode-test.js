@@ -7,15 +7,18 @@ var translatePointsAttribute = require("./svg").translatePointsAttribute;
 tape("Check our understanding of how Graphviz draws nodes.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(endTest);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(endTest);
+    }
 
     function endTest() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -41,15 +44,18 @@ tape("Check our understanding of how Graphviz draws nodes.", function(test) {
 tape("drawNode() draws a node in the same way as Graphviz does", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawNode);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawNode);
+    }
 
     function drawNode() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -94,15 +100,18 @@ tape("drawNode() draws a node in the same way as Graphviz does", function(test) 
 tape("drawNode() draws a polygon node", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; node [shape="polygon"]; a -> b;}')
-        .render(drawNode);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; node [shape="polygon"]; a -> b;}')
+            .render(drawNode);
+    }
 
     function drawNode() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -145,15 +154,18 @@ tape("drawNode() draws a polygon node", function(test) {
 tape("drawNode() draws a node with an URL attribute in the same way as Graphviz does", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b [URL="dummy"];}')
-        .render(drawNode);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b [URL="dummy"];}')
+            .render(drawNode);
+    }
 
     function drawNode() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -196,15 +208,18 @@ tape("drawNode() draws a node with an URL attribute in the same way as Graphviz 
 tape("drawNode() draws a node with an tooltip attribute in the same way as Graphviz does", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b [tooltip="dummy"];}')
-        .render(drawNode);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b [tooltip="dummy"];}')
+            .render(drawNode);
+    }
 
     function drawNode() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -247,15 +262,18 @@ tape("drawNode() draws a node with an tooltip attribute in the same way as Graph
 tape("insertDrawnNode() inserts the currently drawn node into the joined data structure so that it can be animated when the graph is re-rendered", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawNode);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawNode);
+    }
 
     function drawNode() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -298,15 +316,18 @@ tape("insertDrawnNode() inserts the currently drawn node into the joined data st
 tape("removeDrawnNode() removes the node currently being drawn", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawNode);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawNode);
+    }
 
     function drawNode() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -353,7 +374,8 @@ tape("removeDrawnNode() removes the node currently being drawn", function(test) 
 tape("updateDrawnNode modifies the position, size and attributes of a node", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
@@ -370,10 +392,13 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
         return hexColors[colorName];
     }
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawNode);
+    function startTest() {
+
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawNode);
+    }
 
     function drawNode() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -489,7 +514,8 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
 tape("moveDrawnNode modifies the position of a node", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
@@ -498,10 +524,12 @@ tape("moveDrawnNode modifies the position of a node", function(test) {
         return hexColors[colorName];
     }
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawNode);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawNode);
+    }
 
     function drawNode() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -541,7 +569,8 @@ tape("moveDrawnNode modifies the position of a node", function(test) {
 tape("drawnNodeSelection return a selection containing the node currently being drawn", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
@@ -550,10 +579,12 @@ tape("drawnNodeSelection return a selection containing the node currently being 
         return hexColors[colorName];
     }
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawNode);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawNode);
+    }
 
     function drawNode() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -593,17 +624,20 @@ tape("drawnNodeSelection return a selection containing the node currently being 
 tape("Attempts to operate on a node without drawing one first is handled gracefully", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(startTest);
-
     function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(startTest2);
+    }
+
+    function startTest2() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
         test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
