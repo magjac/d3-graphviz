@@ -7,17 +7,20 @@ var d3_graphviz = require("../");
 tape("graphviz().render() adds and removes SVG elements after transition delay.", function(test) {
 
     var window = global.window = jsdom('<div id="graph"><div id="dummy">Hello World</div></div>');
-    var document = global.document = window.document;
+    var document = global.document = window.document
 
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
-    test.equal(graphviz.active(), null, 'No transition is active before a graph has been rendered');
+    function startTest() {
 
-    graphviz
-        .zoom(false)
-        .transition(d3_transition.transition().duration(0))
-        .dot('digraph {a -> b; c; d}')
-        .render();
+        test.equal(graphviz.active(), null, 'No transition is active before a graph has been rendered');
+
+        graphviz
+            .zoom(false)
+            .transition(d3_transition.transition().duration(0))
+            .dot('digraph {a -> b; c; d}')
+            .render();
 
         test.ok(graphviz._active, 'Rendering is active after the 1st rendering has been initiated');
 
@@ -38,6 +41,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
         test.equal(d3.selectAll('polygon').size(), 2, 'Number of polygons immediately after 2nd rendering has been initiated while 1st is not yet finished');
         test.equal(d3.selectAll('ellipse').size(), 4, 'Number of ellipses immediately after 2nd rendering has been initiated while 1st is not yet finished');
         test.equal(d3.selectAll('path').size(), 1, 'Number of paths immediately after 2nd rendering has been initiated while 1st is not yet finished');
+    }
 
     function part1_end() {
 
