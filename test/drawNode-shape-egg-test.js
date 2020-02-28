@@ -23,7 +23,7 @@ tape("Verify that egg shape is drawn exactly as Graphviz does.", function(test) 
         .renderDot('digraph {a [shape="egg"]}', function () {
             actualGraphviz
                 .renderDot('digraph {}', function () {
-                    var x = 28.74345;
+                    var x = 28.74;
                     var y = -18;
                     actualGraphviz
                         .drawNode(x, y, 'a', {shape: 'egg', id: 'node1'})
