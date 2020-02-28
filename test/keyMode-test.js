@@ -26,7 +26,8 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
         d3.select('#main')
           .append('div')
             .attr('id', 'graph-' + keyMode)
-        var graphviz = d3_graphviz.graphviz("#graph-" + keyMode);
+        var graphviz = d3_graphviz.graphviz("#graph-" + keyMode)
+            .on("initEnd", render_1st);
         function render_1st() {
             graphviz
                 .tweenShapes(false)
@@ -42,8 +43,6 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
                     render_2nd();
                 });
         }
-
-        render_1st();
 
         function render_2nd() {
             graphviz
