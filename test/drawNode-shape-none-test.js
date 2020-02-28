@@ -10,9 +10,14 @@ tape("Verify that none shape is drawn exactly as Graphviz does.", function(test)
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph");
-    var actualGraphviz = d3_graphviz.graphviz("#actual-graph");
+    var actualGraphviz;
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+        .on('initEnd', () => {
+            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+                .on('initEnd', startTest);
+        });
 
+    function startTest() {
     expectedGraphviz
         .zoom(false)
         .renderDot('digraph {a [shape="none"]}', function () {
@@ -64,6 +69,7 @@ tape("Verify that none shape is drawn exactly as Graphviz does.", function(test)
                     test.end();
                 });
         });
+    }
 });
 
 tape("Verify that none shape without label is drawn exactly as Graphviz does.", function(test) {
@@ -71,9 +77,14 @@ tape("Verify that none shape without label is drawn exactly as Graphviz does.", 
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph");
-    var actualGraphviz = d3_graphviz.graphviz("#actual-graph");
+    var actualGraphviz;
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+        .on('initEnd', () => {
+            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+                .on('initEnd', startTest);
+        });
 
+    function startTest() {
     expectedGraphviz
         .zoom(false)
         .renderDot('digraph {a [shape="none" label=""]}', function () {
@@ -113,6 +124,7 @@ tape("Verify that none shape without label is drawn exactly as Graphviz does.", 
                     test.end();
                 });
         });
+    }
 });
 
 tape("Verify that none shape with style filled is drawn exactly as Graphviz does.", function(test) {
@@ -120,9 +132,14 @@ tape("Verify that none shape with style filled is drawn exactly as Graphviz does
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph");
-    var actualGraphviz = d3_graphviz.graphviz("#actual-graph");
+    var actualGraphviz;
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+        .on('initEnd', () => {
+            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+                .on('initEnd', startTest);
+        });
 
+    function startTest() {
     expectedGraphviz
         .zoom(false)
         .renderDot('digraph {a [shape="none" style="filled"]}', function () {
@@ -178,6 +195,7 @@ tape("Verify that none shape with style filled is drawn exactly as Graphviz does
                     test.end();
                 });
         });
+    }
 });
 
 tape("Verify that none shape with style filled and pen color specified is drawn exactly as Graphviz does.", function(test) {
@@ -185,9 +203,14 @@ tape("Verify that none shape with style filled and pen color specified is drawn 
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph");
-    var actualGraphviz = d3_graphviz.graphviz("#actual-graph");
+    var actualGraphviz;
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+        .on('initEnd', () => {
+            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+                .on('initEnd', startTest);
+        });
 
+    function startTest() {
     expectedGraphviz
         .zoom(false)
         .renderDot('digraph {a [shape="none" style="filled" color="#0000ff"]}', function () {
@@ -243,4 +266,5 @@ tape("Verify that none shape with style filled and pen color specified is drawn 
                     test.end();
                 });
         });
+    }
 });
