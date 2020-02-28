@@ -9,9 +9,14 @@ tape("Verify that point shape is drawn exactly as Graphviz does.", function(test
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph");
-    var actualGraphviz = d3_graphviz.graphviz("#actual-graph");
+    var actualGraphviz;
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+        .on('initEnd', () => {
+            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+                .on('initEnd', startTest);
+        });
 
+    function startTest() {
     expectedGraphviz
         .zoom(false)
         .renderDot('digraph {a [shape="point"]}', function () {
@@ -56,4 +61,5 @@ tape("Verify that point shape is drawn exactly as Graphviz does.", function(test
                     test.end();
                 });
         });
+    }
 });
