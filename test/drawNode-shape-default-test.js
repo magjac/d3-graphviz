@@ -9,9 +9,14 @@ tape("Verify that default shape is drawn exactly as Graphviz does.", function(te
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph");
-    var actualGraphviz = d3_graphviz.graphviz("#actual-graph");
+    var actualGraphviz;
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+        .on('initEnd', () => {
+            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+                .on('initEnd', startTest);
+        });
 
+    function startTest() {
     expectedGraphviz
         .zoom(false)
         .renderDot('digraph {a}', function () {
@@ -67,6 +72,7 @@ tape("Verify that default shape is drawn exactly as Graphviz does.", function(te
                     test.end();
                 });
         });
+    }
 });
 
 tape("Verify that default shape with style filled is drawn exactly as Graphviz does.", function(test) {
@@ -74,9 +80,14 @@ tape("Verify that default shape with style filled is drawn exactly as Graphviz d
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph");
-    var actualGraphviz = d3_graphviz.graphviz("#actual-graph");
+    var actualGraphviz;
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+        .on('initEnd', () => {
+            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+                .on('initEnd', startTest);
+        });
 
+    function startTest() {
     expectedGraphviz
         .zoom(false)
         .renderDot('digraph {a [style=filled]}', function () {
@@ -132,6 +143,7 @@ tape("Verify that default shape with style filled is drawn exactly as Graphviz d
                     test.end();
                 });
         });
+    }
 });
 
 tape("Default shape with style filled without fillcolor, but with color, uses color as fillcolor.", function(test) {
@@ -139,9 +151,14 @@ tape("Default shape with style filled without fillcolor, but with color, uses co
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph");
-    var actualGraphviz = d3_graphviz.graphviz("#actual-graph");
+    var actualGraphviz;
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+        .on('initEnd', () => {
+            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+                .on('initEnd', startTest);
+        });
 
+    function startTest() {
     expectedGraphviz
         .zoom(false)
         .renderDot('digraph {a [style=filled color="#0000ff"]}', function () {
@@ -198,6 +215,7 @@ tape("Default shape with style filled without fillcolor, but with color, uses co
                     test.end();
                 });
         });
+    }
 });
 
 tape("Verify that default shape with label is drawn exactly as Graphviz does.", function(test) {
@@ -205,9 +223,14 @@ tape("Verify that default shape with label is drawn exactly as Graphviz does.", 
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph");
-    var actualGraphviz = d3_graphviz.graphviz("#actual-graph");
+    var actualGraphviz;
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+        .on('initEnd', () => {
+            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+                .on('initEnd', startTest);
+        });
 
+    function startTest() {
     expectedGraphviz
         .zoom(false)
         .renderDot('digraph {a [label="x"]}', function () {
@@ -263,4 +286,5 @@ tape("Verify that default shape with label is drawn exactly as Graphviz does.", 
                     test.end();
                 });
         });
+    }
 });
