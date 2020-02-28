@@ -5,7 +5,7 @@ import {translatePointsAttribute} from "./svg";
 import {translateDAttribute} from "./svg";
 import {insertAllElementsData} from "./element";
 import {attributeElement} from "./element";
-import {roundTo4Decimals} from "./utils";
+import {roundTo2Decimals} from "./utils";
 
 export function drawNode(x, y, nodeId, attributes={}, options={}) {
     attributes = Object.assign({}, attributes);
@@ -98,8 +98,8 @@ function _moveNode(node, x, y, attributes, options) {
         var svgElement = d3.select(this);
         if (svgElement.attr("cx")) {
             svgElement
-                .attr("cx", roundTo4Decimals(x))
-                .attr("cy", roundTo4Decimals(y));
+                .attr("cx", roundTo2Decimals(x))
+                .attr("cy", roundTo2Decimals(y));
         } else if (svgElement.attr("points")) {
             var pointsString = svgElement.attr('points').trim();
             svgElement
@@ -113,8 +113,8 @@ function _moveNode(node, x, y, attributes, options) {
 
     if (text.size() != 0) {
         text
-            .attr("x", roundTo4Decimals(+text.attr("x") + x - bbox.cx))
-            .attr("y", roundTo4Decimals(+text.attr("y") + y - bbox.cy));
+            .attr("x", roundTo2Decimals(+text.attr("x") + x - bbox.cx))
+            .attr("y", roundTo2Decimals(+text.attr("y") + y - bbox.cy));
     }
     return this;
 }
