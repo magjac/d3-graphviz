@@ -5,14 +5,17 @@ var d3_graphviz = require("../");
 tape("onerror() registers dot layout error handler.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
     var errorsCaught = 0;
 
-    graphviz
-        .zoom(false)
-        .onerror(handleError)
-        .renderDot('{bad dot 1}');
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .onerror(handleError)
+            .renderDot('{bad dot 1}');
+    }
 
     function handleError(err) {
         errorsCaught += 1;
