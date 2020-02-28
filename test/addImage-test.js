@@ -3,7 +3,7 @@ var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 
-tape("graphviz().tweenPaths(true) enables path tweening during transitions.", function(test) {
+tape("graphviz().addImage() adds images to use in graph.", function(test) {
 
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
