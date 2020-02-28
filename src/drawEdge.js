@@ -70,7 +70,7 @@ function _moveEdge(edge, x1, y1, x2, y2, attributes, options) {
     var shortening = options.shortening || 0;
     var arrowHeadLength = 10;
     var arrowHeadWidth = 7;
-    var margin = 0.174;
+    var margin = 0.1;
 
     var arrowHeadPoints = [
         [0, -arrowHeadWidth / 2],
