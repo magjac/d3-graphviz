@@ -18,16 +18,16 @@ tape("Verify that cylinder shape is drawn exactly as Graphviz does.", function(t
         });
 
     function startTest() {
-    expectedGraphviz
-        .zoom(false)
-        .renderDot('digraph {a [shape="cylinder"]}', function () {
-            actualGraphviz
-                .renderDot('digraph {}', function () {
-                    var x = 27;
-                    var y = -18;
-                    actualGraphviz
-                        .drawNode(x, y, 'a', {shape: 'cylinder', id: 'node1'})
-                        .insertDrawnNode('a');
+        expectedGraphviz
+            .zoom(false)
+            .renderDot('digraph {a [shape="cylinder"]}', function () {
+                actualGraphviz
+                    .renderDot('digraph {}', function () {
+                        var x = 27;
+                        var y = -18;
+                        actualGraphviz
+                            .drawNode(x, y, 'a', {shape: 'cylinder', id: 'node1'})
+                            .insertDrawnNode('a');
 
                     expectedNodeGroup = expectedGraph.selectAll('.node');
                     expectedNodeTitle = expectedNodeGroup.selectAll('title');
