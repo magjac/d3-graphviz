@@ -3,7 +3,9 @@ var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 
-tape("graphviz().addImage() adds images to use in graph.", function(test) {
+// FIXME: Remove when addImage has been ported to hpcc-js-wasm
+//tape("graphviz().addImage() adds images to use in graph.", function(test) {
+tape.skip("graphviz().addImage() adds images to use in graph.", function(test) {
 
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
