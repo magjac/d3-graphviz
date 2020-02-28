@@ -216,7 +216,6 @@ tape("drawEdge() draws an edge even if the length is zero", function(test) {
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = x1;
@@ -517,7 +516,6 @@ tape("removeDrawnEdge() removes the edge currently being drawn", function(test) 
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -581,7 +579,6 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -659,7 +656,6 @@ tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) 
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -719,7 +715,6 @@ tape("drawnEdgeSelection return a selection containing the edge currently being 
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = 40;
