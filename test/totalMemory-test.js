@@ -2,7 +2,9 @@ var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3_graphviz = require("../");
 
-tape("totalMemory() sets the total memory available to Viz.js.", function(test) {
+// Remove when decided if the totalMemory option is needed with @hpcc-js-wasm or not
+//tape("totalMemory() sets the total memory available to Viz.js.", function(test) {
+tape.skip("totalMemory() sets the total memory available to Viz.js.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
