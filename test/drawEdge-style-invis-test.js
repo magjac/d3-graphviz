@@ -4,7 +4,6 @@ var deepEqualData = require("./deepEqualData");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 var translatePointsAttribute = require("./svg").translatePointsAttribute;
-var roundTo4Decimals = require("./utils").roundTo4Decimals;
 
 tape("No edge is drawn when style is invis.", function(test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
