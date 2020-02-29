@@ -265,7 +265,7 @@ export default function(src, callback) {
         };
     } else {
         try {
-            var svgDoc = this.layoutSync(src, "svg", vizOptions.engine);
+            var svgDoc = this.layoutSync(src, "svg", vizOptions.engine, vizOptions);
         }
         catch(error) {
             if (graphvizInstance._onerror) {
