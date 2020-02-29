@@ -38,6 +38,52 @@ export default function(src, callback) {
     var worker = this._worker;
     var engine = this._options.engine;
     var images = this._images;
+
+    this._dispatch.call("start", this);
+    this._busy = true;
+    this._dispatch.call("layoutStart", this);
+    var vizOptions = {
+        images: images,
+    };
+    if (this._worker) {
+        worker.postMessage({
+            dot: src,
+            engine: engine,
+            options: vizOptions,
+        });
+
+        worker.onmessage = function(event) {
+            switch (event.data.type) {
+            case "done":
+                return layoutDone.call(graphvizInstance, event.data.svg);
+            case "error":
+                if (graphvizInstance._onerror) {
+                    graphvizInstance._onerror(event.data.error);
+                } else {
+                    throw event.data.error
+                }
+                break;
+            }
+        };
+    } else {
+        try {
+            var svgDoc = this.layoutSync(src, "svg", engine, vizOptions);
+        }
+        catch(error) {
+            if (graphvizInstance._onerror) {
+                graphvizInstance._onerror(error.message);
+                return this;
+            } else {
+                throw error.message
+            }
+        }
+        layoutDone.call(this, svgDoc, callback);
+    }
+
+    return this;
+};
+
+function layoutDone(svgDoc, callback) {
     var keyMode = this._options.keyMode;
     var tweenPaths = this._options.tweenPaths;
     var tweenShapes = this._options.tweenShapes;
@@ -234,90 +280,45 @@ export default function(src, callback) {
         });
     }
 
-    this._dispatch.call("start", this);
-    this._busy = true;
-    this._dispatch.call("layoutStart", this);
-    var vizOptions = {
-        images: images,
-    };
-    if (this._worker) {
-        worker.postMessage({
-            dot: src,
-            engine: engine,
-            options: vizOptions,
+    this._dispatch.call("layoutEnd", this);
+
+    var newDoc = d3.select(document.createDocumentFragment())
+        .append('div');
+
+    var parser = new window.DOMParser();
+    var doc = parser.parseFromString(svgDoc, "image/svg+xml");
+
+    newDoc
+        .append(function() {
+            return doc.documentElement;
         });
 
-        worker.onmessage = function(event) {
-            switch (event.data.type) {
-            case "done":
-                return layoutDone.call(graphvizInstance, event.data.svg);
-            case "error":
-                if (graphvizInstance._onerror) {
-                    graphvizInstance._onerror(event.data.error);
-                } else {
-                    throw event.data.error
-                }
-                break;
-            }
-        };
-    } else {
-        try {
-            var svgDoc = this.layoutSync(src, "svg", engine, vizOptions);
-        }
-        catch(error) {
-            if (graphvizInstance._onerror) {
-                graphvizInstance._onerror(error.message);
-                return this;
-            } else {
-                throw error.message
-            }
-        }
-        layoutDone.call(this, svgDoc);
-    }
+    var newSvg = newDoc
+      .select('svg');
 
-    function layoutDone(svgDoc) {
-        this._dispatch.call("layoutEnd", this);
+    var data = extractAllElementsData(newSvg);
+    this._dispatch.call('dataExtractEnd', this);
+    postProcessDataPass1Local(data);
+    this._dispatch.call('dataProcessPass1End', this);
+    postProcessDataPass2Global(data);
+    this._dispatch.call('dataProcessPass2End', this);
+    this._data = data;
+    this._dictionary = dictionary;
+    this._nodeDictionary = nodeDictionary;
 
-        var newDoc = d3.select(document.createDocumentFragment())
-            .append('div');
-
-        var parser = new window.DOMParser();
-        var doc = parser.parseFromString(svgDoc, "image/svg+xml");
-
-        newDoc
-            .append(function() {
-                return doc.documentElement;
-            });
-
-        var newSvg = newDoc
-          .select('svg');
-
-        var data = extractAllElementsData(newSvg);
-        this._dispatch.call('dataExtractEnd', this);
-        postProcessDataPass1Local(data);
-        this._dispatch.call('dataProcessPass1End', this);
+    this._extractData = function (element, childIndex, parentData) {
+        var data = extractAllElementsData(element);
+        postProcessDataPass1Local(data, childIndex, parentData);
         postProcessDataPass2Global(data);
-        this._dispatch.call('dataProcessPass2End', this);
-        this._data = data;
-        this._dictionary = dictionary;
-        this._nodeDictionary = nodeDictionary;
-
-        this._extractData = function (element, childIndex, parentData) {
-            var data = extractAllElementsData(element);
-            postProcessDataPass1Local(data, childIndex, parentData);
-            postProcessDataPass2Global(data);
-            return data;
-        }
-        this._busy = false;
-        this._dispatch.call('dataProcessEnd', this);
-        if (callback) {
-            callback.call(this);
-        }
-        if (this._queue.length > 0) {
-            var job = this._queue.shift();
-            job.call(this);
-        }
+        return data;
     }
-
-    return this;
-};
+    this._busy = false;
+    this._dispatch.call('dataProcessEnd', this);
+    if (callback) {
+        callback.call(this);
+    }
+    if (this._queue.length > 0) {
+        var job = this._queue.shift();
+        job.call(this);
+    }
+}
