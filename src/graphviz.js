@@ -105,7 +105,7 @@ export function Graphviz(selection, options) {
 //                    document = {currentScript: {src: event.data.vizURL}};
                 }
                 const engine = event.data.options ? event.data.options.engine : 'dot';
-                hpccWasm.graphviz.layout(event.data.dot, "svg", engine).then((svg) => {
+                hpccWasm.graphviz.layout(event.data.dot, "svg", engine, event.data.options).then((svg) => {
                     if (svg) {
                         postMessage({
                             type: "done",
