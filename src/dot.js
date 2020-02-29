@@ -38,7 +38,6 @@ export default function(src, callback) {
     var worker = this._worker;
     var engine = this._options.engine;
     var images = this._images;
-    var totalMemory = this._options.totalMemory;
     var keyMode = this._options.keyMode;
     var tweenPaths = this._options.tweenPaths;
     var tweenShapes = this._options.tweenShapes;
@@ -242,7 +241,6 @@ export default function(src, callback) {
         format: "svg",
         engine: engine,
         images: images,
-        totalMemory: totalMemory,
     };
     if (this._worker) {
         worker.postMessage({

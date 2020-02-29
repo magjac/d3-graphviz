@@ -15,7 +15,6 @@ import fit from "./fit";
 import attributer from "./attributer";
 import engine from "./engine";
 import images from "./images";
-import totalMemory from "./totalMemory";
 import keyMode from "./keyMode";
 import fade from "./fade";
 import tweenPaths from "./tweenPaths";
@@ -49,7 +48,6 @@ export function Graphviz(selection, options) {
     this._options = {
         useWorker: true,
         engine: 'dot',
-        totalMemory: undefined,
         keyMode: 'title',
         fade: true,
         tweenPaths: true,
@@ -172,7 +170,6 @@ Graphviz.prototype = graphviz.prototype = {
     constructor: Graphviz,
     engine: engine,
     addImage: images,
-    totalMemory: totalMemory,
     keyMode: keyMode,
     fade: fade,
     tweenPaths: tweenPaths,
