@@ -28,7 +28,7 @@ export function initViz() {
             // Local URL. Prepend with local domain to be usable in web worker
             vizURL = (new window.URL(vizURL, document.location.href)).href;
         }
-        this._worker.postMessage({dot: "", vizURL: vizURL});
+        this._worker.postMessage({dot: "", engine: 'dot', vizURL: vizURL});
     }
 }
 
@@ -239,12 +239,12 @@ export default function(src, callback) {
     this._dispatch.call("layoutStart", this);
     var vizOptions = {
         format: "svg",
-        engine: engine,
         images: images,
     };
     if (this._worker) {
         worker.postMessage({
             dot: src,
+            engine: engine,
             options: vizOptions,
         });
 
@@ -263,7 +263,7 @@ export default function(src, callback) {
         };
     } else {
         try {
-            var svgDoc = this.layoutSync(src, "svg", vizOptions.engine, vizOptions);
+            var svgDoc = this.layoutSync(src, "svg", engine, vizOptions);
         }
         catch(error) {
             if (graphvizInstance._onerror) {
