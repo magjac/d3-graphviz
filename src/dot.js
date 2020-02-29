@@ -238,7 +238,6 @@ export default function(src, callback) {
     this._busy = true;
     this._dispatch.call("layoutStart", this);
     var vizOptions = {
-        format: "svg",
         images: images,
     };
     if (this._worker) {
