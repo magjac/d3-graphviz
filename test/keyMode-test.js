@@ -196,20 +196,23 @@ tape("graphviz().keyMode() cannot be changed after applying dot source.", functi
 
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on("initEnd", startTest);
 
-    function changeKeyMode() {
-        graphviz
+    function startTest() {
+        function changeKeyMode() {
+            graphviz
             .tweenShapes(false)
             .zoom(false)
             .keyMode('title')
             .dot('digraph {a -> b}')
             .keyMode('id')
             .render();
+        }
+
+        test.throws(changeKeyMode, 'Too late change of keyMode throws error');
+
+        test.end();
+
     }
-
-    test.throws(changeKeyMode, 'Too late change of keyMode throws error');
-
-    test.end();
-
 });
