@@ -108,6 +108,10 @@ export function Graphviz(selection, options) {
                             type: "done",
                             svg: svg,
                         });
+                    } else if (event.data.vizURL) {
+                        postMessage({
+                            type: "init",
+                        });
                     } else {
                         postMessage({
                             type: "skip",
@@ -124,6 +128,7 @@ export function Graphviz(selection, options) {
         var blob = new Blob([js]);
         var blobURL = window.URL.createObjectURL(blob);
         this._worker = new Worker(blobURL);
+        this._workerCallbacks = [];
     }
     this._selection = selection;
     this._active = false;

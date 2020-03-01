@@ -22,14 +22,33 @@ export function initViz() {
         var vizURL = this._vizURL;
         var graphvizInstance = this;
         this._worker.onmessage = function(event) {
-            graphvizInstance._dispatch.call("initEnd", this);
+            var callback = graphvizInstance._workerCallbacks.shift();
+            switch (event.data.type) {
+            case "init":
+                graphvizInstance._dispatch.call("initEnd", this);
+                break;
+            case "done":
+                return layoutDone.call(graphvizInstance, event.data.svg, callback);
+            case "error":
+                if (graphvizInstance._onerror) {
+                    graphvizInstance._onerror(event.data.error);
+                } else {
+                    throw event.data.error
+                }
+                break;
+            }
         };
         if (!vizURL.match(/^https?:\/\/|^\/\//i)) {
             // Local URL. Prepend with local domain to be usable in web worker
             vizURL = (new window.URL(vizURL, document.location.href)).href;
         }
-        this._worker.postMessage({dot: "", engine: 'dot', vizURL: vizURL});
+        postMessage.call(this, {dot: "", engine: 'dot', vizURL: vizURL});
     }
+}
+
+function postMessage(message, callback) {
+    this._workerCallbacks.push(callback);
+    this._worker.postMessage(message);
 }
 
 export default function(src, callback) {
@@ -46,25 +65,11 @@ export default function(src, callback) {
         images: images,
     };
     if (this._worker) {
-        worker.postMessage({
+        postMessage.call(this, {
             dot: src,
             engine: engine,
             options: vizOptions,
-        });
-
-        worker.onmessage = function(event) {
-            switch (event.data.type) {
-            case "done":
-                return layoutDone.call(graphvizInstance, event.data.svg);
-            case "error":
-                if (graphvizInstance._onerror) {
-                    graphvizInstance._onerror(event.data.error);
-                } else {
-                    throw event.data.error
-                }
-                break;
-            }
-        };
+        }, callback);
     } else {
         try {
             var svgDoc = this.layoutSync(src, "svg", engine, vizOptions);
