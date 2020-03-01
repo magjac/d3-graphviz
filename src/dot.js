@@ -16,6 +16,9 @@ export function initViz() {
             graphvizSync().then((graphviz1) => {
                 this.layoutSync = graphviz1.layout.bind(graphviz1);
                 this._dispatch.call("initEnd", this);
+                if (this._afterInit) {
+                    this._afterInit();
+                }
             });
         });
     } else {
@@ -71,6 +74,10 @@ export default function(src, callback) {
             options: vizOptions,
         }, callback);
     } else {
+        if (this.layoutSync == null) {
+            this._afterInit = this.dot.bind(this, src, callback);
+            return this;
+        }
         try {
             var svgDoc = this.layoutSync(src, "svg", engine, vizOptions);
         }
