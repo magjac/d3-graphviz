@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../node_modules/d3/dist/d3.js"></script>
+<script src="../node_modules/@hpcc-js/wasm/dist/index.min.js"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+// This example shows the behavior in version 3.x when a web is used
+
+var graphviz = d3.select("#graph").graphviz({useWorker: true})
+    .renderDot('digraph  {a -> b}')
+    .on('initEnd', () => {
+        console.log('Number of nodes after init:', d3.selectAll(".node").size()); // 0
+    })
+    .on('end', () => {
+        console.log('Number of nodes after render:', d3.selectAll(".node").size()); // 2
+    });
+
+console.log('Number of nodes directly after creation:', d3.selectAll(".node").size()); // 0
+
+</script>
