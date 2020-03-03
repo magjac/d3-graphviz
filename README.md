@@ -8,6 +8,7 @@ Renders SVG from graphs described in the [DOT](https://www.graphviz.org/doc/info
 [![unpkg](http://img.badgesize.io/https://unpkg.com/d3-graphviz/build/d3-graphviz.js?compression=gzip&label=unpkg&style=flat&cache=false)](https://unpkg.com/d3-graphviz/build/d3-graphviz.js)
 [![unpkg min](http://img.badgesize.io/https://unpkg.com/d3-graphviz/build/d3-graphviz.min.js?compression=gzip&label=unpkg%20min&style=flat&cache=false)](https://unpkg.com/d3-graphviz/build/d3-graphviz.min.js)
 <a href="https://join.slack.com/t/d3-graphviz/shared_invite/enQtMzMwODQzMDI5MDA5LWU3NTU1ZWNiY2JkYTQyM2ViMTU5ZTRhODJhMDI0MzM3NjEzNDA1NzYxMzRiY2QyMGFmNzkwYzYzYWQ3MmMxYzk"><img src="images/slack_rgb_cropped.png" height="20px"></a>
+[![Gitter](https://badges.gitter.im/d3-graphviz/community.svg)](https://gitter.im/d3-graphviz/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Features
 * Rendering of SVG graphs from [DOT](https://www.graphviz.org/doc/info/lang.html) source
