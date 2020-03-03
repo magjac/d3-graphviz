@@ -24,4 +24,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
 [Unreleased]: https://github.com/magjac/d3-graphviz/compare/v3.0.0...HEAD
-[3.0.0-alpha.3]: https://github.com/magjac/d3-graphviz/compare/v2.6.1...v3.0.0
+[3.0.0]: https://github.com/magjac/d3-graphviz/compare/v2.6.1...v3.0.0
