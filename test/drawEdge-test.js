@@ -6,15 +6,19 @@ var d3_graphviz = require("../");
 tape("Check our understanding of how Graphviz draws edges.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(endTest);
+    function startTest() {
+
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(endTest);
+    }
 
     function endTest() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -24,10 +28,10 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
-        x1 = 54.003;
+        margin = 0.1;
+        x1 = 54.4;
         y1 = -18;
-        x2 = 89.705;
+        x2 = 89.92;
         y2 = -18.000;
 
         line = d3.selectAll('.edge').selectAll('path').filter(function(d) {
@@ -47,9 +51,9 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
         var expected_y = [];
         expected_x.push(x1);
         expected_y.push(y1);
-        expected_x.push(62.028);
+        expected_x.push(62.39);
         expected_y.push(y1);
-        expected_x.push(70.967);
+        expected_x.push(71.31);
         expected_y.push(y1);
         expected_x.push(Math.round((x2 - margin - arrowHeadLength) * 1000) / 1000);
         expected_y.push(y2);
@@ -92,15 +96,18 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
 tape("drawEdge() draws an edge in the same way as Graphviz does", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawEdge);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawEdge);
+    }
 
     function drawEdge() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -110,7 +117,7 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
+        margin = 0.1;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -188,15 +195,18 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
 tape("drawEdge() draws an edge even if the length is zero", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
-    var num_edges = 0;
+    var num_edges = 0
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a; b;}')
-        .render(drawEdge);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a; b;}')
+            .render(drawEdge);
+    }
 
     function drawEdge() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -206,7 +216,6 @@ tape("drawEdge() draws an edge even if the length is zero", function(test) {
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = x1;
@@ -220,7 +229,7 @@ tape("drawEdge() draws an edge even if the length is zero", function(test) {
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
       test.equal(d3.select('.edge').select('polygon').attr("points"), "10,-23.5 20,-20 10,-16.5 10,-23.5", 'Number of paths after drawing an edge');
-        test.equal(d3.selectAll('path').attr("d"), "M20,-20L9.826,-20", 'Number of paths after drawing an edge');
+        test.equal(d3.selectAll('path').attr("d"), "M20,-20L9.9,-20", 'Number of paths after drawing an edge');
 
         test.end();
     }
@@ -230,15 +239,18 @@ tape("drawEdge() draws an edge even if the length is zero", function(test) {
 tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz does", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b [URL="dummy"];}')
-        .render(drawEdge);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b [URL="dummy"];}')
+            .render(drawEdge);
+    }
 
     function drawEdge() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -248,7 +260,7 @@ tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
+        margin = 0.1;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -326,15 +338,18 @@ tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz
 tape("drawEdge() draws an edge with an tooltip attribute in the same way as Graphviz does", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b [tooltip="dummy"];}')
-        .render(drawEdge);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b [tooltip="dummy"];}')
+            .render(drawEdge);
+    }
 
     function drawEdge() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -344,7 +359,7 @@ tape("drawEdge() draws an edge with an tooltip attribute in the same way as Grap
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
+        margin = 0.1;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -422,16 +437,18 @@ tape("drawEdge() draws an edge with an tooltip attribute in the same way as Grap
 tape("insertDrawnEdge() inserts the currently drawn edge into the joined data structure so that it can be animated when the graph is re-rendered", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawEdge);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawEdge);
+    }
 
     function drawEdge() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -478,15 +495,18 @@ tape("insertDrawnEdge() inserts the currently drawn edge into the joined data st
 tape("removeDrawnEdge() removes the edge currently being drawn", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawEdge);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawEdge);
+    }
 
     function drawEdge() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -496,7 +516,6 @@ tape("removeDrawnEdge() removes the edge currently being drawn", function(test) 
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -539,27 +558,18 @@ tape("removeDrawnEdge() removes the edge currently being drawn", function(test) 
 tape("updateDrawnEdge modifies the start and end points and the attributes of an edge", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    const hexColors = {
-        'black': '#000000',
-        'lightgray': '#d3d3d3',
-        'red': '#ff0000',
-        'purple': '#a020f0',
-        'green': '#00ff00',
-    };
-
-    function hexColorOf(colorName) {
-        return hexColors[colorName];
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawEdge);
     }
-
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawEdge);
 
     function drawEdge() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -569,7 +579,6 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -588,34 +597,34 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         test.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
         test.equal(line.attr("fill"), 'none', 'Default fill color of a drawn edge line is black');
-        test.equal(line.attr("stroke"), hexColorOf('black'), 'Default stroke color of a drawn edge line is black');
+        test.equal(line.attr("stroke"), 'black', 'Default stroke color of a drawn edge line is black');
 
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-edge"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color of a drawn edge is updated to red');
-        test.equal(line.attr("stroke"), hexColorOf('purple'), 'Stroke color is updated to purple');
+        test.equal(arrowHead.attr("fill"), 'red', 'Fill color of a drawn edge is updated to red');
+        test.equal(line.attr("stroke"), 'purple', 'Stroke color is updated to purple');
         test.equal(line.attr("stroke-width"), '2', 'Stroke width is updated to 2');
 
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {color: "green"});
         test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when only color is changed');
-        test.equal(line.attr("stroke"), hexColorOf('green'), 'Stroke color is updated to green');
+        test.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when only color is changed');
+        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated to green');
         test.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated when only color is changed');
 
         graphviz
             .updateDrawnEdge(22, -22, 42, -22);
         test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
-        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when no attribute is given');
-        test.equal(line.attr("stroke"), hexColorOf('green'), 'Stroke color is updated  when no attribute is given');
+        test.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
+        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
         test.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated  when no attribute is given');
 
         graphviz
             .updateDrawnEdge(22, -22, 42, -22, {color: null, penwidth: null});
         test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
-        test.equal(arrowHead.attr("fill"), hexColorOf('red'), 'Fill color is not updated when not specified');
-        test.equal(line.attr("stroke"), hexColorOf('black'), 'Stroke color is black when removed');
+        test.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when not specified');
+        test.equal(line.attr("stroke"), 'black', 'Stroke color is black when removed');
         test.equal(line.attr("stroke-width"), null, 'Stroke width is removed when removed');
 
         test.end();
@@ -626,15 +635,18 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
 tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawEdge);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawEdge);
+    }
 
     function drawEdge() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -644,7 +656,6 @@ tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) 
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -683,15 +694,18 @@ tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) 
 tape("drawnEdgeSelection return a selection containing the edge currently being drawn", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(drawEdge);
+    function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(drawEdge);
+    }
 
     function drawEdge() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
@@ -701,7 +715,6 @@ tape("drawnEdgeSelection return a selection containing the edge currently being 
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
         arrowHeadLength = 10;
         arrowHeadWidth = 7;
-        margin = 0.174;
         x1 = 20;
         y1 = -20;
         x2 = 40;
@@ -737,17 +750,20 @@ tape("drawnEdgeSelection return a selection containing the edge currently being 
 tape("Attempts to operate on an edge without drawing one first is handled gracefully", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-        .render(startTest);
-
     function startTest() {
+        graphviz
+            .zoom(false)
+            .dot('digraph {graph [rankdir="LR"]; a -> b;}')
+            .render(startTest2);
+    }
+
+    function startTest2() {
         test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
         test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
         test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');

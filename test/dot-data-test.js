@@ -8,26 +8,27 @@ var stringify = require('json-stringify-safe');
 tape("data extraction", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', () => {
+            graphviz
+                .zoom(false)
+                .dot('digraph {a -> b;}');
 
-    graphviz
-        .zoom(false)
-        .dot('digraph {a -> b;}');
+            delete graphviz._data.parent;
 
-    delete graphviz._data.parent;
+            var actualData = graphviz._data;
+            var expectedData = JSON.parse(JSON.stringify(basic_data))
 
-    var actualData = graphviz._data;
-    var expectedData = JSON.parse(JSON.stringify(basic_data))
+            deepEqualData(test, actualData, expectedData, "Extracted data equals predefined data");
 
-    deepEqualData(test, actualData, expectedData, "Extracted data equals predefined data");
+            graphviz.render();
+            var svg = d3.select('svg');
+            actualData = graphviz._extractData(svg, 0, null);
+            var expectedData = JSON.parse(JSON.stringify(basic_data));
+            deepEqualData(test, actualData, expectedData, "Explicitly extracted data equals predefined data");
 
-    graphviz.render();
-    var svg = d3.select('svg');
-    actualData = graphviz._extractData(svg, 0, null);
-    var expectedData = JSON.parse(JSON.stringify(basic_data));
-    deepEqualData(test, actualData, expectedData, "Explicitly extracted data equals predefined data");
-
-    test.end();
+            test.end();
+        });
 });
 
 var basic_data = {
@@ -42,8 +43,8 @@ var basic_data = {
     "children": [
         {
             "tag": "#text",
-            "attributes": {},
             "text": "\n",
+            "attributes": {},
             "parent": "[Circular ~]",
             "children": [],
             "key": "#text-0",
@@ -65,12 +66,12 @@ var basic_data = {
             "children": [
                 {
                     "tag": "#text",
-                    "attributes": {},
                     "text": "\n",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#text-0",
-                    "id": "svg-0.%0.#text-0"
+                    "id": "svg-0.%200320.#text-0"
                 },
                 {
                     "tag": "title",
@@ -79,30 +80,30 @@ var basic_data = {
                     "children": [
                         {
                             "tag": "#text",
+                            "text": "%200320",
                             "attributes": {},
-                            "text": "%0",
                             "parent": "[Circular ~.children.1.children.1]",
                             "children": [],
                             "key": "#text-0",
-                            "id": "svg-0.%0.title-0.#text-0"
+                            "id": "svg-0.%200320.title-0.#text-0"
                         }
                     ],
                     "key": "title-0",
-                    "id": "svg-0.%0.title-0"
+                    "id": "svg-0.%200320.title-0"
                 },
                 {
                     "tag": "#text",
-                    "attributes": {},
                     "text": "\n",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#text-1",
-                    "id": "svg-0.%0.#text-1"
+                    "id": "svg-0.%200320.#text-1"
                 },
                 {
                     "tag": "polygon",
                     "attributes": {
-                        "fill": "#ffffff",
+                        "fill": "white",
                         "stroke": "transparent",
                         "points": "-4,4 -4,-112 58,-112 58,4 -4,4"
                     },
@@ -119,34 +120,34 @@ var basic_data = {
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "path-0",
-                    "id": "svg-0.%0.path-0"
+                    "id": "svg-0.%200320.path-0"
                 },
                 {
                     "tag": "#text",
-                    "attributes": {},
                     "text": "\n",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#text-2",
-                    "id": "svg-0.%0.#text-2"
+                    "id": "svg-0.%200320.#text-2"
                 },
                 {
                     "tag": "#comment",
-                    "attributes": {},
                     "comment": " a ",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#comment-0",
-                    "id": "svg-0.%0.#comment-0"
+                    "id": "svg-0.%200320.#comment-0"
                 },
                 {
                     "tag": "#text",
-                    "attributes": {},
                     "text": "\n",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#text-3",
-                    "id": "svg-0.%0.#text-3"
+                    "id": "svg-0.%200320.#text-3"
                 },
                 {
                     "tag": "g",
@@ -158,12 +159,12 @@ var basic_data = {
                     "children": [
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.7]",
                             "children": [],
                             "key": "#text-0",
-                            "id": "svg-0.%0.a.#text-0"
+                            "id": "svg-0.%200320.a.#text-0"
                         },
                         {
                             "tag": "title",
@@ -172,31 +173,31 @@ var basic_data = {
                             "children": [
                                 {
                                     "tag": "#text",
-                                    "attributes": {},
                                     "text": "a",
+                                    "attributes": {},
                                     "parent": "[Circular ~.children.1.children.7.children.1]",
                                     "children": [],
                                     "key": "#text-0",
-                                    "id": "svg-0.%0.a.title-0.#text-0"
+                                    "id": "svg-0.%200320.a.title-0.#text-0"
                                 }
                             ],
                             "key": "title-0",
-                            "id": "svg-0.%0.a.title-0"
+                            "id": "svg-0.%200320.a.title-0"
                         },
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.7]",
                             "children": [],
                             "key": "#text-1",
-                            "id": "svg-0.%0.a.#text-1"
+                            "id": "svg-0.%200320.a.#text-1"
                         },
                         {
                             "tag": "ellipse",
                             "attributes": {
                                 "fill": "none",
-                                "stroke": "#000000",
+                                "stroke": "black",
                                 "cx": "27",
                                 "cy": "-90",
                                 "rx": "27",
@@ -209,16 +210,16 @@ var basic_data = {
                             "parent": "[Circular ~.children.1.children.7]",
                             "children": [],
                             "key": "path-0",
-                            "id": "svg-0.%0.a.path-0"
+                            "id": "svg-0.%200320.a.path-0"
                         },
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.7]",
                             "children": [],
                             "key": "#text-2",
-                            "id": "svg-0.%0.a.#text-2"
+                            "id": "svg-0.%200320.a.#text-2"
                         },
                         {
                             "tag": "text",
@@ -227,8 +228,7 @@ var basic_data = {
                                 "x": "27",
                                 "y": "-85.8",
                                 "font-family": "Times,serif",
-                                "font-size": "14.00",
-                                "fill": "#000000"
+                                "font-size": "14.00"
                             },
                             "center": {
                                 "x": "27",
@@ -238,56 +238,56 @@ var basic_data = {
                             "children": [
                                 {
                                     "tag": "#text",
-                                    "attributes": {},
                                     "text": "a",
+                                    "attributes": {},
                                     "parent": "[Circular ~.children.1.children.7.children.5]",
                                     "children": [],
                                     "key": "#text-0",
-                                    "id": "svg-0.%0.a.text-0.#text-0"
+                                    "id": "svg-0.%200320.a.text-0.#text-0"
                                 }
                             ],
                             "key": "text-0",
-                            "id": "svg-0.%0.a.text-0"
+                            "id": "svg-0.%200320.a.text-0"
                         },
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.7]",
                             "children": [],
                             "key": "#text-3",
-                            "id": "svg-0.%0.a.#text-3"
+                            "id": "svg-0.%200320.a.#text-3"
                         }
                     ],
                     "key": "a",
-                    "id": "svg-0.%0.a"
+                    "id": "svg-0.%200320.a"
                 },
                 {
                     "tag": "#text",
-                    "attributes": {},
                     "text": "\n",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#text-4",
-                    "id": "svg-0.%0.#text-4"
+                    "id": "svg-0.%200320.#text-4"
                 },
                 {
                     "tag": "#comment",
-                    "attributes": {},
                     "comment": " b ",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#comment-1",
-                    "id": "svg-0.%0.#comment-1"
+                    "id": "svg-0.%200320.#comment-1"
                 },
                 {
                     "tag": "#text",
-                    "attributes": {},
                     "text": "\n",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#text-5",
-                    "id": "svg-0.%0.#text-5"
+                    "id": "svg-0.%200320.#text-5"
                 },
                 {
                     "tag": "g",
@@ -299,12 +299,12 @@ var basic_data = {
                     "children": [
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.11]",
                             "children": [],
                             "key": "#text-0",
-                            "id": "svg-0.%0.b.#text-0"
+                            "id": "svg-0.%200320.b.#text-0"
                         },
                         {
                             "tag": "title",
@@ -313,31 +313,31 @@ var basic_data = {
                             "children": [
                                 {
                                     "tag": "#text",
-                                    "attributes": {},
                                     "text": "b",
+                                    "attributes": {},
                                     "parent": "[Circular ~.children.1.children.11.children.1]",
                                     "children": [],
                                     "key": "#text-0",
-                                    "id": "svg-0.%0.b.title-0.#text-0"
+                                    "id": "svg-0.%200320.b.title-0.#text-0"
                                 }
                             ],
                             "key": "title-0",
-                            "id": "svg-0.%0.b.title-0"
+                            "id": "svg-0.%200320.b.title-0"
                         },
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.11]",
                             "children": [],
                             "key": "#text-1",
-                            "id": "svg-0.%0.b.#text-1"
+                            "id": "svg-0.%200320.b.#text-1"
                         },
                         {
                             "tag": "ellipse",
                             "attributes": {
                                 "fill": "none",
-                                "stroke": "#000000",
+                                "stroke": "black",
                                 "cx": "27",
                                 "cy": "-18",
                                 "rx": "27",
@@ -350,16 +350,16 @@ var basic_data = {
                             "parent": "[Circular ~.children.1.children.11]",
                             "children": [],
                             "key": "path-0",
-                            "id": "svg-0.%0.b.path-0"
+                            "id": "svg-0.%200320.b.path-0"
                         },
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.11]",
                             "children": [],
                             "key": "#text-2",
-                            "id": "svg-0.%0.b.#text-2"
+                            "id": "svg-0.%200320.b.#text-2"
                         },
                         {
                             "tag": "text",
@@ -368,8 +368,7 @@ var basic_data = {
                                 "x": "27",
                                 "y": "-13.8",
                                 "font-family": "Times,serif",
-                                "font-size": "14.00",
-                                "fill": "#000000"
+                                "font-size": "14.00"
                             },
                             "center": {
                                 "x": "27",
@@ -379,56 +378,56 @@ var basic_data = {
                             "children": [
                                 {
                                     "tag": "#text",
-                                    "attributes": {},
                                     "text": "b",
+                                    "attributes": {},
                                     "parent": "[Circular ~.children.1.children.11.children.5]",
                                     "children": [],
                                     "key": "#text-0",
-                                    "id": "svg-0.%0.b.text-0.#text-0"
+                                    "id": "svg-0.%200320.b.text-0.#text-0"
                                 }
                             ],
                             "key": "text-0",
-                            "id": "svg-0.%0.b.text-0"
+                            "id": "svg-0.%200320.b.text-0"
                         },
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.11]",
                             "children": [],
                             "key": "#text-3",
-                            "id": "svg-0.%0.b.#text-3"
+                            "id": "svg-0.%200320.b.#text-3"
                         }
                     ],
                     "key": "b",
-                    "id": "svg-0.%0.b"
+                    "id": "svg-0.%200320.b"
                 },
                 {
                     "tag": "#text",
-                    "attributes": {},
                     "text": "\n",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#text-6",
-                    "id": "svg-0.%0.#text-6"
+                    "id": "svg-0.%200320.#text-6"
                 },
                 {
                     "tag": "#comment",
-                    "attributes": {},
                     "comment": " a&#45;&gt;b ",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#comment-2",
-                    "id": "svg-0.%0.#comment-2"
+                    "id": "svg-0.%200320.#comment-2"
                 },
                 {
                     "tag": "#text",
-                    "attributes": {},
                     "text": "\n",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#text-7",
-                    "id": "svg-0.%0.#text-7"
+                    "id": "svg-0.%200320.#text-7"
                 },
                 {
                     "tag": "g",
@@ -440,12 +439,12 @@ var basic_data = {
                     "children": [
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.15]",
                             "children": [],
                             "key": "#text-0",
-                            "id": "svg-0.%0.a->b.#text-0"
+                            "id": "svg-0.%200320.a->b.#text-0"
                         },
                         {
                             "tag": "title",
@@ -454,111 +453,111 @@ var basic_data = {
                             "children": [
                                 {
                                     "tag": "#text",
-                                    "attributes": {},
                                     "text": "a->b",
+                                    "attributes": {},
                                     "parent": "[Circular ~.children.1.children.15.children.1]",
                                     "children": [],
                                     "key": "#text-0",
-                                    "id": "svg-0.%0.a->b.title-0.#text-0"
+                                    "id": "svg-0.%200320.a->b.title-0.#text-0"
                                 }
                             ],
                             "key": "title-0",
-                            "id": "svg-0.%0.a->b.title-0"
+                            "id": "svg-0.%200320.a->b.title-0"
                         },
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.15]",
                             "children": [],
                             "key": "#text-1",
-                            "id": "svg-0.%0.a->b.#text-1"
+                            "id": "svg-0.%200320.a->b.#text-1"
                         },
                         {
                             "tag": "path",
                             "attributes": {
                                 "fill": "none",
-                                "stroke": "#000000",
-                                "d": "M27,-71.8314C27,-64.131 27,-54.9743 27,-46.4166"
+                                "stroke": "black",
+                                "d": "M27,-71.7C27,-63.98 27,-54.71 27,-46.11"
                             },
                             "bbox": {
                                 "x": 27,
-                                "y": -71.8314,
+                                "y": -71.7,
                                 "width": 0,
-                                "height": 25.4148
+                                "height": 25.590000000000003
                             },
                             "center": {
                                 "x": 27,
-                                "y": -59.124
+                                "y": -58.905
                             },
                             "totalLength": 100,
                             "parent": "[Circular ~.children.1.children.15]",
                             "children": [],
                             "key": "path-0",
-                            "id": "svg-0.%0.a->b.path-0"
+                            "id": "svg-0.%200320.a->b.path-0"
                         },
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.15]",
                             "children": [],
                             "key": "#text-2",
-                            "id": "svg-0.%0.a->b.#text-2"
+                            "id": "svg-0.%200320.a->b.#text-2"
                         },
                         {
                             "tag": "polygon",
                             "attributes": {
-                                "fill": "#000000",
-                                "stroke": "#000000",
-                                "points": "30.5001,-46.4132 27,-36.4133 23.5001,-46.4133 30.5001,-46.4132"
+                                "fill": "black",
+                                "stroke": "black",
+                                "points": "30.5,-46.1 27,-36.1 23.5,-46.1 30.5,-46.1"
                             },
                             "bbox": {
-                                "x": 23.5001,
-                                "y": -46.4133,
+                                "x": 23.5,
+                                "y": -46.1,
                                 "width": 7,
                                 "height": 10
                             },
                             "center": {
-                                "x": 27.0001,
-                                "y": -41.4133
+                                "x": 27,
+                                "y": -41.1
                             },
                             "parent": "[Circular ~.children.1.children.15]",
                             "children": [],
                             "key": "path-1",
-                            "id": "svg-0.%0.a->b.path-1",
+                            "id": "svg-0.%200320.a->b.path-1",
                             "totalLength": 100
                         },
                         {
                             "tag": "#text",
-                            "attributes": {},
                             "text": "\n",
+                            "attributes": {},
                             "parent": "[Circular ~.children.1.children.15]",
                             "children": [],
                             "key": "#text-3",
-                            "id": "svg-0.%0.a->b.#text-3"
+                            "id": "svg-0.%200320.a->b.#text-3"
                         }
                     ],
                     "key": "a->b",
-                    "id": "svg-0.%0.a->b"
+                    "id": "svg-0.%200320.a->b"
                 },
                 {
                     "tag": "#text",
-                    "attributes": {},
                     "text": "\n",
+                    "attributes": {},
                     "parent": "[Circular ~.children.1]",
                     "children": [],
                     "key": "#text-8",
-                    "id": "svg-0.%0.#text-8"
+                    "id": "svg-0.%200320.#text-8"
                 }
             ],
-            "key": "%0",
-            "id": "svg-0.%0"
+            "key": "%200320",
+            "id": "svg-0.%200320"
         },
         {
             "tag": "#text",
-            "attributes": {},
             "text": "\n",
+            "attributes": {},
             "parent": "[Circular ~]",
             "children": [],
             "key": "#text-1",

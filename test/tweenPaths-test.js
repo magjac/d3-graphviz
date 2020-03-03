@@ -8,33 +8,36 @@ tape("graphviz().tweenPaths(true) enables path tweening during transitions.", fu
 
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest)
 
-    graphviz
-        .tweenShapes(false)
-        .tweenPaths(true)
-        .tweenPrecision(4)
-        .zoom(false)
-        .dot('digraph {a -> b; c}')
-        .render();
-    test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
-    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
-    transition1 = d3_transition.transition().duration(100);
-    graphviz
-        .dot('digraph {a -> b; b -> a}')
-        .transition(transition1)
-        .fade(false)
-        .tweenPaths(true)
-        .render()
-        .on("end", part1_end);
-    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
-    test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
-    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
-    test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
+    function startTest() {
+        graphviz
+            .tweenShapes(false)
+            .tweenPaths(true)
+            .tweenPrecision(4)
+            .zoom(false)
+            .dot('digraph {a -> b; c}')
+            .render();
+        test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
+        test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+        test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+        test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+        transition1 = d3_transition.transition().duration(100);
+        graphviz
+            .dot('digraph {a -> b; b -> a}')
+            .transition(transition1)
+            .fade(false)
+            .tweenPaths(true)
+            .render()
+            .on("end", part1_end);
+        test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
+        test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
+        test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
+        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
+        test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
+    }
 
     function part1_end() {
 

@@ -1,6 +1,6 @@
 {
   "name": "d3-graphviz",
-  "version": "2.6.1",
+  "version": "3.0.0",
   "description": "Graphviz DOT rendering and animated transitions for D3",
   "keywords": [
     "d3",
@@ -27,7 +27,8 @@
     "do-test": "mkdir -p http:; ln -nsf .. http://dummyhost; $TESTRUNNER 'test/**/*-test.js'",
     "report": "nyc report --reporter=lcov",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "prepublishOnly": "env NODE_ENV=production npm run build && TESTRUNNER='tape' npm run do-test && uglifyjs build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
+    "prepublishOnly": "env NODE_ENV=production npm run build && uglifyjs build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
+    "prepublishOnlyOriginal": "env NODE_ENV=production npm run build && TESTRUNNER='tape' npm run do-test && uglifyjs build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
     "publicbuild": "env NODE_ENV=production npm run build",
     "postpublish": "zip -j build/d3-graphviz.zip -- LICENSE README.md build/d3-graphviz.js build/d3-graphviz.min.js"
   },
@@ -60,6 +61,7 @@
     "uglify-es": "^3.0.27"
   },
   "dependencies": {
+    "@hpcc-js/wasm": "^0.3.6",
     "d3-dispatch": "^1.0.3",
     "d3-format": "^1.2.0",
     "d3-interpolate": "^1.1.5",
@@ -67,7 +69,6 @@
     "d3-selection": "^1.1.0",
     "d3-timer": "^1.0.6",
     "d3-transition": "^1.1.1",
-    "d3-zoom": "1.7.3",
-    "viz.js": "^1.8.2"
+    "d3-zoom": "1.7.3"
   }
 }

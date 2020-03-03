@@ -15,7 +15,6 @@ import fit from "./fit";
 import attributer from "./attributer";
 import engine from "./engine";
 import images from "./images";
-import totalMemory from "./totalMemory";
 import keyMode from "./keyMode";
 import fade from "./fade";
 import tweenPaths from "./tweenPaths";
@@ -49,7 +48,6 @@ export function Graphviz(selection, options) {
     this._options = {
         useWorker: true,
         engine: 'dot',
-        totalMemory: undefined,
         keyMode: 'title',
         fade: true,
         tweenPaths: true,
@@ -79,7 +77,7 @@ export function Graphviz(selection, options) {
     if (useWorker) {
         var scripts = d3.selectAll('script');
         var vizScript = scripts.filter(function() {
-            return d3.select(this).attr('type') == 'javascript/worker' || (d3.select(this).attr('src') && d3.select(this).attr('src').match(/.*\/viz.js$/));
+            return d3.select(this).attr('type') == 'javascript/worker' || (d3.select(this).attr('src') && d3.select(this).attr('src').match(/.*\/@hpcc-js\/wasm/));
         });
         if (vizScript.size() == 0) {
             console.warn('No script tag of type "javascript/worker" was found and "useWorker" is true. Not using web worker.');
@@ -94,35 +92,43 @@ export function Graphviz(selection, options) {
     }
     if (useWorker) {
         var js = `
+            var document = {}; // Workaround for "ReferenceError: document is not defined" in hpccWasm
+            var hpccWasm;
             onmessage = function(event) {
                 if (event.data.vizURL) {
                     importScripts(event.data.vizURL);
+                    hpccWasm = self["@hpcc-js/wasm"];
+                    hpccWasm.wasmFolder(event.data.vizURL.match(/.*\\\//));
+// This is an alternative workaround where wasmFolder() is not needed
+//                    document = {currentScript: {src: event.data.vizURL}};
                 }
-                try {
-                    var svg = Viz(event.data.dot, event.data.options);
-                }
-                catch(error) {
+                hpccWasm.graphviz.layout(event.data.dot, "svg", event.data.engine, event.data.options).then((svg) => {
+                    if (svg) {
+                        postMessage({
+                            type: "done",
+                            svg: svg,
+                        });
+                    } else if (event.data.vizURL) {
+                        postMessage({
+                            type: "init",
+                        });
+                    } else {
+                        postMessage({
+                            type: "skip",
+                        });
+                    }
+                }).catch(error => {
                     postMessage({
                         type: "error",
                         error: error.message,
                     });
-                    return;
-                }
-                if (svg) {
-                    postMessage({
-                        type: "done",
-                        svg: svg,
-                    });
-                } else {
-                    postMessage({
-                        type: "skip",
-                    });
-                }
+                });
             }
         `;
         var blob = new Blob([js]);
         var blobURL = window.URL.createObjectURL(blob);
         this._worker = new Worker(blobURL);
+        this._workerCallbacks = [];
     }
     this._selection = selection;
     this._active = false;
@@ -168,7 +174,6 @@ Graphviz.prototype = graphviz.prototype = {
     constructor: Graphviz,
     engine: engine,
     addImage: images,
-    totalMemory: totalMemory,
     keyMode: keyMode,
     fade: fade,
     tweenPaths: tweenPaths,

@@ -1,4 +1,3 @@
-import Viz from "viz.js/viz";
 import * as d3 from "d3-selection";
 import {rotate} from "./geometry";
 import {extractAllElementsData} from "./element";
@@ -6,7 +5,7 @@ import {translatePointsAttribute} from "./svg";
 import {translateDAttribute} from "./svg";
 import {insertAllElementsData} from "./element";
 import {attributeElement} from "./element";
-import {roundTo4Decimals} from "./utils";
+import {roundTo2Decimals} from "./utils";
 
 export function drawNode(x, y, nodeId, attributes={}, options={}) {
     attributes = Object.assign({}, attributes);
@@ -16,12 +15,12 @@ export function drawNode(x, y, nodeId, attributes={}, options={}) {
         var root = this._selection;
         var svg = root.selectWithoutDataPropagation("svg");
         var graph0 = svg.selectWithoutDataPropagation("g");
-        var newNode0 = createNode(nodeId, attributes);
+        var newNode0 = createNode.call(this, nodeId, attributes);
         var nodeData = extractAllElementsData(newNode0);
         var newNode = graph0.append('g')
             .data([nodeData]);
         attributeElement.call(newNode.node(), nodeData);
-        _updateNode(newNode, x, y, nodeId, attributes, options);
+        _updateNode.call(this, newNode, x, y, nodeId, attributes, options);
     }
     this._drawnNode = {
         g: newNode,
@@ -55,7 +54,7 @@ export function updateDrawnNode(x, y, nodeId, attributes={}, options={}) {
         this._drawnNode.g = node;
     }
     if (!node.empty())  {
-      _updateNode(node, x, y, nodeId, attributes, options);
+      _updateNode.call(this, node, x, y, nodeId, attributes, options);
     }
 
     return this;
@@ -63,7 +62,7 @@ export function updateDrawnNode(x, y, nodeId, attributes={}, options={}) {
 
 function _updateNode(node, x, y, nodeId, attributes, options) {
 
-    var newNode = createNode(nodeId, attributes);
+    var newNode = createNode.call(this, nodeId, attributes);
     var nodeData = extractAllElementsData(newNode);
     node.data([nodeData]);
     attributeElement.call(node.node(), nodeData);
@@ -99,8 +98,8 @@ function _moveNode(node, x, y, attributes, options) {
         var svgElement = d3.select(this);
         if (svgElement.attr("cx")) {
             svgElement
-                .attr("cx", roundTo4Decimals(x))
-                .attr("cy", roundTo4Decimals(y));
+                .attr("cx", roundTo2Decimals(x))
+                .attr("cy", roundTo2Decimals(y));
         } else if (svgElement.attr("points")) {
             var pointsString = svgElement.attr('points').trim();
             svgElement
@@ -114,8 +113,8 @@ function _moveNode(node, x, y, attributes, options) {
 
     if (text.size() != 0) {
         text
-            .attr("x", roundTo4Decimals(+text.attr("x") + x - bbox.cx))
-            .attr("y", roundTo4Decimals(+text.attr("y") + y - bbox.cy));
+            .attr("x", roundTo2Decimals(+text.attr("x") + x - bbox.cx))
+            .attr("y", roundTo2Decimals(+text.attr("y") + y - bbox.cy));
     }
     return this;
 }
@@ -218,7 +217,7 @@ function createNode(nodeId, attributes) {
         }
     }
     var dotSrc = 'graph {"' + nodeId + '" [' + attributesString + ']}';
-    var svgDoc = Viz(dotSrc, {format: 'svg'});
+    var svgDoc = this.layoutSync(dotSrc, 'svg', 'dot');
     var parser = new window.DOMParser();
     var doc = parser.parseFromString(svgDoc, "image/svg+xml");
     var newDoc = d3.select(document.createDocumentFragment())

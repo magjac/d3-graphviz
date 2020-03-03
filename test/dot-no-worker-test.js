@@ -15,10 +15,23 @@ function do_test(test, useWorker, html) {
     }
     global.Worker = Worker;
 
-    var graphviz = d3_graphviz.graphviz("#graph", useWorker);
+    var graphviz = d3_graphviz.graphviz("#graph", useWorker)
+        .on('initEnd', () => {
 
-    graphviz
-        .logEvents(true);
+            graphviz
+                .logEvents(true);
+
+            test.equal(graphviz._data, undefined, 'No data is attached before calling dot');
+            graphviz
+                .tweenShapes(false)
+                .zoom(false)
+                .onerror(handleError)
+                .dot('digraph {a -> b; c}');
+
+            test.notEqual(graphviz._data, undefined, 'Data is attached immediately after calling dot when no worker is used');
+            graphviz
+                .render(part1_end);
+        });
 
     function handleError(err) {
         test.equal(
@@ -28,17 +41,6 @@ function do_test(test, useWorker, html) {
         );
         part2();
     }
-
-    test.equal(graphviz._data, undefined, 'No data is attached before calling dot');
-    graphviz
-        .tweenShapes(false)
-        .zoom(false)
-        .onerror(handleError)
-        .dot('digraph {a -> b; c}');
-
-    test.notEqual(graphviz._data, undefined, 'Data is attached immediately after calling dot when no worker is used');
-    graphviz
-        .render(part1_end);
 
     function part1_end() {
         test.notEqual(graphviz._data, undefined, 'Data is attached after rendering');
@@ -66,16 +68,16 @@ function do_test(test, useWorker, html) {
 tape('dot() performs layout in the foreground when web worker is not used.', function(test) {
 
     do_test(test=test, false, html=`
-            <script src="http://dummyhost/node_modules/viz.js/viz.js" type="javascript/worker"></script>
+            <script src="http://dummyhost/node_modules/@hpcc-js/wasm/dist/index.js" type="javascript/worker"></script>
             <div id="graph"></div>
             `,
     );
 });
 
-tape('dot() performs layout in the foreground with a warning when script src does not end with "viz.js".', function(test) {
+tape('dot() performs layout in the foreground with a warning when script src does not contain "@hpcc-js/wasm".', function(test) {
 
     do_test(test=test, true, html=`
-            <script src="http://dummyhost/node_modules/viz.js/viz-NOT.js" type="text/javascript"></script>
+            <script src="http://dummyhost/node_modules/@hpcc-js-NOT/wasm/dist/index.js" type="text/javascript"></script>
             <div id="graph"></div>
             `,
     );

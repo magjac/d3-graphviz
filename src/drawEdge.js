@@ -1,4 +1,3 @@
-import Viz from "viz.js/viz";
 import * as d3 from "d3-selection";
 import {path as d3_path} from "d3-path";
 import {rotate} from "./geometry";
@@ -14,12 +13,12 @@ export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
         var root = this._selection;
         var svg = root.selectWithoutDataPropagation("svg");
         var graph0 = svg.selectWithoutDataPropagation("g");
-        var newEdge0 = createEdge(attributes);
+        var newEdge0 = createEdge.call(this, attributes);
         var edgeData = extractAllElementsData(newEdge0);
         var newEdge = graph0.append('g')
             .data([edgeData]);
         attributeElement.call(newEdge.node(), edgeData);
-        _updateEdge(newEdge, x1, y1, x2, y2, attributes, options);
+        _updateEdge.call(this, newEdge, x1, y1, x2, y2, attributes, options);
     }
     this._drawnEdge = {
         g: newEdge,
@@ -51,7 +50,7 @@ export function updateDrawnEdge(x1, y1, x2, y2, attributes={}, options={}) {
         this._drawnEdge.g = edge;
     }
     if (!edge.empty())  {
-      _updateEdge(edge, x1, y1, x2, y2, attributes, options);
+      _updateEdge.call(this, edge, x1, y1, x2, y2, attributes, options);
     }
 
     return this;
@@ -59,7 +58,7 @@ export function updateDrawnEdge(x1, y1, x2, y2, attributes={}, options={}) {
 
 function _updateEdge(edge, x1, y1, x2, y2, attributes, options) {
 
-    var newEdge = createEdge(attributes);
+    var newEdge = createEdge.call(this, attributes);
     var edgeData = extractAllElementsData(newEdge);
     edge.data([edgeData]);
     attributeElement.call(edge.node(), edgeData);
@@ -71,7 +70,7 @@ function _moveEdge(edge, x1, y1, x2, y2, attributes, options) {
     var shortening = options.shortening || 0;
     var arrowHeadLength = 10;
     var arrowHeadWidth = 7;
-    var margin = 0.174;
+    var margin = 0.1;
 
     var arrowHeadPoints = [
         [0, -arrowHeadWidth / 2],
@@ -214,7 +213,7 @@ function createEdge(attributes) {
         }
     }
     var dotSrc = 'digraph {a -> b [' + attributesString + ']}';
-    var svgDoc = Viz(dotSrc, {format: 'svg'});
+    var svgDoc = this.layoutSync(dotSrc, 'svg', 'dot');
     var parser = new window.DOMParser();
     var doc = parser.parseFromString(svgDoc, "image/svg+xml");
     var newDoc = d3.select(document.createDocumentFragment())

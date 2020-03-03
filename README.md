@@ -1,6 +1,6 @@
 # d3-graphviz
 
-Renders SVG from graphs described in the [DOT](https://www.graphviz.org/doc/info/lang.html) language using the [Viz.js](https://github.com/mdaines/viz.js/) port of [Graphviz](http://www.graphviz.org) and does animated transitions between graphs.
+Renders SVG from graphs described in the [DOT](https://www.graphviz.org/doc/info/lang.html) language using the [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) port of [Graphviz](http://www.graphviz.org) and does animated transitions between graphs.
 
 [![Build Status](https://travis-ci.org/magjac/d3-graphviz.svg?branch=master)](https://travis-ci.org/magjac/d3-graphviz)
 [![codecov](https://codecov.io/gh/magjac/d3-graphviz/branch/master/graph/badge.svg)](https://codecov.io/gh/magjac/d3-graphviz)
@@ -43,7 +43,11 @@ A more colorful demo can be seen [here](http://bl.ocks.org/magjac/4acffdb3afbc4f
 
 ## Installing
 
-The easiest way to use the library in your own application is to install it with NPM: `npm install d3-graphviz`. If you don't use npm, you can download the [latest release](https://github.com/magjac/d3-graphviz/releases/latest).
+The easiest way to use the library in your own application is to install it with NPM:
+
+`npm install d3-graphviz`
+
+If you don't use npm, you can download the [latest release](https://github.com/magjac/d3-graphviz/releases/latest).
 
 ## Building the library
 
@@ -58,7 +62,7 @@ The built library will then be in `build/d3-graphviz.js`
 
 ## Principles of Operation
 
-Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph specified in the [DOT](https://www.graphviz.org/doc/info/lang.html) language and generates an SVG text representation, which is analyzed and converted into a data representation. Then [D3](https://d3js.org/) is used to join this data with a selected DOM element, render the SVG graph on that element and to animate transitioning of one graph into another.
+Uses [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) to do a layout of a graph specified in the [DOT](https://www.graphviz.org/doc/info/lang.html) language and generates an SVG text representation, which is analyzed and converted into a data representation. Then [D3](https://d3js.org/) is used to join this data with a selected DOM element, render the SVG graph on that element and to animate transitioning of one graph into another.
 
 ## Contents
 
@@ -74,7 +78,7 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 
 ## API Reference
 
-* [Defining the viz.js Script Tag](#defining-the-vizjs-script-tag)
+* [Defining the @hpcc-js/wasm Script Tag](#defining-the-hpcc-jswasm-script-tag)
 * [Creating a Graphviz Renderer](#creating-a-graphviz-renderer)
 * [Setting and Getting Options](#setting-and-getting-options)
 * [Rendering](#rendering)
@@ -92,17 +96,17 @@ Uses [Viz.js](https://github.com/mdaines/viz.js/) to do a layout of a graph spec
 * [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changes)
 * [Large Graphs](#large-graphs)
 
-### Defining the viz.js Script Tag
+### Defining the @hpcc-js/wasm Script Tag
 
-The "viz.js" script provides a function named *Viz*. If a web worker is used, this function is called from the web worker which then loads and compiles the "viz.js" script explicitly. In this case, it's unneccesary to let the browser also load and compile the script. This is accomplished by using the script tag "javascript/worker" which the browser does not identify to be Javascript and therefore does not compile. However, there is two d3-graphviz functions, [*drawNode*](#graphviz_drawNode) and [*drawEdge*](#graphviz_drawEdge) that calls the the *Viz* function directly and if it is going to be used, the script type must be "application/javascript" or "text/javascript".
+The "@hpcc-js/wasm" script provides functions to do Grahviz layouts. If a web worker is used, these functions are called from the web worker which then loads and compiles the "@hpcc-js/wasm" script explicitly. In this case, it's unneccesary to let the browser also load and compile the script. This is accomplished by using the script tag "javascript/worker" which the browser does not identify to be Javascript and therefore does not compile. However, there are two d3-graphviz functions, [*drawNode*](#graphviz_drawNode) and [*drawEdge*](#graphviz_drawEdge) that calls the layout functions directly and if they are going to be used, the script type must be "application/javascript" or "text/javascript".
 
 Examples:
 
-`<script src="https://unpkg.com/viz.js@1.8.1/viz.js" type="application/javascript/"></script>`
+`<script src="https://unpkg.com/@hpcc-js/wasm/dist/index.min.js" type="application/javascript/"></script>`
 
 This will always work, but will not be optimal if the script is used in a web worker only.
 
-`<script src="https://unpkg.com/viz.js@1.8.1/viz.js" type="javascript/worker"></script>`
+`<script src="https://unpkg.com/@hpcc-js/wasm/dist/index.min.js" type="javascript/worker"></script>`
 
 This will work if a web worker is used and the [*drawNode*](#graphviz_drawNode) and [*drawEdge*](#graphviz_drawEdge) functions are not used and will give shorter page load time.
 
@@ -130,7 +134,6 @@ Returns a new graphviz renderer instance on the first element in the given *sele
 | [growEnteringEdges](#graphviz_growEnteringEdges) | true |
 | [height](#graphviz_height) | null |
 | [keyMode](#graphviz_keyMode) | 'title' |
-| [totalMemory](#graphviz_totalMemory) | undefined (giving [Viz.js](https://github.com/mdaines/viz.js/) default) |
 | [scale](#graphviz_scale) | 1 |
 | [tweenPaths](#graphviz_tweenPaths) | true |
 | [tweenPrecision](#graphviz_tweenPrecision) | 1 |
@@ -184,12 +187,12 @@ Starts rendering of an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>]
 
 <a name="graphviz_engine" href="#graphviz_engine">#</a> <i>graphviz</i>.<b>engine</b>(<i>engine</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/engine.js "Source")
 
-Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified *engine* string. In order to have effect, the engine must be set before calling [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). Supports all engines that [Viz.js](https://github.com/mdaines/viz.js/) supports. Currently these are:
+Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified *engine* string. In order to have effect, the engine must be set before calling [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). Supports all engines that [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) supports. Currently these are:
 
 * <b>circo</b>
 * <b>dot</b> (default)
 * <b>fdp</b>
-* <b>neato</b> (not supported with [viz-lite.js](https://github.com/mdaines/viz.js#lite-version))
+* <b>neato</b>
 * <b>osage</b>
 * <b>patchwork</b>
 * <b>twopi</b>
@@ -275,7 +278,7 @@ For advanced usage, the grahviz renderer provides methods for custom control flo
 
 Adds or removes a *listener* to the graphviz renderer instance for the specified event *typenames*. The *typenames* is one of the following string event types:
 
-* `initEnd` - when the graphviz renderer has finished initialization.¹
+* `initEnd` - when the graphviz renderer has finished initialization.
 * `start` - when analysis of the DOT source starts.
 * `layoutStart` - when the layout of the DOT source starts.
 * `layoutEnd` - when the layout of the DOT source ends.
@@ -289,8 +292,6 @@ Adds or removes a *listener* to the graphviz renderer instance for the specified
 * `transitionEnd` - when the anmiated transition ends.
 * `restoreEnd` - when possibly converted paths and shapes have been restored after the transition.
 * `end` - when the graphviz renderer has finished all actions.
-
-¹ If a web worker is not used, this event is issued before [d3.graphviz](#d3_graphviz) or [<i>selection</i>.<b>graphviz</b>](#selection_graphviz) returns which means that a *listener* registered with a subsequent  [<i>graphviz</i>.<b>on</b>](#graphviz_on) will not be called since it's registered too late.
 
 Note that these are *not* native DOM events as implemented by [*selection*.on](https://github.com/d3/d3-selection#selection_on) and [*selection*.dispatch](https://github.com/d3/d3-selection#selection_dispatch), but graphviz events!
 
@@ -467,24 +468,17 @@ Removes the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphvi
 
 Returns a [selection](https://github.com/d3/d3-selection#selection) containing the node currently being drawn. The selection is empty if no node has been drawn or the lastest drawn node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
 
-### Large Graphs
-
-For very large graphs it might be necessary to increase the amount of memory available to [Viz.js](https://github.com/mdaines/viz.js/).
-
-<a name="graphviz_totalMemory" href="#graphviz_totalMemory">#</a> <i>graphviz</i>.<b>totalMemory</b>(<i>size</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/totalMemory.js "Source")
-
-Sets the total memory available to [Viz.js](https://github.com/mdaines/viz.js/) to *size* bytes, which should be a power of 2. See the [Viz.js API](https://github.com/mdaines/viz.js#vizsrc-options-formatsvg-enginedot-scale-images-path-width-height--totalmemory16777216-) for details.
-
 ## Examples
 
 * [Basic Example](http://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b)
 * [Demo](http://bl.ocks.org/magjac/4acffdb3afbc4f71b448a210b5060bca)
 * [Shape Tweening Demo](http://bl.ocks.org/magjac/69dc955a2e2ee085f60369c4a73f92a6)
 * [Delete Nodes and Edge Demo Application](https://bl.ocks.org/magjac/28a70231e2c9dddb84b3b20f450a215f)
+* [Animated Growth of Entering Edges Demo](http://bl.ocks.org/magjac/f485e7b915c9699aa181a11e183f8237)
 
 ## Building Applications with [d3-graphviz](https://github.com/magjac/d3-graphviz)
 ### SVG structure
-The generated SVG graph has *exactly* the same structure as the SVG generated by [Viz.js](https://github.com/mdaines/viz.js), so applications utilizing knowledge about this structure should be able to use [d3-graphviz](https://github.com/magjac/d3-graphviz) without adaptations. If [path tweening](#controlling-path-tweening) or [shape tweening](#controlling-path-tweening) is used, some SVG elements may be converted during transitions, but they are restored to the original shape after the transition.
+The generated SVG graph has *exactly* the same structure as the SVG generated by [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm), so applications utilizing knowledge about this structure should be able to use [d3-graphviz](https://github.com/magjac/d3-graphviz) without adaptations. If [path tweening](#controlling-path-tweening) or [shape tweening](#controlling-path-tweening) is used, some SVG elements may be converted during transitions, but they are restored to the original shape after the transition.
 
 See this [example application](https://bl.ocks.org/magjac/28a70231e2c9dddb84b3b20f450a215f).
 
@@ -510,7 +504,7 @@ The data bound to each DOM node is an object containing the following fields:
  * <b>text</b> - Contains the text if the DOM node is a [Text node](https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-1312295772). A text node has the tag "<b>#text</b>", not to be confused with the tag "<b>text</b>", which is an [SVG <b>'text</b>' element](https://www.w3.org/TR/SVG/text.html#TextElement).
  * <b>comment</b> - Contains the comment if the DOM node is a [Comment node](https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-1728279322). A comment node has the tag "<b>#comment</b>".
 
-Other fields are used internally, but may be subject to change between releases and should not by used an external application.
+Other fields are used internally, but may be subject to change between releases and should not be used by an external application.
 
 To inspect data:
 
@@ -524,9 +518,7 @@ console.log(JSON.stringify(d3.select("svg").datum(), null, 4));
 
 The shape- and path-tweening operations are quite computational intensive and can be disabled with [<i>graphviz</i>.<b>tweenShapes</b>](#graphviz_tweenShapes) and [<i>graphviz</i>.<b>tweenPaths</b>](#graphviz_tweenPaths) to improve performance if they are not needed. Even if enabled, performance gains can be made by turning off conversion of equally sided polygons with [<i>graphviz</i>.<b>convertEqualSidedPolygons</b>](#graphviz_convertEqualSidedPolygons) or by reducing tween precision by setting a larger value with [<i>graphviz</i>.<b>tweenPrecision</b>](#graphviz_tweenPrecision).
 
-In order for animated transitions to be smooth, special considerations has been made to do the computational intensive operations before transitions start. Use [*transition*.delay](#transition_delay) to reserve time for those computations.
-
-Since the author is new to both Javascript and D3, there are probably a lot of things that can be improved. Suggestions are welcome.
+In order for animated transitions to be smooth, special considerations has been made to do the computational intensive operations before transitions start.
 
 ## Requirements
 
@@ -552,11 +544,11 @@ If you think you have found a bug in d3-graphviz itself, please [file an issue](
 
 ## Development
 
-In order to run the tests you need [Node.js](https://nodejs.org/en/download/package-manager/) 6.x or later.
+In order to run the tests you need [Node.js](https://nodejs.org/en/download/package-manager/) 10.x or later. Version 13.9.0 was used during development.
 
 ## Credits
 
-* [Mike Daines](https://github.com/mdaines) for [Viz.js](https://github.com/mdaines/viz.js/).
+* [Gordon Smith](https://github.com/GordonSmith) for [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm).
 * [Mike Bostock](https://github.com/mbostock) for the [Path Tween](https://bl.ocks.org/mbostock/3916621) code and [Stroke Dash Interpolation](https://bl.ocks.org/mbostock/5649592) code.
 * [Aaron Bycoffe](https://bl.ocks.org/bycoffe) for the [Element rotation with point-along-path interpolation](http://bl.ocks.org/bycoffe/c3849a0b15234d7e32fc) code.
 * [Marcin Stefaniuk](https://github.com/mstefaniuk) for inspiration and learning through [graph-viz-d3-js](https://github.com/mstefaniuk/graph-viz-d3-js).
