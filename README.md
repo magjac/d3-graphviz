@@ -504,7 +504,7 @@ The data bound to each DOM node is an object containing the following fields:
  * <b>text</b> - Contains the text if the DOM node is a [Text node](https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-1312295772). A text node has the tag "<b>#text</b>", not to be confused with the tag "<b>text</b>", which is an [SVG <b>'text</b>' element](https://www.w3.org/TR/SVG/text.html#TextElement).
  * <b>comment</b> - Contains the comment if the DOM node is a [Comment node](https://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-1728279322). A comment node has the tag "<b>#comment</b>".
 
-Other fields are used internally, but may be subject to change between releases and should not by used an external application.
+Other fields are used internally, but may be subject to change between releases and should not be used by an external application.
 
 To inspect data:
 
