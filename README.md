@@ -474,6 +474,7 @@ Returns a [selection](https://github.com/d3/d3-selection#selection) containing t
 * [Demo](http://bl.ocks.org/magjac/4acffdb3afbc4f71b448a210b5060bca)
 * [Shape Tweening Demo](http://bl.ocks.org/magjac/69dc955a2e2ee085f60369c4a73f92a6)
 * [Delete Nodes and Edge Demo Application](https://bl.ocks.org/magjac/28a70231e2c9dddb84b3b20f450a215f)
+* [Animated Growth of Entering Edges Demo](http://bl.ocks.org/magjac/f485e7b915c9699aa181a11e183f8237)
 
 ## Building Applications with [d3-graphviz](https://github.com/magjac/d3-graphviz)
 ### SVG structure
