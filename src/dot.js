@@ -6,12 +6,18 @@ import {convertToPathData} from "./svg";
 import {pathTweenPoints} from "./tweening";
 import {isEdgeElement} from "./data";
 import {getEdgeTitle} from "./data";
+import {wasmCode} from "./wasmCode";
 
 
 export function initViz() {
 
     // force JIT compilation of Viz.js
     if (this._worker == null) {
+        window.fetch = function() {
+            return new Promise((resolve, reject) => {
+                resolve(new Response(wasmCode));
+            });
+        }
         graphviz.layout("", "svg", "dot").then(() => {
             graphvizSync().then((graphviz1) => {
                 this.layoutSync = graphviz1.layout.bind(graphviz1);
@@ -45,7 +51,7 @@ export function initViz() {
             // Local URL. Prepend with local domain to be usable in web worker
             vizURL = (new window.URL(vizURL, document.location.href)).href;
         }
-        postMessage.call(this, {dot: "", engine: 'dot', vizURL: vizURL});
+        postMessage.call(this, {dot: "", engine: 'dot', vizURL: vizURL, wasmCode: wasmCode});
     }
 }
 

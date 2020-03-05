@@ -9,6 +9,11 @@ export function workerCode() {
             hpccWasm.wasmFolder(event.data.vizURL.match(/.*\//));
     // This is an alternative workaround where wasmFolder() is not needed
     //                    document = {currentScript: {src: event.data.vizURL}};
+            self.fetch = function() {
+                return new Promise((resolve, reject) => {
+                    resolve(new Response(event.data.wasmCode));
+                });
+            }
         }
         hpccWasm.graphviz.layout(event.data.dot, "svg", event.data.engine, event.data.options).then((svg) => {
             if (svg) {
