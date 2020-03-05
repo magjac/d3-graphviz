@@ -43,6 +43,7 @@ import {moveDrawnNode} from "./drawNode";
 import {insertDrawnNode} from "./drawNode";
 import {removeDrawnNode} from "./drawNode";
 import {drawnNodeSelection} from "./drawNode";
+import {workerCode} from "./workerCode";
 
 export function Graphviz(selection, options) {
     this._options = {
@@ -91,41 +92,7 @@ export function Graphviz(selection, options) {
         }
     }
     if (useWorker) {
-        var js = `
-            var document = {}; // Workaround for "ReferenceError: document is not defined" in hpccWasm
-            var hpccWasm;
-            onmessage = function(event) {
-                if (event.data.vizURL) {
-                    importScripts(event.data.vizURL);
-                    hpccWasm = self["@hpcc-js/wasm"];
-                    hpccWasm.wasmFolder(event.data.vizURL.match(/.*\\\//));
-// This is an alternative workaround where wasmFolder() is not needed
-//                    document = {currentScript: {src: event.data.vizURL}};
-                }
-                hpccWasm.graphviz.layout(event.data.dot, "svg", event.data.engine, event.data.options).then((svg) => {
-                    if (svg) {
-                        postMessage({
-                            type: "done",
-                            svg: svg,
-                        });
-                    } else if (event.data.vizURL) {
-                        postMessage({
-                            type: "init",
-                        });
-                    } else {
-                        postMessage({
-                            type: "skip",
-                        });
-                    }
-                }).catch(error => {
-                    postMessage({
-                        type: "error",
-                        error: error.message,
-                    });
-                });
-            }
-        `;
-        var blob = new Blob([js]);
+        var blob = new Blob(['(' + workerCode.toString() + ')()']);
         var blobURL = window.URL.createObjectURL(blob);
         this._worker = new Worker(blobURL);
         this._workerCallbacks = [];
