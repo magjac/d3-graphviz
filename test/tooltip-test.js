@@ -12,7 +12,7 @@ tape("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph 
 
     svgDoc = `<svg width="8pt" height="8pt" viewBox="0.00 0.00 8.00 8.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 4)">
-<title>%200320</title>
+<title>%208016</title>
 <g id="a_graph0"><a title="G">
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-4 4,-4 4,4 -4,4"></polygon>
 </a>
@@ -40,7 +40,7 @@ tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DO
 
     svgDoc = `<svg width="8pt" height="8pt" viewBox="0.00 0.00 8.00 8.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 4)">
-<title>%200320</title>
+<title>%208016</title>
 <g id="a_graph0"><a title="G">
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-4 4,-4 4,4 -4,4"></polygon>
 </a>
