@@ -12,7 +12,7 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
     function startTest() {
         svgDoc = `<svg width="62pt" height="116pt" viewBox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
-<title>%200320</title>
+<title>%208016</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-112 58,-112 58,4 -4,4"></polygon>
 <!-- a -->
 <g id="node1" class="node">
@@ -147,7 +147,7 @@ tape("graphviz().render() removes SVG elements for nodes and edges when removed 
 
         svgDoc2 = `<svg width="62pt" height="44pt" viewBox="0.00 0.00 62.00 44.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 40)">
-<title>%200320</title>
+<title>%208016</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-40 58,-40 58,4 -4,4"></polygon>
 <!-- a -->
 <g id="node1" class="node">
