@@ -67,7 +67,7 @@ function do_test(test, useWorker, html) {
 
 tape('dot() performs layout in the foreground when web worker is not used.', function(test) {
 
-    do_test(test=test, false, html=`
+    do_test(test, false, `
             <script src="http://dummyhost/node_modules/@hpcc-js/wasm/dist/index.js" type="javascript/worker"></script>
             <div id="graph"></div>
             `,
@@ -76,7 +76,7 @@ tape('dot() performs layout in the foreground when web worker is not used.', fun
 
 tape('dot() performs layout in the foreground with a warning when script src does not contain "@hpcc-js/wasm".', function(test) {
 
-    do_test(test=test, true, html=`
+    do_test(test, true, `
             <script src="http://dummyhost/node_modules/@hpcc-js-NOT/wasm/dist/index.js" type="text/javascript"></script>
             <div id="graph"></div>
             `,
@@ -85,7 +85,7 @@ tape('dot() performs layout in the foreground with a warning when script src doe
 
 tape('dot() performs layout in the foreground with a warning when "javascript/worker" script tag does not have a "src" attribute.', function(test) {
 
-    do_test(test=test, true, html=`
+    do_test(test, true, `
             <script type="javascript/worker"></script>
             <div id="graph"></div>
             `,
