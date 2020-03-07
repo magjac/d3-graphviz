@@ -24,7 +24,7 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
         test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
         test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
         test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
-        transition1 = d3_transition.transition().duration(0);
+        const transition1 = d3_transition.transition().duration(0);
         graphviz
             .dot('digraph {a [shape="box"];a -> b}')
             .transition(transition1)
@@ -46,7 +46,7 @@ tape("graphviz().tweenShapes() enables and disables shape tweening during transi
         test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after shape change');
         test.equal(d3.selectAll('path').size(), 1, 'Number of paths after shape change');
 
-        transition1 = d3_transition.transition().duration(0);
+        const transition1 = d3_transition.transition().duration(0);
         graphviz
             .dot('digraph {node [shape="triangle"];a -> b}')
             .transition(transition1)

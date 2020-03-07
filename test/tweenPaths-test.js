@@ -24,7 +24,7 @@ tape("graphviz().tweenPaths(true) enables path tweening during transitions.", fu
         test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
         test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
         test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
-        transition1 = d3_transition.transition().duration(100);
+        const transition1 = d3_transition.transition().duration(100);
         graphviz
             .dot('digraph {a -> b; b -> a}')
             .transition(transition1)

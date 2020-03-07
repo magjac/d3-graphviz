@@ -64,9 +64,9 @@ tape("graphviz().width() sets svg width.", function(test) {
 
         // Set width/height without fit and scale
 
-        viewBox = `0 0 ${width * 3 / 4} ${height * 3 / 4}`;
-        originalWidthViewBox = `0 0 ${originalWidthPt} ${height * 3 / 4}`;
-        originalHeightViewBox = `0 0 ${width * 3 / 4} ${originalHeightPt}`;
+        let viewBox = `0 0 ${width * 3 / 4} ${height * 3 / 4}`;
+        const originalWidthViewBox = `0 0 ${originalWidthPt} ${height * 3 / 4}`;
+        const originalHeightViewBox = `0 0 ${width * 3 / 4} ${originalHeightPt}`;
 
         graphviz
             .width(width)
@@ -144,10 +144,10 @@ tape("graphviz().width() sets svg width.", function(test) {
 
         // Set width/height, without fit, with scale
 
-        scaledViewBox = `0 0 ${width * 3 / 4 / scale} ${height * 3 / 4 / scale}`;
-        scaledOriginalWidthViewBox = `0 0 ${originalWidthPt / scale} ${height * 3 / 4 / scale}`;
-        scaledOriginalHeightViewBox = `0 0 ${width * 3 / 4 / scale} ${originalHeightPt / scale}`;
-        scaledOriginalViewBox = `0 0 ${originalWidthPt / scale} ${originalHeightPt / scale}`;
+        const scaledViewBox = `0 0 ${width * 3 / 4 / scale} ${height * 3 / 4 / scale}`;
+        const scaledOriginalWidthViewBox = `0 0 ${originalWidthPt / scale} ${height * 3 / 4 / scale}`;
+        const scaledOriginalHeightViewBox = `0 0 ${width * 3 / 4 / scale} ${originalHeightPt / scale}`;
+        const scaledOriginalViewBox = `0 0 ${originalWidthPt / scale} ${originalHeightPt / scale}`;
 
         graphviz
             .width(width)

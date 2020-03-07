@@ -10,7 +10,7 @@ tape("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph 
     var graphviz = d3_graphviz.graphviz("#graph")
         .on('initEnd', startTest);
 
-    svgDoc = `<svg width="8pt" height="8pt" viewBox="0.00 0.00 8.00 8.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    const svgDoc = `<svg width="8pt" height="8pt" viewBox="0.00 0.00 8.00 8.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 4)">
 <title>%208016</title>
 <g id="a_graph0"><a title="G">
@@ -38,7 +38,7 @@ tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DO
     var graphviz = d3_graphviz.graphviz("#graph")
         .on('initEnd', startTest);
 
-    svgDoc = `<svg width="8pt" height="8pt" viewBox="0.00 0.00 8.00 8.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    const svgDoc = `<svg width="8pt" height="8pt" viewBox="0.00 0.00 8.00 8.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 4)">
 <title>%208016</title>
 <g id="a_graph0"><a title="G">

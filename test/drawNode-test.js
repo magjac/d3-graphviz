@@ -27,7 +27,7 @@ tape("Check our understanding of how Graphviz draws nodes.", function(test) {
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
 
-        nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
+        const nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
             return d.parent.key == 'a'
         });
 
@@ -83,7 +83,7 @@ tape("drawNode() draws a node in the same way as Graphviz does", function(test) 
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
 
-        nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
+        const nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
             return d.parent.key == 'c'
         });
 
@@ -139,7 +139,7 @@ tape("drawNode() draws a polygon node", function(test) {
         test.equal(d3.selectAll('ellipse').size(), 0, 'Number of ellipses after inserting the currently drawn edge');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
 
-        nodeShape = d3.selectAll('.node').selectAll('polygon').filter(function(d) {
+        const nodeShape = d3.selectAll('.node').selectAll('polygon').filter(function(d) {
             return d.parent.key == 'c'
         });
 
@@ -191,7 +191,7 @@ tape("drawNode() draws a node with an URL attribute in the same way as Graphviz 
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn node');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn node');
 
-        nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
+        const nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
             return d.parent.parent.parent.key == 'c'
         });
 
@@ -245,7 +245,7 @@ tape("drawNode() draws a node with an tooltip attribute in the same way as Graph
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn node');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn node');
 
-        nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
+        const nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
             return d.parent.parent.parent.key == 'd'
         });
 
@@ -394,8 +394,8 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
         test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
-        x = 20;
-        y = -20;
+        let x = 20;
+        let y = -20;
         graphviz
             .drawNode(x, y, 'f', {shape: 'ellipse', id: 'drawn-node'});
         num_nodes += 1;
@@ -521,8 +521,8 @@ tape("moveDrawnNode modifies the position of a node", function(test) {
         test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
-        x = 20;
-        y = -20;
+        let x = 20;
+        let y = -20;
         graphviz
             .drawNode(x, y, 'f', {shape: 'ellipse', id: 'drawn-node'});
         num_nodes += 1;
@@ -572,8 +572,8 @@ tape("drawnNodeSelection return a selection containing the node currently being 
         test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
         test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
         test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
-        x = 20;
-        y = -20;
+        let x = 20;
+        let y = -20;
 
         var noDrawnNode = graphviz.drawnNodeSelection();
         test.ok(noDrawnNode.empty(), "drawnNodeSelection() returns an empty selection when no node is currently being drawn");

@@ -32,7 +32,7 @@ tape("The attributer is called during rendering.", function(test) {
         test.equal(tagCounts['#text'], 29, "The attributer is called 29 times for '#text' elements when enabled")
         test.equal(tagCounts['#comment'], 3, "The attributer is called 3 times for '#text' elements when enabled")
 
-        for (tag in tagCounts) {
+        for (let tag in tagCounts) {
             tagCounts[tag] = 0
         }
 

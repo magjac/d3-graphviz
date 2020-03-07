@@ -17,7 +17,7 @@ tape("logEvents enables and disables event logging.", function(test) {
             .render();
 
         var eventTypes = graphviz._eventTypes;
-        n = 0;
+        var n = 0;
         for (let i in eventTypes) {
             let eventType = eventTypes[i];
             test.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'function', "An event named " + eventType + ".log is registered when event logging is enabled");
