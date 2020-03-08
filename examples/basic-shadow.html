@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../node_modules/d3/dist/d3.js"></script>
+<script src="../node_modules/@hpcc-js/wasm/dist/index.min.js"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+d3.select("#graph").graphviz()
+  .renderDot(
+    `digraph  {
+       node [style="filled"]
+       a [fillcolor="#d62728"]
+       b [fillcolor="#1f77b4"]
+       a -> b
+     }`,
+    () => {
+      d3.selectAll('.node').style('filter','drop-shadow( 3px 3px 2px rgba(0, 0, 0, .2))');
+    }
+);
+
+</script>
