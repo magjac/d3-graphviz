@@ -226,7 +226,9 @@ function layoutDone(svgDoc, callback) {
                         var path = datum.parent.children.find(function (e) {
                             return e.tag == 'path';
                         });
-                        datum.totalLength = path.totalLength;
+                        if (path) {
+                            datum.totalLength = path.totalLength;
+                        }
                     }
                     var title = getEdgeTitle(datum);
                     var child = title.children[0];

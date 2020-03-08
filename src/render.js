@@ -237,7 +237,7 @@ function _render(callback) {
                         .attr('transform', null);
                 });
         }
-        var moveThisPolygon = growEnteringEdges && tag == 'polygon' && isEdgeElement(data) && data.offset;
+        var moveThisPolygon = growEnteringEdges && tag == 'polygon' && isEdgeElement(data) && data.offset && data.parent.children[3].tag == 'path';
         if (moveThisPolygon) {
             var edgePath = d3.select(element.node().parentNode.querySelector("path"));
             var p0 = edgePath.node().getPointAtLength(0);

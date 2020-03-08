@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../node_modules/d3/dist/d3.js"></script>
+<script src="../node_modules/@hpcc-js/wasm/dist/index.js" type="javascript/worker"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+var dotIndex = 0;
+var graphviz = d3.select("#graph").graphviz()
+    .growEnteringEdges(true)
+    .transition(function () {
+        return d3.transition()
+            .ease(d3.easeLinear)
+            .delay(1000)
+            .duration(1500);
+    })
+    .logEvents(true)
+    .on("initEnd", render);
+
+function attributer(datum, index, nodes) {
+    var selection = d3.select(this);
+    if (datum.tag == "svg") {
+        var width = "600";
+        var height = "400";
+        var x = "10";
+        var y = "10";
+        selection
+            .attr("width", width + "pt")
+            .attr("height", height + "pt")
+            .attr("viewBox", -x + " " + -y + " " + width + " " + height);
+        datum.attributes.width = width + "pt";
+        datum.attributes.height = height + "pt";
+        datum.attributes.viewBox = -x + " " + -y + " " + width + " " + height;
+    }
+}
+
+function render() {
+    var dotLines = dots[dotIndex % dots.length];
+    var dot = dotLines.join('');
+    graphviz
+//        .tweenPaths(false)
+        .tweenShapes(false)
+        .dot(dot)
+        .attributer(attributer)
+        .render()
+        .on('end', function () {
+            if (dotIndex != dots.length) {
+                render();
+            }
+        });
+    dotIndex += 1;
+}
+
+var dots = [
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    a -> b [style=tapered]',
+        '    b -> c [style=tapered]',
+        '}'
+    ],
+    [
+        'digraph  {',
+        '    node [style="filled"]',
+        '    a [fillcolor="#d62728"]',
+        '    b [fillcolor="#1f77b4"]',
+        '    c [fillcolor="#2ca02c"]',
+        '    a -> b [style=tapered]',
+        '    b -> c [style=tapered]',
+        '    a -> c [style=tapered]',
+        '}'
+    ],
+];
+
+</script>
