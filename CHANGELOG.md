@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.1]
+
+### Fixed
+*  Graph with an edge with style=tapered does not render when growing edges are enabled. #119
+
 ## [3.0.0]
 
 **Note:** This release contains breaking changes compared to version 2.6.1.
@@ -24,5 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v3.0.1...HEAD
+[3.0.1]: https://github.com/magjac/d3-graphviz/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/magjac/d3-graphviz/compare/v2.6.1...v3.0.0
