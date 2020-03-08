@@ -53,7 +53,7 @@
     "babel-plugin-istanbul": "^6.0.0",
     "codecov": "^3.0.1",
     "d3": "^5.0.0",
-    "jsdom": "11.6.2",
+    "jsdom": "16.2.0",
     "markdown-to-html": "0.0.13",
     "nyc": "^15.0.0",
     "rollup": "2.0.2",
