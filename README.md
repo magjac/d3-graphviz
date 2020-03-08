@@ -318,6 +318,8 @@ If *enable* is true (default), enables fade-in and fade-out of nodes and shapes,
 
 If *enable* is true (default), enables animated growth of entering edges, else disables animated growth of entering edges.
 
+**Note:** Growing edges with style `tapered` is not supported.
+
 A demo of animated growth of entering edges can be seen [here](http://bl.ocks.org/magjac/f485e7b915c9699aa181a11e183f8237)
 
 ### Controlling Path Tweening
