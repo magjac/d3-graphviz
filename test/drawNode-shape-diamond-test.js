@@ -29,15 +29,15 @@ tape("Verify that diamond shape is drawn exactly as Graphviz does.", function(te
                         .drawNode(x, y, 'a', {shape: 'diamond', id: 'node1'})
                         .insertDrawnNode('a');
 
-                    expectedNodeGroup = expectedGraph.selectAll('.node');
-                    expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    expectedNodeShape = expectedNodeGroup.selectAll('polygon');
-                    expectedNodeText = expectedNodeGroup.selectAll('text');
+                    const expectedNodeGroup = expectedGraph.selectAll('.node');
+                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+                    const expectedNodeShape = expectedNodeGroup.selectAll('polygon');
+                    const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                    actualNodeGroup = actualGraph.selectAll('.node');
-                    actualNodeTitle = actualNodeGroup.selectAll('title');
-                    actualNodeShape = actualNodeGroup.selectAll('polygon');
-                    actualNodeText = actualNodeGroup.selectAll('text');
+                    const actualNodeGroup = actualGraph.selectAll('.node');
+                    const actualNodeTitle = actualNodeGroup.selectAll('title');
+                    const actualNodeShape = actualNodeGroup.selectAll('polygon');
+                    const actualNodeText = actualNodeGroup.selectAll('text');
 
                     var bbox = expectedNodeShape.node().getBBox();
                     bbox.cx = bbox.x + bbox.width / 2;

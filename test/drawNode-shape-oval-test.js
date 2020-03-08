@@ -28,15 +28,15 @@ tape("Verify that oval shape is drawn exactly as Graphviz does.", function(test)
                         .drawNode(x, y, 'a', {shaoe: 'oval', id: 'node1'})
                         .insertDrawnNode('a');
 
-                    expectedNodeGroup = expectedGraph.selectAll('.node');
-                    expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
-                    expectedNodeText = expectedNodeGroup.selectAll('text');
+                    const expectedNodeGroup = expectedGraph.selectAll('.node');
+                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+                    const expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
+                    const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                    actualNodeGroup = actualGraph.selectAll('.node');
-                    actualNodeTitle = actualNodeGroup.selectAll('title');
-                    actualNodeShape = actualNodeGroup.selectAll('ellipse');
-                    actualNodeText = actualNodeGroup.selectAll('text');
+                    const actualNodeGroup = actualGraph.selectAll('.node');
+                    const actualNodeTitle = actualNodeGroup.selectAll('title');
+                    const actualNodeShape = actualNodeGroup.selectAll('ellipse');
+                    const actualNodeText = actualNodeGroup.selectAll('text');
 
                     var bbox = expectedNodeShape.node().getBBox();
                     bbox.cx = bbox.x + bbox.width / 2;

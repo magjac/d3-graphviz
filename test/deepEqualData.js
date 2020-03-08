@@ -4,8 +4,8 @@ module.exports = function (test, actualData, expectedData, message) {
 
     function parseData(parent) {
 
-        for (i in parent.children) {
-            child = parent.children[i]
+        for (let i in parent.children) {
+            const child = parent.children[i]
             if (typeof child.parent != 'string') {
                 test.equal(parent, child.parent,
                            'Parent of "' + child.tag + '" "' + child.id + '" is "' +

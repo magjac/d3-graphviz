@@ -102,7 +102,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
 
     function transition_instance_test() {
         transition_test_init();
-        transition1 = d3_transition.transition().duration(0);
+        const transition1 = d3_transition.transition().duration(0);
         transition_test(transition1, transition_function_test);
     }
 

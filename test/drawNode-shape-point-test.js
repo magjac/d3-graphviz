@@ -28,13 +28,13 @@ tape("Verify that point shape is drawn exactly as Graphviz does.", function(test
                         .drawNode(x, y, 'a', {shape: 'point', id: 'node1'})
                         .insertDrawnNode('a');
 
-                    expectedNodeGroup = expectedGraph.selectAll('.node');
-                    expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
+                    const expectedNodeGroup = expectedGraph.selectAll('.node');
+                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+                    const expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
 
-                    actualNodeGroup = actualGraph.selectAll('.node');
-                    actualNodeTitle = actualNodeGroup.selectAll('title');
-                    actualNodeShape = actualNodeGroup.selectAll('ellipse');
+                    const actualNodeGroup = actualGraph.selectAll('.node');
+                    const actualNodeTitle = actualNodeGroup.selectAll('title');
+                    const actualNodeShape = actualNodeGroup.selectAll('ellipse');
 
                     var bbox = expectedNodeShape.node().getBBox();
                     bbox.cx = bbox.x + bbox.width / 2;

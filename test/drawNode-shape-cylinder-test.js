@@ -29,15 +29,15 @@ tape("Verify that cylinder shape is drawn exactly as Graphviz does.", function(t
                             .drawNode(x, y, 'a', {shape: 'cylinder', id: 'node1'})
                             .insertDrawnNode('a');
 
-                        expectedNodeGroup = expectedGraph.selectAll('.node');
-                        expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                        expectedNodeShapes = expectedNodeGroup.selectAll('path');
-                        expectedNodeText = expectedNodeGroup.selectAll('text');
+                        const expectedNodeGroup = expectedGraph.selectAll('.node');
+                        const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+                        const expectedNodeShapes = expectedNodeGroup.selectAll('path');
+                        const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                        actualNodeGroup = actualGraph.selectAll('.node');
-                        actualNodeTitle = actualNodeGroup.selectAll('title');
-                        actualNodeShapes = actualNodeGroup.selectAll('path');
-                        actualNodeText = actualNodeGroup.selectAll('text');
+                        const actualNodeGroup = actualGraph.selectAll('.node');
+                        const actualNodeTitle = actualNodeGroup.selectAll('title');
+                        const actualNodeShapes = actualNodeGroup.selectAll('path');
+                        const actualNodeText = actualNodeGroup.selectAll('text');
 
                         var bbox = expectedNodeShapes.node().getBBox();
                         bbox.cx = bbox.x + bbox.width / 2;

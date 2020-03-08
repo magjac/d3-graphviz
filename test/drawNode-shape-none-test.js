@@ -29,15 +29,15 @@ tape("Verify that none shape is drawn exactly as Graphviz does.", function(test)
                         .drawNode(x, y, 'a', {shape: 'none', id: 'node1'})
                         .insertDrawnNode('a');
 
-                    expectedNodeGroup = expectedGraph.selectAll('.node');
-                    expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    expectedNodeShape = expectedNodeGroup.selectAll('polygon');
-                    expectedNodeText = expectedNodeGroup.selectAll('text');
+                    const expectedNodeGroup = expectedGraph.selectAll('.node');
+                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+                    const expectedNodeShape = expectedNodeGroup.selectAll('polygon');
+                    const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                    actualNodeGroup = actualGraph.selectAll('.node');
-                    actualNodeTitle = actualNodeGroup.selectAll('title');
-                    actualNodeShape = actualNodeGroup.selectAll('polygon');
-                    actualNodeText = actualNodeGroup.selectAll('text');
+                    const actualNodeGroup = actualGraph.selectAll('.node');
+                    const actualNodeTitle = actualNodeGroup.selectAll('title');
+                    const actualNodeShape = actualNodeGroup.selectAll('polygon');
+                    const actualNodeText = actualNodeGroup.selectAll('text');
 
                     var bbox = expectedNodeText.node().getBBox();
                     bbox.cx = bbox.x + bbox.width / 2;
@@ -96,15 +96,15 @@ tape("Verify that none shape without label is drawn exactly as Graphviz does.", 
                         .drawNode(x, y, 'a', {shape: 'none', id: 'node1', label: ''})
                         .insertDrawnNode('a');
 
-                    expectedNodeGroup = expectedGraph.selectAll('.node');
-                    expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    expectedNodeShape = expectedNodeGroup.selectAll('polygon');
-                    expectedNodeText = expectedNodeGroup.selectAll('text');
+                    const expectedNodeGroup = expectedGraph.selectAll('.node');
+                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+                    const expectedNodeShape = expectedNodeGroup.selectAll('polygon');
+                    const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                    actualNodeGroup = actualGraph.selectAll('.node');
-                    actualNodeTitle = actualNodeGroup.selectAll('title');
-                    actualNodeShape = actualNodeGroup.selectAll('polygon');
-                    actualNodeText = actualNodeGroup.selectAll('text');
+                    const actualNodeGroup = actualGraph.selectAll('.node');
+                    const actualNodeTitle = actualNodeGroup.selectAll('title');
+                    const actualNodeShape = actualNodeGroup.selectAll('polygon');
+                    const actualNodeText = actualNodeGroup.selectAll('text');
 
                     test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
@@ -151,21 +151,21 @@ tape("Verify that none shape with style filled is drawn exactly as Graphviz does
                         .drawNode(x, y, 'a', {shape: 'none', id: 'node1', style: 'filled'})
                         .insertDrawnNode('a');
 
-                    expectedNodeGroup = expectedGraph.selectAll('.node');
-                    expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    expectedNodeShape = expectedNodeGroup.selectAll('polygon');
-                    expectedNodeText = expectedNodeGroup.selectAll('text');
+                    const expectedNodeGroup = expectedGraph.selectAll('.node');
+                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+                    const expectedNodeShape = expectedNodeGroup.selectAll('polygon');
+                    const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                    actualNodeGroup = actualGraph.selectAll('.node');
-                    actualNodeTitle = actualNodeGroup.selectAll('title');
-                    actualNodeShape = actualNodeGroup.selectAll('polygon');
-                    actualNodeText = actualNodeGroup.selectAll('text');
+                    const actualNodeGroup = actualGraph.selectAll('.node');
+                    const actualNodeTitle = actualNodeGroup.selectAll('title');
+                    const actualNodeShape = actualNodeGroup.selectAll('polygon');
+                    const actualNodeText = actualNodeGroup.selectAll('text');
 
                     var bbox = expectedNodeShape.node().getBBox();
                     bbox.cx = bbox.x + bbox.width / 2;
                     bbox.cy = bbox.y + bbox.height / 2;
-                    xoffs = x - bbox.cx;
-                    yoffs = y - bbox.cy;
+                    const xoffs = x - bbox.cx;
+                    const yoffs = y - bbox.cy;
 
                     test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
@@ -222,21 +222,21 @@ tape("Verify that none shape with style filled and pen color specified is drawn 
                         .drawNode(x, y, 'a', {shape: 'none', id: 'node1', style: 'filled', color: '#0000ff'})
                         .insertDrawnNode('a');
 
-                    expectedNodeGroup = expectedGraph.selectAll('.node');
-                    expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    expectedNodeShape = expectedNodeGroup.selectAll('polygon');
-                    expectedNodeText = expectedNodeGroup.selectAll('text');
+                    const expectedNodeGroup = expectedGraph.selectAll('.node');
+                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+                    const expectedNodeShape = expectedNodeGroup.selectAll('polygon');
+                    const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                    actualNodeGroup = actualGraph.selectAll('.node');
-                    actualNodeTitle = actualNodeGroup.selectAll('title');
-                    actualNodeShape = actualNodeGroup.selectAll('polygon');
-                    actualNodeText = actualNodeGroup.selectAll('text');
+                    const actualNodeGroup = actualGraph.selectAll('.node');
+                    const actualNodeTitle = actualNodeGroup.selectAll('title');
+                    const actualNodeShape = actualNodeGroup.selectAll('polygon');
+                    const actualNodeText = actualNodeGroup.selectAll('text');
 
                     var bbox = expectedNodeShape.node().getBBox();
                     bbox.cx = bbox.x + bbox.width / 2;
                     bbox.cy = bbox.y + bbox.height / 2;
-                    xoffs = x - bbox.cx;
-                    yoffs = y - bbox.cy;
+                    const xoffs = x - bbox.cx;
+                    const yoffs = y - bbox.cy;
 
                     test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 

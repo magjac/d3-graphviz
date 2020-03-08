@@ -66,10 +66,10 @@ tape("resetZoom resets the zoom transform to the original transform.", function(
             .renderDot('digraph {a -> b;}');
 
         test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
-        selection = graphviz._zoomSelection;
-        zoom = graphviz._zoomBehavior;
+        const selection = graphviz._zoomSelection;
+        const zoom = graphviz._zoomBehavior;
 
-        matrix0 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
+        const matrix0 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
         test.deepEqual(
             d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
             d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
@@ -83,7 +83,7 @@ tape("resetZoom resets the zoom transform to the original transform.", function(
             'The zoom transform is translated after zooming'
         );
 
-        matrix1 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
+        const matrix1 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
         test.deepEqual(
             d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
             d3_zoom.zoomIdentity.translate(matrix1.e, matrix1.f).scale(matrix1.a),
@@ -153,7 +153,7 @@ tape("zooming rescales transforms during transitions.", function(test) {
     }
 
     function stage2() {
-        matrix = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
+        const matrix = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
         test.deepEqual(
             d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
             d3_zoom.zoomIdentity.translate(matrix.e, matrix.f).scale(matrix.a),
@@ -177,7 +177,7 @@ tape("zooming rescales transforms during transitions.", function(test) {
     }
 
     function stage3(matrix1) {
-        matrix2 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
+        const matrix2 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
         test.notDeepEqual(matrix2, matrix1, 'The "g" transform changes when the graph changes');
         test.deepEqual(
             d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
