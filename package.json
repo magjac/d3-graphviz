@@ -54,7 +54,6 @@
     "codecov": "^3.0.1",
     "d3": "^5.0.0",
     "jsdom": "16.2.0",
-    "markdown-to-html": "0.0.13",
     "nyc": "^15.0.0",
     "rollup": "2.0.2",
     "rollup-plugin-babel": "^4.4.0",
@@ -71,6 +70,7 @@
     "d3-selection": "^1.1.0",
     "d3-timer": "^1.0.6",
     "d3-transition": "^1.1.1",
-    "d3-zoom": "1.7.3"
+    "d3-zoom": "1.7.3",
+    "marked": "^0.8.0"
   }
 }
