@@ -167,7 +167,7 @@ function _render(callback) {
             if ((tag == 'polygon' || tag == 'ellipse') && data.alternativeNew) {
                 convertShape = true;
             }
-            if (this.nodeName == 'polygon' && tag == 'polygon') {
+            if (this.nodeName == 'polygon' && tag == 'polygon' && data.alternativeOld) {
                 var prevData = extractElementData(element);
                 var prevPoints = prevData.attributes.points;
                 if (!convertEqualSidedPolygons) {
