@@ -23,12 +23,17 @@ var dotSrc = `strict digraph {
     b
 }`;
 
-var graphviz = d3.select("#graph").graphviz()
-    .attributer(attributer)
-    .transition(function() {
-        return d3.transition().duration(1000);
-    })
-    .renderDot(dotSrc, startApp);
+var graphviz = d3.select("#graph").graphviz({useWorker: false})
+    .on('initEnd', initApp);
+
+function initApp() {
+    graphviz
+        .attributer(attributer)
+        .transition(function() {
+            return d3.transition().duration(1000);
+        })
+        .renderDot(dotSrc, startApp);
+}
 
 function attributer(datum, index, nodes) {
     var selection = d3.select(this);
