@@ -1,5 +1,6 @@
 var jsdom = require("jsdom");
 require("./polyfill_fetch");
+var hpccWasm = require("@hpcc-js/wasm");
 
 module.exports = function(html, options) {
     var dom = new jsdom.JSDOM(html, options);
@@ -135,6 +136,11 @@ module.exports = function(html, options) {
     }
 
     global.SVGElement = window.SVGElement;
+
+    Object.defineProperty(window, '@hpcc-js/wasm', {
+        configurable: true,
+        get() { return hpccWasm; }
+    });
 
     Object.defineProperty(window.document, "currentScript", {
         get() { return {src: './node_modules/@hpcc-js/wasm/dist/index.js'}; }

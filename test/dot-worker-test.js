@@ -12,6 +12,7 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
             <div id="graph"></div>
             `,
     );
+    delete window['@hpcc-js/wasm'];
     var document = global.document = window.document;
     var Blob = global.Blob = function (jsarray) {
         return new Function(jsarray[0]);

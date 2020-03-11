@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../node_modules/d3/dist/d3.js"></script>
+<script src="../node_modules/@hpcc-js/wasm/dist/index.js" type="application/javascript"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph" style="text-align: center;"></div>
+<script>
+
+'use strict';
+
+var margin = 20; // to avoid scrollbars
+
+var isDrawing = false;
+var startNode;
+var selectedEdge = d3.select(null);
+var selectedEdgeFill;
+var selectedEdgeStroke;
+
+var dotSrc = `strict digraph {
+    node [style="filled"]
+    a
+    b
+}`;
+
+var graphviz = d3.select("#graph").graphviz({useWorker: true})
+    .on('initEnd', initApp);
+
+function initApp() {
+    graphviz
+        .attributer(attributer)
+        .transition(function() {
+            return d3.transition().duration(1000);
+        })
+        .renderDot(dotSrc, startApp);
+}
+
+function attributer(datum, index, nodes) {
+    var selection = d3.select(this);
+    if (datum.tag == "svg") {
+        var width = window.innerWidth - margin;
+        var height = window.innerHeight - margin;
+        var x = "10";
+        var y = "10";
+        var unit = 'px';
+        selection
+            .attr("width", width + unit)
+            .attr("height", height + unit);
+        datum.attributes.width = width + unit;
+        datum.attributes.height = height + unit;
+    }
+}
+
+function startApp() {
+    var nodes = d3.selectAll(".node");
+    var edges = d3.selectAll(".edge");
+
+    // click outside of nodes
+    d3.select(document).on("click", function() {
+        var event = d3.event;
+        event.preventDefault();
+        event.stopPropagation();
+        console.log('document click');
+        unSelectEdge();
+    });
+
+    // keyup outside of nodes
+    d3.select(document).on("keyup", function() {
+        var event = d3.event;
+        event.preventDefault();
+        console.log('document keyup', event);
+        if (event.keyCode == 27) {
+            graphviz.removeDrawnEdge();
+            unSelectEdge();
+        }
+        if (event.keyCode == 46) {
+            deleteSelectedEdge();
+            graphviz.removeDrawnEdge();
+            graphviz
+                .renderDot(dotSrc, startApp);
+        }
+        isDrawing = false;
+    });
+
+    // move
+    d3.select(document).on("mousemove", function() {
+        var event = d3.event;
+        event.preventDefault();
+        event.stopPropagation();
+        console.log('document mousemove');
+        var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
+        var [x0, y0] = d3.mouse(graph0.node());
+        var shortening = 2; // avoid mouse pointing on edge
+        if (isDrawing) {
+            graphviz
+                .moveDrawnEdgeEndPoint(x0, y0,  {shortening: shortening})
+        }
+    });
+
+    // click and mousedown on nodes
+    nodes.on("click mousedown", function() {
+        var event = d3.event;
+        event.preventDefault();
+        console.log('node click or mousedown');
+        unSelectEdge();
+    });
+
+    // double-click on nodes
+    nodes.on("dblclick", function() {
+        var event = d3.event;
+        event.preventDefault();
+        event.stopPropagation();
+        console.log('node dblclick');
+        unSelectEdge();
+        if (isDrawing) {
+            var endNode = d3.select(this);
+            var startNodeName = startNode.selectWithoutDataPropagation("title").text();
+            var endNodeName = endNode.selectWithoutDataPropagation("title").text();
+            graphviz
+                .insertDrawnEdge(startNodeName + '->' + endNodeName);
+            var dotSrcLines = dotSrc.split('\n');
+            var newEdgeString = startNodeName + ' -> ' + endNodeName + ' [color="#800080"; fillcolor="orange"; penwidth="1"]';
+            dotSrcLines.splice(-1, 0, newEdgeString);
+            dotSrc = dotSrcLines.join('\n');
+            graphviz
+                .renderDot(dotSrc, startApp);
+        }
+        isDrawing = false;
+    });
+
+    // right-click on nodes
+    nodes.on("contextmenu", function() {
+        var event = d3.event;
+        event.preventDefault();
+        event.stopPropagation();
+        console.log('node contextmenu');
+        unSelectEdge();
+        startNode = d3.select(this);
+        var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
+        var [x0, y0] = d3.mouse(graph0.node());
+        graphviz
+            .drawEdge(x0, y0, x0, y0, {fillcolor: "orange", color: "#800080"})
+        isDrawing = true;
+    });
+
+    // click and mousedown on edges
+    edges.on("click mousedown", function() {
+        var event = d3.event;
+        event.preventDefault();
+        event.stopPropagation();
+        console.log('node click or mousedown');
+        selectEdge(d3.select(this));
+    });
+
+    // right-click outside of nodes
+    d3.select(document).on("contextmenu", function() {
+        var event = d3.event;
+        event.preventDefault();
+        event.stopPropagation();
+        console.log('document contextmenu');
+        unSelectEdge();
+    });
+
+}
+
+function selectEdge(edge) {
+    unSelectEdge();
+    selectedEdge = edge;
+    selectedEdgeFill = selectedEdge.selectAll('polygon').attr("fill");
+    selectedEdgeStroke = selectedEdge.selectAll('polygon').attr("stroke");
+    selectedEdge.selectAll('path, polygon').attr("stroke", "red");
+    selectedEdge.selectAll('polygon').attr("fill", "red");
+}
+
+function unSelectEdge() {
+    selectedEdge.selectAll('path, polygon').attr("stroke", selectedEdgeStroke);
+    selectedEdge.selectAll('polygon').attr("fill", selectedEdgeFill);
+    selectedEdge = d3.select(null);
+}
+
+function deleteSelectedEdge() {
+    selectedEdge.style("display", "none");
+    if (selectedEdge.size() != 0) {
+        var edgeName = selectedEdge.selectWithoutDataPropagation("title").text();
+        edgeName = edgeName.replace('->', ' -> ');
+        var dotSrcLines = dotSrc.split('\n');
+        while (true) {
+            var i = dotSrcLines.findIndex(function (element, index) {
+                return element.indexOf(edgeName) >= 0;
+            });
+            if (i < 0)
+                break;
+            dotSrcLines.splice(i, 1);
+        }
+        dotSrc = dotSrcLines.join('\n');
+    }
+}
+
+</script>
