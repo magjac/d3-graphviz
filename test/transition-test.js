@@ -17,6 +17,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
                 url: "http:dummyhost",
             },
         );
+        delete window['@hpcc-js/wasm'];
         var document = global.document = window.document;
         var Blob = global.Blob = function (jsarray) {
             return new Function(jsarray[0]);
