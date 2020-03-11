@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.3]
+
+### Fixed
+* TypeError: this.layoutSync is not a function when drawing node or edge and a worker is used in v3.x. #139
+
 ## [3.0.2]
 
 ### Fixed
@@ -34,7 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v3.0.2...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v3.0.3...HEAD
+[3.0.3]: https://github.com/magjac/d3-graphviz/compare/v3.0.2...v3.0.3
 [3.0.2]: https://github.com/magjac/d3-graphviz/compare/v3.0.1...v3.0.2
 [3.0.1]: https://github.com/magjac/d3-graphviz/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/magjac/d3-graphviz/compare/v2.6.1...v3.0.0
