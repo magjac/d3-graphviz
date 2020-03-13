@@ -11,7 +11,7 @@ import {getEdgeTitle} from "./data";
 export function initViz() {
 
     // force JIT compilation of Viz.js
-    if (window['@hpcc-js/wasm']) {
+    try {
         graphviz.layout("", "svg", "dot").then(() => {
             graphvizSync().then((graphviz1) => {
                 this.layoutSync = graphviz1.layout.bind(graphviz1);
@@ -23,6 +23,7 @@ export function initViz() {
                 }
             });
         });
+    } catch(error) {
     }
     if (this._worker != null) {
         var vizURL = this._vizURL;
