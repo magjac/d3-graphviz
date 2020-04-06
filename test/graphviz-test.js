@@ -12,7 +12,6 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
     function startTest() {
         const svgDoc = `<svg width="62pt" height="116pt" viewBox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
-<title>%208016</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-112 58,-112 58,4 -4,4"></polygon>
 <!-- a -->
 <g id="node1" class="node">
@@ -70,9 +69,9 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
 
         test.deepEqual(d3.select('svg').datum(), svgData, 'Data structure present on SVG');
         test.deepEqual(d3.select('#graph0').datum(), graph0Data, 'Data structure present on element with id "graph0"');
-        test.deepEqual(d3.select('#node1').datum(), graph0Data.children[7], 'Data structure present on element with id "node1"');
-        test.deepEqual(d3.select('#node2').datum(), graph0Data.children[11], 'Data structure present on element with id "node2"');
-        test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[15], 'Data structure present on element with id "edge1"');
+        test.deepEqual(d3.select('#node1').datum(), graph0Data.children[5], 'Data structure present on element with id "node1"');
+        test.deepEqual(d3.select('#node2').datum(), graph0Data.children[9], 'Data structure present on element with id "node2"');
+        test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[13], 'Data structure present on element with id "edge1"');
 
         test.end();
     }
@@ -118,9 +117,9 @@ tape("graphviz().render() renders on a div with sub-elements", function(test) {
 
         test.deepEqual(d3.select('svg').datum(), svgData, 'Data structure present on SVG');
         test.deepEqual(d3.select('#graph0').datum(), graph0Data, 'Data structure present on element with id "graph0"');
-        test.deepEqual(d3.select('#node1').datum(), graph0Data.children[7], 'Data structure present on element with id "node1"');
-        test.deepEqual(d3.select('#node2').datum(), graph0Data.children[11], 'Data structure present on element with id "node2"');
-        test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[15], 'Data structure present on element with id "edge1"');
+        test.deepEqual(d3.select('#node1').datum(), graph0Data.children[5], 'Data structure present on element with id "node1"');
+        test.deepEqual(d3.select('#node2').datum(), graph0Data.children[9], 'Data structure present on element with id "node2"');
+        test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[13], 'Data structure present on element with id "edge1"');
 
         test.end();
     }
@@ -147,7 +146,6 @@ tape("graphviz().render() removes SVG elements for nodes and edges when removed 
 
         const svgDoc2 = `<svg width="62pt" height="44pt" viewBox="0.00 0.00 62.00 44.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 40)">
-<title>%208016</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-40 58,-40 58,4 -4,4"></polygon>
 <!-- a -->
 <g id="node1" class="node">
