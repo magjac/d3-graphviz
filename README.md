@@ -95,7 +95,6 @@ Uses [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) to do a layou
 * [Accessing Elements of the Generated Graph](#accessing-elements-of-the-generated-graph)
 * [Accessing the Extracted Data](#accessing-the-extracted-data)
 * [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changes)
-* [Large Graphs](#large-graphs)
 
 ### Defining the @hpcc-js/wasm Script Tag
 
