@@ -122,6 +122,98 @@ tape("resetZoom resets the zoom transform to the original transform.", function(
     }
 });
 
+tape("resetZoom resets the zoom transform to the original transform of the latest rendered graph.", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
+
+    var dx = 10;
+    var dy = 20;
+    var selection;
+    var zoom;
+
+    function startTest() {
+        graphviz
+            .logEvents(true)
+            .zoom(true);
+
+        test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
+        test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
+
+        graphviz
+            .renderDot('digraph {a -> b;}');
+
+        test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
+        const selection = graphviz._zoomSelection;
+        const zoom = graphviz._zoomBehavior;
+
+        const matrix0 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
+        test.deepEqual(
+            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
+            'The zoom transform is equal to the "g" transform after rendering'
+        );
+
+        selection.call(zoom.translateBy, dx, dy);
+        test.deepEqual(
+            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoom.zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
+            'The zoom transform is translated after zooming'
+        );
+
+        const matrix1 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
+        test.deepEqual(
+            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoom.zoomIdentity.translate(matrix1.e, matrix1.f).scale(matrix1.a),
+            'The zoom transform is equal to the "g" transform after zooming'
+        );
+
+        graphviz.resetZoom();
+        test.deepEqual(
+            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
+            'The original zoom transform is restored after zoom reset'
+        );
+
+        selection.call(zoom.translateBy, dx, dy);
+        test.deepEqual(
+            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoom.zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
+            'The zoom transform is translated after zooming'
+        );
+
+        const height1 = +d3_selection.select('svg').attr("height").replace('pt', '');
+
+        graphviz
+            .renderDot('digraph {a -> b; b -> c}');
+
+        const height2 = +d3_selection.select('svg').attr("height").replace('pt', '');
+
+        const matrix2 = {...matrix1};
+        matrix2.f += height2 - height1
+
+        test.deepEqual(
+            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoom.zoomIdentity.translate(matrix2.e, matrix2.f).scale(matrix2.a),
+            'The zoom transform translation is unchanged after rendering'
+        );
+
+        graphviz.resetZoom();
+
+        const matrix3 = {...matrix0};
+        matrix3.f += height2 - height1
+
+        test.deepEqual(
+            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoom.zoomIdentity.translate(matrix3.e, matrix3.f).scale(matrix3.a),
+            'The original zoom transform is restored directly after zoom reset'
+        );
+
+        test.end();
+    }
+});
+
 tape("zooming rescales transforms during transitions.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
