@@ -304,6 +304,7 @@ function _render(callback) {
                     } else {
                         if (graphvizInstance._zoomBehavior) {
                             // Update the transform attribute to set with the current pan translation
+                            translateZoomBehaviorTransform.call(graphvizInstance, element);
                             attributeValue = getTranslatedZoomTransform.call(graphvizInstance, element).toString();
                         }
                     }
