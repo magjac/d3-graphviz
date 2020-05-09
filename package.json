@@ -50,7 +50,6 @@
     "@babel/preset-env": "^7.8.7",
     "@babel/register": "^7.8.6",
     "@rollup/plugin-node-resolve": "^7.1.1",
-    "babel-plugin-istanbul": "^6.0.0",
     "codecov": "^3.0.1",
     "d3": "^5.0.0",
     "jsdom": "16.2.0",
