@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Upgraded [Graphviz](https://gitlab.com/graphviz/graphviz) to version [2.44.0](https://gitlab.com/graphviz/graphviz/-/releases/2.44.0) through [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) version [0.3.13](https://github.com/hpcc-systems/hpcc-js-wasm/releases/tag/v0.3.13).
 
 ### Fixed
+* The production build contains code instrumented for code coverage #156
 * "uncaught exception: r.charAt is not a function" with @hpcc-js/wasm version 0.3.12 and later #154
 
 ## [3.0.5]
