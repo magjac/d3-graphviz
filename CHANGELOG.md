@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.6]
+
 ### Changed
 * Upgraded [Graphviz](https://gitlab.com/graphviz/graphviz) to version [2.44.0](https://gitlab.com/graphviz/graphviz/-/releases/2.44.0) through [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) version [0.3.13](https://github.com/hpcc-systems/hpcc-js-wasm/releases/tag/v0.3.13).
 
@@ -60,7 +62,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v3.0.5...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v3.0.6...HEAD
+[3.0.5]: https://github.com/magjac/d3-graphviz/compare/v3.0.5...v3.0.6
 [3.0.5]: https://github.com/magjac/d3-graphviz/compare/v3.0.4...v3.0.5
 [3.0.4]: https://github.com/magjac/d3-graphviz/compare/v3.0.3...v3.0.4
 [3.0.3]: https://github.com/magjac/d3-graphviz/compare/v3.0.2...v3.0.3
