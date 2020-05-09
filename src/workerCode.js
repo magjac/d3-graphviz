@@ -12,7 +12,7 @@ export function workerCode() {
         if (event.data.vizURL) {
             importScripts(event.data.vizURL);
             hpccWasm = self["@hpcc-js/wasm"];
-            hpccWasm.wasmFolder(event.data.vizURL.match(/.*\//));
+            hpccWasm.wasmFolder(event.data.vizURL.match(/.*\//)[0]);
     // This is an alternative workaround where wasmFolder() is not needed
     //                    document = {currentScript: {src: event.data.vizURL}};
         }
