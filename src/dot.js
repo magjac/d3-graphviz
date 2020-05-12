@@ -28,7 +28,7 @@ export function initViz() {
     if (this._worker != null) {
         var vizURL = this._vizURL;
         var graphvizInstance = this;
-        this._worker.onmessage = function(event) {
+        this._worker.port.onmessage = function(event) {
             var callback = graphvizInstance._workerCallbacks.shift();
             callback.call(graphvizInstance, event);
         }
@@ -48,7 +48,7 @@ export function initViz() {
 
 function postMessage(message, callback) {
     this._workerCallbacks.push(callback);
-    this._worker.postMessage(message);
+    this._worker.port.postMessage(message);
 }
 
 export function layout(src, engine, vizOptions, callback) {

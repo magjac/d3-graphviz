@@ -73,7 +73,7 @@ export function Graphviz(selection, options) {
         this._options.useWorker = options;
     }
     var useWorker = this._options.useWorker;
-    if (typeof Worker == 'undefined') {
+    if (typeof SharedWorker == 'undefined') {
         useWorker = false;
     }
     if (useWorker) {
@@ -93,9 +93,9 @@ export function Graphviz(selection, options) {
         }
     }
     if (useWorker) {
-        var blob = new Blob(['(' + workerCode.toString() + ')()']);
-        var blobURL = window.URL.createObjectURL(blob);
-        this._worker = new Worker(blobURL);
+        const url = 'data:application/javascript;base64,' + btoa('(' + workerCode.toString() + ')()');
+        this._worker = new SharedWorker(url);
+        this._worker.port.start();
         this._workerCallbacks = [];
     }
     this._selection = selection;
