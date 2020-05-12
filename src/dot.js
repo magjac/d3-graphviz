@@ -30,32 +30,47 @@ export function initViz() {
         var graphvizInstance = this;
         this._worker.onmessage = function(event) {
             var callback = graphvizInstance._workerCallbacks.shift();
-            switch (event.data.type) {
-            case "init":
-                graphvizInstance._dispatch.call("initEnd", this);
-                break;
-            case "done":
-                return layoutDone.call(graphvizInstance, event.data.svg, callback);
-            case "error":
-                if (graphvizInstance._onerror) {
-                    graphvizInstance._onerror(event.data.error);
-                } else {
-                    throw event.data.error
-                }
-                break;
-            }
-        };
+            callback.call(graphvizInstance, event);
+        }
         if (!vizURL.match(/^https?:\/\/|^\/\//i)) {
             // Local URL. Prepend with local domain to be usable in web worker
             vizURL = (new window.URL(vizURL, document.location.href)).href;
         }
-        postMessage.call(this, {dot: "", engine: 'dot', vizURL: vizURL});
+        postMessage.call(this, {dot: "", engine: 'dot', vizURL: vizURL}, function(event) {
+            switch (event.data.type) {
+            case "init":
+                graphvizInstance._dispatch.call("initEnd", this);
+                break;
+            }
+        });
     }
 }
 
 function postMessage(message, callback) {
     this._workerCallbacks.push(callback);
     this._worker.postMessage(message);
+}
+
+export function layout(src, engine, vizOptions, callback) {
+    var graphvizInstance = this;
+    var worker = this._worker;
+    if (this._worker) {
+        postMessage.call(this, {
+            dot: src,
+            engine: engine,
+            options: vizOptions,
+        }, function (event) {
+            callback.call(this, event.data);
+        });
+    } else {
+        try {
+            var svgDoc = this.layoutSync(src, "svg", engine, vizOptions);
+            callback.call(this, {type: 'done', svg: svgDoc});
+        }
+        catch(error) {
+            callback.call(this, {type: 'error', error: error.message});
+        }
+    }
 }
 
 export default function(src, callback) {
@@ -71,30 +86,25 @@ export default function(src, callback) {
     var vizOptions = {
         images: images,
     };
-    if (this._worker) {
-        postMessage.call(this, {
-            dot: src,
-            engine: engine,
-            options: vizOptions,
-        }, callback);
-    } else {
-        if (this.layoutSync == null) {
-            this._afterInit = this.dot.bind(this, src, callback);
-            return this;
-        }
-        try {
-            var svgDoc = this.layoutSync(src, "svg", engine, vizOptions);
-        }
-        catch(error) {
-            if (graphvizInstance._onerror) {
-                graphvizInstance._onerror(error.message);
-                return this;
-            } else {
-                throw error.message
-            }
-        }
-        layoutDone.call(this, svgDoc, callback);
+    if (!this._worker && this.layoutSync == null) {
+        this._afterInit = this.dot.bind(this, src, callback);
+        return this;
     }
+    this.layout(src, engine, vizOptions, function (data) {
+        switch (data.type) {
+        case "error":
+            if (graphvizInstance._onerror) {
+                graphvizInstance._onerror(data.error);
+            } else {
+                throw data.error.message
+            }
+            break;
+        case "done":
+            var svgDoc = data.svg;
+            layoutDone.call(this, svgDoc, callback);
+            break;
+        }
+    });
 
     return this;
 };

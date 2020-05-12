@@ -1,6 +1,7 @@
 import * as d3 from "d3-selection";
 import {dispatch} from "d3-dispatch";
 import render from "./render";
+import {layout} from "./dot";
 import dot from "./dot";
 import data from "./data";
 import {initViz} from "./dot";
@@ -155,6 +156,7 @@ Graphviz.prototype = graphviz.prototype = {
     zoomScaleExtent: zoomScaleExtent,
     zoomTranslateExtent: zoomTranslateExtent,
     render: render,
+    layout: layout,
     dot: dot,
     data: data,
     renderDot: renderDot,
