@@ -7,12 +7,12 @@
 export function workerCode() {
 
     self.document = {}; // Workaround for "ReferenceError: document is not defined" in hpccWasm
-    var hpccWasm;
 
     self.onconnect = function(e) {
         const port = e.ports[0];
         port.addEventListener('message', function(event) {
-            if (event.data.vizURL) {
+            let hpccWasm = self["@hpcc-js/wasm"];
+            if (hpccWasm == undefined && event.data.vizURL) {
                 importScripts(event.data.vizURL);
                 hpccWasm = self["@hpcc-js/wasm"];
                 hpccWasm.wasmFolder(event.data.vizURL.match(/.*\//)[0]);
