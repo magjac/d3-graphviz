@@ -123,7 +123,9 @@ The following table summarizes the recommended script type:
 
 <a name="selection_graphviz" href="#selection_graphviz">#</a> <i>selection</i>.<b>graphviz</b>([<i>options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/graphviz.js "Source")
 
-Returns a new graphviz renderer instance on the first element in the given *selection*. If a graphviz renderer instance already exists on that element, instead returns the existing graphviz renderer instance. If *options* is specified and is an object, its properties are taken to be options to the graphviz renderer. All options except the *useWorker* option can also be changed later, using individual methods or the [<i>graphviz</i>.<b>options</b>](#graphviz_options) method, see below. The currently supported options are:
+Returns a new graphviz renderer instance on the first element in the given *selection*. If a graphviz renderer instance already exists on that element, instead returns the existing graphviz renderer instance. If *options* is specified and is an object, its properties are taken to be options to the graphviz renderer. All options except the *useWorker* option can also be changed later, using individual methods or the [<i>graphviz</i>.<b>options</b>](#graphviz_options) method, see below.
+
+##### Supported options
 
 | Option | Default value |
 |--------|---------------|
