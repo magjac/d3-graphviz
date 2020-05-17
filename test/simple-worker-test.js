@@ -2,7 +2,7 @@ var tape = require("tape"),
     jsdom = require("./jsdom"),
     d3 = require("d3-selection"),
     d3_graphviz = require("../");
-var Worker = require("tiny-worker");
+const SharedWorker = require("./polyfill_SharedWorker");
 
 tape("Simple rendering an SVG from graphviz DOT.", function(test) {
     var window = global.window = jsdom(
@@ -18,7 +18,7 @@ tape("Simple rendering an SVG from graphviz DOT.", function(test) {
     var createObjectURL = window.URL.createObjectURL = function (js) {
         return js;
     }
-    global.Worker = Worker;
+    global.SharedWorker = SharedWorker;
 
     var graphviz = d3_graphviz.graphviz("#graph")
         .renderDot('digraph {a -> b;}', checkGraph);
@@ -30,8 +30,8 @@ tape("Simple rendering an SVG from graphviz DOT.", function(test) {
         test.equal(d3.selectAll('polygon').size(), 2, 'Number of polygons');
         test.equal(d3.selectAll('path').size(), 1, 'Number of paths');
 
-        graphviz._worker.terminate();
-        global.Worker = undefined;
+        graphviz._worker.port.close();
+        global.SharedWorker = undefined;
         test.end();
     }
 });

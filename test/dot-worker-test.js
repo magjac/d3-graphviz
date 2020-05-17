@@ -2,7 +2,7 @@ var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
-var Worker = require("tiny-worker");
+var SharedWorker = require("./polyfill_SharedWorker");
 var hpccWasm = require("@hpcc-js/wasm");
 
 tape("dot() performs layout in a web worker in the background.", function(test) {
@@ -23,7 +23,7 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
     var createObjectURL = window.URL.createObjectURL = function (js) {
         return js;
     }
-    global.Worker = Worker;
+    global.SharedWorker = SharedWorker;
 
     var graphviz = d3_graphviz.graphviz("#graph");
 
@@ -70,8 +70,8 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
     }
 
     function part2() {
-        graphviz._worker.terminate();
-        global.Worker = undefined;
+        graphviz._worker.port.close(),
+        global.SharedWorker = undefined;
         hpccWasm.graphviz = savedGraphviz;
         test.end();
     }
