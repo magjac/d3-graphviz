@@ -32,6 +32,7 @@ import {zoomTranslateExtent} from "./zoom";
 import on from "./on";
 import onerror from "./onerror";
 import logEvents from "./logEvents";
+import destroy from "./destroy";
 import {drawEdge} from "./drawEdge";
 import {updateDrawnEdge} from "./drawEdge";
 import {moveDrawnEdgeEndPoint} from "./drawEdge";
@@ -171,6 +172,7 @@ Graphviz.prototype = graphviz.prototype = {
     on: on,
     onerror: onerror,
     logEvents: logEvents,
+    destroy: destroy,
     drawEdge: drawEdge,
     updateDrawnEdge: updateDrawnEdge,
     moveDrawnEdgeEndPoint,
