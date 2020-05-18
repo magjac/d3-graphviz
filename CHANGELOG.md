@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * New option *useSharedWorker* that enables the use of a [shared web worker](https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker). The default is still to use a [dedicated web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker).
+* New method [*graphviz*.**destroy**()](README.md#graphviz_destroy) to remove the Graphviz render from the element it was created on and release any resources it is holding.
 
 ## [3.0.6]
 
