@@ -95,6 +95,7 @@ Uses [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) to do a layou
 * [Accessing Elements of the Generated Graph](#accessing-elements-of-the-generated-graph)
 * [Accessing the Extracted Data](#accessing-the-extracted-data)
 * [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changes)
+* [Destroying the Graphviz Renderer](#destroying-the-graphviz-renderer)
 
 ### Defining the @hpcc-js/wasm Script Tag
 
@@ -472,6 +473,12 @@ Removes the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphvi
 <a name="graphviz_drawnNodeSelection" href="#graphviz_drawnNodeSelection">#</a> <i>graphviz</i>.<b>drawnNodeSelection</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
 Returns a [selection](https://github.com/d3/d3-selection#selection) containing the node currently being drawn. The selection is empty if no node has been drawn or the lastest drawn node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
+
+### Destroying the Graphviz Renderer
+
+<a name="graphviz_destroy" href="#graphviz_destroy">#</a> <i>graphviz</i>.<b>destroy</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/destroy.js "Source")
+
+Removes the graphviz renderer from the element it was created on, terminates any active decicated web worker and closes any port connected to a shared web worker.
 
 ## Examples
 
