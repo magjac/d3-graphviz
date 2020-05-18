@@ -46,10 +46,13 @@ import {insertDrawnNode} from "./drawNode";
 import {removeDrawnNode} from "./drawNode";
 import {drawnNodeSelection} from "./drawNode";
 import {workerCode} from "./workerCode";
+import {sharedWorkerCode} from "./workerCode";
+import {workerCodeBody} from "./workerCode";
 
 export function Graphviz(selection, options) {
     this._options = {
         useWorker: true,
+        useSharedWorker: false,
         engine: 'dot',
         keyMode: 'title',
         fade: true,
@@ -74,10 +77,14 @@ export function Graphviz(selection, options) {
         this._options.useWorker = options;
     }
     var useWorker = this._options.useWorker;
-    if (typeof SharedWorker == 'undefined') {
+    var useSharedWorker = this._options.useSharedWorker;
+    if (typeof Worker == 'undefined') {
         useWorker = false;
     }
-    if (useWorker) {
+    if (typeof SharedWorker == 'undefined') {
+        useSharedWorker = false;
+    }
+    if (useWorker || useSharedWorker) {
         var scripts = d3.selectAll('script');
         var vizScript = scripts.filter(function() {
             return d3.select(this).attr('type') == 'javascript/worker' || (d3.select(this).attr('src') && d3.select(this).attr('src').match(/.*\/@hpcc-js\/wasm/));
@@ -85,18 +92,30 @@ export function Graphviz(selection, options) {
         if (vizScript.size() == 0) {
             console.warn('No script tag of type "javascript/worker" was found and "useWorker" is true. Not using web worker.');
             useWorker = false;
+            useSharedWorker = false;
         } else {
             this._vizURL = vizScript.attr('src');
             if (!this._vizURL) {
                 console.warn('No "src" attribute of was found on the "javascript/worker" script tag and "useWorker" is true. Not using web worker.');
                 useWorker = false;
+                useSharedWorker = false;
             }
         }
     }
-    if (useWorker) {
-        const url = 'data:application/javascript;base64,' + btoa('(' + workerCode.toString() + ')()');
-        this._worker = new SharedWorker(url);
+    if (useSharedWorker) {
+        const url = 'data:application/javascript;base64,' + btoa(workerCodeBody.toString() + '(' + sharedWorkerCode.toString() + ')()');
+        this._worker = this._worker = new SharedWorker(url);
+        this._workerPort = this._worker.port;
+        this._workerPortClose = this._worker.port.close.bind(this._workerPort);
         this._worker.port.start();
+        this._workerCallbacks = [];
+    }
+    else if (useWorker) {
+        var blob = new Blob([workerCodeBody.toString() + '(' + workerCode.toString() + ')()']);
+        var blobURL = window.URL.createObjectURL(blob);
+        this._worker = new Worker(blobURL);
+        this._workerPort = this._worker;
+        this._workerPortClose = this._worker.terminate.bind(this._worker);
         this._workerCallbacks = [];
     }
     this._selection = selection;
