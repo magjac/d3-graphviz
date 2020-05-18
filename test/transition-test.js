@@ -3,7 +3,7 @@ var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_transition = require("d3-transition");
 var d3_graphviz = require("../");
-const SharedWorker = require("./polyfill_SharedWorker");
+var Worker = require("tiny-worker");
 var hpccWasm = require("@hpcc-js/wasm");
 
 tape("graphviz().render() adds and removes SVG elements after transition delay.", function(test) {
@@ -28,7 +28,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
         var createObjectURL = window.URL.createObjectURL = function (js) {
             return js;
         }
-        global.SharedWorker = SharedWorker;
+        global.Worker = Worker;
     }
 
     function transition_test(transition1, next_test) {
@@ -94,11 +94,11 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
             test.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
 
             if (next_test) {
-                graphviz._worker.port.close();
+                graphviz._worker.terminate();
                 next_test();
             } else {
-                graphviz._worker.port.close();
-                global.SharedWorker = undefined;
+                graphviz._worker.terminate();
+                global.Worker = undefined;
                 hpccWasm.graphviz = savedGraphviz;
                 test.end();
             }

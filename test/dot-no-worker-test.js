@@ -2,7 +2,7 @@ var tape = require("tape");
 var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
-var SharedWorker = require("./polyfill_SharedWorker");
+var Worker = require("tiny-worker");
 
 function do_test(test, useWorker, html) {
     var window = global.window = jsdom(html);
@@ -13,7 +13,7 @@ function do_test(test, useWorker, html) {
     var createObjectURL = window.URL.createObjectURL = function (js) {
         return js;
     }
-    global.SharedWorker = SharedWorker;
+    global.Worker = Worker;
 
     var graphviz = d3_graphviz.graphviz("#graph", useWorker)
         .on('initEnd', () => {
@@ -60,7 +60,7 @@ function do_test(test, useWorker, html) {
     }
 
     function part2() {
-        global.SharedWorker = undefined;
+        global.Worker = undefined;
         test.end();
     }
 }
