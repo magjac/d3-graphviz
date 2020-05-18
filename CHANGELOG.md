@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+* New option *useSharedWorker* that enables the use of a [shared web worker](https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker). The default is still to use a [dedicated web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker).
+
 ## [3.0.6]
 
 ### Changed
