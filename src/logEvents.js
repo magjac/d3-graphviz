@@ -6,7 +6,7 @@ export default function(enable) {
     var times = {};
     var eventTypes = this._eventTypes;
     var maxEventTypeLength = Math.max(...(eventTypes.map(eventType => eventType.length)));
-    for (let i in eventTypes) {
+    for (let i = 0; i < eventTypes.length; i++) {
         let eventType = eventTypes[i];
         times[eventType] = [];
         var graphvizInstance = this;

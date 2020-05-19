@@ -209,9 +209,9 @@ function _render(callback) {
               .filter(function(d) {
                   return d.tag[0] == '#' ? null : this;
               })
-                .on("end", function() {
+                .on("end", function(d) {
                     d3.select(this)
-                        .attr('style', null);
+                        .attr('style', (d && d.attributes && d.attributes.style) || null);
                 });
         }
         var growThisPath = growEnteringEdges && tag == 'path' && data.offset;
