@@ -4,7 +4,7 @@ var deepEqualData = require("./deepEqualData");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 var translatePointsAttribute = require("./svg").translatePointsAttribute;
-var Worker = require("tiny-worker");
+var SharedWorker = require("./polyfill_SharedWorker");
 
 tape("Verify that polygon shape is drawn exactly as Graphviz does.", function(test) {
     var window = global.window = jsdom(
@@ -20,7 +20,7 @@ tape("Verify that polygon shape is drawn exactly as Graphviz does.", function(te
     var createObjectURL = window.URL.createObjectURL = function (js) {
         return js;
     }
-    global.Worker = Worker;
+    global.SharedWorker = SharedWorker;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
@@ -80,9 +80,9 @@ tape("Verify that polygon shape is drawn exactly as Graphviz does.", function(te
                     delete expectedNodeGroupDatum.parent;
                     deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape equals Graphviz generated data');
 
-                    expectedGraphviz._worker.terminate();
-                    actualGraphviz._worker.terminate();
-                    global.Worker = undefined;
+                    expectedGraphviz._worker.port.close();
+                    actualGraphviz._worker.port.close();
+                    global.SharedWorker = undefined;
                     test.end();
                 });
         });

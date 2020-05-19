@@ -95,6 +95,7 @@ Uses [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) to do a layou
 * [Accessing Elements of the Generated Graph](#accessing-elements-of-the-generated-graph)
 * [Accessing the Extracted Data](#accessing-the-extracted-data)
 * [Modifying an Existing Graph and Animating the Changes](#modifying-an-existing-graph-and-animating-the-changes)
+* [Destroying the Graphviz Renderer](#destroying-the-graphviz-renderer)
 
 ### Defining the @hpcc-js/wasm Script Tag
 
@@ -112,10 +113,10 @@ This will work if a web worker is used and the [*drawNode*](#graphviz_drawNode) 
 
 The following table summarizes the recommended script type:
 
-|                                            | *useWorker* = true (default) | *useWorker* = false    |
-|--------------------------------------------|------------------------------|------------------------|
-| <b>*drawNode()/drawEdge()* is not used</b> | javascript/worker            | application/javascript |
-| <b>*drawNode()/drawEdge()* is used</b>     | application/javascript       | application/javascript |
+| | *useWorker* = true (default) or<br>*useSharedWorker* = true | *useWorker* = false and<br>*useSharedWorker* = false |
+|:--|:--|:--|
+| <b>*drawNode()/drawEdge()* is not used</b> | javascript/worker               | application/javascript    |
+| <b>*drawNode()/drawEdge()* is used</b>     | application/javascript          | application/javascript    |
 
 ### Creating a Graphviz Renderer
 
@@ -123,7 +124,7 @@ The following table summarizes the recommended script type:
 
 <a name="selection_graphviz" href="#selection_graphviz">#</a> <i>selection</i>.<b>graphviz</b>([<i>options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/selection/graphviz.js "Source")
 
-Returns a new graphviz renderer instance on the first element in the given *selection*. If a graphviz renderer instance already exists on that element, instead returns the existing graphviz renderer instance. If *options* is specified and is an object, its properties are taken to be options to the graphviz renderer. All options except the *useWorker* option can also be changed later, using individual methods or the [<i>graphviz</i>.<b>options</b>](#graphviz_options) method, see below.
+Returns a new graphviz renderer instance on the first element in the given *selection*. If a graphviz renderer instance already exists on that element, instead returns the existing graphviz renderer instance. If *options* is specified and is an object, its properties are taken to be options to the graphviz renderer. All options except the *useWorker* and *useSharedWorker* options can also be changed later, using individual methods or the [<i>graphviz</i>.<b>options</b>](#graphviz_options) method, see below.
 
 ##### Supported options
 
@@ -141,6 +142,7 @@ Returns a new graphviz renderer instance on the first element in the given *sele
 | [tweenPrecision](#graphviz_tweenPrecision) | 1 |
 | [tweenShapes](#graphviz_tweenShapes) | true |
 | useWorker¹ | true |
+| useSharedWorker¹ | false |
 | [width](#graphviz_width) | null |
 | [zoom](#graphviz_zoom) | true |
 | [zoomScaleExtent](#graphviz_zoomScaleExtent) | [0.1, 10] |
@@ -148,7 +150,7 @@ Returns a new graphviz renderer instance on the first element in the given *sele
 
 ¹ Only has effect when the graphviz renderer instance is created.
 
-If the *useWorker* option is falsey, no web worker is used for the layout stage. The rest of the options are described below. Only the specified options will be changed. The others will keep their current values. If *options* is a boolean it is taken to be the useWorker option (for backwards compatibility).
+If the *useSharedWorker* option is truthy, a [shared web worker](https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker) will be used for the layout stage. Otherwise, if *useWorker* is truthy, a [dedicated web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) will be used. If both are falsey, no web worker will be used. The rest of the options are described below. Only the specified options will be changed. The others will keep their current values. If *options* is a boolean it is taken to be the useWorker option (for backwards compatibility).
 
 #### Creating a Graphviz Renderer Using a Selector String or a Node
 
@@ -471,6 +473,12 @@ Removes the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphvi
 <a name="graphviz_drawnNodeSelection" href="#graphviz_drawnNodeSelection">#</a> <i>graphviz</i>.<b>drawnNodeSelection</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
 Returns a [selection](https://github.com/d3/d3-selection#selection) containing the node currently being drawn. The selection is empty if no node has been drawn or the lastest drawn node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
+
+### Destroying the Graphviz Renderer
+
+<a name="graphviz_destroy" href="#graphviz_destroy">#</a> <i>graphviz</i>.<b>destroy</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/destroy.js "Source")
+
+Removes the graphviz renderer from the element it was created on, terminates any active decicated web worker and closes any port connected to a shared web worker.
 
 ## Examples
 
