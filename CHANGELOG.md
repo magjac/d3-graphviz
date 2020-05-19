@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * Styles added with the attributer are removed after transition #159
+* Logging events with logEvents() throws "Error: unknown type: function" in certain contexts #160
 
 ## [3.0.6]
 
