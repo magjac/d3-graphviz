@@ -141,8 +141,8 @@ Returns a new graphviz renderer instance on the first element in the given *sele
 | [tweenPaths](#graphviz_tweenPaths) | true |
 | [tweenPrecision](#graphviz_tweenPrecision) | 1 |
 | [tweenShapes](#graphviz_tweenShapes) | true |
-| useWorker¹ | true |
-| useSharedWorker¹ | false |
+| [useWorker¹](#the-useworker-and-usesharedworkeroptions) | true |
+| [useSharedWorker¹](#the-useworker-and-usesharedworkeroptions) | false |
 | [width](#graphviz_width) | null |
 | [zoom](#graphviz_zoom) | true |
 | [zoomScaleExtent](#graphviz_zoomScaleExtent) | [0.1, 10] |
@@ -150,7 +150,10 @@ Returns a new graphviz renderer instance on the first element in the given *sele
 
 ¹ Only has effect when the graphviz renderer instance is created.
 
-If the *useSharedWorker* option is truthy, a [shared web worker](https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker) will be used for the layout stage. Otherwise, if *useWorker* is truthy, a [dedicated web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) will be used. If both are falsey, no web worker will be used. The rest of the options are described below. Only the specified options will be changed. The others will keep their current values. If *options* is a boolean it is taken to be the useWorker option (for backwards compatibility).
+All options are described below. Only the specified options will be changed. The others will keep their current values. If *options* is a boolean it is taken to be the useWorker option (for backwards compatibility).
+
+##### The useWorker and useSharedWorker options
+If the *useSharedWorker* option is truthy, a [shared web worker](https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker) will be used for the layout stage. Otherwise, if *useWorker* is truthy, a [dedicated web worker](https://developer.mozilla.org/en-US/docs/Web/API/Worker) will be used. If both are falsey, no web worker will be used.
 
 #### Creating a Graphviz Renderer Using a Selector String or a Node
 
