@@ -141,8 +141,8 @@ Returns a new graphviz renderer instance on the first element in the given *sele
 | [tweenPaths](#graphviz_tweenPaths) | true |
 | [tweenPrecision](#graphviz_tweenPrecision) | 1 |
 | [tweenShapes](#graphviz_tweenShapes) | true |
-| [useWorker¹](#the-useworker-and-usesharedworkeroptions) | true |
-| [useSharedWorker¹](#the-useworker-and-usesharedworkeroptions) | false |
+| [useWorker¹](#the-useworker-and-usesharedworker-options) | true |
+| [useSharedWorker¹](#the-useworker-and-usesharedworker-options) | false |
 | [width](#graphviz_width) | null |
 | [zoom](#graphviz_zoom) | true |
 | [zoomScaleExtent](#graphviz_zoomScaleExtent) | [0.1, 10] |
