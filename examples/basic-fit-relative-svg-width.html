@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../node_modules/d3/dist/d3.js"></script>
+<script src="../node_modules/@hpcc-js/wasm/dist/index.min.js"></script>
+<script src="../build/d3-graphviz.js"></script>
+<div id="graph-container" style="width: 50%; height: 500px; margin:auto; border: 1px solid black"></div>
+<script>
+
+const graphContainer = d3.select("#graph-container");
+const width = graphContainer.node().clientWidth;
+const height = graphContainer.node().clientHeight;
+
+graphContainer.graphviz()
+    .width(width)
+    .height(height)
+    .fit(true)
+    .renderDot('digraph  {a -> b}');
+
+</script>
