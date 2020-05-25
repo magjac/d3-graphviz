@@ -485,6 +485,19 @@ Removes the graphviz renderer from the element it was created on, terminates any
 
 ## Examples
 
+There are plenty of examples in the [examples](https://github.com/magjac/d3-graphviz/tree/master/examples) folder. To see them in action you must build the library and start a web server. You cannot just open them through `file:` in your browser. Here is one way to do it:
+
+```text
+git clone https://github.com/magjac/d3-graphviz.git
+cd d3-graphviz
+npm install
+npm run build
+npm install http-server
+node_modules/.bin/http-server .
+```
+
+There are also a few examples directly available online:
+
 * [Basic Example](http://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b)
 * [Demo](http://bl.ocks.org/magjac/4acffdb3afbc4f71b448a210b5060bca)
 * [Shape Tweening Demo](http://bl.ocks.org/magjac/69dc955a2e2ee085f60369c4a73f92a6)
