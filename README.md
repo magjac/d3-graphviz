@@ -99,7 +99,7 @@ Uses [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) to do a layou
 
 ### Defining the @hpcc-js/wasm Script Tag
 
-The "@hpcc-js/wasm" script provides functions to do Grahviz layouts. If a web worker is used, these functions are called from the web worker which then loads and compiles the "@hpcc-js/wasm" script explicitly. In this case, it's unneccesary to let the browser also load and compile the script. This is accomplished by using the script tag "javascript/worker" which the browser does not identify to be Javascript and therefore does not compile. However, there are two d3-graphviz functions, [*drawNode*](#graphviz_drawNode) and [*drawEdge*](#graphviz_drawEdge) that calls the layout functions directly and if they are going to be used, the script type must be "application/javascript" or "text/javascript".
+The "@hpcc-js/wasm" script provides functions to do Grahviz layouts. If a web worker is used, these functions are called from the web worker which then loads and compiles the "@hpcc-js/wasm" script explicitly. In this case, it's unnecessary to let the browser also load and compile the script. This is accomplished by using the script tag "javascript/worker" which the browser does not identify to be Javascript and therefore does not compile. However, there are two d3-graphviz functions, [*drawNode*](#graphviz_drawNode) and [*drawEdge*](#graphviz_drawEdge) that calls the layout functions directly and if they are going to be used, the script type must be "application/javascript" or "text/javascript".
 
 Examples:
 
