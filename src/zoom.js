@@ -8,6 +8,9 @@ export default function(enable) {
 
     if (this._options.zoom && !this._zoomBehavior) {
         createZoomBehavior.call(this);
+    } else if (!this._options.zoom && this._zoomBehavior) {
+        this._zoomSelection.on(".zoom", null);
+        this._zoomBehavior = null;
     }
 
     return this;
