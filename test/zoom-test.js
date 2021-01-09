@@ -44,6 +44,34 @@ tape("zoom(true) enables zooming.", function(test) {
     }
 });
 
+tape("zoom(false) after zoom(Utrue) disables zooming.", function(test) {
+    var window = global.window = jsdom('<div id="graph"></div>');
+    var document = global.document = window.document;
+    var graphviz = d3_graphviz.graphviz("#graph")
+        .on('initEnd', startTest);
+
+    function startTest() {
+        graphviz
+            .zoom(true);
+
+        test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
+        test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
+
+        graphviz
+            .renderDot('digraph {a -> b;}');
+
+        test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph has been rendered');
+
+        graphviz
+            .zoom(false);
+
+        test.notOk(graphviz._options.zoom, '.zoom(false) enables zooming after having been enabled');
+        test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached after having been disabled');
+
+        test.end();
+    }
+});
+
 tape("resetZoom resets the zoom transform to the original transform.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
