@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+* Can't disable zoom once enabled #180
+
 ## [3.1.0]
 
 ### Added
