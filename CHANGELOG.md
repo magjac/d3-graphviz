@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+* Upgrade Graphviz to version 2.47.0 through @hpcc-js/wasm version to 1.4.1
+
 ### Fixed
 * Can't disable zoom once enabled #180
 
