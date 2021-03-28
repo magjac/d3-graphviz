@@ -53,7 +53,7 @@
     "codecov": "^3.8.1",
     "d3": "^5.16.0",
     "jsdom": "^16.5.1",
-    "marked": "^0.8.0",
+    "marked": "^2.0.1",
     "nyc": "^15.0.0",
     "rollup": "2.0.2",
     "rollup-plugin-babel": "^4.4.0",
