@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+* Upgrade to [D3 version
+  6](https://github.com/d3/d3/blob/master/CHANGES.md#changes-in-d3-60). This
+  is a **breaking change**. d3-graphviz version 4 *requires* D3
+  version 6 (more specifically version 2 of its
+  [microlibraries](https://github.com/d3/d3#installing)) and is no
+  longer compatible with D3 version 5 or lower (microlibraries version
+  1). For more info see the [D3 6.0 migration
+  guide](https://observablehq.com/@d3/d3v6-migration-guide)
+
 ## [3.2.0]
 
 ### Changed
