@@ -55,7 +55,7 @@
     "jsdom": "^16.5.1",
     "marked": "^2.0.1",
     "nyc": "^15.1.0",
-    "rollup": "2.0.2",
+    "rollup": "^2.43.1",
     "rollup-plugin-babel": "^4.4.0",
     "tape": "^4.13.2",
     "terser": "^4.6.6",
