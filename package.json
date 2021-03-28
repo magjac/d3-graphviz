@@ -45,7 +45,7 @@
     "report-dir": "./alternative"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
+    "@babel/cli": "^7.13.10",
     "@babel/preset-env": "^7.8.7",
     "@babel/register": "^7.8.6",
     "@rollup/plugin-node-resolve": "^7.1.1",
