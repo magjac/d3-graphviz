@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Upgrade d3 dependencies to the latest version of d3 version v4 and v5:
  * Upgrade d3-format to version 1.4.5
  * Upgrade d3-zoom to version 1.8.3
+ * Upgrade d3-selection to version 1.4.2
 
 ### Fixed
 * Can't disable zoom once enabled #180
