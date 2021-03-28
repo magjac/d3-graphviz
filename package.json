@@ -51,7 +51,7 @@
     "@rollup/plugin-node-resolve": "^11.2.1",
     "ace-builds": "^1.4.12",
     "codecov": "^3.8.1",
-    "d3": "^5.0.0",
+    "d3": "^5.16.0",
     "jsdom": "16.2.0",
     "marked": "^0.8.0",
     "nyc": "^15.0.0",
