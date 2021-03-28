@@ -1,6 +1,7 @@
 var jsdom = require("jsdom");
 require("./polyfill_fetch");
 require("./polyfill_btoa");
+require("./polyfill_navigator");
 
 module.exports = function(html, options) {
     var dom = new jsdom.JSDOM(html, options);
