@@ -18,9 +18,9 @@ export default function(enable) {
 
 export function createZoomBehavior() {
 
-    function zoomed() {
+    function zoomed(event) {
         var g = d3.select(svg.node().querySelector("g"));
-        g.attr('transform', d3.event.transform);
+        g.attr('transform', event.transform);
     }
 
     var root = this._selection;
