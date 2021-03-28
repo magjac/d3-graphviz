@@ -1,6 +1,7 @@
 var jsdom = require("jsdom");
 require("./polyfill_fetch");
 require("./polyfill_btoa");
+require("./polyfill_navigator");
 
 module.exports = function(html, options) {
     var dom = new jsdom.JSDOM(html, options);
@@ -131,6 +132,21 @@ module.exports = function(html, options) {
                         },
                     };
                 }
+            },
+        });
+    }
+    if (!('viewBox' in window.SVGElement.prototype)) {
+        Object.defineProperty(window.SVGElement.prototype, 'viewBox', {
+            get: function() {
+                let viewBox = this.getAttribute('viewBox').split(' ');
+                return {
+                    baseVal: {
+                        x: +viewBox[0],
+                        y: +viewBox[1],
+                        width: +viewBox[2],
+                        height: +viewBox[3],
+                    },
+                };
             },
         });
     }

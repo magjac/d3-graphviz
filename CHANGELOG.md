@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0]
+
+### Changed
+* Upgrade Graphviz to version 2.47.0 through @hpcc-js/wasm version to 1.4.1
+* Upgrade d3 dependencies to the latest version of d3 version v4 and v5:
+ * Upgrade d3-format to version 1.4.5
+ * Upgrade d3-zoom to version 1.8.3
+ * Upgrade d3-selection to version 1.4.2
+
+### Fixed
+* Can't disable zoom once enabled #180
+
 ## [3.1.0]
 
 ### Added
@@ -72,7 +84,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v3.1.0...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v3.2.0...HEAD
+[3.2.0]: https://github.com/magjac/d3-graphviz/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/magjac/d3-graphviz/compare/v3.0.6...v3.1.0
 [3.0.6]: https://github.com/magjac/d3-graphviz/compare/v3.0.5...v3.0.6
 [3.0.5]: https://github.com/magjac/d3-graphviz/compare/v3.0.4...v3.0.5

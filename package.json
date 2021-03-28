@@ -1,6 +1,6 @@
 {
   "name": "d3-graphviz",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Graphviz DOT rendering and animated transitions for D3",
   "keywords": [
     "d3",
@@ -45,31 +45,31 @@
     "report-dir": "./alternative"
   },
   "devDependencies": {
-    "ace-builds": "^1.3.3",
-    "@babel/cli": "^7.8.4",
-    "@babel/preset-env": "^7.8.7",
-    "@babel/register": "^7.8.6",
-    "@rollup/plugin-node-resolve": "^7.1.1",
-    "codecov": "^3.0.1",
-    "d3": "^5.0.0",
-    "jsdom": "16.2.0",
-    "marked": "^0.8.0",
-    "nyc": "^15.0.0",
-    "rollup": "2.0.2",
+    "@babel/cli": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/register": "^7.13.8",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "ace-builds": "^1.4.12",
+    "codecov": "^3.8.1",
+    "d3": "^5.16.0",
+    "jsdom": "^16.5.1",
+    "marked": "^2.0.1",
+    "nyc": "^15.1.0",
+    "rollup": "^2.43.1",
     "rollup-plugin-babel": "^4.4.0",
-    "tape": "^4.13.2",
-    "terser": "^4.6.6",
+    "tape": "^5.2.2",
+    "terser": "^5.6.1",
     "tiny-worker": "^2.1.2"
   },
   "dependencies": {
-    "@hpcc-js/wasm": "0.3.13",
+    "@hpcc-js/wasm": "1.4.1",
     "d3-dispatch": "^1.0.6",
-    "d3-format": "^1.4.3",
+    "d3-format": "^1.4.5",
     "d3-interpolate": "^1.4.0",
     "d3-path": "^1.0.9",
-    "d3-selection": "^1.4.1",
+    "d3-selection": "^1.4.2",
     "d3-timer": "^1.0.10",
     "d3-transition": "^1.3.2",
-    "d3-zoom": "1.7.3"
+    "d3-zoom": "1.8.3"
   }
 }
