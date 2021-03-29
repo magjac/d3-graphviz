@@ -299,6 +299,7 @@ Adds or removes a *listener* to the graphviz renderer instance for the specified
 * `transitionEnd` - when the anmiated transition ends.
 * `restoreEnd` - when possibly converted paths and shapes have been restored after the transition.
 * `end` - when the graphviz renderer has finished all actions.
+* `zoom` - when the layout has been zoomed.
 
 Note that these are *not* native DOM events as implemented by [*selection*.on](https://github.com/d3/d3-selection#selection_on) and [*selection*.dispatch](https://github.com/d3/d3-selection#selection_dispatch), but graphviz events!
 

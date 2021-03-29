@@ -146,7 +146,8 @@ export function Graphviz(selection, options) {
         'transitionStart',
         'transitionEnd',
         'restoreEnd',
-        'end'
+        'end',
+        'zoom'
     ];
     this._dispatch = dispatch(...this._eventTypes);
     initViz.call(this);
