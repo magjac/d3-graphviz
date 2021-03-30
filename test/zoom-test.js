@@ -281,6 +281,7 @@ tape("zooming rescales transforms during transitions.", function(test) {
         );
 
         graphviz
+            .transition(d3_transition.transition().duration(100))
             .renderDot('digraph {a -> b; b -> c}')
             .on('transitionStart', function() {
                 test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when transition starts');
