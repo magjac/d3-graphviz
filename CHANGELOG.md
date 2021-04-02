@@ -6,6 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.0]
+
+**Note:** This release contains breaking changes compared to version 3.2.0.
+
+### Changed
+
+* Upgrade to [D3 version
+  6](https://github.com/d3/d3/blob/master/CHANGES.md#changes-in-d3-60). This
+  is a **breaking change**. d3-graphviz version 4 *requires* D3
+  version 6 (more specifically version 2 of its
+  [microlibraries](https://github.com/d3/d3#installing)) and is no
+  longer compatible with D3 version 5 or lower (microlibraries version
+  1). For more info see the [D3 6.0 migration
+  guide](https://observablehq.com/@d3/d3v6-migration-guide)
+* Make [d3-selection](https://github.com/d3/d3-selection) a [peer
+  dependency](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#peerdependencies)
+  since d3-graphviz adds new methods on the d3-selection object.
+
 ## [3.2.0]
 
 ### Changed
@@ -84,7 +102,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v3.2.0...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v4.0.0...HEAD
+[4.0.0]: https://github.com/magjac/d3-graphviz/compare/v3.2.0...v4.0.0
 [3.2.0]: https://github.com/magjac/d3-graphviz/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/magjac/d3-graphviz/compare/v3.0.6...v3.1.0
 [3.0.6]: https://github.com/magjac/d3-graphviz/compare/v3.0.5...v3.0.6

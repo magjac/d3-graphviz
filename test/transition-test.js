@@ -42,6 +42,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
                 part1();
             });
 
+        const transition2 = transition1 || d3_transition.transition().duration(1000);
         function part1() {
             graphviz
                 .tweenShapes(false)
@@ -65,6 +66,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
             test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
             test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
+            const transition2 = transition1 || d3_transition.transition().duration(1000);
             graphviz
                 .dot('digraph {a -> b; b -> a}')
                 .transition(transition1)
@@ -107,8 +109,7 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
 
     function transition_instance_test() {
         transition_test_init();
-        const transition1 = d3_transition.transition().duration(0);
-        transition_test(transition1, transition_function_test);
+        transition_test(null, transition_function_test);
     }
 
     function transition_function_test() {
