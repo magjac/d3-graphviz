@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   longer compatible with D3 version 5 or lower (microlibraries version
   1). For more info see the [D3 6.0 migration
   guide](https://observablehq.com/@d3/d3v6-migration-guide)
+* Make [d3-selection](https://github.com/d3/d3-selection) a [peer
+  dependency](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#peerdependencies)
+  since d3-graphviz adds new methods on the d3-selection object.
 
 ## [3.2.0]
 

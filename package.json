@@ -67,9 +67,11 @@
     "d3-format": "^2.0.0",
     "d3-interpolate": "^2.0.1",
     "d3-path": "^2.0.0",
-    "d3-selection": "^2.0.0",
     "d3-timer": "^2.0.0",
     "d3-transition": "^2.0.0",
     "d3-zoom": "^2.0.0"
+  },
+  "peerDependencies": {
+    "d3-selection": "^2.0.0"
   }
 }
