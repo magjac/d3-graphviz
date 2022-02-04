@@ -2,7 +2,7 @@
 
 Renders SVG from graphs described in the [DOT](https://www.graphviz.org/doc/info/lang.html) language using the [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) port of [Graphviz](http://www.graphviz.org) and does animated transitions between graphs.
 
-[![Build Status](https://travis-ci.org/magjac/d3-graphviz.svg?branch=master)](https://travis-ci.org/magjac/d3-graphviz)
+[![Node.js CI](https://github.com/magjac/d3-graphviz/actions/workflows/node.js.yml/badge.svg)](https://github.com/magjac/d3-graphviz/actions/workflows/node.js.yml)
 [![codecov](https://codecov.io/gh/magjac/d3-graphviz/branch/master/graph/badge.svg)](https://codecov.io/gh/magjac/d3-graphviz)
 [![npm version](https://img.shields.io/npm/v/d3-graphviz.svg?style=flat)](https://www.npmjs.com/package/d3-graphviz)
 [![unpkg](http://img.badgesize.io/https://unpkg.com/d3-graphviz/build/d3-graphviz.js?compression=gzip&label=unpkg&style=flat&cache=false)](https://unpkg.com/d3-graphviz/build/d3-graphviz.js)
