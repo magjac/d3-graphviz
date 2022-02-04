@@ -1,4 +1,0 @@
-language: node_js
-node_js:
-  - "13"
-after_success: npm run coverage
