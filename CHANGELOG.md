@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
-* Upgrade Graphviz to version 2.50.0 through @hpcc-js/wasm version to 1.12.8
+* Upgrade Graphviz to version 2.50.0 through @hpcc-js/wasm version 1.12.8
 
 ## [4.0.0]
 
@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.2.0]
 
 ### Changed
-* Upgrade Graphviz to version 2.47.0 through @hpcc-js/wasm version to 1.4.1
+* Upgrade Graphviz to version 2.47.0 through @hpcc-js/wasm version 1.4.1
 * Upgrade d3 dependencies to the latest version of d3 version v4 and v5:
  * Upgrade d3-format to version 1.4.5
  * Upgrade d3-zoom to version 1.8.3
