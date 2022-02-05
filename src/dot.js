@@ -52,8 +52,6 @@ function postMessage(message, callback) {
 }
 
 export function layout(src, engine, vizOptions, callback) {
-    var graphvizInstance = this;
-    var worker = this._worker;
     if (this._worker) {
         postMessage.call(this, {
             dot: src,
