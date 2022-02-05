@@ -44,7 +44,7 @@ tape("zoom(true) enables zooming.", function(test) {
     }
 });
 
-tape("zoom(false) after zoom(Utrue) disables zooming.", function(test) {
+tape("zoom(false) after zoom(true) disables zooming.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph")
