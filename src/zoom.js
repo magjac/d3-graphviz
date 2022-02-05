@@ -18,9 +18,11 @@ export default function(enable) {
 
 export function createZoomBehavior() {
 
+    var graphvizInstance = this;
     function zoomed(event) {
         var g = d3.select(svg.node().querySelector("g"));
         g.attr('transform', event.transform);
+        graphvizInstance._dispatch.call('zoom', graphvizInstance);
     }
 
     var root = this._selection;
