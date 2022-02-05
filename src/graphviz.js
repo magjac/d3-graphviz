@@ -1,6 +1,7 @@
 import * as d3 from "d3-selection";
 import {dispatch} from "d3-dispatch";
 import render from "./render";
+import graphvizVersion from "./graphvizVersion";
 import {layout} from "./dot";
 import dot from "./dot";
 import data from "./data";
@@ -48,6 +49,7 @@ import {drawnNodeSelection} from "./drawNode";
 import {workerCode} from "./workerCode";
 import {sharedWorkerCode} from "./workerCode";
 import {workerCodeBody} from "./workerCode";
+import {graphvizVersion as hpccWasmGraphvizVersion} from "@hpcc-js/wasm";
 
 export function Graphviz(selection, options) {
     this._options = {
@@ -118,6 +120,9 @@ export function Graphviz(selection, options) {
         this._workerPortClose = this._worker.terminate.bind(this._worker);
         this._workerCallbacks = [];
     }
+    hpccWasmGraphvizVersion().then(((version) => {
+        this._graphvizVersion = version;
+    }).bind(this));
     this._selection = selection;
     this._active = false;
     this._busy = false;
@@ -205,4 +210,5 @@ Graphviz.prototype = graphviz.prototype = {
     insertDrawnNode,
     removeDrawnNode, removeDrawnNode,
     drawnNodeSelection, drawnNodeSelection,
+    graphvizVersion: graphvizVersion,
 };
