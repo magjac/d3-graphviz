@@ -10,7 +10,7 @@ import {getEdgeTitle} from "./data";
 
 export function initViz() {
 
-    // force JIT compilation of Viz.js
+    // force JIT compilation of @hpcc-js/wasm
     try {
         graphviz.layout("", "svg", "dot").then(() => {
             graphvizSync().then((graphviz1) => {
