@@ -82,6 +82,7 @@ Uses [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) to do a layou
 * [Defining the @hpcc-js/wasm Script Tag](#defining-the-hpcc-jswasm-script-tag)
 * [Creating a Graphviz Renderer](#creating-a-graphviz-renderer)
 * [Setting and Getting Options](#setting-and-getting-options)
+* [Getting the Graphviz version](#getting-the-graphviz-version)
 * [Rendering](#rendering)
 * [Images](#images)
 * [Creating Transitions](#creating-transitions)
@@ -166,6 +167,12 @@ Creates a new graphviz renderer instance on the first element matching the given
 <a name="graphviz_options" href="#graphviz_options">#</a> <i>graphviz</i>.<b>options</b>([<i>options</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/options.js "Source")
 
 If *options* is specified it is taken to be an object whose properties are used to set options to the graphviz renderer. See [<i>selection</i>.<b>graphviz</b>](#selection_graphviz) for a list of supported options. Most options can also be changed by individual methods which are described separately. If *options* is not specified, a copy of the currently set options are returned as an object.
+
+### Getting the Graphviz version
+
+<a name="graphviz_graphvizVersion" href="#graphviz_graphvizVersion">#</a> <i>graphviz</i>.<b>graphvizVersion</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/graphvizVersion.js "Source")
+
+Returns the [Graphviz](https://graphviz.org) version.
 
 ### Rendering
 
