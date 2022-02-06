@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * New `zoom` [event](README.md#graphviz_on), thanks to [Tucker Gordon](https://github.com/tuckergordon).
+* New method [*graphviz*.**graphvizVersion**()](README.md#graphviz_graphvizVersion) which returns the [Graphviz](https://graphviz.org) version.
 
 ### Changed
 * Upgrade Graphviz to version 2.50.0 through @hpcc-js/wasm version 1.12.8

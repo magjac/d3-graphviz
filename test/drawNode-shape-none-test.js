@@ -50,7 +50,7 @@ tape("Verify that none shape is drawn exactly as Graphviz does.", function(test)
                     test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
                     test.equal(actualNodeShape.size(), 0, 'no svg shape elements');
-                    test.equal(actualNodeShape.size(), expectedNodeShape.size(), 'same number of svg shape elementes');
+                    test.equal(actualNodeShape.size(), expectedNodeShape.size(), 'same number of svg shape elements');
 
                     test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
                     test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
@@ -111,7 +111,7 @@ tape("Verify that none shape without label is drawn exactly as Graphviz does.", 
                     test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
                     test.equal(actualNodeShape.size(), 0, 'no svg shape elements');
-                    test.equal(actualNodeShape.size(), expectedNodeShape.size(), 'same number of svg shape elementes');
+                    test.equal(actualNodeShape.size(), expectedNodeShape.size(), 'same number of svg shape elements');
 
                     test.equal(actualNodeText.size(), 0, 'no text elements');
                     test.equal(actualNodeText.size(), expectedNodeText.size(), 'same number of svg text elements');
@@ -172,7 +172,7 @@ tape("Verify that none shape with style filled is drawn exactly as Graphviz does
                     test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
                     test.equal(actualNodeShape.size(), 1, 'one svg shape element');
-                    test.equal(actualNodeShape.size(), expectedNodeShape.size(), 'same number of svg shape elementes');
+                    test.equal(actualNodeShape.size(), expectedNodeShape.size(), 'same number of svg shape elements');
 
                     test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of polygon');
                     test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of polygon');
@@ -243,7 +243,7 @@ tape("Verify that none shape with style filled and pen color specified is drawn 
                     test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
                     test.equal(actualNodeShape.size(), 1, 'one svg shape element');
-                    test.equal(actualNodeShape.size(), expectedNodeShape.size(), 'same number of svg shape elementes');
+                    test.equal(actualNodeShape.size(), expectedNodeShape.size(), 'same number of svg shape elements');
 
                     test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of polygon');
                     test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of polygon');

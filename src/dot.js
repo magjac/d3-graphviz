@@ -10,7 +10,7 @@ import {getEdgeTitle} from "./data";
 
 export function initViz() {
 
-    // force JIT compilation of Viz.js
+    // force JIT compilation of @hpcc-js/wasm
     try {
         graphviz.layout("", "svg", "dot").then(() => {
             graphvizSync().then((graphviz1) => {
@@ -52,8 +52,6 @@ function postMessage(message, callback) {
 }
 
 export function layout(src, engine, vizOptions, callback) {
-    var graphvizInstance = this;
-    var worker = this._worker;
     if (this._worker) {
         postMessage.call(this, {
             dot: src,
