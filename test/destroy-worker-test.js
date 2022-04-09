@@ -4,7 +4,7 @@ var tape = require("tape"),
     d3_graphviz = require("../");
 const Worker = require("tiny-worker");
 
-tape(".destroy() deletes the Graphviz instance from the container element", function(test) {
+tape(".destroy() deletes the Graphviz instance from the container element (worker version)", function (test) {
     var window = global.window = jsdom(
         `
             <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
@@ -12,10 +12,10 @@ tape(".destroy() deletes the Graphviz instance from the container element", func
             `,
     );
     var document = global.document = window.document;
-    var Blob = global.Blob = function (jsarray) {
+    global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
-    var createObjectURL = window.URL.createObjectURL = function (js) {
+    window.URL.createObjectURL = function (js) {
         return js;
     }
     global.Worker = Worker;

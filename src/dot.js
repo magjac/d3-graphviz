@@ -36,11 +36,18 @@ export function initViz() {
             // Local URL. Prepend with local domain to be usable in web worker
             vizURL = (new window.URL(vizURL, document.location.href)).href;
         }
-        postMessage.call(this, {dot: "", engine: 'dot', vizURL: vizURL}, function(event) {
+        postMessage.call(this, {type: "layout", dot: "", engine: 'dot', vizURL: vizURL}, function (event) {
             switch (event.data.type) {
             case "init":
-                graphvizInstance._dispatch.call("initEnd", this);
                 break;
+            }
+        });
+        postMessage.call(this, { type: "version" }, function (event) {
+            switch (event.data.type) {
+                case "version":
+                    graphvizInstance._graphvizVersion = event.data.version;
+                    graphvizInstance._dispatch.call("initEnd", this);
+                    break;
             }
         });
     }
@@ -54,6 +61,7 @@ function postMessage(message, callback) {
 export function layout(src, engine, vizOptions, callback) {
     if (this._worker) {
         postMessage.call(this, {
+            type: "layout",
             dot: src,
             engine: engine,
             options: vizOptions,
