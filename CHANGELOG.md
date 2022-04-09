@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.1.1]
+
+### Fixed
+* Cannot read property 'graphvizVersion' of undefined #224
+
 ## [4.1.0]
 
 ### Added
@@ -111,7 +116,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v4.1.0...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v4.1.1...HEAD
+[4.1.1]: https://github.com/magjac/d3-graphviz/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/magjac/d3-graphviz/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/magjac/d3-graphviz/compare/v3.2.0...v4.0.0
 [3.2.0]: https://github.com/magjac/d3-graphviz/compare/v3.1.0...v3.2.0
