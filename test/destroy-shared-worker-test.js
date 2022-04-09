@@ -4,7 +4,7 @@ var tape = require("tape"),
     d3_graphviz = require("../");
 const SharedWorker = require("./polyfill_SharedWorker");
 
-tape(".destroy() deletes the Graphviz instance from the container element", function(test) {
+tape(".destroy() deletes the Graphviz instance from the container element (shared worker version)", function (test) {
     var window = global.window = jsdom(
         `
             <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
