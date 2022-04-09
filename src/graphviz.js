@@ -119,10 +119,11 @@ export function Graphviz(selection, options) {
         this._workerPort = this._worker;
         this._workerPortClose = this._worker.terminate.bind(this._worker);
         this._workerCallbacks = [];
+    } else {
+        hpccWasmGraphvizVersion().then(((version) => {
+            this._graphvizVersion = version;
+        }).bind(this));
     }
-    hpccWasmGraphvizVersion().then(((version) => {
-        this._graphvizVersion = version;
-    }).bind(this));
     this._selection = selection;
     this._active = false;
     this._busy = false;

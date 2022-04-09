@@ -17,6 +17,17 @@ export function workerCodeBody(port) {
             // This is an alternative workaround where wasmFolder() is not needed
 //                                    document = {currentScript: {src: event.data.vizURL}};
         }
+
+        if (event.data.type == "version") {
+            hpccWasm.graphvizVersion().then((version) => {
+                port.postMessage({
+                    type: "version",
+                    version: version,
+                });
+            });
+            return;
+        }
+
         hpccWasm.graphviz.layout(event.data.dot, "svg", event.data.engine, event.data.options).then((svg) => {
             if (svg) {
                 port.postMessage({
