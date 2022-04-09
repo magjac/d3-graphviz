@@ -11,7 +11,7 @@ tape(".destroy() deletes the Graphviz instance from the container element (share
             <div id="graph"></div>
             `,
     );
-    var document = global.document = window.document;
+    global.document = window.document;
     global.SharedWorker = SharedWorker;
 
     var graphviz = d3_graphviz.graphviz("#graph", {useSharedWorker: true})
