@@ -38,7 +38,7 @@ d3.graphviz("#graph")
 
 [<img src="images/a-b.png">](http://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b)
 
-This basic example can also bee seen [here](http://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b).
+This basic example can also be seen [here](http://bl.ocks.org/magjac/a23d1f1405c2334f288a9cca4c0ef05b).
 
 A more colorful demo can be seen [here](http://bl.ocks.org/magjac/4acffdb3afbc4f71b448a210b5060bca).
 
