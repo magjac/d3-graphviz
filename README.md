@@ -19,7 +19,7 @@ Renders SVG from graphs described in the [DOT](https://www.graphviz.org/doc/info
 * Animated growth of entering edges
 * Panning & zooming of the generated graph
 
-Graphviz methods typically return the graphviz renderer instance, allowing the concise application of multiple operations on a given graph renderer instance via method chaining.
+Graphviz methods typically return the Graphviz renderer instance, allowing the concise application of multiple operations on a given graph renderer instance via method chaining.
 
 To render a graph, select an element, call [*selection*.graphviz](#selection_graphviz), and then render from a [DOT](https://www.graphviz.org/doc/info/lang.html) source string. For example:
 
@@ -100,7 +100,7 @@ Uses [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) to do a layou
 
 ### Defining the @hpcc-js/wasm Script Tag
 
-The "@hpcc-js/wasm" script provides functions to do Grahviz layouts. If a web worker is used, these functions are called from the web worker which then loads and compiles the "@hpcc-js/wasm" script explicitly. In this case, it's unnecessary to let the browser also load and compile the script. This is accomplished by using the script tag "javascript/worker" which the browser does not identify to be Javascript and therefore does not compile. However, there are two d3-graphviz functions, [*drawNode*](#graphviz_drawNode) and [*drawEdge*](#graphviz_drawEdge) that calls the layout functions directly and if they are going to be used, the script type must be "application/javascript" or "text/javascript".
+The "@hpcc-js/wasm" script provides functions to do Graphviz layouts. If a web worker is used, these functions are called from the web worker which then loads and compiles the "@hpcc-js/wasm" script explicitly. In this case, it's unnecessary to let the browser also load and compile the script. This is accomplished by using the script tag "javascript/worker" which the browser does not identify to be Javascript and therefore does not compile. However, there are two d3-graphviz functions, [*drawNode*](#graphviz_drawNode) and [*drawEdge*](#graphviz_drawEdge) that calls the layout functions directly and if they are going to be used, the script type must be "application/javascript" or "text/javascript".
 
 Examples:
 
@@ -178,7 +178,7 @@ Returns the [Graphviz](https://graphviz.org) version.
 
 <a name="graphviz_renderDot" href="#graphviz_renderDot">#</a> <i>graphviz</i>.<b>renderDot</b>(<i>dotSrc</i>[, <i>callback</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/renderDot.js "Source")
 
-Starts rendering of an SVG graph from the specified *dotSrc* string and appends it to the selection the grapviz renderer instance was generated on. [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot) returns "immediately", while the rendering is performed in the backgound. The layout stage is performed by a web worker (unless the use of a web worker was disabled when the renderer instance was created).
+Starts rendering of an SVG graph from the specified *dotSrc* string and appends it to the selection the Graphviz renderer instance was generated on. [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot) returns "immediately", while the rendering is performed in the background. The layout stage is performed by a web worker (unless the use of a web worker was disabled when the renderer instance was created).
 
 It is also possible to do the [Graphviz](https://www.graphviz.org/doc/info/lang.html) layout in a first separate stage and do the actual rendering of the SVG as a second step like so:
 
@@ -193,11 +193,11 @@ This enables doing the computational intensive layout stages for multiple graphs
 
 <a name="graphviz_dot" href="#graphviz_dot">#</a> <i>graphviz</i>.<b>dot</b>(<i>dotSrc</i>[, <i>callback</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/dot.js "Source")
 
-Starts computation of the layout of a graph from the specified *dotSrc* string and saves the data for rendering the SVG with [<i>graphviz</i>.<b>render</b>](#graphviz_render) at a later stage. [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) returns "immediately", while the layout is performed by a web worker in the backgound. If *callback* is specified and not null, it is called with the `this` context as the graphviz instance, when the layout, data extraction and data processing has been finished.
+Starts computation of the layout of a graph from the specified *dotSrc* string and saves the data for rendering the SVG with [<i>graphviz</i>.<b>render</b>](#graphviz_render) at a later stage. [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) returns "immediately", while the layout is performed by a web worker in the backrgound. If *callback* is specified and not null, it is called with the `this` context as the graphviz instance, when the layout, data extraction and data processing has been finished.
 
 <a name="graphviz_render" href="#graphviz_render">#</a> <i>graphviz</i>.<b>render</b>([<i>callback</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/dot.js "Source")
 
-Starts rendering of an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) and appends it to the selection the grapviz renderer instance was generated on. [<i>graphviz</i>.<b>render</b>](#graphviz_render) returns "immediately", while the rendering is performed in the backgound. If computation of a layout, started with the [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) method has not yet finsihed, the rendering task is placed in a queue and will commence when the layout is ready. If *callback* is specified and not null, it is called with the `this` context as the graphviz instance, when the graphviz renderer has finished all actions.
+Starts rendering of an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) and appends it to the selection the Graphviz renderer instance was generated on. [<i>graphviz</i>.<b>render</b>](#graphviz_render) returns "immediately", while the rendering is performed in the backrgound. If computation of a layout, started with the [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) method has not yet finished, the rendering task is placed in a queue and will commence when the layout is ready. If *callback* is specified and not null, it is called with the `this` context as the graphviz instance, when the graphviz renderer has finished all actions.
 
 <a name="graphviz_engine" href="#graphviz_engine">#</a> <i>graphviz</i>.<b>engine</b>(<i>engine</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/engine.js "Source")
 
@@ -238,7 +238,7 @@ d3.graphviz("#graph")
 ### Creating Transitions
 <a name="graphviz_transition" href="#graphviz_transition">#</a> <i>graphviz</i>.<b>transition</b>([<i>name</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/transition.js "Source")
 
-Applies the specified transition *name* to subsequent SVG rendering. Accepts the same arguments as [<i>selection</i>.<b>transition</b>](https://github.com/d3/d3-transition#selection_transition) or a function, but returns the graph renderer instance, not the transition. If *name* is a function, it is taken to be a transition factory. A transition factory is a function that returns a transition; when the rendering starts, the factory is evaluated once, with the `this` context as the graphviz instance. To attach a preconfigured transition, first create a transition intance with [d3.transition](https://github.com/d3/d3-transition#transition), configure it and attach it with [<i>graphviz</i>.<b>transition</b>](#graphviz_transition) like so:
+Applies the specified transition *name* to subsequent SVG rendering. Accepts the same arguments as [<i>selection</i>.<b>transition</b>](https://github.com/d3/d3-transition#selection_transition) or a function, but returns the graph renderer instance, not the transition. If *name* is a function, it is taken to be a transition factory. A transition factory is a function that returns a transition; when the rendering starts, the factory is evaluated once, with the `this` context as the graphviz instance. To attach a preconfigured transition, first create a transition instance with [d3.transition](https://github.com/d3/d3-transition#transition), configure it and attach it with [<i>graphviz</i>.<b>transition</b>](#graphviz_transition) like so:
 
 ```js
 var t = d3.transition()
@@ -286,13 +286,13 @@ The viewBox attribute of the SVG is set so that the graph size (after a possible
 
 ### Control Flow
 
-For advanced usage, the grahviz renderer provides methods for custom control flow.
+For advanced usage, the Graphviz renderer provides methods for custom control flow.
 
 <a name="graphviz_on" href="#graphviz_on">#</a> <i>graphviz</i>.<b>on</b>(<i>typenames</i>[, <i>listener</i>]) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/on.js "Source")
 
-Adds or removes a *listener* to the graphviz renderer instance for the specified event *typenames*. The *typenames* is one of the following string event types:
+Adds or removes a *listener* to the Graphviz renderer instance for the specified event *typenames*. The *typenames* is one of the following string event types:
 
-* `initEnd` - when the graphviz renderer has finished initialization.
+* `initEnd` - when the Graphviz renderer has finished initialization.
 * `start` - when analysis of the DOT source starts.
 * `layoutStart` - when the layout of the DOT source starts.
 * `layoutEnd` - when the layout of the DOT source ends.
@@ -302,23 +302,23 @@ Adds or removes a *listener* to the graphviz renderer instance for the specified
 * `dataProcessEnd` - when the processing of the extracted data ends.
 * `renderStart` - when the rendering preparation starts, which is just before an eventual transition factory is called.
 * `renderEnd` - when the rendering preparation ends.
-* `transitionStart` - when the anmiated transition starts.
-* `transitionEnd` - when the anmiated transition ends.
+* `transitionStart` - when the animated transition starts.
+* `transitionEnd` - when the animated transition ends.
 * `restoreEnd` - when possibly converted paths and shapes have been restored after the transition.
-* `end` - when the graphviz renderer has finished all actions.
+* `end` - when the Graphviz renderer has finished all actions.
 * `zoom` - when the layout has been zoomed.
 
-Note that these are *not* native DOM events as implemented by [*selection*.on](https://github.com/d3/d3-selection#selection_on) and [*selection*.dispatch](https://github.com/d3/d3-selection#selection_dispatch), but graphviz events!
+Note that these are *not* native DOM events as implemented by [*selection*.on](https://github.com/d3/d3-selection#selection_on) and [*selection*.dispatch](https://github.com/d3/d3-selection#selection_dispatch), but Graphviz events!
 
 The type may be optionally followed by a period (`.`) and a name; the optional name allows multiple callbacks to be registered to receive events of the same type, such as `start.foo` and `start.bar`. To specify multiple typenames, separate typenames with spaces, such as `interrupt end` or `start.foo start.bar`.
 
-When a specified graphviz event is dispatched, the specified *listener* will be invoked with the `this` context as the graphviz instance.
+When a specified Graphviz event is dispatched, the specified *listener* will be invoked with the `this` context as the graphviz instance.
 
 If an event listener was previously registered for the same *typename* on a selected element, the old listener is removed before the new listener is added. To remove a listener, pass null as the *listener*. To remove all listeners for a given name, pass null as the *listener* and `.foo` as the *typename*, where `foo` is the name; to remove all listeners with no name, specify `.` as the *typename*.
 
 <a name="graphviz_logEvents" href="#graphviz_logEvents">#</a> <i>graphviz</i>.<b>logEvents</b>(<i>enable</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/logEvents.js "Source")
 
-If *enable* is true (default), adds event listeners, uing the name "log", for all available events. When invoked, each listener will print a one-line summary containing the event number and type, the time since the previous event and the time since the "start" event to the console log. For some events, additionally calculated times are printed. This method can be used for debugging or for tuning transition delay and duration. If *enable* is false, removes all event listeners named "log".
+If *enable* is true (default), adds event listeners, using the name "log", for all available events. When invoked, each listener will print a one-line summary containing the event number and type, the time since the previous event and the time since the "start" event to the console log. For some events, additionally calculated times are printed. This method can be used for debugging or for tuning transition delay and duration. If *enable* is false, removes all event listeners named "log".
 
 ### Controlling Fade-In & Fade-Out
 
@@ -344,7 +344,7 @@ If *enable* is true (default), enables path tweening, else disables path tweenin
 
 <a name="graphviz_tweenPrecision" href="#graphviz_tweenPrecision">#</a> <i>graphviz</i>.<b>tweenPrecision</b>(<i>precision</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/tweenPrecision.js "Source")
 
-If *precision* is a number, sets the precision used during path tweening to *precision* points. The precision is the length of each path segment during tweening. If instead *precision* is a string containing '%', sets the relative precision. When using a relative precision, the absolute precision is calculated as the length of the object being tweened muliplied with the relative precision, i.e. the number of line segments during tweening will be the inverse of the relative precision. For example, a relative precision of 5% will give 20 line segments. For a path which is 200 points long, this will give a precision of 10 points. Default is an absolute precision of 1 point.
+If *precision* is a number, sets the precision used during path tweening to *precision* points. The precision is the length of each path segment during tweening. If instead *precision* is a string containing '%', sets the relative precision. When using a relative precision, the absolute precision is calculated as the length of the object being tweened multiplied with the relative precision, i.e. the number of line segments during tweening will be the inverse of the relative precision. For example, a relative precision of 5% will give 20 line segments. For a path which is 200 points long, this will give a precision of 10 points. Default is an absolute precision of 1 point.
 
 ### Controlling Shape Tweening
 
@@ -395,7 +395,7 @@ In order to achieve [meaningful transitions](https://bost.ocks.org/mike/constanc
 
 <a name="graphviz_keyMode" href="#graphviz_keyMode">#</a> <i>graphviz</i>.<b>keyMode</b>(<i>mode</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/keyMode.js "Source")
 
-Sets the key mode to the specified *mode* string. If *mode* is not one of the defined key modes above, an error is thrown. The key mode must be set before attaching the [DOT](https://www.graphviz.org/doc/info/lang.html) source. If it is changed after this, an eror is thrown.
+Sets the key mode to the specified *mode* string. If *mode* is not one of the defined key modes above, an error is thrown. The key mode must be set before attaching the [DOT](https://www.graphviz.org/doc/info/lang.html) source. If it is changed after this, an error is thrown.
 
 ### Customizing Graph Attributes
 
@@ -475,7 +475,7 @@ Updates the position of the upper left corner of the node currently drawn with [
 
 <a name="graphviz_insertDrawnNode" href="#graphviz_insertDrawnNode">#</a> <i>graphviz</i>.<b>insertDrawnNode</b>(<i>nodeId</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
-Inserts the node into the graph data, making it available for an animated transition into a subsequent new layout perfomed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html).
+Inserts the node into the graph data, making it available for an animated transition into a subsequent new layout performed with [<i>graphviz</i>.<b>render</b>](#graphviz_render) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). *nodeId* is the [<i>node_id</i>](https://www.graphviz.org/doc/info/lang.html) according to the [DOT language](https://www.graphviz.org/doc/info/lang.html).
 
 <a name="graphviz_removeDrawnNode" href="#graphviz_removeDrawnNode">#</a> <i>graphviz</i>.<b>removeDrawnNode</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
@@ -483,13 +483,13 @@ Removes the node currently drawn with [<i>graphviz</i>.<b>drawNode</b>](#graphvi
 
 <a name="graphviz_drawnNodeSelection" href="#graphviz_drawnNodeSelection">#</a> <i>graphviz</i>.<b>drawnNodeSelection</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/drawNode.js "Source")
 
-Returns a [selection](https://github.com/d3/d3-selection#selection) containing the node currently being drawn. The selection is empty if no node has been drawn or the lastest drawn node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
+Returns a [selection](https://github.com/d3/d3-selection#selection) containing the node currently being drawn. The selection is empty if no node has been drawn or the last drawn node has been inserted into the graph data with [<i>graphviz</i>.<b>insertDrawnNode</b>](#graphviz_insertDrawnNode).
 
 ### Destroying the Graphviz Renderer
 
 <a name="graphviz_destroy" href="#graphviz_destroy">#</a> <i>graphviz</i>.<b>destroy</b>() [<>](https://github.com/magjac/d3-graphviz/blob/master/src/destroy.js "Source")
 
-Removes the graphviz renderer from the element it was created on, terminates any active decicated web worker and closes any port connected to a shared web worker.
+Removes the Graphviz renderer from the element it was created on, terminates any active dedicated web worker and closes any port connected to a shared web worker.
 
 ## Examples
 
