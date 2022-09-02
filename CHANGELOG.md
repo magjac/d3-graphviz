@@ -18,6 +18,10 @@ Sorhus’s
 FAQ](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c). For
 background and details, see [this D3
 issue](https://github.com/d3/d3/issues/3469).
+* Upgrade to [D3 version
+  7](https://github.com/d3/d3/blob/main/CHANGES.md#changes-in-d3-70)
+  (version 3 of its
+  [microlibraries](https://github.com/d3/d3#installing)).
 * Upgrade @hpcc-js/wasm to 2.1.1 (Graphviz unchanged at 7.0.1)
 
 ## [4.5.0]
