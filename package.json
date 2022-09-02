@@ -13,7 +13,8 @@
     "Viz.js"
   ],
   "license": "BSD-3-Clause",
-  "main": "build/d3-graphviz.js",
+  "type": "module",
+  "exports": "./src/index.js",
   "jsnext:main": "index",
   "homepage": "https://github.com/magjac/d3-graphviz",
   "repository": {
