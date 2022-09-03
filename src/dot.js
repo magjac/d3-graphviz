@@ -1,11 +1,11 @@
 import { graphviz } from "@hpcc-js/wasm";
 import { graphvizSync } from "@hpcc-js/wasm";
 import * as d3 from "d3-selection";
-import {extractAllElementsData, extractElementData, createElementWithAttributes} from "./element";
-import {convertToPathData} from "./svg";
-import {pathTweenPoints} from "./tweening";
-import {isEdgeElement} from "./data";
-import {getEdgeTitle} from "./data";
+import {extractAllElementsData, extractElementData, createElementWithAttributes} from "./element.js";
+import {convertToPathData} from "./svg.js";
+import {pathTweenPoints} from "./tweening.js";
+import {isEdgeElement} from "./data.js";
+import {getEdgeTitle} from "./data.js";
 
 
 export function initViz() {

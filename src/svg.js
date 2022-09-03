@@ -1,5 +1,5 @@
-import {shallowCopyObject} from "./utils";
-import {roundTo2Decimals} from "./utils";
+import {shallowCopyObject} from "./utils.js";
+import {roundTo2Decimals} from "./utils.js";
 
 export function convertToPathData(originalData, guideData) {
     if (originalData.tag == 'polygon') {

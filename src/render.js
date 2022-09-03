@@ -3,11 +3,11 @@ import {transition} from "d3-transition";
 import {timeout} from "d3-timer";
 import {interpolateTransformSvg} from "d3-interpolate";
 import {zoomTransform} from "d3-zoom";
-import {createElement, extractElementData, replaceElement} from "./element";
-import {createZoomBehavior, getTranslatedZoomTransform, translateZoomBehaviorTransform} from "./zoom";
-import {pathTween} from "./tweening";
-import {isEdgeElement} from "./data";
-import {isEdgeElementParent} from "./data";
+import {createElement, extractElementData, replaceElement} from "./element.js";
+import {createZoomBehavior, getTranslatedZoomTransform, translateZoomBehaviorTransform} from "./zoom.js";
+import {pathTween} from "./tweening.js";
+import {isEdgeElement} from "./data.js";
+import {isEdgeElementParent} from "./data.js";
 
 export default function(callback) {
 
