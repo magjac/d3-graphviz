@@ -1,14 +1,14 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var deepEqualData = require("./deepEqualData");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
-var stringify = require('json-stringify-safe');
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
+import deepEqualData from "./deepEqualData.js";
+import stringify from 'json-stringify-safe';
 
-tape("data extraction", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("data extraction", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', () => {
             graphviz
                 .zoom(false)
@@ -19,17 +19,17 @@ tape("data extraction", function(test) {
             var actualData = graphviz._data;
             var expectedData = JSON.parse(JSON.stringify(basic_data))
 
-            deepEqualData(test, actualData, expectedData, "Extracted data equals predefined data");
+            deepEqualData(actualData, expectedData, "Extracted data equals predefined data");
 
             graphviz.render();
-            var svg = d3.select('svg');
+            var svg = d3_select('svg');
             actualData = graphviz._extractData(svg, 0, null);
             var expectedData = JSON.parse(JSON.stringify(basic_data));
-            deepEqualData(test, actualData, expectedData, "Explicitly extracted data equals predefined data");
+            deepEqualData(actualData, expectedData, "Explicitly extracted data equals predefined data");
 
-            test.end();
+            resolve();
         });
-});
+}));
 
 var basic_data = {
     "tag": "svg",
