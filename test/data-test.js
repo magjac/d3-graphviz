@@ -1,31 +1,32 @@
-var tape = require("tape"),
-    jsdom = require("./jsdom"),
-    d3 = require("d3-selection"),
-    d3_graphviz = require("../");
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
 
-tape("data() returns the data saved by dot().", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("data() returns the data saved by dot().", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", function () {
 
             var savedData;
             var attachedData;
 
             var noData = graphviz.data();
-            test.equal(noData, null, 'Data is not avaliable before calling dot()');
+            assert.equal(noData, null, 'Data is not avaliable before calling dot()');
 
             graphviz
                 .dot('digraph {a -> b;}', () => {
                     savedData = graphviz.data();
-                    test.notEqual(savedData, null, 'Data is avaliable after calling dot()');
+                    assert.notEqual(savedData, null, 'Data is avaliable after calling dot()');
                 })
                .render(() => {
                    savedData = graphviz.data();
-                   test.notEqual(savedData, null, 'Data is still avaliable after calling render()');
-                   test.equal(savedData, d3.select("#graph").selectAll("svg").datum(), 'The retrieved data is the same as the data attached to the #graph element');
+                   assert.notEqual(savedData, null, 'Data is still avaliable after calling render()');
+                   assert.equal(savedData, d3_select("#graph").selectAll("svg").datum(), 'The retrieved data is the same as the data attached to the #graph element');
 
-                   test.end();
+                   resolve();
                });
         });
-});
+
+}));
