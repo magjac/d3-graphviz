@@ -1,4 +1,4 @@
-import {Graphviz} from "../graphviz";
+import {Graphviz} from "../graphviz.js";
 import {timeout} from "d3-timer";
 
 export default function(options) {
