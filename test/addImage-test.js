@@ -1,13 +1,12 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
+import assert from "assert";
+import {selectAll as d3_selectAll} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
 
-tape("graphviz().addImage() adds images to use in graph.", function(test) {
+const html = '<div id="graph"></div>';
 
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("graphviz().addImage() adds images to use in graph.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     function startTest() {
@@ -17,13 +16,13 @@ tape("graphviz().addImage() adds images to use in graph.", function(test) {
             .addImage("images/second.png", "400px", "300px")
             .renderDot('digraph { a[image="images/first.png"]; b[image="images/second.png"]; a -> b }');
 
-        test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes');
-        test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges');
-        test.equal(d3.selectAll('polygon').size(), 2, 'Number of polygons');
-        test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses');
-        test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
-        test.equal(d3.selectAll('image').size(), 2, 'Number of images');
+        assert.equal(d3_selectAll('.node').size(), 2, 'Number of nodes');
+        assert.equal(d3_selectAll('.edge').size(), 1, 'Number of edges');
+        assert.equal(d3_selectAll('polygon').size(), 2, 'Number of polygons');
+        assert.equal(d3_selectAll('ellipse').size(), 2, 'Number of ellipses');
+        assert.equal(d3_selectAll('path').size(), 1, 'Number of initial paths');
+        assert.equal(d3_selectAll('image').size(), 2, 'Number of images');
 
-        test.end();
+        resolve();
     }
-});
+}));
