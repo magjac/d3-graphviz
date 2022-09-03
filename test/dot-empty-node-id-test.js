@@ -1,12 +1,12 @@
-var tape = require("tape"),
-    jsdom = require("./jsdom"),
-    d3 = require("d3-selection"),
-    d3_graphviz = require("../");
+import assert from "assert";
+import {selectAll as d3_selectAll} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
 
-tape("renderDot() renders a node with an empty string as node_id.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("renderDot() renders a node with an empty string as node_id.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', () => {
 
             graphviz
@@ -15,9 +15,9 @@ tape("renderDot() renders a node with an empty string as node_id.", function(tes
                 .dot('digraph {""}')
                 .render();
 
-            test.equal(d3.selectAll('.node').size(), 1, 'Number of nodes');
-            test.equal(d3.selectAll('.edge').size(), 0, 'Number of edges');
+            assert.equal(d3_selectAll('.node').size(), 1, 'Number of nodes');
+            assert.equal(d3_selectAll('.edge').size(), 0, 'Number of edges');
 
-            test.end();
+            resolve();
         });
-});
+}));
