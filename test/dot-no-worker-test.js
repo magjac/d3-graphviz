@@ -1,12 +1,10 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
-var Worker = require("tiny-worker");
+import assert from "assert";
+import {selectAll as d3_selectAll} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
+import Worker from "tiny-worker";
 
-function do_test(test, useWorker, html) {
-    var window = global.window = jsdom(html);
-    var document = global.document = window.document;
+function do_test(useWorker, resolve) {
     var Blob = global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
@@ -15,23 +13,23 @@ function do_test(test, useWorker, html) {
     }
     global.Worker = Worker;
 
-    var graphviz = d3_graphviz.graphviz("#graph", useWorker)
+    var graphviz = d3_graphviz("#graph", useWorker)
         .on('initEnd', () => {
 
-            test.equal(graphviz._data, undefined, 'No data is attached before calling dot');
+            assert.equal(graphviz._data, undefined, 'No data is attached before calling dot');
             graphviz
                 .tweenShapes(false)
                 .zoom(false)
                 .onerror(handleError)
                 .dot('digraph {a -> b; c}');
 
-            test.notEqual(graphviz._data, undefined, 'Data is attached immediately after calling dot when no worker is used');
+            assert.notEqual(graphviz._data, undefined, 'Data is attached immediately after calling dot when no worker is used');
             graphviz
                 .render(part1_end);
         });
 
     function handleError(err) {
-        test.equal(
+        assert.equal(
             err,
             "syntax error in line 1 near 'bad'\n",
             'A registered error handler catches syntax errors in the dot source thrown during layout'
@@ -40,12 +38,12 @@ function do_test(test, useWorker, html) {
     }
 
     function part1_end() {
-        test.notEqual(graphviz._data, undefined, 'Data is attached after rendering');
-        test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+        assert.notEqual(graphviz._data, undefined, 'Data is attached after rendering');
+        assert.equal(d3_selectAll('.node').size(), 3, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), 1, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), 2, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), 1, 'Number of initial paths');
 
         graphviz
             .dot('bad dot 1', callbackThatShouldNotBeCalled)
@@ -53,38 +51,39 @@ function do_test(test, useWorker, html) {
     }
 
     function callbackThatShouldNotBeCalled() {
-        test.error('Callback should not be called when an error occurs');
+        assert.error('Callback should not be called when an error occurs');
     }
 
     function part2() {
         global.Worker = undefined;
-        test.end();
+        resolve();
     }
 }
 
-tape('dot() performs layout in the foreground when web worker is not used.', function(test) {
+let html = `
+    <script src="http://dummyhost/node_modules/@hpcc-js/wasm/dist/index.js" type="javascript/worker"></script>
+    <div id="graph"></div>
+    `;
 
-    do_test(test, false, `
-            <script src="http://dummyhost/node_modules/@hpcc-js/wasm/dist/index.js" type="javascript/worker"></script>
-            <div id="graph"></div>
-            `,
-    );
-});
+it('dot() performs layout in the foreground when web worker is not used.', html, () => new Promise(resolve => {
 
-tape('dot() performs layout in the foreground with a warning when script src does not contain "@hpcc-js/wasm".', function(test) {
+    do_test(false, resolve);
+}));
 
-    do_test(test, true, `
-            <script src="http://dummyhost/node_modules/@hpcc-js-NOT/wasm/dist/index.js" type="text/javascript"></script>
-            <div id="graph"></div>
-            `,
-    );
-});
+html = `
+    <script src="http://dummyhost/node_modules/@hpcc-js-NOT/wasm/dist/index.js" type="text/javascript"></script>
+    <div id="graph"></div>
+    `;
 
-tape('dot() performs layout in the foreground with a warning when "javascript/worker" script tag does not have a "src" attribute.', function(test) {
+it('dot() performs layout in the foreground with a warning when script src does not contain "@hpcc-js/wasm".', html, () => new Promise(resolve => {
+    do_test(true, resolve);
+}));
 
-    do_test(test, true, `
-            <script type="javascript/worker"></script>
-            <div id="graph"></div>
-            `,
-    );
-});
+html = `
+    <script type="javascript/worker"></script>
+    <div id="graph"></div>
+    `;
+
+it('dot() performs layout in the foreground with a warning when "javascript/worker" script tag does not have a "src" attribute.', html, () => new Promise(resolve => {
+    do_test(true, resolve);
+}));
