@@ -1,12 +1,12 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
+import assert from "assert";
+import {selectAll as d3_selectAll} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
 
-tape("graphviz().render() renders growing edges to nodes with URL attribute.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("graphviz().render() renders growing edges to nodes with URL attribute.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     function startTest() {
@@ -15,17 +15,17 @@ tape("graphviz().render() renders growing edges to nodes with URL attribute.", f
             .growEnteringEdges(true)
             .zoom(false)
             .renderDot('digraph {a; b [shape="cylinder"]}');
-        test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), 0, 'Number of initial edges');
-        test.equal(d3.selectAll('g').size(), 3, 'Number of groups');
-        test.equal(d3.selectAll('path').size(), 2, 'Number of paths');
+        assert.equal(d3_selectAll('.node').size(), 2, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), 0, 'Number of initial edges');
+        assert.equal(d3_selectAll('g').size(), 3, 'Number of groups');
+        assert.equal(d3_selectAll('path').size(), 2, 'Number of paths');
         graphviz
             .renderDot('digraph {a; b [shape="cylinder"]; a -> b}');
-        test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after add');
-        test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after add');
-        test.equal(d3.selectAll('g').size(), 4, 'Number of groups');
-        test.equal(d3.selectAll('path').size(), 3, 'Number of paths');
+        assert.equal(d3_selectAll('.node').size(), 2, 'Number of nodes after add');
+        assert.equal(d3_selectAll('.edge').size(), 1, 'Number of edges after add');
+        assert.equal(d3_selectAll('g').size(), 4, 'Number of groups');
+        assert.equal(d3_selectAll('path').size(), 3, 'Number of paths');
 
-        test.end();
+        resolve();
     }
-});
+}));
