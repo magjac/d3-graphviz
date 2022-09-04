@@ -1,12 +1,12 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3_graphviz = require("../");
-var d3_selection = require("d3-selection");
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
 
-tape("engine() selects which graphviz layout engine to use.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("engine() selects which graphviz layout engine to use.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     function startTest() {
@@ -16,17 +16,15 @@ tape("engine() selects which graphviz layout engine to use.", function(test) {
             .engine('dot')
             .renderDot('digraph {a -> b;}');
 
-        test.ok(d3_selection.select('svg').attr('width', '62pt'), 'The "dot" engine generates an SVG with width 62pt');
-        test.ok(d3_selection.select('svg').attr('height', '116pt'), 'The "dot" engine generates an SVG with height 116pt');
+        assert.ok(d3_select('svg').attr('width', '62pt'), 'The "dot" engine generates an SVG with width 62pt');
+        assert.ok(d3_select('svg').attr('height', '116pt'), 'The "dot" engine generates an SVG with height 116pt');
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("engine() selects which graphviz layout engine to use.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("engine() selects which graphviz layout engine to use.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     function startTest() {
@@ -36,9 +34,9 @@ tape("engine() selects which graphviz layout engine to use.", function(test) {
             .engine('circo')
             .renderDot('digraph {a -> b;}');
 
-        test.ok(d3_selection.select('svg').attr('width', '188pt'), 'The "dot" engine generates an SVG with width 188pt');
-        test.ok(d3_selection.select('svg').attr('height', '44pt'), 'The "dot" engine generates an SVG with height 44pt');
+        assert.ok(d3_select('svg').attr('width', '188pt'), 'The "dot" engine generates an SVG with width 188pt');
+        assert.ok(d3_select('svg').attr('height', '44pt'), 'The "dot" engine generates an SVG with height 44pt');
 
-        test.end();
+        resolve();
     }
-});
+}));
