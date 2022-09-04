@@ -1,18 +1,18 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var deepEqualData = require("./deepEqualData");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
+import deepEqualData from "./deepEqualData.js";
 
-tape("Verify that point shape is drawn exactly as Graphviz does.", function(test) {
-    var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
-    var expectedGraph = d3.select("#expected-graph");
-    var actualGraph = d3.select("#actual-graph");
+const html = '<div id="expected-graph"></div><div id="actual-graph"></div>';
+
+it("Verify that point shape is drawn exactly as Graphviz does.", html, () => new Promise(resolve => {
+    var expectedGraph = d3_select("#expected-graph");
+    var actualGraph = d3_select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+    var expectedGraphviz = d3_graphviz("#expected-graph")
         .on('initEnd', () => {
-            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+            actualGraphviz = d3_graphviz("#actual-graph")
                 .on('initEnd', startTest);
         });
 
@@ -42,24 +42,24 @@ tape("Verify that point shape is drawn exactly as Graphviz does.", function(test
                     var xoffs = x - bbox.cx;
                     var yoffs = y - bbox.cy;
 
-                    test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
+                    assert.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
-                    test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
+                    assert.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
-                    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
-                    test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
-                    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
-                    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
-                    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
-                    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
+                    assert.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
+                    assert.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
+                    assert.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
+                    assert.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
+                    assert.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
+                    assert.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
 
                     var actualNodeGroupDatum = actualNodeGroup.datum();
                     var expectedNodeGroupDatum = expectedNodeGroup.datum();
                     delete expectedNodeGroupDatum.parent;
-                    deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape equals Graphviz generated data');
+                    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape equals Graphviz generated data');
 
-                    test.end();
+                    resolve();
                 });
         });
     }
-});
+}));
