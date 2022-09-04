@@ -1,12 +1,12 @@
-var tape = require("tape"),
-    jsdom = require("./jsdom"),
-    d3 = require("d3-selection"),
-    d3_graphviz = require("../");
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
 
-tape("graphviz().width() sets svg width.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("graphviz().width() sets svg width.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest)
         .tweenShapes(false)
         .zoom(false);
@@ -22,9 +22,9 @@ tape("graphviz().width() sets svg width.", function(test) {
         graphviz
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
-        test.equal(+d3.select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
-        test.equal(d3.select('svg').attr("viewBox"), originalViewBox, "SVG viewBox is the original viewBox");
+        assert.equal(+d3_select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
+        assert.equal(+d3_select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
+        assert.equal(d3_select('svg').attr("viewBox"), originalViewBox, "SVG viewBox is the original viewBox");
 
         // Set width/height with fit, without scale
 
@@ -37,9 +37,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .fit(true)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width"), width, "SVG width is set with .width()");
-        test.equal(+d3.select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
-        test.equal(d3.select('svg').attr("viewBox"), originalViewBox, "SVG viewBox is the original viewBox when fit is true and scale is not specified");
+        assert.equal(+d3_select('svg').attr("width"), width, "SVG width is set with .width()");
+        assert.equal(+d3_select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
+        assert.equal(d3_select('svg').attr("viewBox"), originalViewBox, "SVG viewBox is the original viewBox when fit is true and scale is not specified");
 
         graphviz
             .width(null)
@@ -47,9 +47,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .fit(true)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
-        test.equal(+d3.select('svg').attr("height"), height, "SVG height is set with .height()");
-        test.equal(d3.select('svg').attr("viewBox"), originalViewBox, "SVG viewBox is the original viewBox when fit is true and scale is not specified");
+        assert.equal(+d3_select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
+        assert.equal(+d3_select('svg').attr("height"), height, "SVG height is set with .height()");
+        assert.equal(d3_select('svg').attr("viewBox"), originalViewBox, "SVG viewBox is the original viewBox when fit is true and scale is not specified");
 
         graphviz
             .width(width)
@@ -58,9 +58,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .renderDot('digraph {a -> b;}');
 
 
-        test.equal(+d3.select('svg').attr("width"), width, "SVG width is set with .width()");
-        test.equal(+d3.select('svg').attr("height"), height, "SVG height is set with .height()");
-        test.equal(d3.select('svg').attr("viewBox"), originalViewBox, "SVG viewBox is the original viewBox when fit is true and scale is not specified");
+        assert.equal(+d3_select('svg').attr("width"), width, "SVG width is set with .width()");
+        assert.equal(+d3_select('svg').attr("height"), height, "SVG height is set with .height()");
+        assert.equal(d3_select('svg').attr("viewBox"), originalViewBox, "SVG viewBox is the original viewBox when fit is true and scale is not specified");
 
         // Set width/height without fit and scale
 
@@ -74,9 +74,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .fit(false)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width"), width, "SVG width is set with .width()");
-        test.equal(+d3.select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
-        test.equal(d3.select('svg').attr("viewBox"), originalHeightViewBox, "SVG viewBox is set to svg width and original height when width is set and height is not set and fit is false and scale is not specified");
+        assert.equal(+d3_select('svg').attr("width"), width, "SVG width is set with .width()");
+        assert.equal(+d3_select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
+        assert.equal(d3_select('svg').attr("viewBox"), originalHeightViewBox, "SVG viewBox is set to svg width and original height when width is set and height is not set and fit is false and scale is not specified");
 
 
         graphviz
@@ -85,9 +85,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .fit(false)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
-        test.equal(+d3.select('svg').attr("height"), height, "SVG height is set with .height()");
-        test.equal(d3.select('svg').attr("viewBox"), originalWidthViewBox, "SVG viewBox is set to svg width and original height when width is not set and height is set and fit is false and scale is not specified");
+        assert.equal(+d3_select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
+        assert.equal(+d3_select('svg').attr("height"), height, "SVG height is set with .height()");
+        assert.equal(d3_select('svg').attr("viewBox"), originalWidthViewBox, "SVG viewBox is set to svg width and original height when width is not set and height is set and fit is false and scale is not specified");
 
         graphviz
             .width(width)
@@ -96,9 +96,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .renderDot('digraph {a -> b;}');
 
 
-        test.equal(+d3.select('svg').attr("width"), width, "SVG width is set with .width()");
-        test.equal(+d3.select('svg').attr("height"), height, "SVG height is set with .height()");
-        test.equal(d3.select('svg').attr("viewBox"), viewBox, "SVG viewBox is set to svg size when both width and height is set and fit is false and scale is not specified");
+        assert.equal(+d3_select('svg').attr("width"), width, "SVG width is set with .width()");
+        assert.equal(+d3_select('svg').attr("height"), height, "SVG height is set with .height()");
+        assert.equal(d3_select('svg').attr("viewBox"), viewBox, "SVG viewBox is set to svg size when both width and height is set and fit is false and scale is not specified");
 
         // Set width/height, with fit and scale
 
@@ -115,9 +115,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .scale(scale)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width"), width, "SVG width is set with .width()");
-        test.equal(+d3.select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
-        test.equal(d3.select('svg').attr("viewBox"), viewBox, "SVG viewBox is set to svg size when fit is true and scale <> 1");
+        assert.equal(+d3_select('svg').attr("width"), width, "SVG width is set with .width()");
+        assert.equal(+d3_select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
+        assert.equal(d3_select('svg').attr("viewBox"), viewBox, "SVG viewBox is set to svg size when fit is true and scale <> 1");
 
         graphviz
             .width(null)
@@ -126,9 +126,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .scale(scale)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
-        test.equal(+d3.select('svg').attr("height"), height, "SVG height is set with .height()");
-        test.equal(d3.select('svg').attr("viewBox"), viewBox, "SVG viewBox is the original viewBox when fit is true and scale <> 1");
+        assert.equal(+d3_select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
+        assert.equal(+d3_select('svg').attr("height"), height, "SVG height is set with .height()");
+        assert.equal(d3_select('svg').attr("viewBox"), viewBox, "SVG viewBox is the original viewBox when fit is true and scale <> 1");
 
         graphviz
             .width(width)
@@ -138,9 +138,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .renderDot('digraph {a -> b;}');
 
 
-        test.equal(+d3.select('svg').attr("width"), width, "SVG width is set with .width()");
-        test.equal(+d3.select('svg').attr("height"), height, "SVG height is set with .height()");
-        test.equal(d3.select('svg').attr("viewBox"), viewBox, "SVG viewBox is the original viewBox when fit is true and scale <> 1");
+        assert.equal(+d3_select('svg').attr("width"), width, "SVG width is set with .width()");
+        assert.equal(+d3_select('svg').attr("height"), height, "SVG height is set with .height()");
+        assert.equal(d3_select('svg').attr("viewBox"), viewBox, "SVG viewBox is the original viewBox when fit is true and scale <> 1");
 
         // Set width/height, without fit, with scale
 
@@ -156,9 +156,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .scale(scale)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width"), width, "SVG width is set with .width()");
-        test.equal(+d3.select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
-        test.equal(d3.select('svg').attr("viewBox"), scaledOriginalHeightViewBox, "SVG viewBox has scaled svg width and scaled original height when width is set and height is not set and fit is false and scale <> 1");
+        assert.equal(+d3_select('svg').attr("width"), width, "SVG width is set with .width()");
+        assert.equal(+d3_select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
+        assert.equal(d3_select('svg').attr("viewBox"), scaledOriginalHeightViewBox, "SVG viewBox has scaled svg width and scaled original height when width is set and height is not set and fit is false and scale <> 1");
 
         graphviz
             .width(null)
@@ -167,9 +167,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .scale(scale)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
-        test.equal(+d3.select('svg').attr("height"), height, "SVG height is set with .height()");
-        test.equal(d3.select('svg').attr("viewBox"), scaledOriginalWidthViewBox, "SVG viewBox has scaled original width and scaled svg height when width is not set and height is set and fit is false and scale <> 1");
+        assert.equal(+d3_select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
+        assert.equal(+d3_select('svg').attr("height"), height, "SVG height is set with .height()");
+        assert.equal(d3_select('svg').attr("viewBox"), scaledOriginalWidthViewBox, "SVG viewBox has scaled original width and scaled svg height when width is not set and height is set and fit is false and scale <> 1");
 
         graphviz
             .width(width)
@@ -179,9 +179,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .renderDot('digraph {a -> b;}');
 
 
-        test.equal(+d3.select('svg').attr("width"), width, "SVG width is set with .width()");
-        test.equal(+d3.select('svg').attr("height"), height, "SVG height is set with .height()");
-        test.equal(d3.select('svg').attr("viewBox"), scaledViewBox, "SVG viewBox is the scaled svg size when both width and height is set and fit is false and scale <> 1");
+        assert.equal(+d3_select('svg').attr("width"), width, "SVG width is set with .width()");
+        assert.equal(+d3_select('svg').attr("height"), height, "SVG height is set with .height()");
+        assert.equal(d3_select('svg').attr("viewBox"), scaledViewBox, "SVG viewBox is the scaled svg size when both width and height is set and fit is false and scale <> 1");
 
         // Don't set width/height, but with fit (nop), without scale
         graphviz
@@ -192,9 +192,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .renderDot('digraph {a -> b;}');
 
 
-        test.equal(+d3.select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
-        test.equal(+d3.select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
-        test.equal(d3.select('svg').attr("viewBox"), originalViewBox, "SVG viewBox is the scaled original viewBox when svg size is unchanged, fit is true and scale is 1");
+        assert.equal(+d3_select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
+        assert.equal(+d3_select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
+        assert.equal(d3_select('svg').attr("viewBox"), originalViewBox, "SVG viewBox is the scaled original viewBox when svg size is unchanged, fit is true and scale is 1");
 
         // Don't set width/height, but with fit (nop) and scale
 
@@ -207,9 +207,9 @@ tape("graphviz().width() sets svg width.", function(test) {
             .scale(scale)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
-        test.equal(+d3.select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
-        test.equal(d3.select('svg').attr("viewBox"), viewBox, "SVG viewBox is scaled when svg size is unchanged and fit is true and scale is not 1");
+        assert.equal(+d3_select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
+        assert.equal(+d3_select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
+        assert.equal(d3_select('svg').attr("viewBox"), viewBox, "SVG viewBox is scaled when svg size is unchanged and fit is true and scale is not 1");
 
         // Don't set width/height or fit, but with and scale
 
@@ -222,10 +222,10 @@ tape("graphviz().width() sets svg width.", function(test) {
             .scale(scale)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(+d3.select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
-        test.equal(+d3.select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
-        test.equal(d3.select('svg').attr("viewBox"), viewBox, "SVG viewBox is scaled when svg size is unchanged and fit is false and scale is not 1");
+        assert.equal(+d3_select('svg').attr("width").replace('pt', ''), originalWidthPt, "SVG width is the original width");
+        assert.equal(+d3_select('svg').attr("height").replace('pt', ''), originalHeightPt, "SVG height is the original height");
+        assert.equal(d3_select('svg').attr("viewBox"), viewBox, "SVG viewBox is scaled when svg size is unchanged and fit is false and scale is not 1");
 
-        test.end();
+        resolve();
     }
-});
+}));
