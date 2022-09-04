@@ -12,7 +12,7 @@ export default function jsdomit(message, html, options, run) {
         run = options;
         options = "";
     }
-    return it(message, async () => {
+    return it(message, async function () {
         try {
             var dom = new JSDOM(html, options);
             global.window = dom.window;
@@ -168,7 +168,7 @@ export default function jsdomit(message, html, options, run) {
                 get() { return {src: './node_modules/@hpcc-js/wasm/dist/index.js'}; }
             });
 
-            await run();
+            await run.call(this);
         }
         finally {
             delete global.window;
