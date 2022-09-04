@@ -1,13 +1,14 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
-var translatePointsAttribute = require("./svg").translatePointsAttribute;
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {selectAll as d3_selectAll} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
+import {translatePointsAttribute} from "../src/svg.js";
 
-tape("Check our understanding of how Graphviz draws nodes.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("Check our understanding of how Graphviz draws nodes.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -21,30 +22,28 @@ tape("Check our understanding of how Graphviz draws nodes.", function(test) {
     }
 
     function endTest() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
 
-        const nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
+        const nodeShape = d3_selectAll('.node').selectAll('ellipse').filter(function(d) {
             return d.parent.key == 'a'
         });
 
-        test.equal(nodeShape.attr("cx"), '27', 'cx of ellipse node');
-        test.equal(nodeShape.attr("cy"), '-18', 'cy of ellipse node');
-        test.equal(nodeShape.attr("rx"), '27', 'rx of ellipse node');
-        test.equal(nodeShape.attr("ry"), '18', 'ry of ellipse node');
+        assert.equal(nodeShape.attr("cx"), '27', 'cx of ellipse node');
+        assert.equal(nodeShape.attr("cy"), '-18', 'cy of ellipse node');
+        assert.equal(nodeShape.attr("rx"), '27', 'rx of ellipse node');
+        assert.equal(nodeShape.attr("ry"), '18', 'ry of ellipse node');
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("drawNode() draws a node in the same way as Graphviz does", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("drawNode() draws a node in the same way as Graphviz does", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -58,11 +57,11 @@ tape("drawNode() draws a node in the same way as Graphviz does", function(test) 
     }
 
     function drawNode() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
 
         var x = 100;
         var y = -100
@@ -70,37 +69,35 @@ tape("drawNode() draws a node in the same way as Graphviz does", function(test) 
             .drawNode(x, y, '', {shape: 'ellipse'});
 
         num_nodes += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         graphviz
             .insertDrawnNode('c');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
 
-        const nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
+        const nodeShape = d3_selectAll('.node').selectAll('ellipse').filter(function(d) {
             return d.parent.key == 'c'
         });
 
-        test.equal(+nodeShape.attr("cx"), x, 'cx of ellipse node');
-        test.equal(+nodeShape.attr("cy"), y, 'cy of ellipse node');
-        test.equal(+nodeShape.attr("rx"), 27, 'rx of ellipse node');
-        test.equal(+nodeShape.attr("ry"), 18, 'ry of ellipse node');
+        assert.equal(+nodeShape.attr("cx"), x, 'cx of ellipse node');
+        assert.equal(+nodeShape.attr("cy"), y, 'cy of ellipse node');
+        assert.equal(+nodeShape.attr("rx"), 27, 'rx of ellipse node');
+        assert.equal(+nodeShape.attr("ry"), 18, 'ry of ellipse node');
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("drawNode() draws a polygon node", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("drawNode() draws a polygon node", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -114,11 +111,11 @@ tape("drawNode() draws a polygon node", function(test) {
     }
 
     function drawNode() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1 + num_nodes, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), 0, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1 + num_nodes, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), 0, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
 
         var x = 100;
         var y = -100
@@ -126,35 +123,33 @@ tape("drawNode() draws a polygon node", function(test) {
             .drawNode(x, y, '', {shape: 'polygon'});
 
         num_nodes += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges + num_nodes, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), 0, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges + num_nodes, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), 0, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         graphviz
             .insertDrawnNode('c');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges + num_nodes, 'Number of polygons after inserting the currently drawn edge');
-        test.equal(d3.selectAll('ellipse').size(), 0, 'Number of ellipses after inserting the currently drawn edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges + num_nodes, 'Number of polygons after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('ellipse').size(), 0, 'Number of ellipses after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
 
-        const nodeShape = d3.selectAll('.node').selectAll('polygon').filter(function(d) {
+        const nodeShape = d3_selectAll('.node').selectAll('polygon').filter(function(d) {
             return d.parent.key == 'c'
         });
 
         var expectedPoints = translatePointsAttribute('27,-18 -27,-18 -27,18 27,18 27,-18', x, y);
-        test.equal(nodeShape.attr("points"), expectedPoints, 'points of polygon');
+        assert.equal(nodeShape.attr("points"), expectedPoints, 'points of polygon');
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("drawNode() draws a node with an URL attribute in the same way as Graphviz does", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("drawNode() draws a node with an URL attribute in the same way as Graphviz does", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -168,47 +163,45 @@ tape("drawNode() draws a node with an URL attribute in the same way as Graphviz 
     }
 
     function drawNode() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         var x = 100;
         var y = -100
         graphviz
             .drawNode(x, y, 'c', {shape: 'ellipse', URL: "dummy2"});
         num_nodes += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
         graphviz
             .insertDrawnNode('c');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn node');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn node');
 
-        const nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
+        const nodeShape = d3_selectAll('.node').selectAll('ellipse').filter(function(d) {
             return d.parent.parent.parent.key == 'c'
         });
 
-        test.equal(+nodeShape.attr("cx"), x, 'cx of ellipse node');
-        test.equal(+nodeShape.attr("cy"), y, 'cy of ellipse node');
-        test.equal(+nodeShape.attr("rx"), 27, 'rx of ellipse node');
-        test.equal(+nodeShape.attr("ry"), 18, 'ry of ellipse node');
+        assert.equal(+nodeShape.attr("cx"), x, 'cx of ellipse node');
+        assert.equal(+nodeShape.attr("cy"), y, 'cy of ellipse node');
+        assert.equal(+nodeShape.attr("rx"), 27, 'rx of ellipse node');
+        assert.equal(+nodeShape.attr("ry"), 18, 'ry of ellipse node');
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("drawNode() draws a node with an tooltip attribute in the same way as Graphviz does", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("drawNode() draws a node with an tooltip attribute in the same way as Graphviz does", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -222,47 +215,45 @@ tape("drawNode() draws a node with an tooltip attribute in the same way as Graph
     }
 
     function drawNode() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial nodes');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial nodes');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         var x = 100;
         var y = -100
         graphviz
             .drawNode(x, y, 'd', {shape: 'ellipse', tooltip: "dummy2"});
         num_nodes += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
         graphviz
             .insertDrawnNode('d');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn node');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn node');
 
-        const nodeShape = d3.selectAll('.node').selectAll('ellipse').filter(function(d) {
+        const nodeShape = d3_selectAll('.node').selectAll('ellipse').filter(function(d) {
             return d.parent.parent.parent.key == 'd'
         });
 
-        test.equal(+nodeShape.attr("cx"), x, 'cx of ellipse node');
-        test.equal(+nodeShape.attr("cy"), y, 'cy of ellipse node');
-        test.equal(+nodeShape.attr("rx"), 27, 'rx of ellipse node');
-        test.equal(+nodeShape.attr("ry"), 18, 'ry of ellipse node');
+        assert.equal(+nodeShape.attr("cx"), x, 'cx of ellipse node');
+        assert.equal(+nodeShape.attr("cy"), y, 'cy of ellipse node');
+        assert.equal(+nodeShape.attr("rx"), 27, 'rx of ellipse node');
+        assert.equal(+nodeShape.attr("ry"), 18, 'ry of ellipse node');
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("insertDrawnNode() inserts the currently drawn node into the joined data structure so that it can be animated when the graph is re-rendered", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("insertDrawnNode() inserts the currently drawn node into the joined data structure so that it can be animated when the graph is re-rendered", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -276,26 +267,26 @@ tape("insertDrawnNode() inserts the currently drawn node into the joined data st
     }
 
     function drawNode() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         graphviz
             .drawNode(0, -36, 'e', {shape: 'ellipse', URL: "dummy2"});
         num_nodes += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
         graphviz
             .insertDrawnNode();
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn node');
-         test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn node');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn node');
+         assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn node');
 
         graphviz
             .dot('digraph {a -> b; e}')
@@ -303,20 +294,18 @@ tape("insertDrawnNode() inserts the currently drawn node into the joined data st
     }
 
     function endTest() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after re-rendering with the inserted node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after re-rendering with the inserted node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after re-rendering with the inserted node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after re-rendering with the inserted node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after re-rendering with the inserted node');
-        test.end();
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after re-rendering with the inserted node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after re-rendering with the inserted node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after re-rendering with the inserted node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after re-rendering with the inserted node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after re-rendering with the inserted node');
+        resolve();
     }
 
-});
+}));
 
-tape("removeDrawnNode() removes the node currently being drawn", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("removeDrawnNode() removes the node currently being drawn", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -330,28 +319,28 @@ tape("removeDrawnNode() removes the node currently being drawn", function(test) 
     }
 
     function drawNode() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         graphviz
             .drawNode(0, -36);
         num_nodes += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
 
         graphviz
             .removeDrawnNode();
         num_nodes -= 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after aborting drawing of the current node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after aborting drawing of the current node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons aborting drawing of the current node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses aborting drawing of the current node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after aborting drawing of the current node');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after aborting drawing of the current node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after aborting drawing of the current node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons aborting drawing of the current node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses aborting drawing of the current node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after aborting drawing of the current node');
 
         graphviz
             .dot('digraph {a -> b; b -> a}')
@@ -361,20 +350,18 @@ tape("removeDrawnNode() removes the node currently being drawn", function(test) 
     function endTest() {
         num_nodes = 2;
         num_edges = 2;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after re-rendering with the inserted node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after re-rendering with the inserted node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after re-rendering with the inserted node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after re-rendering with the inserted node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after re-rendering with the inserted node');
-        test.end();
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after re-rendering with the inserted node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after re-rendering with the inserted node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after re-rendering with the inserted node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after re-rendering with the inserted node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after re-rendering with the inserted node');
+        resolve();
     }
 
-});
+}));
 
-tape("updateDrawnNode modifies the position, size and attributes of a node", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("updateDrawnNode modifies the position, size and attributes of a node", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -389,120 +376,118 @@ tape("updateDrawnNode modifies the position, size and attributes of a node", fun
     }
 
     function drawNode() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         let x = 20;
         let y = -20;
         graphviz
             .drawNode(x, y, 'f', {shape: 'ellipse', id: 'drawn-node'});
         num_nodes += 1;
-        var node = d3.select('#drawn-node');
-        test.equal(node.size(), 1, 'a node with the specified id attribute is present');
+        var node = d3_select('#drawn-node');
+        assert.equal(node.size(), 1, 'a node with the specified id attribute is present');
         var ellipse = node.selectWithoutDataPropagation("ellipse");
         var text = node.selectWithoutDataPropagation('text');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
-        test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
-        test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
-        test.equal(ellipse.attr("fill"), 'none', 'Default fill color of a drawn node ellipse is none');
-        test.equal(ellipse.attr("stroke"), 'black', 'Default stroke color of a drawn node ellipse is black');
-        test.equal(ellipse.attr("stroke-width"), null, 'Default is to not set stroke width');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
+        assert.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
+        assert.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
+        assert.equal(ellipse.attr("fill"), 'none', 'Default fill color of a drawn node ellipse is none');
+        assert.equal(ellipse.attr("stroke"), 'black', 'Default stroke color of a drawn node ellipse is black');
+        assert.equal(ellipse.attr("stroke-width"), null, 'Default is to not set stroke width');
 
         x += 1;
         y -= 1;
         graphviz
             .updateDrawnNode(x, y, 'f', {style: 'filled', fillcolor: "red", color: "purple", penwidth: 2, fontname:"Courier", fontsize:10, fontcolor: "red"});
-        test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
-        test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
-        test.equal(ellipse.attr("fill"), 'red', 'Fill color of a drawn node is updated to red');
-        test.equal(ellipse.attr("stroke"), 'purple', 'Stroke color is updated to purple');
-        test.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is updated to 2');
-        test.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is updated to Courier');
-        test.equal(text.attr("font-size"), '10.00', 'text font size is updated to 10');
-        test.equal(text.attr("fill"), 'red', 'text font color is updated to red');
+        assert.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
+        assert.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
+        assert.equal(ellipse.attr("fill"), 'red', 'Fill color of a drawn node is updated to red');
+        assert.equal(ellipse.attr("stroke"), 'purple', 'Stroke color is updated to purple');
+        assert.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is updated to 2');
+        assert.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is updated to Courier');
+        assert.equal(text.attr("font-size"), '10.00', 'text font size is updated to 10');
+        assert.equal(text.attr("fill"), 'red', 'text font color is updated to red');
 
         x += 1;
         y -= 1;
         graphviz
             .updateDrawnNode(x, y, 'f', {color: "green"});
-        test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
-        test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
-        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when not specified');
-        test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
-        test.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is not updated when not specified');
-        test.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
-        test.equal(text.attr("font-size"), '10.00', 'text font size is not updated when not specified');
+        assert.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
+        assert.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
+        assert.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when not specified');
+        assert.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
+        assert.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is not updated when not specified');
+        assert.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
+        assert.equal(text.attr("font-size"), '10.00', 'text font size is not updated when not specified');
 
         x += 1;
         y -= 1;
         graphviz
             .updateDrawnNode(x, y, 'f', {color: "green"});
-        test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
-        test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
-        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when not specified');
-        test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
-        test.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is not updated when not specified');
-        test.equal(text.attr("text-anchor"), 'middle', 'text anchor is updated to middle');
-        test.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
-        test.equal(text.attr("font-size"), '10.00', 'text font size is not updated when not specified');
+        assert.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
+        assert.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
+        assert.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when not specified');
+        assert.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated to green');
+        assert.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is not updated when not specified');
+        assert.equal(text.attr("text-anchor"), 'middle', 'text anchor is updated to middle');
+        assert.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
+        assert.equal(text.attr("font-size"), '10.00', 'text font size is not updated when not specified');
 
         x += 1;
         y -= 1;
         graphviz
             .updateDrawnNode(x, y);
-        test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
-        test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
-        test.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
-        test.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
-        test.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is not updated  when no attribute is given');
+        assert.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
+        assert.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
+        assert.equal(ellipse.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
+        assert.equal(ellipse.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
+        assert.equal(ellipse.attr("stroke-width"), '2', 'Stroke width is not updated  when no attribute is given');
 
         graphviz
             .updateDrawnNode(x, y, 'f', {shape: "box"});
-        var node = d3.select('#drawn-node');
+        var node = d3_select('#drawn-node');
         var ellipse = node.selectWithoutDataPropagation("ellipse");
         var polygon = node.selectWithoutDataPropagation("polygon");
-        test.equal(ellipse.size(), 0, 'Number of ellipses in node after changing node shape');
-        test.equal(polygon.size(), 1, 'Number of polygons in node after changing node shape');
-        test.equal(polygon.attr("cx"), null, "The polygon does not have the cx attribute from the ellipse");
-        test.equal(polygon.attr("cy"), null, "The polygon does not have the cy attribute from the ellipse");
-        test.notEqual(polygon.attr("points"), null, "The polygon has a points attribute");
-        test.equal(polygon.attr("points").split(' ')
+        assert.equal(ellipse.size(), 0, 'Number of ellipses in node after changing node shape');
+        assert.equal(polygon.size(), 1, 'Number of polygons in node after changing node shape');
+        assert.equal(polygon.attr("cx"), null, "The polygon does not have the cx attribute from the ellipse");
+        assert.equal(polygon.attr("cy"), null, "The polygon does not have the cy attribute from the ellipse");
+        assert.notEqual(polygon.attr("points"), null, "The polygon has a points attribute");
+        assert.equal(polygon.attr("points").split(' ')
                    .reduce((acc, v) => [Math.min(acc[0], v.split(',')[0]), Math.max(acc[1], v.split(',')[0])], [Number.MAX_VALUE, -Number.MAX_VALUE])
                    .reduce((sum, x) => sum + x, 0) / 2, x, "The center x value of the polygon is updated");
-        test.equal(polygon.attr("points").split(' ')
+        assert.equal(polygon.attr("points").split(' ')
                    .reduce((acc, v) => [Math.min(acc[0], v.split(',')[1]), Math.max(acc[1], v.split(',')[1])], [Number.MAX_VALUE, -Number.MAX_VALUE])
                    .reduce((sum, y) => sum + y, 0) / 2, y, "The center y value of the polygon is updated");
-        test.equal(polygon.attr("fill"), 'red', 'Fill color is not updated when not specified');
-        test.equal(polygon.attr("stroke"), 'green', 'Stroke color is updated to green');
-        test.equal(polygon.attr("stroke-width"), '2', 'Stroke width is not updated when not specified');
-        test.equal(text.attr("text-anchor"), 'middle', 'text anchor is updated to middle');
-        test.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
-        test.equal(text.attr("font-size"), '10.00', 'text font size is not updated when not specified');
+        assert.equal(polygon.attr("fill"), 'red', 'Fill color is not updated when not specified');
+        assert.equal(polygon.attr("stroke"), 'green', 'Stroke color is updated to green');
+        assert.equal(polygon.attr("stroke-width"), '2', 'Stroke width is not updated when not specified');
+        assert.equal(text.attr("text-anchor"), 'middle', 'text anchor is updated to middle');
+        assert.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
+        assert.equal(text.attr("font-size"), '10.00', 'text font size is not updated when not specified');
 
         graphviz
         .updateDrawnNode(x, y, 'f', {color: null, fillcolor: null, penwidth: null});
-        test.equal(polygon.attr("fill"), 'lightgrey', 'Fill color is lightgray when fillcolor is removed');
-        test.equal(polygon.attr("stroke"), 'black', 'Stroke color is black when color is removed');
-        test.equal(polygon.attr("stroke-width"), null, 'Stroke width is removed when removed');
-        test.equal(text.attr("text-anchor"), 'middle', 'text anchor is updated to middle');
-        test.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
-        test.equal(text.attr("font-size"), '10.00', 'text font size is not updated when not specified');
+        assert.equal(polygon.attr("fill"), 'lightgrey', 'Fill color is lightgray when fillcolor is removed');
+        assert.equal(polygon.attr("stroke"), 'black', 'Stroke color is black when color is removed');
+        assert.equal(polygon.attr("stroke-width"), null, 'Stroke width is removed when removed');
+        assert.equal(text.attr("text-anchor"), 'middle', 'text anchor is updated to middle');
+        assert.equal(text.attr("font-family"), 'Courier,monospace', 'text font family is not updated when not specified');
+        assert.equal(text.attr("font-size"), '10.00', 'text font size is not updated when not specified');
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("moveDrawnNode modifies the position of a node", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("moveDrawnNode modifies the position of a node", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -516,44 +501,42 @@ tape("moveDrawnNode modifies the position of a node", function(test) {
     }
 
     function drawNode() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         let x = 20;
         let y = -20;
         graphviz
             .drawNode(x, y, 'f', {shape: 'ellipse', id: 'drawn-node'});
         num_nodes += 1;
-        var node = d3.select('#drawn-node');
-        test.equal(node.size(), 1, 'a node with the specified id attribute is present');
+        var node = d3_select('#drawn-node');
+        assert.equal(node.size(), 1, 'a node with the specified id attribute is present');
         var ellipse = node.selectWithoutDataPropagation("ellipse");
         var text = node.selectWithoutDataPropagation('text');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
-        test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
-        test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
+        assert.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
+        assert.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
 
         x += 1;
         y -= 1;
         graphviz
             .moveDrawnNode(x, y);
-        test.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
-        test.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
+        assert.equal(+ellipse.attr("cx"), x, "The horizontal position of the ellipse center is updated");
+        assert.equal(+ellipse.attr("cy"), y, "The vertical position of the ellipse center is updated");
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("drawnNodeSelection return a selection containing the node currently being drawn", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("drawnNodeSelection return a selection containing the node currently being drawn", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -567,44 +550,42 @@ tape("drawnNodeSelection return a selection containing the node currently being 
     }
 
     function drawNode() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         let x = 20;
         let y = -20;
 
         var noDrawnNode = graphviz.drawnNodeSelection();
-        test.ok(noDrawnNode.empty(), "drawnNodeSelection() returns an empty selection when no node is currently being drawn");
+        assert.ok(noDrawnNode.empty(), "drawnNodeSelection() returns an empty selection when no node is currently being drawn");
 
         graphviz
             .drawNode(x, y, 'f', {shape: 'ellipse', id: 'drawn-node'});
         num_nodes += 1;
-        var node = d3.select('#drawn-node');
-        test.equal(node.size(), 1, 'a node with the specified id attribute is present');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
+        var node = d3_select('#drawn-node');
+        assert.equal(node.size(), 1, 'a node with the specified id attribute is present');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing a node');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing a node');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing a node');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing a node');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing a node');
 
         var drawnNode = graphviz.drawnNodeSelection();
-        test.equal(drawnNode.node(), node.node(), "drawnNodeSelection() returns the node currently being drawn");
+        assert.equal(drawnNode.node(), node.node(), "drawnNodeSelection() returns the node currently being drawn");
         graphviz
             .insertDrawnNode();
         var insertedDrawnNode = graphviz.drawnNodeSelection();
-        test.ok(insertedDrawnNode.empty(), "drawnNodeSelection() returns an empty selection when the drawn node has been inserted into the data");
+        assert.ok(insertedDrawnNode.empty(), "drawnNodeSelection() returns an empty selection when the drawn node has been inserted into the data");
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("Attempts to operate on a node without drawing one first is handled gracefully", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("Attempts to operate on a node without drawing one first is handled gracefully", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     var num_nodes = 2;
@@ -618,30 +599,30 @@ tape("Attempts to operate on a node without drawing one first is handled gracefu
     }
 
     function startTest2() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
-        test.throws(function () {
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.throws(function () {
             graphviz
                 .updateDrawnNode(21, -21);
         }, "updateDrawnNode throws error if no node has been drawn first");
-        test.throws(function () {
+        assert.throws(function () {
             graphviz
                 .moveDrawnNode(21, -21);
         }, "moveDrawnNode throws error if no node has been drawn first");
-        test.throws(function () {
+        assert.throws(function () {
             graphviz
             .insertDrawnNode('b->a');
         }, "insertDrawnNode throws error if no node has been drawn first");
 
-        test.doesNotThrow(function () {
+        assert.doesNotThrow(function () {
             graphviz
                 .removeDrawnNode();
         }, "removeDrawnNode is ignored if no node has been drawn first");
 
-        test.end();
+        resolve();
     }
 
-});
+}));
