@@ -1,12 +1,12 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3_graphviz = require("../");
-var d3_transition = require("d3-transition");
+import assert from "assert";
+import {transition as d3_transition} from "d3-transition";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
 
-tape("logEvents enables and disables event logging.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("logEvents enables and disables event logging.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
     function startTest() {
@@ -20,11 +20,11 @@ tape("logEvents enables and disables event logging.", function(test) {
         var n = 0;
         for (let i in eventTypes) {
             let eventType = eventTypes[i];
-            test.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'function', "An event named " + eventType + ".log is registered when event logging is enabled");
+            assert.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'function', "An event named " + eventType + ".log is registered when event logging is enabled");
             n += 1;
         }
-        test.ok(n > 10, "More than 10 events are registered when event logging is enabled");
-        test.equal(n, eventTypes.length, "All " + eventTypes.length + " events are registered when event logging is enabled");
+        assert.ok(n > 10, "More than 10 events are registered when event logging is enabled");
+        assert.equal(n, eventTypes.length, "All " + eventTypes.length + " events are registered when event logging is enabled");
 
         graphviz
             .logEvents(false)
@@ -35,17 +35,17 @@ tape("logEvents enables and disables event logging.", function(test) {
         n = 0;
         for (let i in eventTypes) {
             let eventType = eventTypes[i];
-            test.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'undefined', "No event named " + eventType + ".log is registered when event logging is disabled");
+            assert.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'undefined', "No event named " + eventType + ".log is registered when event logging is disabled");
             n += 1;
         }
-        test.ok(n > 10, "None of the more than 10 events are registered when event logging is disabled");
-        test.equal(n, eventTypes.length, "None of the " + eventTypes.length + " events are registered when event logging is disabled");
+        assert.ok(n > 10, "None of the more than 10 events are registered when event logging is disabled");
+        assert.equal(n, eventTypes.length, "None of the " + eventTypes.length + " events are registered when event logging is disabled");
 
         graphviz
             .zoom(false)
             .logEvents(true)
             .transition(function() {
-                return d3_transition.transition().duration(0);
+                return d3_transition().duration(0);
             })
             .dot('digraph {a -> b;}')
             .render()
@@ -55,12 +55,12 @@ tape("logEvents enables and disables event logging.", function(test) {
                 n = 0;
                 for (let i in eventTypes) {
                     let eventType = eventTypes[i];
-                    test.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'function', "An event named " + eventType + ".log is registered when event logging is enabled and a transition is used");
+                    assert.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'function', "An event named " + eventType + ".log is registered when event logging is enabled and a transition is used");
                     n += 1;
                 }
-                test.ok(n > 10, "More than 10 events are registered when event logging is enabled and a transition is used");
-                test.equal(n, eventTypes.length, "All " + eventTypes.length + " events are registered when event logging is enabled and a transition is used");
-                test.end();
+                assert.ok(n > 10, "More than 10 events are registered when event logging is enabled and a transition is used");
+                assert.equal(n, eventTypes.length, "All " + eventTypes.length + " events are registered when event logging is enabled and a transition is used");
+                resolve();
             });
     }
-});
+}));
