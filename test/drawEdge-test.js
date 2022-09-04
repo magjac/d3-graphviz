@@ -1,12 +1,13 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {selectAll as d3_selectAll} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
 
-tape("Check our understanding of how Graphviz draws edges.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("Check our understanding of how Graphviz draws edges.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -21,11 +22,11 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
     }
 
     function endTest() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         const arrowHeadLength = 10;
         const arrowHeadWidth = 7;
         const margin = 0.1;
@@ -34,7 +35,7 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
         const x2 = 89.92;
         const y2 = -18.000;
 
-        const line = d3.selectAll('.edge').selectAll('path').filter(function(d) {
+        const line = d3_selectAll('.edge').selectAll('path').filter(function(d) {
             return d.parent.key == 'a->b'
         });
         var points = line.attr("d").split(/[MC ]/).map(function(v) {
@@ -58,10 +59,10 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
         expected_x.push(Math.round((x2 - margin - arrowHeadLength) * 1000) / 1000);
         expected_y.push(y2);
         for (let i = 0; i < expected_x.length; i++) {
-            test.deepLooseEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
+            assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
         }
 
-        const arrowHead = d3.selectAll('.edge').selectAll('polygon').filter(function(d) {
+        const arrowHead = d3_selectAll('.edge').selectAll('polygon').filter(function(d) {
             return d.parent.key == 'a->b'
         });
         points = arrowHead.attr("points").split(' ').map(function(v) {
@@ -85,18 +86,16 @@ tape("Check our understanding of how Graphviz draws edges.", function(test) {
         expected_x.push(x2 - arrowHeadLength);
         expected_y.push(y2 - arrowHeadWidth / 2);
         for (let i = 0; i < expected_x.length; i++) {
-            test.deepLooseEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
+            assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
         }
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("drawEdge() draws an edge in the same way as Graphviz does", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("drawEdge() draws an edge in the same way as Graphviz does", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -110,11 +109,11 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
     }
 
     function drawEdge() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         const arrowHeadLength = 10;
         const arrowHeadWidth = 7;
         const margin = 0.1;
@@ -125,20 +124,20 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
         graphviz
             .drawEdge(x1, y1, x2, y2);
         num_edges += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         graphviz
             .insertDrawnEdge('b->a');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
 
-        const line = d3.selectAll('.edge').selectAll('path').filter(function(d) {
+        const line = d3_selectAll('.edge').selectAll('path').filter(function(d) {
             return d.parent.key == 'b->a'
         });
         var points = line.attr("d").split(/[MCL ]/).map(function(v) {
@@ -158,10 +157,10 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
         expected_x.push(Math.round((x2 - margin - arrowHeadLength) * 1000) / 1000);
         expected_y.push(y2);
         for (let i = 0; i < expected_x.length; i++) {
-            test.deepLooseEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
+            assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
         }
 
-        const newArrowHead = d3.selectAll('.edge').selectAll('polygon').filter(function(d) {
+        const newArrowHead = d3_selectAll('.edge').selectAll('polygon').filter(function(d) {
             return d.parent.key == 'b->a'
         });
         points = newArrowHead.attr("points").split(' ').map(function(v) {
@@ -185,17 +184,15 @@ tape("drawEdge() draws an edge in the same way as Graphviz does", function(test)
         expected_x.push(x2 - arrowHeadLength);
         expected_y.push(y2 - arrowHeadWidth / 2);
         for (let i = 0; i < expected_x.length; i++) {
-            test.deepLooseEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
+            assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
         }
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("drawEdge() draws an edge even if the length is zero", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("drawEdge() draws an edge even if the length is zero", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -209,11 +206,11 @@ tape("drawEdge() draws an edge even if the length is zero", function(test) {
     }
 
     function drawEdge() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         const arrowHeadLength = 10;
         const arrowHeadWidth = 7;
         const x1 = 20;
@@ -223,23 +220,21 @@ tape("drawEdge() draws an edge even if the length is zero", function(test) {
         graphviz
             .drawEdge(x1, y1, x2, y2);
         num_edges += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
-      test.equal(d3.select('.edge').select('polygon').attr("points"), "10,-23.5 20,-20 10,-16.5 10,-23.5", 'Number of paths after drawing an edge');
-        test.equal(d3.selectAll('path').attr("d"), "M20,-20L9.9,-20", 'Number of paths after drawing an edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+      assert.equal(d3_select('.edge').select('polygon').attr("points"), "10,-23.5 20,-20 10,-16.5 10,-23.5", 'Number of paths after drawing an edge');
+        assert.equal(d3_selectAll('path').attr("d"), "M20,-20L9.9,-20", 'Number of paths after drawing an edge');
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz does", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("drawEdge() draws an edge with an URL attribute in the same way as Graphviz does", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -253,11 +248,11 @@ tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz
     }
 
     function drawEdge() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         const arrowHeadLength = 10;
         const arrowHeadWidth = 7;
         const margin = 0.1;
@@ -268,20 +263,20 @@ tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz
         graphviz
             .drawEdge(x1, y1, x2, y2, {URL: "dummy2"});
         num_edges += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         graphviz
             .insertDrawnEdge('b->a');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
 
-        const line = d3.selectAll('.edge').selectAll('path').filter(function(d) {
+        const line = d3_selectAll('.edge').selectAll('path').filter(function(d) {
             return d.parent.parent.parent.key == 'b->a'
         });
         var points = line.attr("d").split(/[MCL ]/).map(function(v) {
@@ -301,10 +296,10 @@ tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz
         expected_x.push(Math.round((x2 - margin - arrowHeadLength) * 1000) / 1000);
         expected_y.push(y2);
         for (let i = 0; i < expected_x.length; i++) {
-            test.deepLooseEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
+            assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
         }
 
-        const newArrowHead = d3.selectAll('.edge').selectAll('polygon').filter(function(d) {
+        const newArrowHead = d3_selectAll('.edge').selectAll('polygon').filter(function(d) {
             return d.parent.parent.parent.key == 'b->a'
         });
         points = newArrowHead.attr("points").split(' ').map(function(v) {
@@ -328,17 +323,15 @@ tape("drawEdge() draws an edge with an URL attribute in the same way as Graphviz
         expected_x.push(x2 - arrowHeadLength);
         expected_y.push(y2 - arrowHeadWidth / 2);
         for (let i = 0; i < expected_x.length; i++) {
-            test.deepLooseEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
+            assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
         }
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("drawEdge() draws an edge with an tooltip attribute in the same way as Graphviz does", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("drawEdge() draws an edge with an tooltip attribute in the same way as Graphviz does", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -352,11 +345,11 @@ tape("drawEdge() draws an edge with an tooltip attribute in the same way as Grap
     }
 
     function drawEdge() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         const arrowHeadLength = 10;
         const arrowHeadWidth = 7;
         const margin = 0.1;
@@ -367,20 +360,20 @@ tape("drawEdge() draws an edge with an tooltip attribute in the same way as Grap
         graphviz
             .drawEdge(x1, y1, x2, y2, {tooltip: "dummy2"});
         num_edges += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         graphviz
             .insertDrawnEdge('b->a');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
 
-        const line = d3.selectAll('.edge').selectAll('path').filter(function(d) {
+        const line = d3_selectAll('.edge').selectAll('path').filter(function(d) {
             return d.parent.parent.parent.key == 'b->a'
         });
         var points = line.attr("d").split(/[MCL ]/).map(function(v) {
@@ -400,10 +393,10 @@ tape("drawEdge() draws an edge with an tooltip attribute in the same way as Grap
         expected_x.push(Math.round((x2 - margin - arrowHeadLength) * 1000) / 1000);
         expected_y.push(y2);
         for (let i = 0; i < expected_x.length; i++) {
-            test.deepLooseEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
+            assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
         }
 
-        const newArrowHead = d3.selectAll('.edge').selectAll('polygon').filter(function(d) {
+        const newArrowHead = d3_selectAll('.edge').selectAll('polygon').filter(function(d) {
             return d.parent.parent.parent.key == 'b->a'
         });
         points = newArrowHead.attr("points").split(' ').map(function(v) {
@@ -427,17 +420,15 @@ tape("drawEdge() draws an edge with an tooltip attribute in the same way as Grap
         expected_x.push(x2 - arrowHeadLength);
         expected_y.push(y2 - arrowHeadWidth / 2);
         for (let i = 0; i < expected_x.length; i++) {
-            test.deepLooseEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
+            assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
         }
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("insertDrawnEdge() inserts the currently drawn edge into the joined data structure so that it can be animated when the graph is re-rendered", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("insertDrawnEdge() inserts the currently drawn edge into the joined data structure so that it can be animated when the graph is re-rendered", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -451,11 +442,11 @@ tape("insertDrawnEdge() inserts the currently drawn edge into the joined data st
     }
 
     function drawEdge() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         const x1 = 20;
         const y1 = -20;
         const x2 = 40;
@@ -463,18 +454,18 @@ tape("insertDrawnEdge() inserts the currently drawn edge into the joined data st
         graphviz
             .drawEdge(x1, y1, x2, y2);
         num_edges += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
         graphviz
             .insertDrawnEdge('b->a');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after inserting the currently drawn edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after inserting the currently drawn edge');
 
         graphviz
             .dot('digraph {a -> b; b -> a}')
@@ -482,20 +473,18 @@ tape("insertDrawnEdge() inserts the currently drawn edge into the joined data st
     }
 
     function endTest() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after re-rendering with the inserted edge');
-        test.end();
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after re-rendering with the inserted edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after re-rendering with the inserted edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after re-rendering with the inserted edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after re-rendering with the inserted edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after re-rendering with the inserted edge');
+        resolve();
     }
 
-});
+}));
 
-tape("removeDrawnEdge() removes the edge currently being drawn", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("removeDrawnEdge() removes the edge currently being drawn", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -509,11 +498,11 @@ tape("removeDrawnEdge() removes the edge currently being drawn", function(test) 
     }
 
     function drawEdge() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         const arrowHeadLength = 10;
         const arrowHeadWidth = 7;
         const x1 = 20;
@@ -523,20 +512,20 @@ tape("removeDrawnEdge() removes the edge currently being drawn", function(test) 
         graphviz
             .drawEdge(x1, y1, x2, y2);
         num_edges += 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
 
         graphviz
             .removeDrawnEdge();
         num_edges -= 1;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after aborting drawing of the current edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after aborting drawing of the current edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons aborting drawing of the current edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses aborting drawing of the current edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after aborting drawing of the current edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after aborting drawing of the current edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after aborting drawing of the current edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons aborting drawing of the current edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses aborting drawing of the current edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after aborting drawing of the current edge');
 
         graphviz
             .dot('digraph {a -> b; b -> a}')
@@ -545,20 +534,18 @@ tape("removeDrawnEdge() removes the edge currently being drawn", function(test) 
 
     function endTest() {
         num_edges = 2;
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after re-rendering with the inserted edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after re-rendering with the inserted edge');
-        test.end();
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after re-rendering with the inserted edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after re-rendering with the inserted edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after re-rendering with the inserted edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after re-rendering with the inserted edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after re-rendering with the inserted edge');
+        resolve();
     }
 
-});
+}));
 
-tape("updateDrawnEdge modifies the start and end points and the attributes of an edge", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("updateDrawnEdge modifies the start and end points and the attributes of an edge", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -572,11 +559,11 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
     }
 
     function drawEdge() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         const arrowHeadLength = 10;
         const arrowHeadWidth = 7;
         const x1 = 20;
@@ -586,56 +573,54 @@ tape("updateDrawnEdge modifies the start and end points and the attributes of an
         graphviz
             .drawEdge(x1, y1, x2, y2, {id: 'drawn-edge'});
         num_edges += 1;
-        var edge = d3.select('#drawn-edge');
-        test.equal(edge.size(), 1, 'An edge with the specified id attribute is present');
+        var edge = d3_select('#drawn-edge');
+        assert.equal(edge.size(), 1, 'An edge with the specified id attribute is present');
         var line = edge.selectWithoutDataPropagation("path");
         var arrowHead = edge.selectWithoutDataPropagation("polygon");
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
-        test.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
-        test.equal(line.attr("fill"), 'none', 'Default fill color of a drawn edge line is black');
-        test.equal(line.attr("stroke"), 'black', 'Default stroke color of a drawn edge line is black');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        assert.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
+        assert.equal(line.attr("fill"), 'none', 'Default fill color of a drawn edge line is black');
+        assert.equal(line.attr("stroke"), 'black', 'Default stroke color of a drawn edge line is black');
 
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-edge"});
-        test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(arrowHead.attr("fill"), 'red', 'Fill color of a drawn edge is updated to red');
-        test.equal(line.attr("stroke"), 'purple', 'Stroke color is updated to purple');
-        test.equal(line.attr("stroke-width"), '2', 'Stroke width is updated to 2');
+        assert.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
+        assert.equal(arrowHead.attr("fill"), 'red', 'Fill color of a drawn edge is updated to red');
+        assert.equal(line.attr("stroke"), 'purple', 'Stroke color is updated to purple');
+        assert.equal(line.attr("stroke-width"), '2', 'Stroke width is updated to 2');
 
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {color: "green"});
-        test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when only color is changed');
-        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated to green');
-        test.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated when only color is changed');
+        assert.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
+        assert.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when only color is changed');
+        assert.equal(line.attr("stroke"), 'green', 'Stroke color is updated to green');
+        assert.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated when only color is changed');
 
         graphviz
             .updateDrawnEdge(22, -22, 42, -22);
-        test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
-        test.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
-        test.equal(line.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
-        test.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated  when no attribute is given');
+        assert.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
+        assert.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when no attribute is given');
+        assert.equal(line.attr("stroke"), 'green', 'Stroke color is updated  when no attribute is given');
+        assert.equal(line.attr("stroke-width"), '2', 'Stroke width is not updated  when no attribute is given');
 
         graphviz
             .updateDrawnEdge(22, -22, 42, -22, {color: null, penwidth: null});
-        test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
-        test.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when not specified');
-        test.equal(line.attr("stroke"), 'black', 'Stroke color is black when removed');
-        test.equal(line.attr("stroke-width"), null, 'Stroke width is removed when removed');
+        assert.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
+        assert.equal(arrowHead.attr("fill"), 'red', 'Fill color is not updated when not specified');
+        assert.equal(line.attr("stroke"), 'black', 'Stroke color is black when removed');
+        assert.equal(line.attr("stroke-width"), null, 'Stroke width is removed when removed');
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("moveDrawnEdgeEndPoint modifies the end points of an edge", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -649,11 +634,11 @@ tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) 
     }
 
     function drawEdge() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         const arrowHeadLength = 10;
         const arrowHeadWidth = 7;
         const x1 = 20;
@@ -663,38 +648,36 @@ tape("moveDrawnEdgeEndPoint modifies the end points of an edge", function(test) 
         graphviz
             .drawEdge(x1, y1, x2, y2, {id: 'drawn-edge'});
         num_edges += 1;
-        var edge = d3.select('#drawn-edge');
-        test.equal(edge.size(), 1, 'An edge with the specified id attribute is present');
+        var edge = d3_select('#drawn-edge');
+        assert.equal(edge.size(), 1, 'An edge with the specified id attribute is present');
         var arrowHead = edge.selectWithoutDataPropagation("polygon");
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
-        test.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        assert.equal(arrowHead.attr("points"), '30,-23.5 40,-20 30,-16.5 30,-23.5');
         graphviz
             .updateDrawnEdge(21, -21, 41, -21, {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-edge"});
-        test.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after modifying the currently drawn edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after modifying the currently drawn edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after modifying the currently drawn edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after modifying the currently drawn edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after modifying the currently drawn edge');
+        assert.equal(arrowHead.attr("points"), '31,-24.5 41,-21 31,-17.5 31,-24.5');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after modifying the currently drawn edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after modifying the currently drawn edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after modifying the currently drawn edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after modifying the currently drawn edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after modifying the currently drawn edge');
 
         graphviz
             .updateDrawnEdge(22, -22, 1000, -2000, {fillcolor: "red", color: "purple", penwidth: 2, id: "drawn-edge"})
             .moveDrawnEdgeEndPoint(42, -22);
-        test.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
+        assert.equal(arrowHead.attr("points"), '32,-25.5 42,-22 32,-18.5 32,-25.5');
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("drawnEdgeSelection return a selection containing the edge currently being drawn", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("drawnEdgeSelection return a selection containing the edge currently being drawn", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -708,11 +691,11 @@ tape("drawnEdgeSelection return a selection containing the edge currently being 
     }
 
     function drawEdge() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
         const arrowHeadLength = 10;
         const arrowHeadWidth = 7;
         const x1 = 20;
@@ -721,36 +704,34 @@ tape("drawnEdgeSelection return a selection containing the edge currently being 
         const y2 = -20;
 
         var noDrawnEdge = graphviz.drawnEdgeSelection();
-        test.ok(noDrawnEdge.empty(), "drawnEdgeSelection() returns an empty selection when no edge is currently being drawn");
+        assert.ok(noDrawnEdge.empty(), "drawnEdgeSelection() returns an empty selection when no edge is currently being drawn");
 
         graphviz
             .drawEdge(x1, y1, x2, y2, {id: 'drawn-edge'});
         num_edges += 1;
-        var edge = d3.select('#drawn-edge');
-        test.equal(edge.size(), 1, 'An edge with the specified id attribute is present');
+        var edge = d3_select('#drawn-edge');
+        assert.equal(edge.size(), 1, 'An edge with the specified id attribute is present');
         var arrowHead = edge.selectWithoutDataPropagation("polygon");
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
-        test.equal(d3.selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of nodes after drawing an edge');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of edges after drawing an edge');
+        assert.equal(d3_selectAll('polygon').size(), 1 + num_edges, 'Number of polygons after drawing an edge');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of ellipses after drawing an edge');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of paths after drawing an edge');
 
         var drawnEdge = graphviz.drawnEdgeSelection();
-        test.equal(drawnEdge.node(), edge.node(), "drawnEdgeSelection() returns the edge currently being drawn");
+        assert.equal(drawnEdge.node(), edge.node(), "drawnEdgeSelection() returns the edge currently being drawn");
         graphviz
             .insertDrawnEdge('b -> a');
         var insertedDrawnEdge = graphviz.drawnEdgeSelection();
-        test.ok(insertedDrawnEdge.empty(), "drawnEdgeSelection() returns an empty selection when the drawn edge has been inserted into the data");
+        assert.ok(insertedDrawnEdge.empty(), "drawnEdgeSelection() returns an empty selection when the drawn edge has been inserted into the data");
 
-        test.end();
+        resolve();
     }
 
-});
+}));
 
-tape("Attempts to operate on an edge without drawing one first is handled gracefully", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("Attempts to operate on an edge without drawing one first is handled gracefully", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var num_nodes = 2;
@@ -764,30 +745,30 @@ tape("Attempts to operate on an edge without drawing one first is handled gracef
     }
 
     function startTest2() {
-        test.equal(d3.selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), num_edges, 'Number of initial paths');
-        test.throws(function () {
+        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
+        assert.throws(function () {
             graphviz
                 .updateDrawnEdge(21, -21, 41, -21);
         }, "updateDrawnEdge throws error if not edge has been drawn first");
-        test.throws(function () {
+        assert.throws(function () {
             graphviz
                 .moveDrawnEdgeEndPoint(42, -22);
         }, "moveDrawnEdgeEndPoint throws error if not edge has been drawn first");
-        test.throws(function () {
+        assert.throws(function () {
             graphviz
             .insertDrawnEdge('b->a');
         }, "insertDrawnEdge throws error if not edge has been drawn first");
 
-        test.doesNotThrow(function () {
+        assert.doesNotThrow(function () {
             graphviz
                 .removeDrawnEdge();
         }, "removeDrawnEdge is ignored if no edge has been drawn first");
 
-        test.end();
+        resolve();
     }
 
-});
+}));
