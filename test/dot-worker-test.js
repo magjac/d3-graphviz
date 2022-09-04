@@ -1,22 +1,21 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
-var Worker = require("tiny-worker");
-var hpccWasm = require("@hpcc-js/wasm");
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {selectAll as d3_selectAll} from "d3-selection";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
+import Worker from "tiny-worker";
+import hpccWasm from "@hpcc-js/wasm";
 
-tape("dot() performs layout in a web worker in the background.", function(test) {
+const html = `
+    <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
+    <div id="graph"></div>
+    `;
 
-    var window = global.window = jsdom(
-        `
-            <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
-            <div id="graph"></div>
-            `,
-    );
+it("dot() performs layout in a web worker in the background.", html, () => new Promise(resolve => {
+
     var savedGraphviz = hpccWasm.graphviz
     delete hpccWasm.graphviz;
 
-    var document = global.document = window.document;
     var Blob = global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
@@ -25,7 +24,7 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
     }
     global.Worker = Worker;
 
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz = d3_graphviz("#graph");
 
     graphviz
         .on("initEnd", function () {
@@ -33,7 +32,7 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
         });
 
     function handleError(err) {
-        test.equal(
+        assert.equal(
             err,
             "syntax error in line 1 near 'bad'\n",
             'A registered error handler catches syntax errors in the dot source thrown during layout'
@@ -41,7 +40,7 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
         part2();
     }
 
-    test.equal(d3.select('#graph').datum(), undefined, 'No data is attached before calling dot');
+    assert.equal(d3_select('#graph').datum(), undefined, 'No data is attached before calling dot');
     function part1() {
         graphviz
             .tweenShapes(false)
@@ -50,14 +49,14 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
             .dot('digraph {a -> b; c}')
             .render(part1_end);
     }
-    test.equal(d3.select('#graph').datum(), undefined, 'No data is attached immediately after calling dot when worker is used');
+    assert.equal(d3_select('#graph').datum(), undefined, 'No data is attached immediately after calling dot when worker is used');
 
     function part1_end() {
-        test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+        assert.equal(d3_selectAll('.node').size(), 3, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), 1, 'Number of initial edges');
+        assert.equal(d3_selectAll('polygon').size(), 2, 'Number of initial polygons');
+        assert.equal(d3_selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+        assert.equal(d3_selectAll('path').size(), 1, 'Number of initial paths');
 
         graphviz
             .dot('bad dot 1', callbackThatShouldNotBeCalled)
@@ -65,13 +64,13 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
     }
 
     function callbackThatShouldNotBeCalled() {
-        test.error('Callback should not be called when an error occurs');
+        assert.error('Callback should not be called when an error occurs');
     }
 
     function part2() {
         graphviz._worker.terminate();
         global.Worker = undefined;
         hpccWasm.graphviz = savedGraphviz;
-        test.end();
+        resolve();
     }
-});
+}));
