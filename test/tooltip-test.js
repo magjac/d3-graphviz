@@ -1,13 +1,13 @@
-var tape = require("tape"),
-    jsdom = require("./jsdom"),
-    d3 = require("d3-selection"),
-    d3_transition = require("d3-transition"),
-    d3_graphviz = require("../");
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {transition as d3_transition} from "d3-transition";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
 
-tape("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     const svgDoc = `<svg width="8pt" height="8pt" viewBox="0.00 0.00 8.00 8.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -25,16 +25,14 @@ tape("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph 
             .zoom(false)
             .renderDot('digraph {graph [tooltip="G"]}');
 
-        test.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
+        assert.equal(d3_select('div').html(), svgDoc, "SVG after initial rendering");
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("graphviz.transition().renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     const svgDoc = `<svg width="8pt" height="8pt" viewBox="0.00 0.00 8.00 8.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -47,7 +45,7 @@ tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DO
 </svg>`;
 
     function startTest() {
-        var transition = d3_transition.transition().duration(0);
+        var transition = d3_transition().duration(0);
         graphviz
             .tweenShapes(false)
             .tweenPaths(false)
@@ -55,7 +53,7 @@ tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DO
 //            .fade(false)
             .renderDot('digraph {graph [tooltip="G"]}');
 
-        test.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
+        assert.equal(d3_select('div').html(), svgDoc, "SVG after initial rendering");
 
         graphviz
             .tweenShapes(false)
@@ -68,9 +66,9 @@ tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DO
         transition
             .transition()
             .on("end", function() {
-                test.equal(d3.select('div').html(), svgDoc, "SVG after transition");
-                test.end();
+                assert.equal(d3_select('div').html(), svgDoc, "SVG after transition");
+                resolve();
             });
     }
 
-});
+}));
