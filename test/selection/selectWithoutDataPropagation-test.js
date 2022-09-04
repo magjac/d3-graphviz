@@ -1,13 +1,13 @@
-var tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_selection = require("d3-selection"),
-    d3_graphviz = require("../../");
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {graphviz as d3_graphviz} from "../../index.js";
+import it from "../jsdom.js";
 
-tape("selection.selectWithoutDataPropagation() selects without propagating data", function(test) {
-    var window = global.window = jsdom('<div id="parent"><div id="child1"></div><div id="child2"></div></div>');
-    var document = global.document = window.document;
+const html = '<div id="parent"><div id="child1"></div><div id="child2"></div></div>';
 
-    var parent = d3_selection.select("#parent");
+it("selection.selectWithoutDataPropagation() selects without propagating data", html, () => new Promise(resolve => {
+
+    var parent = d3_select("#parent");
     parent
         .data([1])
     var child1 = parent
@@ -15,17 +15,15 @@ tape("selection.selectWithoutDataPropagation() selects without propagating data"
     var child2 = parent
         .selectWithoutDataPropagation("#child2")
 
-    test.equal(child1.data()[0], 1, 'selection.select() propagates data to child');
-    test.equal(child2.data()[0], undefined, 'selection.selectWithoutDataPropagation() does no propagat data to child');
+    assert.equal(child1.data()[0], 1, 'selection.select() propagates data to child');
+    assert.equal(child2.data()[0], undefined, 'selection.selectWithoutDataPropagation() does no propagat data to child');
 
-    test.end();
-});
+    resolve();
+}));
 
-tape("selection.selectWithoutDataPropagation() on empty selection", function(test) {
-    var window = global.window = jsdom('<div id="parent"><div id="child1"></div><div id="child2"></div></div>');
-    var document = global.document = window.document;
+it("selection.selectWithoutDataPropagation() on empty selection", html, () => new Promise(resolve => {
 
-    test.equal(d3_selection.select(null).selectWithoutDataPropagation("dummy").size(), 0, 'selection.select() returns empty selection when applied to an empty selection');
+    assert.equal(d3_select(null).selectWithoutDataPropagation("dummy").size(), 0, 'selection.select() returns empty selection when applied to an empty selection');
 
-    test.end();
-});
+    resolve();
+}));
