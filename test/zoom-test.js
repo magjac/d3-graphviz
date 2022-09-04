@@ -1,14 +1,16 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3_graphviz = require("../");
-var d3_transition = require("d3-transition");
-var d3_zoom = require("d3-zoom");
-var d3_selection = require("d3-selection");
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {selection as d3_selection} from "d3-selection";
+import {transition as d3_transition} from "d3-transition";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
+import {zoomIdentity as d3_zoomIdentity} from "d3-zoom";
+import {zoomTransform as d3_zoomTransform} from "d3-zoom";
 
-tape("zoom(false) disables zooming.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+const html = '<div id="graph"></div>';
+
+it("zoom(false) disables zooming.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     function startTest() {
@@ -16,66 +18,60 @@ tape("zoom(false) disables zooming.", function(test) {
             .zoom(false)
             .renderDot('digraph {a -> b;}');
 
-        test.notOk(graphviz._options.zoom, '.zoom(false) disables zooming');
+        assert.ok(!graphviz._options.zoom, '.zoom(false) disables zooming');
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("zoom(true) enables zooming.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("zoom(true) enables zooming.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     function startTest() {
         graphviz
             .zoom(true);
 
-        test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
-        test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
+        assert.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
+        assert.ok(!graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
 
         graphviz
             .renderDot('digraph {a -> b;}');
 
-        test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph has been rendered');
+        assert.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph has been rendered');
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("zoom(false) after zoom(true) disables zooming.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("zoom(false) after zoom(true) disables zooming.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     function startTest() {
         graphviz
             .zoom(true);
 
-        test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
-        test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
+        assert.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
+        assert.ok(!graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
 
         graphviz
             .renderDot('digraph {a -> b;}');
 
-        test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph has been rendered');
+        assert.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph has been rendered');
 
         graphviz
             .zoom(false);
 
-        test.notOk(graphviz._options.zoom, '.zoom(false) enables zooming after having been enabled');
-        test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached after having been disabled');
+        assert.ok(!graphviz._options.zoom, '.zoom(false) enables zooming after having been enabled');
+        assert.ok(!graphviz._zoomBehavior, 'The zoom behavior is not attached after having been disabled');
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("resetZoom resets the zoom transform to the original transform.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("resetZoom resets the zoom transform to the original transform.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var dx = 10;
@@ -87,73 +83,71 @@ tape("resetZoom resets the zoom transform to the original transform.", function(
         graphviz
             .zoom(true);
 
-        test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
-        test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
+        assert.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
+        assert.ok(!graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
 
         graphviz
             .renderDot('digraph {a -> b;}');
 
-        test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
+        assert.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
         const selection = graphviz._zoomSelection;
         const zoom = graphviz._zoomBehavior;
 
-        const matrix0 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
+        const matrix0 = d3_select('g').node().transform.baseVal.consolidate().matrix;
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
             'The zoom transform is equal to the "g" transform after rendering'
         );
 
         selection.call(zoom.translateBy, dx, dy);
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
             'The zoom transform is translated after zooming'
         );
 
-        const matrix1 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix1.e, matrix1.f).scale(matrix1.a),
+        const matrix1 = d3_select('g').node().transform.baseVal.consolidate().matrix;
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix1.e, matrix1.f).scale(matrix1.a),
             'The zoom transform is equal to the "g" transform after zooming'
         );
 
         graphviz.resetZoom();
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
             'The original zoom transform is restored after zoom reset'
         );
 
         selection.call(zoom.translateBy, dx, dy);
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
             'The zoom transform is translated after zooming'
         );
 
         graphviz.resetZoom(
-            d3_transition.transition()
+            d3_transition()
                 .duration(0)
                 .on("end", function() {
-                    d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-                    d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
+                    d3_zoomTransform(graphviz._zoomSelection.node()),
+                    d3_zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
                     'The original zoom transform is restored after zoom reset with transition'
-                    test.end();
+                    resolve();
                 })
         );
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
             'The original zoom transform is not restored directly after zoom reset with transition'
         );
     }
-});
+}));
 
-tape("resetZoom resets the zoom transform to the original transform of the latest rendered graph.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("resetZoom resets the zoom transform to the original transform of the latest rendered graph.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     var dx = 10;
@@ -165,64 +159,64 @@ tape("resetZoom resets the zoom transform to the original transform of the lates
         graphviz
             .zoom(true);
 
-        test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
-        test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
+        assert.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
+        assert.ok(!graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
 
         graphviz
             .renderDot('digraph {a -> b;}');
 
-        test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
+        assert.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
         const selection = graphviz._zoomSelection;
         const zoom = graphviz._zoomBehavior;
 
-        const matrix0 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
+        const matrix0 = d3_select('g').node().transform.baseVal.consolidate().matrix;
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
             'The zoom transform is equal to the "g" transform after rendering'
         );
 
         selection.call(zoom.translateBy, dx, dy);
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
             'The zoom transform is translated after zooming'
         );
 
-        const matrix1 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix1.e, matrix1.f).scale(matrix1.a),
+        const matrix1 = d3_select('g').node().transform.baseVal.consolidate().matrix;
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix1.e, matrix1.f).scale(matrix1.a),
             'The zoom transform is equal to the "g" transform after zooming'
         );
 
         graphviz.resetZoom();
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix0.e, matrix0.f).scale(matrix0.a),
             'The original zoom transform is restored after zoom reset'
         );
 
         selection.call(zoom.translateBy, dx, dy);
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix0.e + dx, matrix0.f + dy).scale(matrix0.a),
             'The zoom transform is translated after zooming'
         );
 
-        const height1 = +d3_selection.select('svg').attr("height").replace('pt', '');
+        const height1 = +d3_select('svg').attr("height").replace('pt', '');
 
         graphviz
             .renderDot('digraph {a -> b; b -> c}');
 
-        const height2 = +d3_selection.select('svg').attr("height").replace('pt', '');
+        const height2 = +d3_select('svg').attr("height").replace('pt', '');
 
         const matrix2 = {...matrix1};
         matrix2.f += height2 - height1
 
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix2.e, matrix2.f).scale(matrix2.a),
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix2.e, matrix2.f).scale(matrix2.a),
             'The zoom transform translation is unchanged after rendering'
         );
 
@@ -231,88 +225,84 @@ tape("resetZoom resets the zoom transform to the original transform of the lates
         const matrix3 = {...matrix0};
         matrix3.f += height2 - height1
 
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix3.e, matrix3.f).scale(matrix3.a),
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix3.e, matrix3.f).scale(matrix3.a),
             'The original zoom transform is restored directly after zoom reset'
         );
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("zooming rescales transforms during transitions.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("zooming rescales transforms during transitions.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     function startTest() {
         graphviz
             .zoom(true)
-            .transition(d3_transition.transition().duration(100));
+            .transition(d3_transition().duration(100));
 
-        test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
-        test.notOk(graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
+        assert.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
+        assert.ok(!graphviz._zoomBehavior, 'The zoom behavior is not attached before a graph has been rendered');
 
         graphviz
             .renderDot('digraph {a -> b;}')
             .on('transitionStart', function() {
-                test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when transition starts');
+                assert.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when transition starts');
             })
             .on('end', stage2);
 
-        test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
+        assert.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
 
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity,
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity,
             'The zoom transform is equal to the zoom identity transform before transition'
         );
     }
 
     function stage2() {
-        const matrix = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix.e, matrix.f).scale(matrix.a),
+        const matrix = d3_select('g').node().transform.baseVal.consolidate().matrix;
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix.e, matrix.f).scale(matrix.a),
             'The zoom transform is equal to the "g" transform after transition'
         );
 
         graphviz
-            .transition(d3_transition.transition().duration(100))
+            .transition(d3_transition().duration(100))
             .renderDot('digraph {a -> b; b -> c}')
             .on('transitionStart', function() {
-                test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when transition starts');
+                assert.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when transition starts');
             })
             .on('end', stage3.bind('null', matrix));
 
-        test.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
+        assert.ok(graphviz._zoomBehavior, 'The zoom behavior is attached when the graph rendering has been initiated');
 
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix.e, matrix.f).scale(matrix.a),
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix.e, matrix.f).scale(matrix.a),
             'The zoom transform is unchanged before 2nd transition'
         );
     }
 
     function stage3(matrix1) {
-        const matrix2 = d3_selection.select('g').node().transform.baseVal.consolidate().matrix;
-        test.notDeepEqual(matrix2, matrix1, 'The "g" transform changes when the graph changes');
-        test.deepEqual(
-            d3_zoom.zoomTransform(graphviz._zoomSelection.node()),
-            d3_zoom.zoomIdentity.translate(matrix2.e, matrix2.f).scale(matrix2.a),
+        const matrix2 = d3_select('g').node().transform.baseVal.consolidate().matrix;
+        assert.notDeepEqual(matrix2, matrix1, 'The "g" transform changes when the graph changes');
+        assert.deepEqual(
+            d3_zoomTransform(graphviz._zoomSelection.node()),
+            d3_zoomIdentity.translate(matrix2.e, matrix2.f).scale(matrix2.a),
             'The zoom transform is equal to the "g" transform after 2nd transition'
         );
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("zoomScaleExtent() sets zoom scale extent.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("zoomScaleExtent() sets zoom scale extent.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     function startTest() {
@@ -321,16 +311,14 @@ tape("zoomScaleExtent() sets zoom scale extent.", function(test) {
             .zoomScaleExtent(extent)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(graphviz.options().zoomScaleExtent, extent, '.zoomScaleExtent(...) sets zoom scale extent');
+        assert.equal(graphviz.options().zoomScaleExtent, extent, '.zoomScaleExtent(...) sets zoom scale extent');
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("zoomTranslateExtent() sets zoom translate extent.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("zoomTranslateExtent() sets zoom translate extent.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     function startTest() {
@@ -339,16 +327,14 @@ tape("zoomTranslateExtent() sets zoom translate extent.", function(test) {
             .zoomTranslateExtent(extent)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(graphviz.options().zoomTranslateExtent, extent, '.zoomTranslateExtent(...) sets zoom translate extent');
+        assert.equal(graphviz.options().zoomTranslateExtent, extent, '.zoomTranslateExtent(...) sets zoom translate extent');
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("zoomBehavior() returns the current zoom behavior if zoom is enabled.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("zoomBehavior() returns the current zoom behavior if zoom is enabled.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     function startTest() {
@@ -357,16 +343,14 @@ tape("zoomBehavior() returns the current zoom behavior if zoom is enabled.", fun
             .zoom(true)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(typeof graphviz.zoomBehavior(), 'function', 'The zoom behavior is a function if zoom is enabled');
+        assert.equal(typeof graphviz.zoomBehavior(), 'function', 'The zoom behavior is a function if zoom is enabled');
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("zoomBehavior() returns null if zoom is disabled.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("zoomBehavior() returns null if zoom is disabled.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     function startTest() {
@@ -375,16 +359,14 @@ tape("zoomBehavior() returns null if zoom is disabled.", function(test) {
         .zoom(false)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(graphviz.zoomBehavior(), null, 'The zoom behavior is null if zoom is disabled');
+        assert.equal(graphviz.zoomBehavior(), null, 'The zoom behavior is null if zoom is disabled');
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("zoomSelection() returns the current zoom selection if zoom is enabled.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("zoomSelection() returns the current zoom selection if zoom is enabled.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     function startTest() {
@@ -393,16 +375,14 @@ tape("zoomSelection() returns the current zoom selection if zoom is enabled.", f
             .zoom(true)
             .renderDot('digraph {a -> b;}');
 
-        test.ok(graphviz.zoomSelection() instanceof d3_selection.selection, 'The zoom selection is an instance of d3.selection if zoom is enabled');
+        assert.ok(graphviz.zoomSelection() instanceof d3_selection, 'The zoom selection is an instance of d3_selection if zoom is enabled');
 
-        test.end();
+        resolve();
     }
-});
+}));
 
-tape("zoomSelection() returns null if zoom is disabled.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
+it("zoomSelection() returns null if zoom is disabled.", html, () => new Promise(resolve => {
+    var graphviz = d3_graphviz("#graph")
         .on('initEnd', startTest);
 
     function startTest() {
@@ -411,8 +391,8 @@ tape("zoomSelection() returns null if zoom is disabled.", function(test) {
             .zoom(false)
             .renderDot('digraph {a -> b;}');
 
-        test.equal(graphviz.zoomSelection(), null, 'The zoom selection is null if zoom is disabled');
+        assert.equal(graphviz.zoomSelection(), null, 'The zoom selection is null if zoom is disabled');
 
-        test.end();
+        resolve();
     }
-});
+}));
