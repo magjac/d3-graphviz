@@ -1,17 +1,14 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3_graphviz = require("../");
-var Worker = require("tiny-worker");
+import assert from "assert";
+import {graphviz as d3_graphviz} from "../index.js";
+import it from "./jsdom.js";
+import Worker from "tiny-worker";
 
-tape("graphviz().graphvizVersion() returns the Graphviz version.", function (test) {
+const html = `
+    <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
+    <div id="graph"></div>
+    `;
 
-    var window = global.window = jsdom(
-        `
-            <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
-            <div id="graph"></div>
-            `,
-    );
-    var document = global.document = window.document;
+it("graphviz().graphvizVersion() returns the Graphviz version.", html, () => new Promise(resolve => {
     var Blob = global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
@@ -20,23 +17,23 @@ tape("graphviz().graphvizVersion() returns the Graphviz version.", function (tes
     }
     global.Worker = Worker;
 
-    var graphviz = d3_graphviz.graphviz("#graph", { useWorker: true })
+    var graphviz = d3_graphviz("#graph", { useWorker: true })
         .on("initEnd", startTest);
 
     function startTest() {
         const version = graphviz.graphvizVersion();
         if (version == undefined) {
-            test.fail("version is not defined")
+            assert.fail("version is not defined")
         }
         else {
             const [major, minor, patch] = version.split('.');
-            test.ok(!isNaN(major), 'Major version number is a number');
-            test.ok(!isNaN(minor), 'Minor version number is a number');
-            test.ok(!isNaN(patch), 'Patch version number is a number');
+            assert.ok(!isNaN(major), 'Major version number is a number');
+            assert.ok(!isNaN(minor), 'Minor version number is a number');
+            assert.ok(!isNaN(patch), 'Patch version number is a number');
         }
 
         graphviz._worker.terminate();
         global.Worker = undefined;
-        test.end();
+        resolve();
     }
-});
+}));
