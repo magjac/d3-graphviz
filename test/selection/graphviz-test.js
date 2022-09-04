@@ -1,27 +1,26 @@
-var tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_selection = require("d3-selection"),
-    d3_graphviz = require("../../");
+import assert from "assert";
+import {select as d3_select} from "d3-selection";
+import {selectAll as d3_selectAll} from "d3-selection";
+import {graphviz as d3_graphviz} from "../../index.js";
+import it from "../jsdom.js";
 
-tape("selection.graphviz() returns an instanceof d3.graphviz", function(test) {
-  var window = global.window = jsdom();
-  var document = global.document = window.document;
+it("selection.graphviz() returns an instanceof d3_graphviz", () => new Promise(resolve => {
   var root = document.documentElement,
-      selection = d3_selection.select(root),
+      selection = d3_select(root),
       graphviz = selection.graphviz()
       .on("initEnd", startTest);
 
     function startTest() {
-        test.equal(graphviz instanceof d3_graphviz.graphviz, true, "graphviz is an instanceof d3.graphviz");
-        test.end();
+        assert.equal(graphviz instanceof d3_graphviz, true, "graphviz is an instanceof d3_graphviz");
+        resolve();
     }
-});
+}));
 
-tape("selection.graphviz().dot().render() renders an SVG from graphviz DOT.", function(test) {
-    var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+const html = '<div id="graph"></div>';
 
-    var graphviz = d3_selection.select("#graph")
+it("selection.graphviz().dot().render() renders an SVG from graphviz DOT.", html, () => new Promise(resolve => {
+
+    var graphviz = d3_select("#graph")
       .graphviz()
         .zoom(false)
         .on("initEnd", startTest);
@@ -30,10 +29,10 @@ tape("selection.graphviz().dot().render() renders an SVG from graphviz DOT.", fu
         graphviz
             .dot('digraph {a -> b;}')
             .render();
-        test.equal(d3_selection.selectAll('.graph').size(), 1, 'Number of graphs');
-        test.equal(d3_selection.selectAll('.node').size(), 2, 'Number of initial nodes');
-        test.equal(d3_selection.selectAll('.edge').size(), 1, 'Number of initial edges');
+        assert.equal(d3_selectAll('.graph').size(), 1, 'Number of graphs');
+        assert.equal(d3_selectAll('.node').size(), 2, 'Number of initial nodes');
+        assert.equal(d3_selectAll('.edge').size(), 1, 'Number of initial edges');
 
-        test.end();
+        resolve();
     }
-});
+}));
