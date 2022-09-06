@@ -77,7 +77,7 @@ var basic_data = {
                     "tag": "polygon",
                     "attributes": {
                         "fill": "white",
-                        "stroke": "transparent",
+                        "stroke": "none",
                         "points": "-4,4 -4,-112 58,-112 58,4 -4,4"
                     },
                     "bbox": {
