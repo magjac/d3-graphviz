@@ -580,7 +580,7 @@ If you think you have found a bug in d3-graphviz itself, please [file an issue](
 
 ## Development
 
-In order to run the tests you need [Node.js](https://nodejs.org/en/download/package-manager/) 10.x or later. Version 13.9.0 was used during development.
+In order to run the tests you need [Node.js](https://nodejs.org/en/download/package-manager/) 14.x or later. Version 18.8.0 was used during development.
 
 ## Credits
 
