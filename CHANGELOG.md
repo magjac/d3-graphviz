@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+* Upgrade Graphviz to version 5.0.1 through @hpcc-js/wasm version 1.15.4 (thanks @mrdrogdrog)
+
 ## [4.1.1]
 
 ### Fixed
