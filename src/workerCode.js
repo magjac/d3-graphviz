@@ -2,7 +2,7 @@
  * translates "self" which gives a reference error.
  */
 
-/* istanbul ignore next */
+/* c8 ignore start */
 
 export function workerCodeBody(port) {
 
@@ -52,15 +52,11 @@ export function workerCodeBody(port) {
     });
 }
 
-/* istanbul ignore next */
-
 export function workerCode() {
 
     const port = self;
     workerCodeBody(port);
 }
-
-/* istanbul ignore next */
 
 export function sharedWorkerCode() {
     self.onconnect = function(e) {
@@ -69,3 +65,5 @@ export function sharedWorkerCode() {
         port.start();
     }
 }
+
+/* c8 ignore stop */
