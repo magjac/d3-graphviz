@@ -23,6 +23,9 @@ export function initViz() {
                 }
             });
         });
+// after the port to ESM modules, we don't know how to trigger this so
+// we just disable it from coverage
+/* c8 ignore start */
     } catch(error) {
         // we end up here when the the script tag type used to load
         // the "@hpcc-js/wasm" script is not "application/javascript"
@@ -31,6 +34,7 @@ export function initViz() {
         // unnecessary because it's loaded by the web worker
         // instead. This is expected so we just ignore the error.
     }
+/* c8 ignore stop */
     if (this._worker != null) {
         var vizURL = this._vizURL;
         var graphvizInstance = this;

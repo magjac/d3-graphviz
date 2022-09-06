@@ -23,16 +23,18 @@
   "scripts": {
     "build": "rm -rf build && mkdir build && rollup -c",
     "pretest": "npm run build",
-    "test": "env TESTRUNNER='nyc mocha' npm run do-test",
+    "test": "env TESTRUNNER='c8 --reporter=text mocha' npm run do-test",
     "do-test": "mkdir -p http:; ln -nsf .. http://dummyhost; $TESTRUNNER 'test/**/*-test.js'",
-    "report": "nyc report --reporter=lcov",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "report": "c8 report --reporter=lcov",
+    "coverage": "c8 report --reporter=text-lcov > coverage.lcov && codecov",
     "prepublishOnly": "env NODE_ENV=production npm run build && terser build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
     "prepublishOnlyOriginal": "env NODE_ENV=production npm run build && TESTRUNNER='mocha' npm run do-test && terser build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
     "publicbuild": "env NODE_ENV=production npm run build",
     "postpublish": "zip -j build/d3-graphviz.zip -- LICENSE README.md build/d3-graphviz.js build/d3-graphviz.min.js"
   },
-  "nyc": {
+  "c8": {
+    "exclude": "test",
+    "exclude-after-remap": true,
     "check-coverage": true,
     "statements": 100,
     "branches": 100,
@@ -41,7 +43,6 @@
     "reporter": [
       "text-summary"
     ],
-    "cache": true,
     "report-dir": "./alternative"
   },
   "devDependencies": {
