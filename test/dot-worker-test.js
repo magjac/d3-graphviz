@@ -28,7 +28,6 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
-        .logEvents(true)
         .on("initEnd", function () {
             part1();
         });

@@ -163,7 +163,6 @@ tape("resetZoom resets the zoom transform to the original transform of the lates
 
     function startTest() {
         graphviz
-            .logEvents(true)
             .zoom(true);
 
         test.ok(graphviz._options.zoom, '.zoom(true) enables zooming');
