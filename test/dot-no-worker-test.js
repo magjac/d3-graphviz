@@ -18,9 +18,6 @@ function do_test(test, useWorker, html) {
     var graphviz = d3_graphviz.graphviz("#graph", useWorker)
         .on('initEnd', () => {
 
-            graphviz
-                .logEvents(true);
-
             test.equal(graphviz._data, undefined, 'No data is attached before calling dot');
             graphviz
                 .tweenShapes(false)
