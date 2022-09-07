@@ -14,12 +14,9 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
     function transition_test_init() {
         var window = global.window = jsdom(
             `
-                <script src="test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
+                <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
                 <div id="graph"></div>
                 `,
-            {
-                url: "http:dummyhost",
-            },
         );
         var document = global.document = window.document;
         var Blob = global.Blob = function (jsarray) {
