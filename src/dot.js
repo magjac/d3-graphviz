@@ -24,6 +24,12 @@ export function initViz() {
             });
         });
     } catch(error) {
+        // we end up here when the the script tag type used to load
+        // the "@hpcc-js/wasm" script is not "application/javascript"
+        // or "text/javascript", but typically "javascript/worker". In
+        // this case the browser does not load the script since it's
+        // unnecessary because it's loaded by the web worker
+        // instead. This is expected so we just ignore the error.
     }
     if (this._worker != null) {
         var vizURL = this._vizURL;
