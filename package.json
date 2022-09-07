@@ -62,7 +62,6 @@
     "nyc": "^15.1.0",
     "rollup": "^2.43.1",
     "rollup-plugin-babel": "^4.4.0",
-    "tape": "^5.2.2",
     "terser": "^5.6.1",
     "tiny-worker": "^2.1.2"
   },
