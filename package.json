@@ -33,6 +33,9 @@
     "publicbuild": "env NODE_ENV=production npm run build",
     "postpublish": "zip -j build/d3-graphviz.zip -- LICENSE README.md build/d3-graphviz.js build/d3-graphviz.min.js"
   },
+  "engines": {
+    "node": ">=14"
+  },
   "c8": {
     "exclude": "test",
     "check-coverage": true,
