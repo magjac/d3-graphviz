@@ -9,10 +9,10 @@ const html = `
     `;
 
 it("graphviz().graphvizVersion() returns the Graphviz version.", html, () => new Promise(resolve => {
-    var Blob = global.Blob = function (jsarray) {
+    global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
-    var createObjectURL = window.URL.createObjectURL = function (js) {
+    window.URL.createObjectURL = function (js) {
         return js;
     }
     global.Worker = Worker;

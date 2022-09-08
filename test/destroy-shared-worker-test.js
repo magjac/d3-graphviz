@@ -32,10 +32,10 @@ it(".destroy() deletes the Graphviz instance from the container element (shared 
 
 it(".destroy() closes the shared worker", html, () => new Promise(resolve => {
 
-    var Blob = global.Blob = function (jsarray) {
+    global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
-    var createObjectURL = window.URL.createObjectURL = function (js) {
+    window.URL.createObjectURL = function (js) {
         return js;
     }
     global.SharedWorker = SharedWorker;
