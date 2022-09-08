@@ -4,7 +4,6 @@ import {selectAll as d3_selectAll} from "d3-selection";
 import {graphviz as d3_graphviz} from "../index.js";
 import it from "./jsdom.js";
 import SharedWorker from "./polyfill_SharedWorker.js";
-import hpccWasm from "@hpcc-js/wasm";
 
 const html = `
     <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
@@ -12,9 +11,6 @@ const html = `
     `;
 
 it("dot() performs layout in a web worker in the background.", html, () => new Promise(resolve => {
-
-    var savedGraphviz = hpccWasm.graphviz
-    delete hpccWasm.graphviz;
 
     var document = global.document = window.document;
     global.SharedWorker = SharedWorker;
@@ -65,7 +61,6 @@ it("dot() performs layout in a web worker in the background.", html, () => new P
     function part2() {
         graphviz._workerPortClose(),
         global.SharedWorker = undefined;
-        hpccWasm.graphviz = savedGraphviz;
         resolve();
     }
 }));

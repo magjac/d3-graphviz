@@ -4,7 +4,6 @@ import {transition as d3_transition} from "d3-transition";
 import {graphviz as d3_graphviz} from "../index.js";
 import it from "./jsdom.js";
 import Worker from "tiny-worker";
-import hpccWasm from "@hpcc-js/wasm";
 
 const html = `
     <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
@@ -12,9 +11,6 @@ const html = `
     `;
 
 it("graphviz().render() adds and removes SVG elements after transition delay.", html, () => new Promise(resolve => {
-
-    var savedGraphviz = hpccWasm.graphviz
-    delete hpccWasm.graphviz;
 
     function transition_test_init() {
         var Blob = global.Blob = function (jsarray) {
@@ -96,7 +92,6 @@ it("graphviz().render() adds and removes SVG elements after transition delay.", 
             } else {
                 graphviz._worker.terminate();
                 global.Worker = undefined;
-                hpccWasm.graphviz = savedGraphviz;
                 resolve();
             }
         }
