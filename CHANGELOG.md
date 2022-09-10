@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.3.0]
+
 ### Changed
 * Upgrade @hpcc-js/wasm to 1.15.7 (Graphviz unchanged at 5.0.1)  (thanks @mrdrogdrog)
 
@@ -124,7 +126,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v4.2.0...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v4.3.0...HEAD
+[4.3.0]: https://github.com/magjac/d3-graphviz/compare/v4.2.0...v4.3.0
 [4.2.0]: https://github.com/magjac/d3-graphviz/compare/v4.1.1...v4.2.0
 [4.1.1]: https://github.com/magjac/d3-graphviz/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/magjac/d3-graphviz/compare/v4.0.0...v4.1.0
