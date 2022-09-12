@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+* Upgrade @hpcc-js/wasm to 1.16.1 (Graphviz 6.0.1)
+
 ## [4.3.0]
 
 ### Changed
