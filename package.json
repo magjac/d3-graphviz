@@ -50,6 +50,7 @@
     "@babel/core": "^7.20.5",
     "@babel/preset-env": "^7.13.12",
     "@babel/register": "^7.13.8",
+    "@rollup/plugin-alias": "^4.0.2",
     "@rollup/plugin-node-resolve": "^14.1.0",
     "ace-builds": "^1.4.12",
     "c8": "^7.12.0",
