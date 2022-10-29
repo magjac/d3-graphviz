@@ -8,7 +8,7 @@ const html = `
     <div id="graph"></div>
     `;
 
-it("graphviz().graphvizVersion() returns the Graphviz version.", html, () => new Promise(resolve => {
+it("graphviz().graphvizVersion() returns the Graphviz version (worker version)", html, () => new Promise(resolve => {
     global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
