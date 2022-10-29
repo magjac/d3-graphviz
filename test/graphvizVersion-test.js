@@ -4,7 +4,7 @@ import it from "./jsdom.js";
 
 const html = '<div id="graph"></div>';
 
-it("graphviz().graphvizVersion() return the Graphviz version.", html, () => new Promise(resolve => {
+it("graphviz().graphvizVersion() returns the Graphviz version", html, () => new Promise(resolve => {
 
     var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
