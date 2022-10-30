@@ -10,7 +10,7 @@ const html = `
     <div id="graph"></div>
     `;
 
-it("dot() performs layout in a web worker in the background.", html, () => new Promise(resolve => {
+it("dot() performs layout in a shared web worker in the background.", html, () => new Promise(resolve => {
 
     var document = global.document = window.document;
     global.SharedWorker = SharedWorker;
