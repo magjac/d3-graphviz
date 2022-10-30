@@ -11,13 +11,10 @@ export function workerCodeBody(port) {
     port.addEventListener('message', function(event) {
         let hpccWasm = self["@hpcc-js/wasm"];
         if (hpccWasm == undefined && event.data.vizURL) {
-            global.document = { currentScript: { src: event.data.vizURL } };
             importScripts(event.data.vizURL);
             hpccWasm = self["@hpcc-js/wasm"];
-            //hpccWasm.wasmFolder("node_modules/@hpcc-js/wasm/dist/graphvizlib.wasm");
-            hpccWasm.wasmFolder("/home/magjac/d3-graphviz/node_modules/@hpcc-js/wasm/dist");
-
-                        // This is an alternative workaround where wasmFolder() is not needed
+            hpccWasm.wasmFolder(event.data.vizURL.match(/.*\//)[0]);
+            // This is an alternative workaround where wasmFolder() is not needed
 //                                    document = {currentScript: {src: event.data.vizURL}};
         }
 
