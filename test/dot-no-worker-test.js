@@ -13,10 +13,8 @@ function do_test(useWorker, resolve) {
     }
     global.Worker = Worker;
 
-    console.log("magjac 010:");
     var graphviz = d3_graphviz("#graph", useWorker)
         .on('initEnd', () => {
-            console.log("magjac 030:");
 
             assert.equal(graphviz._data, undefined, 'No data is attached before calling dot');
             graphviz
@@ -31,7 +29,6 @@ function do_test(useWorker, resolve) {
         });
 
     function handleError(err) {
-        console.log("magjac 050:");
 
         assert.equal(
             err,
@@ -42,7 +39,6 @@ function do_test(useWorker, resolve) {
     }
 
     function part1_end() {
-        console.log("magjac 100:");
 
         assert.notEqual(graphviz._data, undefined, 'Data is attached after rendering');
         assert.equal(d3_selectAll('.node').size(), 3, 'Number of initial nodes');
@@ -57,16 +53,12 @@ function do_test(useWorker, resolve) {
     }
 
     function callbackThatShouldNotBeCalled() {
-        console.log("magjac 300:");
 
         assert.error('Callback should not be called when an error occurs');
     }
 
-    function part2() {
-        console.log("magjac 200:");
-        global.Worker = undefined;
-        resolve();
-    }
+    global.Worker = undefined;
+    resolve();
 }
 
 let html = `

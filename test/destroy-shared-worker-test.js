@@ -11,26 +11,19 @@ const html = `
 
 it(".destroy() deletes the Graphviz instance from the container element (shared worker version)", html, () => new Promise(resolve => {
     global.SharedWorker = SharedWorker;
-    console.log("magjac 010:");
 
     var graphviz = d3_graphviz("#graph", {useSharedWorker: true})
         .renderDot('digraph {a -> b;}', destroy);
 
-    console.log("magjac 020:");
-
     function destroy() {
-            console.log("magjac 030:");
 
         assert.notEqual(d3_select("#graph").node().__graphviz__, undefined,
                        'Renderer instance shall exist before destroy');
         graphviz.destroy();
         assert.equal(d3_select("#graph").node().__graphviz__, undefined,
                        'Renderer instance shall not exist after destroy');
-            console.log("magjac 100:");
         graphviz._workerPortClose();
-            console.log("magjac 110:");
         global.SharedWorker = undefined;
-            console.log("magjac 120:");
         resolve();
     }
 
