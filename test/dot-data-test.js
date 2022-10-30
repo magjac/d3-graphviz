@@ -205,7 +205,7 @@ var basic_data = {
                             },
                             "center": {
                                 "x": "27",
-                                "y": "-85.8",
+                                "y": "-85.8"
                             },
                             "parent": "[Circular ~.children.1.children.7]",
                             "children": [
@@ -345,7 +345,7 @@ var basic_data = {
                             },
                             "center": {
                                 "x": "27",
-                                "y": "-13.8",
+                                "y": "-13.8"
                             },
                             "parent": "[Circular ~.children.1.children.11]",
                             "children": [
@@ -451,17 +451,17 @@ var basic_data = {
                             "attributes": {
                                 "fill": "none",
                                 "stroke": "black",
-                                "d": "M27,-71.7C27,-63.98 27,-54.71 27,-46.11"
+                                "d": "M27,-71.7C27,-64.41 27,-55.73 27,-47.54"
                             },
                             "bbox": {
                                 "x": 27,
                                 "y": -71.7,
                                 "width": 0,
-                                "height": 25.590000000000003
+                                "height": 24.160000000000004
                             },
                             "center": {
                                 "x": 27,
-                                "y": -58.905
+                                "y": -59.620000000000005
                             },
                             "totalLength": 100,
                             "parent": "[Circular ~.children.1.children.15]",
@@ -483,17 +483,17 @@ var basic_data = {
                             "attributes": {
                                 "fill": "black",
                                 "stroke": "black",
-                                "points": "30.5,-46.1 27,-36.1 23.5,-46.1 30.5,-46.1"
+                                "points": "30.5,-47.62 27,-37.62 23.5,-47.62 30.5,-47.62"
                             },
                             "bbox": {
                                 "x": 23.5,
-                                "y": -46.1,
+                                "y": -47.62,
                                 "width": 7,
                                 "height": 10
                             },
                             "center": {
                                 "x": 27,
-                                "y": -41.1
+                                "y": -42.62
                             },
                             "parent": "[Circular ~.children.1.children.15]",
                             "children": [],
