@@ -1,4 +1,4 @@
-/* This file is excluded from coverage because the intrumented code
+/* This file is excluded from coverage because the instrumented code
  * translates "self" which gives a reference error.
  */
 
