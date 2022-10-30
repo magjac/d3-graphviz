@@ -17,9 +17,7 @@ it("graphviz().graphvizVersion() returns the Graphviz version (worker version)",
     }
     global.Worker = Worker;
 
-    //var graphviz = d3_graphviz("#graph", { useWorker: false }) // this works
     var graphviz = d3_graphviz("#graph", { useWorker: true })
-        .logEvents(true)
         .on("initEnd", startTest);
 
     function startTest() {
@@ -36,7 +34,6 @@ it("graphviz().graphvizVersion() returns the Graphviz version (worker version)",
 
         graphviz._worker.terminate();
         global.Worker = undefined;
-
-        resolve()
+        resolve();
     }
 }));

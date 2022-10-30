@@ -22,6 +22,7 @@ it(".destroy() deletes the Graphviz instance from the container element (shared 
         graphviz.destroy();
         assert.equal(d3_select("#graph").node().__graphviz__, undefined,
                        'Renderer instance shall not exist after destroy');
+
         graphviz._workerPortClose();
         global.SharedWorker = undefined;
         resolve();

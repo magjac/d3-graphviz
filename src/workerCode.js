@@ -30,6 +30,7 @@ export function workerCodeBody(port) {
             });
             return;
         }
+
         hpccWasm.graphviz.layout(event.data.dot, "svg", event.data.engine, event.data.options).then((svg) => {
             if (svg) {
                 port.postMessage({
@@ -55,6 +56,7 @@ export function workerCodeBody(port) {
 }
 
 export function workerCode() {
+
     const port = self;
     workerCodeBody(port);
 }
