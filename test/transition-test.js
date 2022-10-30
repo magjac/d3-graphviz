@@ -10,7 +10,7 @@ const html = `
     <div id="graph"></div>
     `;
 
-it("graphviz().render() adds and removes SVG elements after transition delay.", html, () => new Promise(resolve => {
+it("graphviz().render() adds and removes SVG elements after transition delay (worker version).", html, () => new Promise(resolve => {
 
     function transition_test_init() {
         global.Blob = function (jsarray) {
