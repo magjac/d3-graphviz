@@ -5,7 +5,7 @@ import it from "./jsdom.js";
 
 const html = '<div id="graph"></div>';
 
-it("graphviz().render() renders growing edges to nodes with URL attribute.", html, () => new Promise(resolve => {
+it("graphviz().render() renders growing edges to 'cylinder' nodes.", html, () => new Promise(resolve => {
     var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
