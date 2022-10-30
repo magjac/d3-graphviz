@@ -12,8 +12,7 @@ it("graphviz().render() renders an SVG from graphviz DOT.", html, async () => {
         graphviz.on("initEnd", resolve);
     });
 
-    function startTest() {
-        const svgDoc = `<svg width="62pt" height="116pt" viewBox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    const svgDoc = `<svg width="62pt" height="116pt" viewBox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
 <polygon fill="white" stroke="none" points="-4,4 -4,-112 58,-112 58,4 -4,4"></polygon>
 <!-- a -->
@@ -37,48 +36,47 @@ it("graphviz().render() renders an SVG from graphviz DOT.", html, async () => {
 </g>
 </svg>`;
 
+    await new Promise(resolve => {
         graphviz
             .tweenShapes(false)
             .zoom(false)
             .dot('digraph {a -> b;}')
-            .render();
+            .render(resolve);
+    });
 
-        assert.equal(d3_select('div').html(), svgDoc, "SVG after initial rendering");
+    assert.equal(d3_select('div').html(), svgDoc, "SVG after initial rendering");
 
-        // Check data tag by tag
-        assert.equal(d3_select('svg').data()[0].tag, 'svg', '"svg" tag present in data joined with SVG');
-        assert.equal(d3_select('g').data()[0].tag, 'g', '"g" tag present in data joined with first svg group element');
-        assert.equal(d3_select('title').data()[0].tag, 'title', '"title" tag present in data joined with first title element');
-        assert.equal(d3_select('ellipse').data()[0].tag, 'ellipse', '"ellipse" tag present in data joined with first ellipse element');
-        assert.equal(d3_select('text').data()[0].tag, 'text', '"text" tag present in data joined with first text element');
-        assert.equal(d3_select('path').data()[0].tag, 'path', '"path" tag present in data joined with first path element');
-        assert.equal(d3_select('polygon').data()[0].tag, 'polygon', '"polygon" tag present in data joined with first polygon element');
+    // Check data tag by tag
+    assert.equal(d3_select('svg').data()[0].tag, 'svg', '"svg" tag present in data joined with SVG');
+    assert.equal(d3_select('g').data()[0].tag, 'g', '"g" tag present in data joined with first svg group element');
+    assert.equal(d3_select('title').data()[0].tag, 'title', '"title" tag present in data joined with first title element');
+    assert.equal(d3_select('ellipse').data()[0].tag, 'ellipse', '"ellipse" tag present in data joined with first ellipse element');
+    assert.equal(d3_select('text').data()[0].tag, 'text', '"text" tag present in data joined with first text element');
+    assert.equal(d3_select('path').data()[0].tag, 'path', '"path" tag present in data joined with first path element');
+    assert.equal(d3_select('polygon').data()[0].tag, 'polygon', '"polygon" tag present in data joined with first polygon element');
 
-        // Check data tag by id
-        assert.equal(d3_select('#graph0').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "graph0"');
-        assert.equal(d3_select('#node1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node1"');
-        assert.equal(d3_select('#node2').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node2"');
-        assert.equal(d3_select('#edge1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "edge1"');
+    // Check data tag by id
+    assert.equal(d3_select('#graph0').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "graph0"');
+    assert.equal(d3_select('#node1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node1"');
+    assert.equal(d3_select('#node2').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node2"');
+    assert.equal(d3_select('#edge1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "edge1"');
 
-        // Check data tag by class
-        assert.equal(d3_select('.graph').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "graph"');
-        assert.equal(d3_select('.node').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "node"');
-        assert.equal(d3_select('.edge').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "edge"');
+    // Check data tag by class
+    assert.equal(d3_select('.graph').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "graph"');
+    assert.equal(d3_select('.node').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "node"');
+    assert.equal(d3_select('.edge').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "edge"');
 
-        // Check full data structure for some primary elements
-        var data = d3_select('svg').data();
-        var svgData = data[0];
-        var graph0Data = svgData.children[1];
+    // Check full data structure for some primary elements
+    var data = d3_select('svg').data();
+    var svgData = data[0];
+    var graph0Data = svgData.children[1];
 
-        assert.deepEqual(d3_select('svg').datum(), svgData, 'Data structure present on SVG');
-        assert.deepEqual(d3_select('#graph0').datum(), graph0Data, 'Data structure present on element with id "graph0"');
-        assert.deepEqual(d3_select('#node1').datum(), graph0Data.children[5], 'Data structure present on element with id "node1"');
-        assert.deepEqual(d3_select('#node2').datum(), graph0Data.children[9], 'Data structure present on element with id "node2"');
-        assert.deepEqual(d3_select('#edge1').datum(), graph0Data.children[13], 'Data structure present on element with id "edge1"');
-
-        resolve();
-    }
-}));
+    assert.deepEqual(d3_select('svg').datum(), svgData, 'Data structure present on SVG');
+    assert.deepEqual(d3_select('#graph0').datum(), graph0Data, 'Data structure present on element with id "graph0"');
+    assert.deepEqual(d3_select('#node1').datum(), graph0Data.children[5], 'Data structure present on element with id "node1"');
+    assert.deepEqual(d3_select('#node2').datum(), graph0Data.children[9], 'Data structure present on element with id "node2"');
+    assert.deepEqual(d3_select('#edge1').datum(), graph0Data.children[13], 'Data structure present on element with id "edge1"');
+});
 
 it("graphviz().render() renders on a div with sub-elements", html, () => new Promise(resolve => {
     var graphviz = d3_graphviz("#graph")
