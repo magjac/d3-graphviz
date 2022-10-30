@@ -6,9 +6,11 @@ import it from "./jsdom.js";
 
 const html = '<div id="graph"></div>';
 
-it("graphviz().render() renders an SVG from graphviz DOT.", html, () => new Promise(resolve => {
-    var graphviz = d3_graphviz("#graph")
-        .on("initEnd", startTest);
+it("graphviz().render() renders an SVG from graphviz DOT.", html, async () => {
+    var graphviz = d3_graphviz("#graph");
+    await new Promise(resolve => {
+        graphviz.on("initEnd", resolve);
+    });
 
     function startTest() {
         const svgDoc = `<svg width="62pt" height="116pt" viewBox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
