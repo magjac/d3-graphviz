@@ -6,7 +6,7 @@ import it from "./jsdom.js";
 
 const html = '<div id="graph"></div>';
 
-it("graphviz().tweenShapes() enables and disables shape tweening during transitions.", html, () => new Promise(resolve => {
+it("graphviz() uses shape tweening to and from the 'cylinder' node shape during transitions.", html, () => new Promise(resolve => {
 
     var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
