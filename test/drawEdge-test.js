@@ -6,93 +6,90 @@ import it from "./jsdom.js";
 
 const html = '<div id="graph"></div>';
 
-it("Check our understanding of how Graphviz draws edges.", html, () => new Promise(resolve => {
-    var graphviz = d3_graphviz("#graph")
-        .on('initEnd', startTest);
+it("Check our understanding of how Graphviz draws edges.", html, async () => {
+    var graphviz = d3_graphviz("#graph");
+
+    await new Promise(resolve => {
+        graphviz.on('initEnd', resolve);
+    });
 
     var num_nodes = 2;
     var num_edges = 1;
 
-    function startTest() {
-
+    await new Promise(resolve => {
         graphviz
             .zoom(false)
             .dot('digraph {graph [rankdir="LR"]; a -> b;}')
-            .render(endTest);
+            .render(resolve);
+    });
+
+    assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
+    assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
+    assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
+    assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
+    assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
+    const arrowHeadLength = 10;
+    const arrowHeadWidth = 7;
+    const margin = 0.1;
+    const x1 = 54.4;
+    const y1 = -18;
+    const x2 = 89.92;
+    const y2 = -18.000;
+
+    const line = d3_selectAll('.edge').selectAll('path').filter(function (d) {
+        return d.parent.key == 'a->b'
+    });
+    var points = line.attr("d").split(/[MC ]/).map(function (v) {
+        const point = v.split(',');
+        return [Math.round(+point[0] * 1000) / 1000, Math.round(+point[1] * 1000) / 1000];
+    });
+    var actual_x = [];
+    var actual_y = [];
+    for (let i = 1; i < points.length; i += 1) {
+        actual_x.push(points[i][0]);
+        actual_y.push(points[i][1]);
+    }
+    var expected_x = [];
+    var expected_y = [];
+    expected_x.push(x1);
+    expected_y.push(y1);
+    expected_x.push(62.39);
+    expected_y.push(y1);
+    expected_x.push(71.31);
+    expected_y.push(y1);
+    expected_x.push(Math.round((x2 - margin - arrowHeadLength) * 1000) / 1000);
+    expected_y.push(y2);
+    for (let i = 0; i < expected_x.length; i++) {
+        assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
     }
 
-    function endTest() {
-        assert.equal(d3_selectAll('.node').size(), num_nodes, 'Number of initial nodes');
-        assert.equal(d3_selectAll('.edge').size(), num_edges, 'Number of initial edges');
-        assert.equal(d3_selectAll('polygon').size(), num_edges + 1, 'Number of initial polygons');
-        assert.equal(d3_selectAll('ellipse').size(), num_nodes, 'Number of initial ellipses');
-        assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
-        const arrowHeadLength = 10;
-        const arrowHeadWidth = 7;
-        const margin = 0.1;
-        const x1 = 54.4;
-        const y1 = -18;
-        const x2 = 89.92;
-        const y2 = -18.000;
-
-        const line = d3_selectAll('.edge').selectAll('path').filter(function(d) {
-            return d.parent.key == 'a->b'
-        });
-        var points = line.attr("d").split(/[MC ]/).map(function(v) {
-            const point = v.split(',');
-            return [Math.round(+point[0] * 1000) / 1000 , Math.round(+point[1] * 1000) / 1000];
-        });
-        var actual_x = [];
-        var actual_y = [];
-        for (let i = 1; i < points.length; i += 1) {
-            actual_x.push(points[i][0]);
-            actual_y.push(points[i][1]);
-        }
-        var expected_x = [];
-        var expected_y = [];
-        expected_x.push(x1);
-        expected_y.push(y1);
-        expected_x.push(62.39);
-        expected_y.push(y1);
-        expected_x.push(71.31);
-        expected_y.push(y1);
-        expected_x.push(Math.round((x2 - margin - arrowHeadLength) * 1000) / 1000);
-        expected_y.push(y2);
-        for (let i = 0; i < expected_x.length; i++) {
-            assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of edge');
-        }
-
-        const arrowHead = d3_selectAll('.edge').selectAll('polygon').filter(function(d) {
-            return d.parent.key == 'a->b'
-        });
-        points = arrowHead.attr("points").split(' ').map(function(v) {
-            const point = v.split(',');
-            return [Math.round(+point[0] * 1000) / 1000 , Math.round(+point[1] * 1000) / 1000];
-        });
-        var actual_x = [];
-        var actual_y = [];
-        for (let i = 0; i < points.length; i += 1) {
-            actual_x.push(points[i][0]);
-            actual_y.push(points[i][1]);
-        }
-        var expected_x = [];
-        var expected_y = [];
-        expected_x.push(x2 - arrowHeadLength);
-        expected_y.push(y2 - arrowHeadWidth / 2);
-        expected_x.push(x2);
-        expected_y.push(y2);
-        expected_x.push(x2 - arrowHeadLength);
-        expected_y.push(y2 + arrowHeadWidth / 2);
-        expected_x.push(x2 - arrowHeadLength);
-        expected_y.push(y2 - arrowHeadWidth / 2);
-        for (let i = 0; i < expected_x.length; i++) {
-            assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
-        }
-
-        resolve();
+    const arrowHead = d3_selectAll('.edge').selectAll('polygon').filter(function (d) {
+        return d.parent.key == 'a->b'
+    });
+    points = arrowHead.attr("points").split(' ').map(function (v) {
+        const point = v.split(',');
+        return [Math.round(+point[0] * 1000) / 1000, Math.round(+point[1] * 1000) / 1000];
+    });
+    var actual_x = [];
+    var actual_y = [];
+    for (let i = 0; i < points.length; i += 1) {
+        actual_x.push(points[i][0]);
+        actual_y.push(points[i][1]);
     }
-
-}));
+    var expected_x = [];
+    var expected_y = [];
+    expected_x.push(x2 - arrowHeadLength);
+    expected_y.push(y2 - arrowHeadWidth / 2);
+    expected_x.push(x2);
+    expected_y.push(y2);
+    expected_x.push(x2 - arrowHeadLength);
+    expected_y.push(y2 + arrowHeadWidth / 2);
+    expected_x.push(x2 - arrowHeadLength);
+    expected_y.push(y2 - arrowHeadWidth / 2);
+    for (let i = 0; i < expected_x.length; i++) {
+        assert.deepEqual([actual_x[i], actual_y[i]], [expected_x[i], expected_y[i]], 'Point ' + i + ' of arrow head');
+    }
+});
 
 it("drawEdge() draws an edge in the same way as Graphviz does", html, () => new Promise(resolve => {
     var graphviz = d3_graphviz("#graph")
