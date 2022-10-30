@@ -4,7 +4,6 @@ import {timeout} from "d3-timer";
 import {interpolateTransformSvg} from "d3-interpolate";
 import {zoomTransform} from "d3-zoom";
 import {createElement, extractElementData, replaceElement} from "./element";
-import {shallowCopyObject} from "./utils";
 import {createZoomBehavior, getTranslatedZoomTransform, translateZoomBehaviorTransform} from "./zoom";
 import {pathTween} from "./tweening";
 import {isEdgeElement} from "./data";
