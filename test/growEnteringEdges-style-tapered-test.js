@@ -5,7 +5,7 @@ import it from "./jsdom.js";
 
 const html = '<div id="graph"></div>';
 
-it("Simple rendering an SVG from graphviz DOT.", html, () => new Promise(resolve => {
+it("Rendering a tapered edge.", html, () => new Promise(resolve => {
     var graphviz = d3_graphviz("#graph")
         .growEnteringEdges(true)
         .renderDot('digraph {a -> b [style=tapered]}', checkGraph);
