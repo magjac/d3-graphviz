@@ -1,6 +1,13 @@
 console.log("magjac 3000:");
 console.log("magjac 3001:");
-importScripts('/home/magjac/d3-graphviz/node_modules/@hpcc-js/wasm/dist/index');
+//document = "hej";
+console.log("magjac 3002: document = ", document);
+importScripts('test/polyfill_fetch.js');
+//importScripts('fs');
+//console.log("magjac 3002b: fs = ", fs);
+//importScripts('/home/magjac/d3-graphviz/test/polyfill_fetch.js');
+console.log("magjac 3003:");
+importScripts('node_modules/@hpcc-js/wasm/dist/index.js');
 console.log("magjac 3010:");
 self["@hpcc-js/wasm"] = global["@hpcc-js/wasm"];
 console.log("magjac 3020:");

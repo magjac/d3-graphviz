@@ -14,10 +14,20 @@ export function workerCodeBody(port) {
         let hpccWasm = self["@hpcc-js/wasm"];
         if (hpccWasm == undefined && event.data.vizURL) {
             console.log("magjac 1210: importScripts: ", event.data.vizURL);
+            global.document = { currentScript: { src: event.data.vizURL } };
+            console.log("magjac 1214:");
+            //console.log("magjac 1214: self =", self);
+            //console.log("magjac 1214: global =", global);
+            console.log("magjac 1215: document =", document);
+            console.log("magjac 1216:");
             importScripts(event.data.vizURL);
             hpccWasm = self["@hpcc-js/wasm"];
-            hpccWasm.wasmFolder(event.data.vizURL.match(/.*\//)[0]);
-            // This is an alternative workaround where wasmFolder() is not needed
+            console.log("magjac 1220: folder = ", event.data.vizURL.match(/.*\//)[0]);
+            //hpccWasm.wasmFolder(event.data.vizURL.match(/.*\//)[0]);
+            //hpccWasm.wasmFolder("node_modules/@hpcc-js/wasm/dist/graphvizlib.wasm");
+            hpccWasm.wasmFolder("/home/magjac/d3-graphviz/node_modules/@hpcc-js/wasm/dist");
+
+                        // This is an alternative workaround where wasmFolder() is not needed
 //                                    document = {currentScript: {src: event.data.vizURL}};
         }
 

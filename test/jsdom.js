@@ -1,4 +1,5 @@
 import {JSDOM} from "jsdom";
+//import "./polyfill_fetch.js";
 import "./polyfill_btoa.js";
 import "./polyfill_navigator.js";
 

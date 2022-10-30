@@ -17,6 +17,10 @@ it("Simple rendering an SVG from graphviz DOT.", html, () => new Promise(resolve
         return js;
     }
     global.Worker = Worker;
+    console.log("magjac 100: global.fetch =", global.fetch);
+    if (!global.fetch) {
+        //        throw "QQQ";
+    }
 
     var graphviz = d3_graphviz("#graph")
         .renderDot('digraph {a -> b;}', checkGraph);
