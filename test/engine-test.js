@@ -5,7 +5,7 @@ import it from "./jsdom.js";
 
 const html = '<div id="graph"></div>';
 
-it("engine() selects which graphviz layout engine to use.", html, () => new Promise(resolve => {
+it("engine() selects which graphviz layout engine to use ('dot').", html, () => new Promise(resolve => {
     var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
@@ -23,7 +23,7 @@ it("engine() selects which graphviz layout engine to use.", html, () => new Prom
     }
 }));
 
-it("engine() selects which graphviz layout engine to use.", html, () => new Promise(resolve => {
+it("engine() selects which graphviz layout engine to use ('circo').", html, () => new Promise(resolve => {
     var graphviz = d3_graphviz("#graph")
         .on("initEnd", startTest);
 
