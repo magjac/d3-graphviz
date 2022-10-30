@@ -11,7 +11,7 @@ const html = `
     <div id="expected-graph"></div><div id="actual-graph"></div>
     `;
 
-it("Verify that polygon shape is drawn exactly as Graphviz does.", html, () => new Promise(resolve => {
+it("Verify that polygon shape is drawn exactly as Graphviz does (worker version).", html, () => new Promise(resolve => {
     global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
