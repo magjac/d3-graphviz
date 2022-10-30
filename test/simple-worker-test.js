@@ -9,7 +9,7 @@ const html = `
     <div id="graph"></div>
     `;
 
-it("Simple rendering an SVG from graphviz DOT.", html, () => new Promise(resolve => {
+it("Simple rendering an SVG from graphviz DOT (worker version).", html, () => new Promise(resolve => {
     global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
