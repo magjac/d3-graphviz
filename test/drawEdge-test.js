@@ -30,10 +30,12 @@ it("Check our understanding of how Graphviz draws edges.", html, async () => {
     assert.equal(d3_selectAll('path').size(), num_edges, 'Number of initial paths');
     const arrowHeadLength = 10;
     const arrowHeadWidth = 7;
-    const margin = 0.1;
+    const margin = -0.1;
+    // start of edge tail
     const x1 = 54.4;
     const y1 = -18;
-    const x2 = 89.92;
+     // end of edge arrowhead
+    const x2 = 88.1;
     const y2 = -18.000;
 
     const line = d3_selectAll('.edge').selectAll('path').filter(function (d) {
@@ -53,9 +55,9 @@ it("Check our understanding of how Graphviz draws edges.", html, async () => {
     var expected_y = [];
     expected_x.push(x1);
     expected_y.push(y1);
-    expected_x.push(62.39);
+    expected_x.push(61.89);
     expected_y.push(y1);
-    expected_x.push(71.31);
+    expected_x.push(70.18);
     expected_y.push(y1);
     expected_x.push(Math.round((x2 - margin - arrowHeadLength) * 1000) / 1000);
     expected_y.push(y2);
