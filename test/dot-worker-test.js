@@ -10,7 +10,7 @@ const html = `
     <div id="graph"></div>
     `;
 
-it("dot() performs layout in a web worker in the background.", html, () => new Promise(resolve => {
+it("dot() performs layout in a web worker in the background.", html, async () => {
 
     global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
@@ -21,6 +21,13 @@ it("dot() performs layout in a web worker in the background.", html, () => new P
     global.Worker = Worker;
 
     var graphviz = d3_graphviz("#graph");
+
+    await new Promise(resolve => {
+        graphviz
+            .on("initEnd", resolve);
+    });
+
+    assert.equal(d3_select('#graph').datum(), undefined, 'No data is attached before calling dot');
 
     graphviz
         .tweenShapes(false)
@@ -40,18 +47,24 @@ it("dot() performs layout in a web worker in the background.", html, () => new P
     assert.equal(d3_selectAll('ellipse').size(), 3, 'Number of initial ellipses');
     assert.equal(d3_selectAll('path').size(), 1, 'Number of initial paths');
 
+    const err = await new Promise(resolve => {
         graphviz
+            .onerror(resolve)
             .dot('bad dot 1', callbackThatShouldNotBeCalled)
             .render(callbackThatShouldNotBeCalled);
-    }
+    });
+
+    graphviz._worker.terminate();
+    global.Worker = undefined;
+
+    assert.equal(
+        err,
+        "syntax error in line 1 near 'bad'\n",
+        'A registered error handler catches syntax errors in the dot source thrown during layout'
+    );
 
     function callbackThatShouldNotBeCalled() {
         assert.error('Callback should not be called when an error occurs');
     }
 
-    function part2() {
-        graphviz._worker.terminate();
-        global.Worker = undefined;
-        resolve();
-    }
-}));
+});
