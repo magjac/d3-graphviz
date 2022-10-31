@@ -61,8 +61,8 @@ let html = `
 
 it('dot() performs layout in the foreground when web worker is not used.', html, async () => {
 
-    do_test(false, resolve);
-}));
+    await do_test(false);
+});
 
 html = `
     <script src="http://dummyhost/node_modules/@hpcc-js-NOT/wasm/dist/index.js" type="text/javascript"></script>
