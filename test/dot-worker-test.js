@@ -31,13 +31,8 @@ it("dot() performs layout in a web worker in the background.", html, () => new P
 
     await new Promise(resolve => {
         graphviz
-            .tweenShapes(false)
-            .zoom(false)
-            .onerror(handleError)
-            .dot('digraph {a -> b; c}')
-            .render(part1_end);
-    }
-    assert.equal(d3_select('#graph').datum(), undefined, 'No data is attached immediately after calling dot when worker is used');
+            .render(resolve);
+    });
 
     function part1_end() {
         assert.equal(d3_selectAll('.node').size(), 3, 'Number of initial nodes');
