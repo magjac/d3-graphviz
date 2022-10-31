@@ -4,9 +4,12 @@ import it from "./jsdom.js";
 
 let html = '<div id="graph"></div>';
 
-it("onerror() registers dot layout error handler.", html, () => new Promise(resolve => {
-    var graphviz = d3_graphviz("#graph")
-        .on("initEnd", startTest);
+it("onerror() registers dot layout error handler.", html, async () => {
+    var graphviz = d3_graphviz("#graph");
+
+    await new Promise(resolve => {
+        graphviz.on("initEnd", resolve);
+    });
 
     var errorsCaught = 0;
 
