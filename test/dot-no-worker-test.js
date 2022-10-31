@@ -4,7 +4,7 @@ import {graphviz as d3_graphviz} from "../index.js";
 import it from "./jsdom.js";
 import Worker from "tiny-worker";
 
-function do_test(useWorker, resolve) {
+async function do_test(useWorker) {
     global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
