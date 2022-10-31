@@ -20,13 +20,7 @@ it("onerror() registers dot layout error handler.", html, async () => {
             .renderDot('{bad dot 1}');
     }
 
-    function handleError(err) {
-        errorsCaught += 1;
-        assert.equal(
-            err,
-            "syntax error in line 1 near '{'\n",
-            'A registered error handler catches syntax errors in the dot source thrown during layout ' + (errorsCaught == 1 ? 'the first' : 'a second') + 'time'
-        );
+    await new Promise(resolve => {
         if (errorsCaught == 1) {
             graphviz
                 .renderDot('{bad dot 2}', stage2);
