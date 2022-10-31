@@ -34,12 +34,11 @@ it("dot() performs layout in a web worker in the background.", html, () => new P
             .render(resolve);
     });
 
-    function part1_end() {
-        assert.equal(d3_selectAll('.node').size(), 3, 'Number of initial nodes');
-        assert.equal(d3_selectAll('.edge').size(), 1, 'Number of initial edges');
-        assert.equal(d3_selectAll('polygon').size(), 2, 'Number of initial polygons');
-        assert.equal(d3_selectAll('ellipse').size(), 3, 'Number of initial ellipses');
-        assert.equal(d3_selectAll('path').size(), 1, 'Number of initial paths');
+    assert.equal(d3_selectAll('.node').size(), 3, 'Number of initial nodes');
+    assert.equal(d3_selectAll('.edge').size(), 1, 'Number of initial edges');
+    assert.equal(d3_selectAll('polygon').size(), 2, 'Number of initial polygons');
+    assert.equal(d3_selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+    assert.equal(d3_selectAll('path').size(), 1, 'Number of initial paths');
 
         graphviz
             .dot('bad dot 1', callbackThatShouldNotBeCalled)
