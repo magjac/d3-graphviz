@@ -42,7 +42,7 @@ it("onerror() registers dot layout error handler.", html, async () => {
 
     assert.throws(renderDot, 'Without a registered error handler, errors in the dot source throws error');
 
-        assert.equal(errorsCaught, 2, 'Without a registered error handler, errors in the dot source are not caught');
+    assert.equal(errorsCaught, 2, 'Without a registered error handler, errors in the dot source are not caught');
 
         resolve();
     }
