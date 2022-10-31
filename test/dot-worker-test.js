@@ -27,14 +27,7 @@ it("dot() performs layout in a web worker in the background.", html, () => new P
         .zoom(false)
         .dot('digraph {a -> b; c}')
 
-    function handleError(err) {
-        assert.equal(
-            err,
-            "syntax error in line 1 near 'bad'\n",
-            'A registered error handler catches syntax errors in the dot source thrown during layout'
-        );
-        part2();
-    }
+    assert.equal(d3_select('#graph').datum(), undefined, 'No data is attached immediately after calling dot when worker is used');
 
     assert.equal(d3_select('#graph').datum(), undefined, 'No data is attached before calling dot');
     function part1() {
