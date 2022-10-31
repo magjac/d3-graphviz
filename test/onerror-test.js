@@ -30,11 +30,10 @@ it("onerror() registers dot layout error handler.", html, async () => {
         }
     }
 
-    function stage2(err) {
-        assert.ok(errorsCaught <= 2, 'The error handler does not catch any errors in correct dot source');
-        assert.ok(errorsCaught >= 2, 'The error handler catches errors also after already having caught errors once already');
-        graphviz
-         .onerror(null);
+    assert.ok(errorsCaught <= 2, 'The error handler does not catch any errors in correct dot source');
+    assert.ok(errorsCaught >= 2, 'The error handler catches errors also after already having caught errors once already');
+    graphviz
+        .onerror(null);
 
         function renderDot() {
             graphviz
