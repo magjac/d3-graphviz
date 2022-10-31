@@ -59,7 +59,7 @@ let html = `
     <div id="graph"></div>
     `;
 
-it('dot() performs layout in the foreground when web worker is not used.', html, () => new Promise(resolve => {
+it('dot() performs layout in the foreground when web worker is not used.', html, async () => {
 
     do_test(false, resolve);
 }));
