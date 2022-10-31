@@ -13,37 +13,42 @@ it("onerror() registers dot layout error handler.", html, async () => {
 
     var errorsCaught = 0;
 
-    function startTest() {
+    const err = await new Promise(resolve => {
         graphviz
             .zoom(false)
-            .onerror(handleError)
+            .onerror(resolve)
             .renderDot('{bad dot 1}');
-    }
+    });
+
+    errorsCaught += 1;
+    assert.equal(
+        err,
+        "syntax error in line 1 near '{'\n",
+        'A registered error handler catches syntax errors in the dot source thrown during layout ' + (errorsCaught == 1 ? 'the first' : 'a second') + 'time'
+    );
 
     await new Promise(resolve => {
         if (errorsCaught == 1) {
             graphviz
-                .renderDot('{bad dot 2}', stage2);
+                .renderDot('{bad dot 2}', resolve);
         } else {
            graphviz
-                .renderDot('digraph {a -> b}', stage2);
+               .renderDot('digraph {a -> b}', resolve);
         }
-    }
+    });
 
     assert.ok(errorsCaught <= 2, 'The error handler does not catch any errors in correct dot source');
     assert.ok(errorsCaught >= 2, 'The error handler catches errors also after already having caught errors once already');
     graphviz
         .onerror(null);
 
-        function renderDot() {
-            graphviz
-                .renderDot('{bad dot 3}');
-        }
+    function renderDot() {
+        graphviz
+            .renderDot('{bad dot 3}');
+    }
 
     assert.throws(renderDot, 'Without a registered error handler, errors in the dot source throws error');
 
     assert.equal(errorsCaught, 2, 'Without a registered error handler, errors in the dot source are not caught');
 
-        resolve();
-    }
-}));
+});
