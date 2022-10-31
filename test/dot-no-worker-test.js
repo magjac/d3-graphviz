@@ -41,10 +41,18 @@ async function do_test(useWorker) {
     assert.equal(d3_selectAll('ellipse').size(), 3, 'Number of initial ellipses');
     assert.equal(d3_selectAll('path').size(), 1, 'Number of initial paths');
 
+    const err = await new Promise(resolve => {
         graphviz
+            .onerror(resolve)
             .dot('bad dot 1', callbackThatShouldNotBeCalled)
             .render(callbackThatShouldNotBeCalled);
-    }
+    });
+
+    assert.equal(
+        err,
+        "syntax error in line 1 near 'bad'\n",
+        'A registered error handler catches syntax errors in the dot source thrown during layout'
+    );
 
     function callbackThatShouldNotBeCalled() {
         assert.error('Callback should not be called when an error occurs');
@@ -78,6 +86,6 @@ html = `
     <div id="graph"></div>
     `;
 
-it('dot() performs layout in the foreground with a warning when "javascript/worker" script tag does not have a "src" attribute.', html, () => new Promise(resolve => {
-    do_test(true, resolve);
-}));
+it('dot() performs layout in the foreground with a warning when "javascript/worker" script tag does not have a "src" attribute.', html, async () => {
+    await do_test(true);
+});
