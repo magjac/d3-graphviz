@@ -23,9 +23,9 @@ it("dot() performs layout in a web worker in the background.", html, () => new P
     var graphviz = d3_graphviz("#graph");
 
     graphviz
-        .on("initEnd", function () {
-            part1();
-        });
+        .tweenShapes(false)
+        .zoom(false)
+        .dot('digraph {a -> b; c}')
 
     function handleError(err) {
         assert.equal(
