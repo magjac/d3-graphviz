@@ -29,8 +29,7 @@ it("dot() performs layout in a web worker in the background.", html, () => new P
 
     assert.equal(d3_select('#graph').datum(), undefined, 'No data is attached immediately after calling dot when worker is used');
 
-    assert.equal(d3_select('#graph').datum(), undefined, 'No data is attached before calling dot');
-    function part1() {
+    await new Promise(resolve => {
         graphviz
             .tweenShapes(false)
             .zoom(false)
