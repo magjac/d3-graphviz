@@ -69,9 +69,9 @@ html = `
     <div id="graph"></div>
     `;
 
-it('dot() performs layout in the foreground with a warning when script src does not contain "@hpcc-js/wasm".', html, () => new Promise(resolve => {
-    do_test(true, resolve);
-}));
+it('dot() performs layout in the foreground with a warning when script src does not contain "@hpcc-js/wasm".', html, async () => {
+    await do_test(true);
+});
 
 html = `
     <script type="javascript/worker"></script>
