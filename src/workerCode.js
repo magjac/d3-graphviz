@@ -13,22 +13,22 @@ export function workerCodeBody(port) {
         if (hpccWasm == undefined && event.data.vizURL) {
             importScripts(event.data.vizURL);
             hpccWasm = self["@hpcc-js/wasm"];
-            hpccWasm.wasmFolder(event.data.vizURL.match(/.*\//)[0]);
             // This is an alternative workaround where wasmFolder() is not needed
 //                                    document = {currentScript: {src: event.data.vizURL}};
         }
 
         if (event.data.type == "version") {
-            hpccWasm.graphvizVersion().then((version) => {
+            hpccWasm.Graphviz.load().then(graphviz => {
                 port.postMessage({
                     type: "version",
-                    version: version,
+                    version: graphviz.version(),
                 });
             });
             return;
         }
 
-        hpccWasm.graphviz.layout(event.data.dot, "svg", event.data.engine, event.data.options).then((svg) => {
+        hpccWasm.Graphviz.load().then(graphviz => {
+            const svg = graphviz.layout(event.data.dot, "svg", event.data.engine, event.data.options);
             if (svg) {
                 port.postMessage({
                     type: "done",

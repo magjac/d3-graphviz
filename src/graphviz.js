@@ -49,7 +49,7 @@ import {drawnNodeSelection} from "./drawNode.js";
 import {workerCode} from "./workerCode.js";
 import {sharedWorkerCode} from "./workerCode.js";
 import {workerCodeBody} from "./workerCode.js";
-import {graphvizVersion as hpccWasmGraphvizVersion} from "@hpcc-js/wasm";
+import {Graphviz as hpccWasmGraphviz} from "@hpcc-js/wasm/graphviz";
 
 export function Graphviz(selection, options) {
     this._options = {
@@ -120,8 +120,8 @@ export function Graphviz(selection, options) {
         this._workerPortClose = this._worker.terminate.bind(this._worker);
         this._workerCallbacks = [];
     } else {
-        hpccWasmGraphvizVersion().then(((version) => {
-            this._graphvizVersion = version;
+        hpccWasmGraphviz.load().then(((graphviz) => {
+            this._graphvizVersion = graphviz.version();
         }).bind(this));
     }
     this._selection = selection;

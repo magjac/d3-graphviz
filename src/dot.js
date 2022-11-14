@@ -1,5 +1,4 @@
-import { graphviz } from "@hpcc-js/wasm";
-import { graphvizSync } from "@hpcc-js/wasm";
+import { Graphviz } from "@hpcc-js/wasm/graphviz";
 import * as d3 from "d3-selection";
 import {extractAllElementsData, extractElementData, createElementWithAttributes} from "./element.js";
 import {convertToPathData} from "./svg.js";
@@ -12,16 +11,15 @@ export function initViz() {
 
     // force JIT compilation of @hpcc-js/wasm
     try {
-        graphviz.layout("", "svg", "dot").then(() => {
-            graphvizSync().then((graphviz1) => {
-                this.layoutSync = graphviz1.layout.bind(graphviz1);
-                if (this._worker == null) {
-                    this._dispatch.call("initEnd", this);
-                }
-                if (this._afterInit) {
-                    this._afterInit();
-                }
-            });
+        Graphviz.load().then(graphviz => {
+            graphviz.layout("", "svg", "dot");
+            this.layoutSync = graphviz.layout.bind(graphviz);
+            if (this._worker == null) {
+                this._dispatch.call("initEnd", this);
+            }
+            if (this._afterInit) {
+                this._afterInit();
+            }
         });
 // after the port to ESM modules, we don't know how to trigger this so
 // we just disable it from coverage
