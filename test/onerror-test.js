@@ -13,21 +13,28 @@ it("onerror() registers dot layout error handler.", html, async () => {
 
     var errorsCaught = 0;
 
-    const err = await new Promise(resolve => {
+    let resolve;
+    const onErrorHandler = (err)=>{
+        errorsCaught += 1;
+        resolve(err);
+    };
+
+    const err = await new Promise(_resolve => {
+        resolve = _resolve;
         graphviz
             .zoom(false)
-            .onerror(resolve)
+            .onerror(onErrorHandler)
             .renderDot('{bad dot 1}');
     });
 
-    errorsCaught += 1;
     assert.equal(
         err,
         "syntax error in line 1 near '{'\n",
         'A registered error handler catches syntax errors in the dot source thrown during layout ' + (errorsCaught == 1 ? 'the first' : 'a second') + 'time'
     );
 
-    await new Promise(resolve => {
+    await new Promise(_resolve => {
+        resolve = _resolve;
         if (errorsCaught == 1) {
             graphviz
                 .renderDot('{bad dot 2}', resolve);

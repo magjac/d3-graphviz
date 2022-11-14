@@ -1,6 +1,6 @@
 # d3-graphviz
 
-Renders SVG from graphs described in the [DOT](https://www.graphviz.org/doc/info/lang.html) language using the [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) port of [Graphviz](http://www.graphviz.org) and does animated transitions between graphs.
+Renders SVG from graphs described in the [DOT](https://www.graphviz.org/doc/info/lang.html) language using the [@hpcc-js/wasm](https://hpcc-systems.github.io/hpcc-js-wasm/) port of [Graphviz](http://www.graphviz.org) and does animated transitions between graphs.
 
 [![Node.js CI](https://github.com/magjac/d3-graphviz/actions/workflows/node.js.yml/badge.svg)](https://github.com/magjac/d3-graphviz/actions/workflows/node.js.yml)
 [![codecov](https://codecov.io/gh/magjac/d3-graphviz/branch/master/graph/badge.svg)](https://codecov.io/gh/magjac/d3-graphviz)
@@ -63,7 +63,7 @@ The built library will then be in `build/d3-graphviz.js`
 
 ## Principles of Operation
 
-Uses [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) to do a layout of a graph specified in the [DOT](https://www.graphviz.org/doc/info/lang.html) language and generates an SVG text representation, which is analyzed and converted into a data representation. Then [D3](https://d3js.org/) is used to join this data with a selected DOM element, render the SVG graph on that element and to animate transitioning of one graph into another.
+Uses [@hpcc-js/wasm](https://hpcc-systems.github.io/hpcc-js-wasm/) to do a layout of a graph specified in the [DOT](https://www.graphviz.org/doc/info/lang.html) language and generates an SVG text representation, which is analyzed and converted into a data representation. Then [D3](https://d3js.org/) is used to join this data with a selected DOM element, render the SVG graph on that element and to animate transitioning of one graph into another.
 
 ## Contents
 
@@ -104,11 +104,11 @@ The "@hpcc-js/wasm" script provides functions to do Graphviz layouts. If a web w
 
 Examples:
 
-`<script src="https://unpkg.com/@hpcc-js/wasm/dist/index.min.js" type="application/javascript/"></script>`
+`<script src="https://unpkg.com/@hpcc-js/wasm/dist/graphviz.umd.js" type="application/javascript/"></script>`
 
 This will always work, but will not be optimal if the script is used in a web worker only.
 
-`<script src="https://unpkg.com/@hpcc-js/wasm/dist/index.min.js" type="javascript/worker"></script>`
+`<script src="https://unpkg.com/@hpcc-js/wasm/dist/graphviz.umd.js" type="javascript/worker"></script>`
 
 This will work if a web worker is used and the [*drawNode*](#graphviz_drawNode) and [*drawEdge*](#graphviz_drawEdge) functions are not used and will give shorter page load time.
 
@@ -201,17 +201,16 @@ Starts rendering of an SVG graph from data saved by [<i>graphviz</i>.<b>dot</b>]
 
 <a name="graphviz_engine" href="#graphviz_engine">#</a> <i>graphviz</i>.<b>engine</b>(<i>engine</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/engine.js "Source")
 
-Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified *engine* string. In order to have effect, the engine must be set before calling [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). Supports all engines that [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) supports. Currently these are:
+Sets the [Graphviz](http://www.graphviz.org) layout engine name to the specified *engine* string. In order to have effect, the engine must be set before calling [<i>graphviz</i>.<b>dot</b>](#graphviz_dot) or [<i>graphviz</i>.<b>renderDot</b>](#graphviz_renderDot). Supports all engines that [@hpcc-js/wasm](https://hpcc-systems.github.io/hpcc-js-wasm/) supports. Currently these are:
 
 * <b>circo</b>
 * <b>dot</b> (default)
 * <b>fdp</b>
+* <b>sfdp</b>
 * <b>neato</b>
 * <b>osage</b>
 * <b>patchwork</b>
 * <b>twopi</b>
-
-<b>sfdp</b> is currently not supported.
 
 <a name="graphviz_onerror" href="#graphviz_onerror">#</a> <i>graphviz</i>.<b>onerror</b>(<i>callback</i>) [<>](https://github.com/magjac/d3-graphviz/blob/master/src/onerror.js "Source")
 

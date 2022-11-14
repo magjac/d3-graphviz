@@ -13,7 +13,7 @@ async function do_test(useWorker) {
     }
     global.Worker = Worker;
 
-    var graphviz = d3_graphviz("#graph", useWorker);
+    var graphviz = d3_graphviz("#graph", {useWorker});
     await new Promise(resolve => {
         graphviz.on('initEnd', resolve);
     });
@@ -59,7 +59,6 @@ async function do_test(useWorker) {
     }
 
     global.Worker = undefined;
-    resolve();
 }
 
 let html = `
