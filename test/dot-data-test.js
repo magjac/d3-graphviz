@@ -3,7 +3,6 @@ var jsdom = require("./jsdom");
 var deepEqualData = require("./deepEqualData");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
-var stringify = require('json-stringify-safe');
 
 tape("data extraction", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
