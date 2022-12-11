@@ -4,12 +4,8 @@ var d3 = require("d3-selection");
 var d3_transition = require("d3-transition");
 var d3_graphviz = require("../");
 var Worker = require("tiny-worker");
-var hpccWasm = require("@hpcc-js/wasm");
 
 tape("graphviz().render() adds and removes SVG elements after transition delay.", function(test) {
-
-    var savedGraphviz = hpccWasm.graphviz
-    delete hpccWasm.graphviz;
 
     function transition_test_init() {
         var window = global.window = jsdom(
@@ -98,7 +94,6 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
             } else {
                 graphviz._worker.terminate();
                 global.Worker = undefined;
-                hpccWasm.graphviz = savedGraphviz;
                 test.end();
             }
         }
