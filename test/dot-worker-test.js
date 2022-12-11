@@ -3,7 +3,6 @@ var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 var Worker = require("tiny-worker");
-var hpccWasm = require("@hpcc-js/wasm");
 
 tape("dot() performs layout in a web worker in the background.", function(test) {
 
@@ -13,8 +12,6 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
             <div id="graph"></div>
             `,
     );
-    var savedGraphviz = hpccWasm.graphviz
-    delete hpccWasm.graphviz;
 
     var document = global.document = window.document;
     var Blob = global.Blob = function (jsarray) {
@@ -71,7 +68,6 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
     function part2() {
         graphviz._worker.terminate();
         global.Worker = undefined;
-        hpccWasm.graphviz = savedGraphviz;
         test.end();
     }
 });
