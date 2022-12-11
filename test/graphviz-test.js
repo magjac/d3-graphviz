@@ -28,8 +28,8 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", function(test) {
 <!-- a&#45;&gt;b -->
 <g id="edge1" class="edge">
 <title>a-&gt;b</title>
-<path fill="none" stroke="black" d="M27,-71.7C27,-63.98 27,-54.71 27,-46.11"></path>
-<polygon fill="black" stroke="black" points="30.5,-46.1 27,-36.1 23.5,-46.1 30.5,-46.1"></polygon>
+<path fill="none" stroke="black" d="M27,-71.7C27,-64.41 27,-55.73 27,-47.54"></path>
+<polygon fill="black" stroke="black" points="30.5,-47.62 27,-37.62 23.5,-47.62 30.5,-47.62"></polygon>
 </g>
 </g>
 </svg>`;

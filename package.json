@@ -1,6 +1,6 @@
 {
   "name": "d3-graphviz",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "description": "Graphviz DOT rendering and animated transitions for D3",
   "keywords": [
     "d3",
@@ -63,7 +63,7 @@
     "tiny-worker": "^2.1.2"
   },
   "dependencies": {
-    "@hpcc-js/wasm": "1.16.1",
+    "@hpcc-js/wasm": "1.16.6",
     "d3-dispatch": "^2.0.0",
     "d3-format": "^2.0.0",
     "d3-interpolate": "^2.0.1",
