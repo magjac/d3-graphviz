@@ -13,7 +13,7 @@
     "Viz.js"
   ],
   "license": "BSD-3-Clause",
-  "main": "build/d3-graphviz.js",
+  "main": "build/d3-graphviz.cjs",
   "jsnext:main": "index",
   "homepage": "https://github.com/magjac/d3-graphviz",
   "repository": {
@@ -24,7 +24,7 @@
     "build": "rm -rf build && mkdir build && rollup -c",
     "pretest": "npm run build",
     "test": "env TESTRUNNER='c8 --reporter=text mocha' npm run do-test",
-    "do-test": "mkdir -p http:; ln -nsf .. http://dummyhost; $TESTRUNNER 'test/**/*-test.js'",
+    "do-test": "mkdir -p http:; ln -nsf .. http://dummyhost; $TESTRUNNER 'test/**/*-test.js' 'test/**/*-test.cjs'",
     "report": "c8 report --reporter=lcov",
     "coverage": "c8 report --reporter=text-lcov > coverage.lcov && codecov",
     "prepublishOnly": "env NODE_ENV=production npm run build && terser build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
