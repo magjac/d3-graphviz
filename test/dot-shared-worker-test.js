@@ -3,8 +3,6 @@ var jsdom = require("./jsdom");
 var d3 = require("d3-selection");
 var d3_graphviz = require("../");
 var SharedWorker = require("./polyfill_SharedWorker");
-var hpccWasm = require("@hpcc-js/wasm");
-
 tape("dot() performs layout in a web worker in the background.", function(test) {
 
     var window = global.window = jsdom(
@@ -13,8 +11,6 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
             <div id="graph"></div>
             `,
     );
-    var savedGraphviz = hpccWasm.graphviz
-    delete hpccWasm.graphviz;
 
     var document = global.document = window.document;
     global.SharedWorker = SharedWorker;
@@ -65,7 +61,6 @@ tape("dot() performs layout in a web worker in the background.", function(test) 
     function part2() {
         graphviz._workerPortClose(),
         global.SharedWorker = undefined;
-        hpccWasm.graphviz = savedGraphviz;
         test.end();
     }
 });
