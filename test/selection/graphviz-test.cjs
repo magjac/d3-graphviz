@@ -1,4 +1,4 @@
-var tape = require("tape"),
+var tape = require("../tape.cjs"),
     jsdom = require("../jsdom.cjs"),
     d3_selection = require("d3-selection"),
     d3_graphviz = require("../../");

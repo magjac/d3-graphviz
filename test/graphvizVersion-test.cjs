@@ -1,4 +1,4 @@
-var tape = require("tape");
+var tape = require("./tape.cjs");
 var d3_graphviz = require("../");
 
 tape("graphviz().graphvizVersion() return the Graphviz version.", function(test) {
