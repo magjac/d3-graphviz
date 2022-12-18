@@ -15,10 +15,13 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
     ];
     const nCheckPoints = 8;
     const nItemsPerCheckPoint = 4;
-    test.plan(keyModes.length * nCheckPoints * nItemsPerCheckPoint);
+    const nRenderings = nCheckPoints * nItemsPerCheckPoint;
+    const expected_num_assertion = keyModes.length * nRenderings;
     var delay = 500;
     var duration = 500;
     var keyModeIndex = 0;
+    var num_assertions = 0;
+
     renderKeyMode();
 
     function renderKeyMode() {
@@ -92,6 +95,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
             var count = counts[name];
             const objectName = name.replace('.', '');
             test.equal(d3.select('#graph-' + keyMode).selectAll(name).size(), count, 'Number of ' + objectName + 's is ' + count + ' ' + state + ' transition with keyMode ' + keyMode);
+            ++num_assertions;
         }
     }
 
@@ -166,6 +170,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
     }
 
     function endTest() {
+        test.equal(num_assertions, expected_num_assertion);
         test.end();
     }
 
