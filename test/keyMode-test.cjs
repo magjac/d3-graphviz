@@ -21,6 +21,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
     var duration = 500;
     var keyModeIndex = 0;
     var num_assertions = 0;
+    test.timeoutAfter(2000 + keyModes.length * nRenderings * (delay + duration));
 
     renderKeyMode();
 
