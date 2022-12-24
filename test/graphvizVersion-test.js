@@ -1,6 +1,6 @@
-var jsdom = require("./jsdom.cjs");
-var tape = require("./tape.cjs");
-var d3_graphviz = require("../");
+import jsdom from "./jsdom.js";
+import tape from "./tape.js";
+import * as d3_graphviz from "../index.js";
 
 tape("graphviz().graphvizVersion() return the Graphviz version.", function (test) {
     global.window = jsdom('<div id="graph"></div>');
