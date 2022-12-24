@@ -1,8 +1,8 @@
-var tape = require("./tape.cjs");
-var jsdom = require("./jsdom.cjs");
-var d3 = require("d3-selection");
-var d3_transition = require("d3-transition");
-var d3_graphviz = require("../");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3 from "d3-selection";
+import * as d3_transition from "d3-transition";
+import * as d3_graphviz from "../index.js";
 
 tape("graphviz().keyMode() affects transitions and order of rendering.", function(test) {
     var window = global.window = jsdom('<div id="main"></div>');
