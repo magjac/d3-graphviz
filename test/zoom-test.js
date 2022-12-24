@@ -1,9 +1,9 @@
-var tape = require("./tape.cjs");
-var jsdom = require("./jsdom.cjs");
-var d3_graphviz = require("../");
-var d3_transition = require("d3-transition");
-var d3_zoom = require("d3-zoom");
-var d3_selection = require("d3-selection");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3_graphviz from "../index.js";
+import * as d3_transition from "d3-transition";
+import * as d3_zoom from "d3-zoom";
+import * as d3_selection from "d3-selection";
 
 tape("zoom(false) disables zooming.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
