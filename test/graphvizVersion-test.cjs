@@ -1,7 +1,10 @@
+var jsdom = require("./jsdom.cjs");
 var tape = require("./tape.cjs");
 var d3_graphviz = require("../");
 
-tape("graphviz().graphvizVersion() return the Graphviz version.", function(test) {
+tape("graphviz().graphvizVersion() return the Graphviz version.", function (test) {
+    global.window = jsdom('<div id="graph"></div>');
+    global.document = window.document;
 
     var graphviz = d3_graphviz.graphviz("#graph")
         .on("initEnd", startTest);
