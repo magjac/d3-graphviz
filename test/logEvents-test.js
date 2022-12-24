@@ -1,7 +1,7 @@
-var tape = require("./tape.cjs");
-var jsdom = require("./jsdom.cjs");
-var d3_graphviz = require("../");
-var d3_transition = require("d3-transition");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3_graphviz from "../index.js";
+import * as d3_transition from "d3-transition";
 
 tape("logEvents enables and disables event logging.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
