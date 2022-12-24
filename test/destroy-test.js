@@ -1,7 +1,7 @@
-var tape = require("./tape.cjs"),
-    jsdom = require("./jsdom.cjs"),
-    d3 = require("d3-selection"),
-    d3_graphviz = require("../");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3 from "d3-selection";
+import * as d3_graphviz from "../index.js";
 
 tape(".destroy() deletes the Graphviz instance from the container element", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
