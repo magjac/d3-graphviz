@@ -1,7 +1,7 @@
-var tape = require("./tape.cjs");
-var jsdom = require("./jsdom.cjs");
-var d3_graphviz = require("../");
-var d3_selection = require("d3-selection");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3_graphviz from "../index.js";
+import * as d3_selection from "d3-selection";
 
 tape("engine() selects which graphviz layout engine to use.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
