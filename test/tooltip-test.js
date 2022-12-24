@@ -1,8 +1,8 @@
-var tape = require("./tape.cjs"),
-    jsdom = require("./jsdom.cjs"),
-    d3 = require("d3-selection"),
-    d3_transition = require("d3-transition"),
-    d3_graphviz = require("../");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3 from "d3-selection";
+import * as d3_transition from "d3-transition";
+import * as d3_graphviz from "../index.js";
 
 tape("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');
