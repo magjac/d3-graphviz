@@ -24,9 +24,9 @@ tape("Verify that polygon shape is drawn exactly as Graphviz does.", function(te
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph", {useSharedWorker: true})
         .on('initEnd', () => {
-            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+            actualGraphviz = d3_graphviz.graphviz("#actual-graph", {useSharedWorker: true})
                 .on('initEnd', startTest);
         });
 
