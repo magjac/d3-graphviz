@@ -1,7 +1,7 @@
-var tape = require("./tape.cjs");
-var jsdom = require("./jsdom.cjs");
-var d3_graphviz = require("../");
-var Worker = require("tiny-worker");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3_graphviz from "../index.js";
+import Worker from "tiny-worker";
 
 tape("graphviz().graphvizVersion() returns the Graphviz version.", function (test) {
 
