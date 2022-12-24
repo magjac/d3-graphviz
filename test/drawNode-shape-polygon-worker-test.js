@@ -1,10 +1,10 @@
-var tape = require("./tape.cjs");
-var jsdom = require("./jsdom.cjs");
-var deepEqualData = require("./deepEqualData.cjs");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
-var translatePointsAttribute = require("./svg.cjs").translatePointsAttribute;
-var SharedWorker = require("./polyfill_SharedWorker.cjs");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import deepEqualData from "./deepEqualData.js";
+import * as d3 from "d3-selection";
+import * as d3_graphviz from "../index.js";
+import {translatePointsAttribute} from "../src/svg.js";
+import SharedWorker from "./polyfill_SharedWorker.js";
 
 tape("Verify that polygon shape is drawn exactly as Graphviz does.", function(test) {
     var window = global.window = jsdom(
