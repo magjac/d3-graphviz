@@ -142,10 +142,10 @@ function startApp() {
     var edges = d3.selectAll(".edge");
 
     // click outside of nodes
-    d3.select(document).on("click", function(event) {
+    d3.select(document).on("click mousedown", function(event) {
         event.preventDefault();
         event.stopPropagation();
-        console.log('document click');
+        console.log('document click or mousedown');
         unSelectEdge();
         if (event.which == 2) {
             var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
