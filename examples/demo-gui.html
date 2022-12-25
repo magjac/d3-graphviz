@@ -142,8 +142,7 @@ function startApp() {
     var edges = d3.selectAll(".edge");
 
     // click outside of nodes
-    d3.select(document).on("click", function() {
-        var event = d3.event;
+    d3.select(document).on("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
         console.log('document click');
@@ -152,7 +151,7 @@ function startApp() {
             var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
             var width = 54;
             var height = 36;
-            var [x0, y0] = d3.mouse(graph0.node());
+            var [x0, y0] = d3.pointer(event, graph0.node());
             var x1 = x0 - width / 2;
             var x2 = x0 + width / 2;
             var y1 = y0 - height / 2;
@@ -181,8 +180,7 @@ function startApp() {
     });
 
     // keyup outside of nodes
-    d3.select(document).on("keyup", function() {
-        var event = d3.event;
+    d3.select(document).on("keyup", function(event) {
         event.preventDefault();
         console.log('document keyup', event);
         if (event.keyCode == 27) {
@@ -199,13 +197,12 @@ function startApp() {
     });
 
     // move
-    d3.select(document).on("mousemove", function() {
-        var event = d3.event;
+    d3.select(document).on("mousemove", function(event) {
         event.preventDefault();
         event.stopPropagation();
         console.log('document mousemove');
         var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
-        var [x0, y0] = d3.mouse(graph0.node());
+        var [x0, y0] = d3.pointer(event, graph0.node());
         var shortening = 2; // avoid mouse pointing on edge
         if (isDrawingEdge) {
             graphviz
@@ -214,8 +211,7 @@ function startApp() {
     });
 
     // click and mousedown on nodes
-    nodes.on("click mousedown", function() {
-        var event = d3.event;
+    nodes.on("click mousedown", function(event) {
         event.preventDefault();
         console.log('node click or mousedown');
         if (!isDrawingEdge && event.which == 1) {
@@ -225,8 +221,7 @@ function startApp() {
     });
 
     // double-click on nodes
-    nodes.on("dblclick", function() {
-        var event = d3.event;
+    nodes.on("dblclick", function(event) {
         event.preventDefault();
         event.stopPropagation();
         console.log('node dblclick');
@@ -249,8 +244,7 @@ function startApp() {
     });
 
     // right-click on nodes
-    nodes.on("contextmenu", function() {
-        var event = d3.event;
+    nodes.on("contextmenu", function(event) {
         event.preventDefault();
         event.stopPropagation();
         console.log('node contextmenu');
@@ -259,7 +253,7 @@ function startApp() {
         graphviz.removeDrawnEdge();
         startNode = d3.select(this);
         var graph0 = d3.select("#graph").selectWithoutDataPropagation("svg").selectWithoutDataPropagation("g");
-        var [x0, y0] = d3.mouse(graph0.node());
+        var [x0, y0] = d3.pointer(event, graph0.node());
             if (edgeIndex == null) {
                 edgeIndex = d3.selectAll('.edge').size();
             } else {
@@ -274,8 +268,7 @@ function startApp() {
     });
 
     // click and mousedown on edges
-    edges.on("click mousedown", function() {
-        var event = d3.event;
+    edges.on("click mousedown", function(event) {
         event.preventDefault();
         event.stopPropagation();
         console.log('node click or mousedown');
@@ -284,8 +277,7 @@ function startApp() {
     });
 
     // right-click outside of nodes
-    d3.select(document).on("contextmenu", function() {
-        var event = d3.event;
+    d3.select(document).on("contextmenu", function(event) {
         event.preventDefault();
         event.stopPropagation();
         console.log('document contextmenu');
