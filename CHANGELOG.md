@@ -22,7 +22,7 @@ issue](https://github.com/d3/d3/issues/3469).
   7](https://github.com/d3/d3/blob/main/CHANGES.md#changes-in-d3-70)
   (version 3 of its
   [microlibraries](https://github.com/d3/d3#installing)).
-* Upgrade @hpcc-js/wasm to 2.1.1 (Graphviz unchanged at 7.0.1)
+* Upgrade @hpcc-js/wasm to 2.5.0 (Graphviz 7.0.5)
 
 ## [4.5.0]
 
