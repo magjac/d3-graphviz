@@ -5,7 +5,7 @@ export default [
     {
         input: 'index.js',
         output: {
-            file: 'build/d3-graphviz.cjs',
+            file: 'build/d3-graphviz.js',
             format: 'umd',
             name: 'd3-graphviz',
             sourcemap: true,
