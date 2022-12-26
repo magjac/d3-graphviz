@@ -5,17 +5,21 @@ import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 import {translatePointsAttribute} from "../src/svg.js"
 
-tape("No edge is drawn when style is invis.", function(test) {
+tape("No edge is drawn when style is invis.", async function (test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+    var expectedGraphviz;
+    await new Promise((resolve) => {
+        expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
         .on('initEnd', () => {
             actualGraphviz = d3_graphviz.graphviz("#actual-graph")
-                .on('initEnd', startTest);
+                .on('initEnd', resolve);
         });
+    });
+    startTest();
 
     function startTest() {
         expectedGraphviz
@@ -44,17 +48,21 @@ tape("No edge is drawn when style is invis.", function(test) {
     }
 });
 
-tape("Updating of an edge with style invis is ignored.", function(test) {
+tape("Updating of an edge with style invis is ignored.", async function (test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+    var expectedGraphviz;
+    await new Promise((resolve) => {
+        expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
         .on('initEnd', () => {
             actualGraphviz = d3_graphviz.graphviz("#actual-graph")
-                .on('initEnd', startTest);
+                .on('initEnd', resolve);
         });
+    });
+    startTest();
 
     function startTest() {
         expectedGraphviz
@@ -84,17 +92,21 @@ tape("Updating of an edge with style invis is ignored.", function(test) {
     }
 });
 
-tape("Moving an edge with style invis is ignored.", function(test) {
+tape("Moving an edge with style invis is ignored.", async function (test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+    var expectedGraphviz;
+    await new Promise((resolve) => {
+        expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
         .on('initEnd', () => {
             actualGraphviz = d3_graphviz.graphviz("#actual-graph")
-                .on('initEnd', startTest);
+                .on('initEnd', resolve);
         });
+    });
+    startTest();
 
     function startTest() {
         expectedGraphviz
@@ -124,18 +136,22 @@ tape("Moving an edge with style invis is ignored.", function(test) {
     }
 });
 
-tape("Removal of an edge with style invis is allowed.", function(test) {
+tape("Removal of an edge with style invis is allowed.", async function (test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+    var expectedGraphviz;
+    await new Promise((resolve) => {
+        expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
         .on('initEnd', () => {
             actualGraphviz = d3_graphviz.graphviz("#actual-graph")
-                .on('initEnd', startTest);
+                .on('initEnd', resolve);
         });
+    });
+    startTest();
 
     function startTest() {
         expectedGraphviz
@@ -164,17 +180,21 @@ tape("Removal of an edge with style invis is allowed.", function(test) {
     }
 });
 
-tape("Changing an edge with style invis to a visible edge is allowed.", function(test) {
+tape("Changing an edge with style invis to a visible edge is allowed.", async function (test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+    var expectedGraphviz;
+    await new Promise((resolve) => {
+        expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
         .on('initEnd', () => {
             actualGraphviz = d3_graphviz.graphviz("#actual-graph")
-                .on('initEnd', startTest);
+                .on('initEnd', resolve);
         });
+    });
+    startTest();
 
     function startTest() {
         expectedGraphviz
