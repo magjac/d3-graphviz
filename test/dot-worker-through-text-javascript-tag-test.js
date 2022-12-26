@@ -1,8 +1,8 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
-var Worker = require("tiny-worker");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3 from "d3-selection";
+import * as d3_graphviz from "../index.js";
+import Worker from "tiny-worker";
 
 tape("dot() performs layout in a web worker in the background with text/javascript tag.", function(test) {
 
@@ -24,7 +24,6 @@ tape("dot() performs layout in a web worker in the background with text/javascri
     var graphviz = d3_graphviz.graphviz("#graph");
 
     graphviz
-        .logEvents(true)
         .on("initEnd", function () {
             part1();
         });

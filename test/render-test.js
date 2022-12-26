@@ -1,8 +1,8 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3 = require("d3-selection");
-var d3_transition = require("d3-transition");
-var d3_graphviz = require("../");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3 from "d3-selection";
+import * as d3_transition from "d3-transition";
+import * as d3_graphviz from "../index.js";
 
 tape("graphviz().render() adds and removes SVG elements after transition delay.", function(test) {
 

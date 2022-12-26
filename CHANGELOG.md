@@ -6,6 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+**Note:** This release contains breaking changes compared to version 4.5.0.
+
+### Changed
+
+* Like [D3
+v7](https://github.com/d3/d3/blob/main/CHANGES.md#changes-in-d3-70),
+d3-graphviz now ships as a pure ES module and requires Node.js 14 or
+higher. This is a **breaking change**. For more, please read [Sindre
+Sorhus’s
+FAQ](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c). For
+background and details, see [this D3
+issue](https://github.com/d3/d3/issues/3469).
+* Upgrade to [D3 version
+  7](https://github.com/d3/d3/blob/main/CHANGES.md#changes-in-d3-70)
+  (version 3 of its
+  [microlibraries](https://github.com/d3/d3#installing)).
+* Upgrade @hpcc-js/wasm to 2.1.1 (Graphviz unchanged at 7.0.1)
+
 ## [4.5.0]
 
 ### Changed

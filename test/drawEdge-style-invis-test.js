@@ -1,9 +1,9 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var deepEqualData = require("./deepEqualData");
-var d3 = require("d3-selection");
-var d3_graphviz = require("../");
-var translatePointsAttribute = require("./svg").translatePointsAttribute;
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import deepEqualData from "./deepEqualData.js";
+import * as d3 from "d3-selection";
+import * as d3_graphviz from "../index.js";
+import {translatePointsAttribute} from "../src/svg.js"
 
 tape("No edge is drawn when style is invis.", function(test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');

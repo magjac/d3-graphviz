@@ -1,8 +1,8 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3 = require("d3-selection");
-var d3_transition = require("d3-transition");
-var d3_graphviz = require("../");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3 from "d3-selection";
+import * as d3_transition from "d3-transition";
+import * as d3_graphviz from "../index.js";
 
 tape("graphviz().keyMode() affects transitions and order of rendering.", function(test) {
     var window = global.window = jsdom('<div id="main"></div>');
@@ -15,10 +15,14 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
     ];
     const nCheckPoints = 8;
     const nItemsPerCheckPoint = 4;
-    test.plan(keyModes.length * nCheckPoints * nItemsPerCheckPoint);
+    const nRenderings = nCheckPoints * nItemsPerCheckPoint;
+    const expected_num_assertion = keyModes.length * nRenderings;
     var delay = 500;
     var duration = 500;
     var keyModeIndex = 0;
+    var num_assertions = 0;
+    test.timeoutAfter(2000 + keyModes.length * nRenderings * (delay + duration));
+
     renderKeyMode();
 
     function renderKeyMode() {
@@ -92,6 +96,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
             var count = counts[name];
             const objectName = name.replace('.', '');
             test.equal(d3.select('#graph-' + keyMode).selectAll(name).size(), count, 'Number of ' + objectName + 's is ' + count + ' ' + state + ' transition with keyMode ' + keyMode);
+            ++num_assertions;
         }
     }
 
@@ -166,6 +171,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
     }
 
     function endTest() {
+        test.equal(num_assertions, expected_num_assertion);
         test.end();
     }
 

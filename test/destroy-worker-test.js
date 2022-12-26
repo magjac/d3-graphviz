@@ -1,8 +1,8 @@
-var tape = require("tape"),
-    jsdom = require("./jsdom"),
-    d3 = require("d3-selection"),
-    d3_graphviz = require("../");
-const Worker = require("tiny-worker");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3 from "d3-selection";
+import * as d3_graphviz from "../index.js";
+import Worker from "tiny-worker";
 
 tape(".destroy() deletes the Graphviz instance from the container element (worker version)", function (test) {
     var window = global.window = jsdom(
@@ -26,10 +26,10 @@ tape(".destroy() deletes the Graphviz instance from the container element (worke
     function destroy() {
 
         test.notEqual(d3.select("#graph").node().__graphviz__, undefined,
-                       'Renderer instance shall exist before destoy');
+                       'Renderer instance shall exist before destroy');
         graphviz.destroy();
         test.equal(d3.select("#graph").node().__graphviz__, undefined,
-                       'Renderer instance shall not exist after destoy');
+                       'Renderer instance shall not exist after destroy');
 
         graphviz._workerPortClose();
         global.Worker = undefined;

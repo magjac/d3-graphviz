@@ -1,25 +1,18 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3 = require("d3-selection");
-var d3_transition = require("d3-transition");
-var d3_graphviz = require("../");
-var Worker = require("tiny-worker");
-var hpccWasm = require("@hpcc-js/wasm");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3 from "d3-selection";
+import * as d3_transition from "d3-transition";
+import * as d3_graphviz from "../index.js";
+import Worker from "tiny-worker";
 
 tape("graphviz().render() adds and removes SVG elements after transition delay.", function(test) {
-
-    var savedGraphviz = hpccWasm.graphviz
-    delete hpccWasm.graphviz;
 
     function transition_test_init() {
         var window = global.window = jsdom(
             `
-                <script src="test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
+                <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
                 <div id="graph"></div>
                 `,
-            {
-                url: "http:dummyhost",
-            },
         );
         var document = global.document = window.document;
         var Blob = global.Blob = function (jsarray) {
@@ -101,7 +94,6 @@ tape("graphviz().render() adds and removes SVG elements after transition delay."
             } else {
                 graphviz._worker.terminate();
                 global.Worker = undefined;
-                hpccWasm.graphviz = savedGraphviz;
                 test.end();
             }
         }

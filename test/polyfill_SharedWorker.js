@@ -1,4 +1,4 @@
-const Worker = require("tiny-worker");
+import Worker from "tiny-worker";
 
 function workerCodeWrapperTemplate () {
     self.port = {
@@ -25,7 +25,7 @@ function workerCodeWrapperTemplate () {
 
 }
 
-module.exports = class {
+export default class {
     constructor(url) {
         const workerCodeString = Buffer.from(
             url.replace(/^data:application\/javascript;base64,/, ''),

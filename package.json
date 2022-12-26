@@ -13,7 +13,9 @@
     "Viz.js"
   ],
   "license": "BSD-3-Clause",
-  "main": "build/d3-graphviz.js",
+  "main": "build/d3-graphviz.cjs",
+  "type": "module",
+  "exports": "./src/index.js",
   "jsnext:main": "index",
   "homepage": "https://github.com/magjac/d3-graphviz",
   "repository": {
@@ -23,56 +25,62 @@
   "scripts": {
     "build": "rm -rf build && mkdir build && rollup -c",
     "pretest": "npm run build",
-    "test": "env TESTRUNNER='nyc tape' npm run do-test",
-    "do-test": "mkdir -p http:; ln -nsf .. http://dummyhost; $TESTRUNNER 'test/**/*-test.js'",
-    "report": "nyc report --reporter=lcov",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "test": "env TESTRUNNER='c8 --reporter=text mocha' npm run do-test",
+    "do-test": "mkdir -p http:; ln -nsf .. http://dummyhost; $TESTRUNNER 'test/**/*-test.js' 'test/**/*-test.cjs'",
+    "report": "c8 report --reporter=lcov",
+    "coverage": "c8 report --reporter=text-lcov > coverage.lcov && codecov",
     "prepublishOnly": "env NODE_ENV=production npm run build && terser build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
-    "prepublishOnlyOriginal": "env NODE_ENV=production npm run build && TESTRUNNER='tape' npm run do-test && terser build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
+    "prepublishOnlyOriginal": "env NODE_ENV=production npm run build && TESTRUNNER='mocha' npm run do-test && terser build/d3-graphviz.js -c -m -o build/d3-graphviz.min.js",
     "publicbuild": "env NODE_ENV=production npm run build",
     "postpublish": "zip -j build/d3-graphviz.zip -- LICENSE README.md build/d3-graphviz.js build/d3-graphviz.min.js"
   },
-  "nyc": {
+  "engines": {
+    "node": ">=14"
+  },
+  "c8": {
+    "exclude": "test",
+    "exclude-after-remap": true,
     "check-coverage": true,
-    "statements": 99.9,
-    "branches": 99.7,
+    "statements": 100,
+    "branches": 100,
     "functions": 100,
-    "lines": 99.9,
+    "lines": 100,
     "reporter": [
       "text-summary"
     ],
-    "cache": true,
     "report-dir": "./alternative"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.10",
+    "@babel/core": "^7.20.5",
     "@babel/preset-env": "^7.13.12",
     "@babel/register": "^7.13.8",
-    "@rollup/plugin-node-resolve": "^11.2.1",
+    "@rollup/plugin-alias": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^14.1.0",
     "ace-builds": "^1.4.12",
+    "c8": "^7.12.0",
     "codecov": "^3.8.1",
-    "d3": "^6.6.1",
-    "jsdom": "^16.5.2",
-    "json-stringify-safe": "^5.0.1",
+    "d3": "^7.8.0",
+    "deep-equal": "^2.1.0",
+    "jsdom": "^16.6.0",
     "marked": "^4.0.12",
-    "nyc": "^15.1.0",
+    "mocha": "^10.0.0",
     "rollup": "^2.43.1",
     "rollup-plugin-babel": "^4.4.0",
-    "tape": "^5.2.2",
     "terser": "^5.6.1",
     "tiny-worker": "^2.1.2"
   },
   "dependencies": {
-    "@hpcc-js/wasm": "1.16.6",
-    "d3-dispatch": "^2.0.0",
-    "d3-format": "^2.0.0",
-    "d3-interpolate": "^2.0.1",
-    "d3-path": "^2.0.0",
-    "d3-timer": "^2.0.0",
-    "d3-transition": "^2.0.0",
-    "d3-zoom": "^2.0.0"
+    "@hpcc-js/wasm": "2.1.1",
+    "d3-dispatch": "^3.0.1",
+    "d3-format": "^3.1.0",
+    "d3-interpolate": "^3.0.1",
+    "d3-path": "^3.1.0",
+    "d3-timer": "^3.0.1",
+    "d3-transition": "^3.0.1",
+    "d3-zoom": "^3.0.0"
   },
   "peerDependencies": {
-    "d3-selection": "^2.0.0"
+    "d3-selection": "^3.0.0"
   }
 }

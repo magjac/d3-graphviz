@@ -1,2 +1,2 @@
-import "./src/selection/index";
-export {default as graphviz} from "./src/graphviz";
+import "./src/selection/index.js";
+export {default as graphviz} from "./src/graphviz.js";

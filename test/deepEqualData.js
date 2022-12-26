@@ -1,13 +1,14 @@
-var deepEqual = require('deep-equal');
+import assert from "assert";
+import deepEqual from 'deep-equal';
 
-module.exports = function (test, actualData, expectedData, message) {
+export default function (test, actualData, expectedData, message) {
 
     function parseData(parent) {
 
         for (let i in parent.children) {
             const child = parent.children[i]
             if (typeof child.parent != 'string') {
-                test.equal(parent, child.parent,
+                assert.equal(parent, child.parent,
                            'Parent of "' + child.tag + '" "' + child.id + '" is "' +
                            parent.tag + '" "' + parent.id + '"');
             }
@@ -26,6 +27,6 @@ module.exports = function (test, actualData, expectedData, message) {
         console.log(JSON.stringify(expectedData, null, 4));
     }
 
-    test.deepLooseEqual(expectedData, actualData, message);
+    assert.deepEqual(expectedData, actualData, message);
 
 }

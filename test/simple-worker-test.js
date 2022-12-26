@@ -1,8 +1,8 @@
-var tape = require("tape"),
-    jsdom = require("./jsdom"),
-    d3 = require("d3-selection"),
-    d3_graphviz = require("../");
-var Worker = require("tiny-worker");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3 from "d3-selection";
+import * as d3_graphviz from "../index.js";
+import Worker from "tiny-worker";
 
 tape("Simple rendering an SVG from graphviz DOT.", function(test) {
     var window = global.window = jsdom(

@@ -1,6 +1,6 @@
-var tape = require("tape");
-var jsdom = require("./jsdom");
-var d3_graphviz = require("../");
+import tape from "./tape.js";
+import jsdom from "./jsdom.js";
+import * as d3_graphviz from "../index.js";
 
 tape("The attributer is called during rendering.", function(test) {
     var window = global.window = jsdom('<div id="graph"></div>');

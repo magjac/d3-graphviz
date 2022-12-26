@@ -1,9 +1,9 @@
 import * as d3 from "d3-selection";
 import {path as d3_path} from "d3-path";
-import {rotate} from "./geometry";
-import {extractAllElementsData} from "./element";
-import {attributeElement} from "./element";
-import {insertAllElementsData} from "./element";
+import {rotate} from "./geometry.js";
+import {extractAllElementsData} from "./element.js";
+import {attributeElement} from "./element.js";
+import {insertAllElementsData} from "./element.js";
 
 export function drawEdge(x1, y1, x2, y2, attributes, options={}) {
     attributes = Object.assign({}, attributes);

@@ -1,9 +1,8 @@
-var jsdom = require("jsdom");
-require("./polyfill_fetch");
-require("./polyfill_btoa");
-require("./polyfill_navigator");
+import jsdom from "jsdom";
+import "./polyfill_btoa.js";
+import "./polyfill_navigator.js";
 
-module.exports = function(html, options) {
+export default function jsdomit(html, options) {
     var dom = new jsdom.JSDOM(html, options);
     var window = dom.window;
 

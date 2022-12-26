@@ -1,7 +1,7 @@
-var tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_selection = require("d3-selection"),
-    d3_graphviz = require("../../");
+import tape from "../tape.js";
+import jsdom from "../jsdom.js";
+import * as d3_selection from "d3-selection";
+import * as d3_graphviz from "../../index.js";
 
 tape("selection.selectWithoutDataPropagation() selects without propagating data", function(test) {
     var window = global.window = jsdom('<div id="parent"><div id="child1"></div><div id="child2"></div></div>');

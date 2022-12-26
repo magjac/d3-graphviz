@@ -1,11 +1,11 @@
 import * as d3 from "d3-selection";
-import {rotate} from "./geometry";
-import {extractAllElementsData} from "./element";
-import {translatePointsAttribute} from "./svg";
-import {translateDAttribute} from "./svg";
-import {insertAllElementsData} from "./element";
-import {attributeElement} from "./element";
-import {roundTo2Decimals} from "./utils";
+import {rotate} from "./geometry.js";
+import {extractAllElementsData} from "./element.js";
+import {translatePointsAttribute} from "./svg.js";
+import {translateDAttribute} from "./svg.js";
+import {insertAllElementsData} from "./element.js";
+import {attributeElement} from "./element.js";
+import {roundTo2Decimals} from "./utils.js";
 
 export function drawNode(x, y, nodeId, attributes={}, options={}) {
     attributes = Object.assign({}, attributes);

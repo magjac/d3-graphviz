@@ -1,30 +1,38 @@
-import { graphviz } from "@hpcc-js/wasm";
-import { graphvizSync } from "@hpcc-js/wasm";
+import { Graphviz } from "@hpcc-js/wasm/graphviz";
 import * as d3 from "d3-selection";
-import {extractAllElementsData, extractElementData, createElementWithAttributes} from "./element";
-import {convertToPathData} from "./svg";
-import {pathTweenPoints} from "./tweening";
-import {isEdgeElement} from "./data";
-import {getEdgeTitle} from "./data";
+import {extractAllElementsData, extractElementData, createElementWithAttributes} from "./element.js";
+import {convertToPathData} from "./svg.js";
+import {pathTweenPoints} from "./tweening.js";
+import {isEdgeElement} from "./data.js";
+import {getEdgeTitle} from "./data.js";
 
 
 export function initViz() {
 
     // force JIT compilation of @hpcc-js/wasm
     try {
-        graphviz.layout("", "svg", "dot").then(() => {
-            graphvizSync().then((graphviz1) => {
-                this.layoutSync = graphviz1.layout.bind(graphviz1);
-                if (this._worker == null) {
-                    this._dispatch.call("initEnd", this);
-                }
-                if (this._afterInit) {
-                    this._afterInit();
-                }
-            });
+        Graphviz.load().then(graphviz => {
+            graphviz.layout("", "svg", "dot");
+            this.layoutSync = graphviz.layout.bind(graphviz);
+            if (this._worker == null) {
+                this._dispatch.call("initEnd", this);
+            }
+            if (this._afterInit) {
+                this._afterInit();
+            }
         });
+// after the port to ESM modules, we don't know how to trigger this so
+// we just disable it from coverage
+/* c8 ignore start */
     } catch(error) {
+        // we end up here when the the script tag type used to load
+        // the "@hpcc-js/wasm" script is not "application/javascript"
+        // or "text/javascript", but typically "javascript/worker". In
+        // this case the browser does not load the script since it's
+        // unnecessary because it's loaded by the web worker
+        // instead. This is expected so we just ignore the error.
     }
+/* c8 ignore stop */
     if (this._worker != null) {
         var vizURL = this._vizURL;
         var graphvizInstance = this;

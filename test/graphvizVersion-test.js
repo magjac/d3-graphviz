@@ -1,7 +1,10 @@
-var tape = require("tape");
-var d3_graphviz = require("../");
+import jsdom from "./jsdom.js";
+import tape from "./tape.js";
+import * as d3_graphviz from "../index.js";
 
-tape("graphviz().graphvizVersion() return the Graphviz version.", function(test) {
+tape("graphviz().graphvizVersion() return the Graphviz version.", function (test) {
+    global.window = jsdom('<div id="graph"></div>');
+    global.document = window.document;
 
     var graphviz = d3_graphviz.graphviz("#graph")
         .on("initEnd", startTest);
