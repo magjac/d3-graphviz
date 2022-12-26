@@ -201,7 +201,7 @@ function startApp() {
     var edges = d3.selectAll(".edge");
 
     // click outside of nodes
-    d3.select(document).on("click", function(event) {
+    d3.select(document).on("click mousedown", function(event) {
         if (event.target.nodeName != 'svg' && event.target.parentElement.id != 'graph0') {
             return;
         }
