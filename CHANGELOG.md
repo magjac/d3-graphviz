@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.0]
+
 **Note:** This release contains breaking changes compared to version 4.5.0.
 
 ### Changed
@@ -154,7 +156,8 @@ issue](https://github.com/d3/d3/issues/3469).
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v4.5.0...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v5.0.0...HEAD
+[5.0.0]: https://github.com/magjac/d3-graphviz/compare/v4.5.0...v5.0.0
 [4.5.0]: https://github.com/magjac/d3-graphviz/compare/v4.4.0...v4.5.0
 [4.4.0]: https://github.com/magjac/d3-graphviz/compare/v4.3.0...v4.4.0
 [4.3.0]: https://github.com/magjac/d3-graphviz/compare/v4.2.0...v4.3.0
