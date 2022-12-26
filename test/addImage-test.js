@@ -3,12 +3,16 @@ import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-tape("graphviz().addImage() adds images to use in graph.", function(test) {
+tape("graphviz().addImage() adds images to use in graph.", async function (test) {
 
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
-        .on("initEnd", startTest);
+    var graphviz;
+    await new Promise((resolve) => {
+        graphviz = d3_graphviz.graphviz("#graph")
+            .on("initEnd", resolve);
+    });
+    startTest();
 
     function startTest() {
         graphviz
