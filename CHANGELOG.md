@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+*  Failed to resolve entry for package "d3-graphviz" #263
+
 ## [5.0.0] – 2022-12-26
 
 **Note:** This release contains breaking changes compared to version 4.5.0.
