@@ -14,7 +14,7 @@
   ],
   "license": "BSD-3-Clause",
   "type": "module",
-  "exports": "./src/index.js",
+  "exports": "./index.js",
   "jsnext:main": "index",
   "homepage": "https://github.com/magjac/d3-graphviz",
   "repository": {
