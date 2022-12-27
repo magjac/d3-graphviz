@@ -13,7 +13,6 @@
     "Viz.js"
   ],
   "license": "BSD-3-Clause",
-  "main": "build/d3-graphviz.cjs",
   "type": "module",
   "exports": "./src/index.js",
   "jsnext:main": "index",
