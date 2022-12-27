@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.1] – 2022-12-27
+
 ### Fixed
 *  Failed to resolve entry for package "d3-graphviz" #263
 
@@ -159,7 +161,8 @@ issue](https://github.com/d3/d3/issues/3469).
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v5.0.0...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v5.0.1...HEAD
+[5.0.1]: https://github.com/magjac/d3-graphviz/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/magjac/d3-graphviz/compare/v4.5.0...v5.0.0
 [4.5.0]: https://github.com/magjac/d3-graphviz/compare/v4.4.0...v4.5.0
 [4.4.0]: https://github.com/magjac/d3-graphviz/compare/v4.3.0...v4.4.0
