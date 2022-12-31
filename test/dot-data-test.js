@@ -4,30 +4,39 @@ import deepEqualData from "./deepEqualData.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-tape("data extraction", function(test) {
+tape("data extraction", async function (test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
-        .on('initEnd', () => {
-            graphviz
-                .zoom(false)
-                .dot('digraph {a -> b;}');
 
-            delete graphviz._data.parent;
+    var graphviz = d3_graphviz.graphviz("#graph");
+    await new Promise(resolve => {
+        graphviz
+            .on('initEnd', resolve);
+    });
 
-            var actualData = graphviz._data;
-            var expectedData = JSON.parse(JSON.stringify(basic_data))
+    await new Promise(resolve => {
+        graphviz
+            .zoom(false)
+            .dot('digraph {a -> b;}', resolve);
+    });
 
-            deepEqualData(actualData, expectedData, "Extracted data equals predefined data");
+    delete graphviz._data.parent;
 
-            graphviz.render();
-            var svg = d3.select('svg');
-            actualData = graphviz._extractData(svg, 0, null);
-            var expectedData = JSON.parse(JSON.stringify(basic_data));
-            deepEqualData(actualData, expectedData, "Explicitly extracted data equals predefined data");
+    var actualData = graphviz._data;
+    var expectedData = JSON.parse(JSON.stringify(basic_data))
 
-            test.end();
-        });
+    deepEqualData(actualData, expectedData, "Extracted data equals predefined data");
+
+    await new Promise(resolve => {
+        graphviz.render(resolve);
+    });
+
+    var svg = d3.select('svg');
+    actualData = graphviz._extractData(svg, 0, null);
+    var expectedData = JSON.parse(JSON.stringify(basic_data));
+    deepEqualData(actualData, expectedData, "Explicitly extracted data equals predefined data");
+
+    test.end();
 });
 
 var basic_data = {
