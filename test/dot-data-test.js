@@ -18,13 +18,13 @@ tape("data extraction", function(test) {
             var actualData = graphviz._data;
             var expectedData = JSON.parse(JSON.stringify(basic_data))
 
-            deepEqualData(test, actualData, expectedData, "Extracted data equals predefined data");
+            deepEqualData(actualData, expectedData, "Extracted data equals predefined data");
 
             graphviz.render();
             var svg = d3.select('svg');
             actualData = graphviz._extractData(svg, 0, null);
             var expectedData = JSON.parse(JSON.stringify(basic_data));
-            deepEqualData(test, actualData, expectedData, "Explicitly extracted data equals predefined data");
+            deepEqualData(actualData, expectedData, "Explicitly extracted data equals predefined data");
 
             test.end();
         });

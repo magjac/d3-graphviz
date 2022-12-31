@@ -64,7 +64,7 @@ tape("Verify that none shape is drawn exactly as Graphviz does.", function(test)
                     var actualNodeGroupDatum = actualNodeGroup.datum();
                     var expectedNodeGroupDatum = expectedNodeGroup.datum();
                     delete expectedNodeGroupDatum.parent;
-                    deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+                    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
 
                     test.end();
                 });
@@ -119,7 +119,7 @@ tape("Verify that none shape without label is drawn exactly as Graphviz does.", 
                     var actualNodeGroupDatum = actualNodeGroup.datum();
                     var expectedNodeGroupDatum = expectedNodeGroup.datum();
                     delete expectedNodeGroupDatum.parent;
-                    deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+                    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
 
                     test.end();
                 });
@@ -190,7 +190,7 @@ tape("Verify that none shape with style filled is drawn exactly as Graphviz does
                     var actualNodeGroupDatum = actualNodeGroup.datum();
                     var expectedNodeGroupDatum = expectedNodeGroup.datum();
                     delete expectedNodeGroupDatum.parent;
-                    deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+                    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
 
                     test.end();
                 });
@@ -261,7 +261,7 @@ tape("Verify that none shape with style filled and pen color specified is drawn 
                     var actualNodeGroupDatum = actualNodeGroup.datum();
                     var expectedNodeGroupDatum = expectedNodeGroup.datum();
                     delete expectedNodeGroupDatum.parent;
-                    deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+                    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
 
                     test.end();
                 });

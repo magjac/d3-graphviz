@@ -68,7 +68,7 @@ tape("Verify that cylinder shape is drawn exactly as Graphviz does.", function(t
                         var actualNodeGroupDatum = actualNodeGroup.datum();
                         var expectedNodeGroupDatum = expectedNodeGroup.datum();
                         delete expectedNodeGroupDatum.parent;
-                        deepEqualData(test, actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape equals Graphviz generated data');
+                        deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape equals Graphviz generated data');
 
                         test.end();
                     });

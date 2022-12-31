@@ -1,7 +1,7 @@
 import assert from "assert";
 import deepEqual from 'deep-equal';
 
-export default function (test, actualData, expectedData, message) {
+export default function (actualData, expectedData, message) {
 
     function parseData(parent) {
 
