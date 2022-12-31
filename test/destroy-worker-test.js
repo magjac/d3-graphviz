@@ -4,7 +4,7 @@ import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 import Worker from "tiny-worker";
 
-tape(".destroy() deletes the Graphviz instance from the container element (worker version)", function (test) {
+tape(".destroy() deletes the Graphviz instance from the container element (worker version)", async function (test) {
     var window = global.window = jsdom(
         `
             <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
@@ -37,7 +37,7 @@ tape(".destroy() deletes the Graphviz instance from the container element (worke
     }
 });
 
-tape(".destroy() closes the worker", function(test) {
+tape(".destroy() closes the worker", async function (test) {
     var window = global.window = jsdom(
         `
             <script src="http://dummyhost/test/@hpcc-js/wasm/dist/wrapper.js" type="javascript/worker"></script>
