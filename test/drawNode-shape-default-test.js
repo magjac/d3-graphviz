@@ -4,287 +4,319 @@ import deepEqualData from "./deepEqualData.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-tape("Verify that default shape is drawn exactly as Graphviz does.", function(test) {
+tape("Verify that default shape is drawn exactly as Graphviz does.", async function (test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     var document = global.document = window.document;
+
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
-        .on('initEnd', () => {
-            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
-                .on('initEnd', startTest);
-        });
+    var expectedGraphviz;
+    await new Promise(resolve => {
+        expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+            .on('initEnd', resolve);
+    });
 
-    function startTest() {
+    await new Promise(resolve => {
+        actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+            .on('initEnd', resolve);
+    });
+
+    await new Promise(resolve => {
     expectedGraphviz
         .zoom(false)
-        .renderDot('digraph {a}', function () {
-            actualGraphviz
-                .renderDot('digraph {}', function () {
-                    var x = 27;
-                    var y = -18
-                    actualGraphviz
-                         .drawNode(x, y, 'a', {id: 'node1'})
-                        .insertDrawnNode('a');
+            .renderDot('digraph {a}', resolve);
+    });
 
-                    const expectedNodeGroup = expectedGraph.selectAll('.node');
-                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    const expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
-                    const expectedNodeText = expectedNodeGroup.selectAll('text');
+    await new Promise(resolve => {
+        actualGraphviz
+            .renderDot('digraph {}', resolve);
+    });
 
-                    const actualNodeGroup = actualGraph.selectAll('.node');
-                    const actualNodeTitle = actualNodeGroup.selectAll('title');
-                    const actualNodeShape = actualNodeGroup.selectAll('ellipse');
-                    const actualNodeText = actualNodeGroup.selectAll('text');
+    var x = 27;
+    var y = -18
+    actualGraphviz
+        .drawNode(x, y, 'a', { id: 'node1' })
+        .insertDrawnNode('a');
 
-                    var bbox = expectedNodeShape.node().getBBox();
-                    bbox.cx = bbox.x + bbox.width / 2;
-                    bbox.cy = bbox.y + bbox.height / 2;
-                    var xoffs = x - bbox.cx;
-                    var yoffs = y - bbox.cy;
+    const expectedNodeGroup = expectedGraph.selectAll('.node');
+    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+    const expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
+    const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                    test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
+    const actualNodeGroup = actualGraph.selectAll('.node');
+    const actualNodeTitle = actualNodeGroup.selectAll('title');
+    const actualNodeShape = actualNodeGroup.selectAll('ellipse');
+    const actualNodeText = actualNodeGroup.selectAll('text');
 
-                    test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
+    var bbox = expectedNodeShape.node().getBBox();
+    bbox.cx = bbox.x + bbox.width / 2;
+    bbox.cy = bbox.y + bbox.height / 2;
+    var xoffs = x - bbox.cx;
+    var yoffs = y - bbox.cy;
 
-                    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
-                    test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
-                    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
-                    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
-                    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
-                    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
+    test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
-                    test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
-                    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
-                    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
-                    test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
-                    test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
-                    test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
+    test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
-                    test.equal(actualNodeText.text(), expectedNodeText.text(), 'text of node group');
+    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
+    test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
+    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
+    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
+    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
+    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
 
-                    var actualNodeGroupDatum = actualNodeGroup.datum();
-                    var expectedNodeGroupDatum = expectedNodeGroup.datum();
-                    delete expectedNodeGroupDatum.parent;
-                    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+    test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
+    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
+    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
+    test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
+    test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
+    test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
 
-                    test.end();
-                });
-        });
-    }
+    test.equal(actualNodeText.text(), expectedNodeText.text(), 'text of node group');
+
+    var actualNodeGroupDatum = actualNodeGroup.datum();
+    var expectedNodeGroupDatum = expectedNodeGroup.datum();
+    delete expectedNodeGroupDatum.parent;
+    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+
+    test.end()
 });
 
-tape("Verify that default shape with style filled is drawn exactly as Graphviz does.", function(test) {
+tape("Verify that default shape with style filled is drawn exactly as Graphviz does.", async function (test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
-        .on('initEnd', () => {
-            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
-                .on('initEnd', startTest);
-        });
+    var expectedGraphviz;
 
-    function startTest() {
-    expectedGraphviz
-        .zoom(false)
-        .renderDot('digraph {a [style=filled]}', function () {
-            actualGraphviz
-                .renderDot('digraph {}', function () {
-                    var x = 27;
-                    var y = -18
-                    actualGraphviz
-                         .drawNode(x, y, 'a', {id: 'node1', style: 'filled'})
-                        .insertDrawnNode('a');
+    await new Promise(resolve => {
+    expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+        .on('initEnd', resolve);
+    });
 
-                    const expectedNodeGroup = expectedGraph.selectAll('.node');
-                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    const expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
-                    const expectedNodeText = expectedNodeGroup.selectAll('text');
+    await new Promise(resolve => {
+        actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+                .on('initEnd', resolve);
+    });
 
-                    const actualNodeGroup = actualGraph.selectAll('.node');
-                    const actualNodeTitle = actualNodeGroup.selectAll('title');
-                    const actualNodeShape = actualNodeGroup.selectAll('ellipse');
-                    const actualNodeText = actualNodeGroup.selectAll('text');
+    await new Promise(resolve => {
+        expectedGraphviz
+            .zoom(false)
+            .renderDot('digraph {a [style=filled]}', resolve);
+    });
 
-                    var bbox = expectedNodeShape.node().getBBox();
-                    bbox.cx = bbox.x + bbox.width / 2;
-                    bbox.cy = bbox.y + bbox.height / 2;
-                    var xoffs = x - bbox.cx;
-                    var yoffs = y - bbox.cy;
+    await new Promise(resolve => {
+        actualGraphviz
+            .renderDot('digraph {}', resolve);
+    });
+    var x = 27;
+    var y = -18
+    actualGraphviz
+            .drawNode(x, y, 'a', {id: 'node1', style: 'filled'})
+        .insertDrawnNode('a');
 
-                    test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
+    const expectedNodeGroup = expectedGraph.selectAll('.node');
+    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+    const expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
+    const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                    test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
+    const actualNodeGroup = actualGraph.selectAll('.node');
+    const actualNodeTitle = actualNodeGroup.selectAll('title');
+    const actualNodeShape = actualNodeGroup.selectAll('ellipse');
+    const actualNodeText = actualNodeGroup.selectAll('text');
 
-                    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
-                    test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
-                    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
-                    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
-                    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
-                    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
+    var bbox = expectedNodeShape.node().getBBox();
+    bbox.cx = bbox.x + bbox.width / 2;
+    bbox.cy = bbox.y + bbox.height / 2;
+    var xoffs = x - bbox.cx;
+    var yoffs = y - bbox.cy;
 
-                    test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
-                    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
-                    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
-                    test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
-                    test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
-                    test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
+    test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
-                    test.equal(actualNodeText.text(), expectedNodeText.text(), 'text of node group');
+    test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
-                    var actualNodeGroupDatum = actualNodeGroup.datum();
-                    var expectedNodeGroupDatum = expectedNodeGroup.datum();
-                    delete expectedNodeGroupDatum.parent;
-                    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
+    test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
+    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
+    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
+    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
+    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
 
-                    test.end();
-                });
-        });
-    }
+    test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
+    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
+    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
+    test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
+    test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
+    test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
+
+    test.equal(actualNodeText.text(), expectedNodeText.text(), 'text of node group');
+
+    var actualNodeGroupDatum = actualNodeGroup.datum();
+    var expectedNodeGroupDatum = expectedNodeGroup.datum();
+    delete expectedNodeGroupDatum.parent;
+    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+
+    test.end()
 });
 
-tape("Default shape with style filled without fillcolor, but with color, uses color as fillcolor.", function(test) {
+tape("Default shape with style filled without fillcolor, but with color, uses color as fillcolor.", async function (test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
-        .on('initEnd', () => {
-            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
-                .on('initEnd', startTest);
-        });
+    var expectedGraphviz;
 
-    function startTest() {
-    expectedGraphviz
-        .zoom(false)
-        .renderDot('digraph {a [style=filled color="#0000ff"]}', function () {
-            actualGraphviz
-                .renderDot('digraph {}', function () {
-                    var x = 27;
-                    var y = -18
-                    actualGraphviz
-                        .drawNode(x, y, 'a', {id: 'node1', style: 'filled', color: '#0000ff'})
-                        .insertDrawnNode('a');
+    await new Promise(resolve => {
+        expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+            .on('initEnd', resolve);
+    });
 
-                    const expectedNodeGroup = expectedGraph.selectAll('.node');
-                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    const expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
-                    const expectedNodeText = expectedNodeGroup.selectAll('text');
+    await new Promise(resolve => {
+        actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+            .on('initEnd', resolve);
+    });
 
-                    const actualNodeGroup = actualGraph.selectAll('.node');
-                    const actualNodeTitle = actualNodeGroup.selectAll('title');
-                    const actualNodeShape = actualNodeGroup.selectAll('ellipse');
-                    const actualNodeText = actualNodeGroup.selectAll('text');
+    await new Promise(resolve => {
+        expectedGraphviz
+            .zoom(false)
+            .renderDot('digraph {a [style=filled color="#0000ff"]}', resolve);
+    });
 
-                    var bbox = expectedNodeShape.node().getBBox();
-                    bbox.cx = bbox.x + bbox.width / 2;
-                    bbox.cy = bbox.y + bbox.height / 2;
-                    var xoffs = x - bbox.cx;
-                    var yoffs = y - bbox.cy;
+    await new Promise(resolve => {
+        actualGraphviz
+            .renderDot('digraph {}', resolve);
+    });
 
-                    test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
+    var x = 27;
+    var y = -18
+    actualGraphviz
+        .drawNode(x, y, 'a', { id: 'node1', style: 'filled', color: '#0000ff' })
+        .insertDrawnNode('a');
 
-                    test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
+    const expectedNodeGroup = expectedGraph.selectAll('.node');
+    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+    const expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
+    const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("stroke"), 'fill of ellipse is the same as stroke');
-                    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
-                    test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
-                    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
-                    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
-                    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
-                    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
+    const actualNodeGroup = actualGraph.selectAll('.node');
+    const actualNodeTitle = actualNodeGroup.selectAll('title');
+    const actualNodeShape = actualNodeGroup.selectAll('ellipse');
+    const actualNodeText = actualNodeGroup.selectAll('text');
 
-                    test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
-                    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
-                    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
-                    test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
-                    test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
-                    test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
+    var bbox = expectedNodeShape.node().getBBox();
+    bbox.cx = bbox.x + bbox.width / 2;
+    bbox.cy = bbox.y + bbox.height / 2;
+    var xoffs = x - bbox.cx;
+    var yoffs = y - bbox.cy;
 
-                    test.equal(actualNodeText.text(), expectedNodeText.text(), 'text of node group');
+    test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
-                    var actualNodeGroupDatum = actualNodeGroup.datum();
-                    var expectedNodeGroupDatum = expectedNodeGroup.datum();
-                    delete expectedNodeGroupDatum.parent;
-                    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+    test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
-                    test.end();
-                });
-        });
-    }
+    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("stroke"), 'fill of ellipse is the same as stroke');
+    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
+    test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
+    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
+    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
+    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
+    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
+
+    test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
+    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
+    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
+    test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
+    test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
+    test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
+
+    test.equal(actualNodeText.text(), expectedNodeText.text(), 'text of node group');
+
+    var actualNodeGroupDatum = actualNodeGroup.datum();
+    var expectedNodeGroupDatum = expectedNodeGroup.datum();
+    delete expectedNodeGroupDatum.parent;
+    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+
+    test.end()
 });
 
-tape("Verify that default shape with label is drawn exactly as Graphviz does.", function(test) {
+tape("Verify that default shape with label is drawn exactly as Graphviz does.", async function (test) {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     var document = global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
-    var expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
-        .on('initEnd', () => {
-            actualGraphviz = d3_graphviz.graphviz("#actual-graph")
-                .on('initEnd', startTest);
-        });
+    var expectedGraphviz;
 
-    function startTest() {
-    expectedGraphviz
-        .zoom(false)
-        .renderDot('digraph {a [label="x"]}', function () {
-            actualGraphviz
-                .renderDot('digraph {}', function () {
-                    var x = 27;
-                    var y = -18
-                    actualGraphviz
-                        .drawNode(x, y, 'a', {id: 'node1', label: 'x'})
-                        .insertDrawnNode('a');
+    await new Promise(resolve => {
+        expectedGraphviz = d3_graphviz.graphviz("#expected-graph")
+            .on('initEnd', resolve);
+    });
 
-                    const expectedNodeGroup = expectedGraph.selectAll('.node');
-                    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
-                    const expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
-                    const expectedNodeText = expectedNodeGroup.selectAll('text');
+    await new Promise(resolve => {
+        actualGraphviz = d3_graphviz.graphviz("#actual-graph")
+            .on('initEnd', resolve);
+    });
 
-                    const actualNodeGroup = actualGraph.selectAll('.node');
-                    const actualNodeTitle = actualNodeGroup.selectAll('title');
-                    const actualNodeShape = actualNodeGroup.selectAll('ellipse');
-                    const actualNodeText = actualNodeGroup.selectAll('text');
+    await new Promise(resolve => {
+        expectedGraphviz
+            .zoom(false)
+            .renderDot('digraph {a [label="x"]}', resolve);
+    });
 
-                    var bbox = expectedNodeShape.node().getBBox();
-                    bbox.cx = bbox.x + bbox.width / 2;
-                    bbox.cy = bbox.y + bbox.height / 2;
-                    var xoffs = x - bbox.cx;
-                    var yoffs = y - bbox.cy;
+    await new Promise(resolve => {
+        actualGraphviz
+            .renderDot('digraph {}', resolve);
+    });
 
-                    test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
+    var x = 27;
+    var y = -18
+    actualGraphviz
+        .drawNode(x, y, 'a', { id: 'node1', label: 'x' })
+        .insertDrawnNode('a');
 
-                    test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
+    const expectedNodeGroup = expectedGraph.selectAll('.node');
+    const expectedNodeTitle = expectedNodeGroup.selectAll('title');
+    const expectedNodeShape = expectedNodeGroup.selectAll('ellipse');
+    const expectedNodeText = expectedNodeGroup.selectAll('text');
 
-                    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
-                    test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
-                    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
-                    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
-                    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
-                    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
+    const actualNodeGroup = actualGraph.selectAll('.node');
+    const actualNodeTitle = actualNodeGroup.selectAll('title');
+    const actualNodeShape = actualNodeGroup.selectAll('ellipse');
+    const actualNodeText = actualNodeGroup.selectAll('text');
 
-                    test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
-                    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
-                    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
-                    test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
-                    test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
-                    test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
+    var bbox = expectedNodeShape.node().getBBox();
+    bbox.cx = bbox.x + bbox.width / 2;
+    bbox.cy = bbox.y + bbox.height / 2;
+    var xoffs = x - bbox.cx;
+    var yoffs = y - bbox.cy;
 
-                    test.equal(actualNodeText.text(), expectedNodeText.text(), 'text of node group');
+    test.equal(actualNodeGroup.attr("id"), expectedNodeGroup.attr("id"), 'id of group');
 
-                    var actualNodeGroupDatum = actualNodeGroup.datum();
-                    var expectedNodeGroupDatum = expectedNodeGroup.datum();
-                    delete expectedNodeGroupDatum.parent;
-                    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+    test.equal(actualNodeTitle.text(), expectedNodeTitle.text(), 'text of title');
 
-                    test.end();
-                });
-        });
-    }
+    test.equal(actualNodeShape.attr("fill"), expectedNodeShape.attr("fill"), 'fill of ellipse');
+    test.equal(actualNodeShape.attr("stroke"), expectedNodeShape.attr("stroke"), 'stroke of ellipse');
+    test.equal(+actualNodeShape.attr("cx"), +expectedNodeShape.attr("cx") + xoffs, 'cx of ellipse');
+    test.equal(+actualNodeShape.attr("cy"), +expectedNodeShape.attr("cy") + yoffs, 'cy of ellipse');
+    test.equal(+actualNodeShape.attr("rx"), +expectedNodeShape.attr("rx"), 'rx of ellipse');
+    test.equal(+actualNodeShape.attr("ry"), +expectedNodeShape.attr("ry"), 'ry of ellipse');
+
+    test.equal(actualNodeText.attr("text-anchor"), expectedNodeText.attr("text-anchor"), 'text-anchor of text');
+    test.equal(+actualNodeText.attr("x"), +expectedNodeText.attr("x") + xoffs, 'x of text');
+    test.equal(+actualNodeText.attr("y"), +expectedNodeText.attr("y") + yoffs, 'y of text');
+    test.equal(actualNodeText.attr("font-family"), expectedNodeText.attr("font-family"), 'font-family of text');
+    test.equal(actualNodeText.attr("font-size"), expectedNodeText.attr("font-size"), 'font-size of text');
+    test.equal(actualNodeText.attr("fill"), expectedNodeText.attr("fill"), 'fill of text');
+
+    test.equal(actualNodeText.text(), expectedNodeText.text(), 'text of node group');
+
+    var actualNodeGroupDatum = actualNodeGroup.datum();
+    var expectedNodeGroupDatum = expectedNodeGroup.datum();
+    delete expectedNodeGroupDatum.parent;
+    deepEqualData(actualNodeGroupDatum, expectedNodeGroupDatum, 'data of drawn node of shape "none" equals Graphviz generated data');
+
+
+    test.end()
 });
