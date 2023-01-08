@@ -20,21 +20,22 @@ tape(".destroy() deletes the Graphviz instance from the container element (worke
     }
     global.Worker = Worker;
 
-    var graphviz = d3_graphviz.graphviz("#graph", {useWorker: true})
-        .renderDot('digraph {a -> b;}', destroy);
+    var graphviz = d3_graphviz.graphviz("#graph", {useWorker: true});
+    await new Promise(resolve => {
+        graphviz
+            .renderDot('digraph {a -> b;}', resolve);
+    })
 
-    function destroy() {
+    test.notEqual(d3.select("#graph").node().__graphviz__, undefined,
+        'Renderer instance shall exist before destroy');
+    graphviz.destroy();
+    test.equal(d3.select("#graph").node().__graphviz__, undefined,
+        'Renderer instance shall not exist after destroy');
 
-        test.notEqual(d3.select("#graph").node().__graphviz__, undefined,
-                       'Renderer instance shall exist before destroy');
-        graphviz.destroy();
-        test.equal(d3.select("#graph").node().__graphviz__, undefined,
-                       'Renderer instance shall not exist after destroy');
+    graphviz._workerPortClose();
+    global.Worker = undefined;
 
-        graphviz._workerPortClose();
-        global.Worker = undefined;
-        test.end();
-    }
+    test.end()
 });
 
 tape(".destroy() closes the worker", async function (test) {
@@ -53,11 +54,14 @@ tape(".destroy() closes the worker", async function (test) {
     }
     global.Worker = Worker;
 
-    var graphviz = d3_graphviz.graphviz("#graph", {useWorker: true})
-        .renderDot('digraph {a -> b;}', destroy);
+    var graphviz = d3_graphviz.graphviz("#graph", {useWorker: true});
 
-    function destroy() {
+    await new Promise(resolve => {
+        graphviz
+            .renderDot('digraph {a -> b;}', resolve);
+    });
 
+    await new Promise(resolve => {
         let numberOfMessages = 0;
         graphviz._workerPort.onmessage = () => {
             numberOfMessages += 1;
@@ -72,9 +76,11 @@ tape(".destroy() closes the worker", async function (test) {
                            'One message shall have been received');
                 graphviz._workerPortClose();
                 global.Worker = undefined;
-                test.end();
+                resolve();
             }, 100);
         };
         graphviz._workerPort.postMessage({dot: '', engine: 'dot'});
-    }
+    });
+
+    test.end()
 });
