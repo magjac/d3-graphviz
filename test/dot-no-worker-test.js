@@ -1,10 +1,11 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 import Worker from "tiny-worker";
 
-async function do_test(test, useWorker, html) {
+async function do_test(useWorker, html) {
     var window = global.window = jsdom(html);
     var document = global.document = window.document;
     global.Blob = function (jsarray) {
@@ -20,7 +21,7 @@ async function do_test(test, useWorker, html) {
         graphviz.on('initEnd', resolve);
     });
 
-    test.equal(graphviz._data, undefined, 'No data is attached before calling dot');
+    assert.equal(graphviz._data, undefined, 'No data is attached before calling dot');
 
     graphviz
         .tweenShapes(false)
@@ -28,20 +29,20 @@ async function do_test(test, useWorker, html) {
         .onerror(callbackThatShouldNotBeCalled)
         .dot('digraph {a -> b; c}');
 
-    test.notEqual(graphviz._data, undefined, 'Data is attached immediately after calling dot when no worker is used');
+    assert.notEqual(graphviz._data, undefined, 'Data is attached immediately after calling dot when no worker is used');
 
     await new Promise(resolve => {
         graphviz
             .render(resolve);
     });
 
-    test.notEqual(graphviz._data, undefined, 'Data is attached after rendering');
+    assert.notEqual(graphviz._data, undefined, 'Data is attached after rendering');
 
-    test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
-    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+    assert.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    assert.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+    assert.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+    assert.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
     const err = await new Promise(resolve => {
         graphviz
@@ -50,48 +51,45 @@ async function do_test(test, useWorker, html) {
             .render(callbackThatShouldNotBeCalled);
     });
 
-    test.equal(
+    assert.equal(
         err,
         "syntax error in line 1 near 'bad'\n",
         'A registered error handler catches syntax errors in the dot source thrown during layout'
     );
 
     function callbackThatShouldNotBeCalled() {
-        test.error('Callback should not be called when an error occurs');
+        assert.error('Callback should not be called when an error occurs');
     }
 
     global.Worker = undefined;
 }
 
-tape('dot() performs layout in the foreground when web worker is not used.', async function (test) {
+it('dot() performs layout in the foreground when web worker is not used.', async () => {
 
-    await do_test(test, false, `
+    await do_test(false, `
             <script src="http://dummyhost/node_modules/@hpcc-js/wasm/dist/index.js" type="javascript/worker"></script>
             <div id="graph"></div>
             `,
     );
 
-    test.end();
 });
 
-tape('dot() performs layout in the foreground with a warning when script src does not contain "@hpcc-js/wasm".', async function (test) {
+it('dot() performs layout in the foreground with a warning when script src does not contain "@hpcc-js/wasm".', async () => {
 
-    await do_test(test, true, `
+    await do_test(true, `
             <script src="http://dummyhost/node_modules/@hpcc-js-NOT/wasm/dist/index.js" type="text/javascript"></script>
             <div id="graph"></div>
             `,
     );
 
-    test.end();
 });
 
-tape('dot() performs layout in the foreground with a warning when "javascript/worker" script tag does not have a "src" attribute.', async function (test) {
+it('dot() performs layout in the foreground with a warning when "javascript/worker" script tag does not have a "src" attribute.', async () => {
 
-    await do_test(test, true, `
+    await do_test(true, `
             <script type="javascript/worker"></script>
             <div id="graph"></div>
             `,
     );
 
-    test.end();
 });
