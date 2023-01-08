@@ -1,9 +1,10 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-tape("renderDot() renders a node with an empty string as node_id.", async function (test) {
+it("renderDot() renders a node with an empty string as node_id.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
 
@@ -22,8 +23,6 @@ tape("renderDot() renders a node with an empty string as node_id.", async functi
             .render(resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 1, 'Number of nodes');
-    test.equal(d3.selectAll('.edge').size(), 0, 'Number of edges');
-
-    test.end();
+    assert.equal(d3.selectAll('.node').size(), 1, 'Number of nodes');
+    assert.equal(d3.selectAll('.edge').size(), 0, 'Number of edges');
 });
