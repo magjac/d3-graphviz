@@ -1,10 +1,11 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import deepEqualData from "./deepEqualData.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-tape("data extraction", async function (test) {
+it("data extraction", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
 
@@ -35,8 +36,6 @@ tape("data extraction", async function (test) {
     actualData = graphviz._extractData(svg, 0, null);
     var expectedData = JSON.parse(JSON.stringify(basic_data));
     deepEqualData(actualData, expectedData, "Explicitly extracted data equals predefined data");
-
-    test.end();
 });
 
 var basic_data = {
