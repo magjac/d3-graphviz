@@ -1,4 +1,5 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
@@ -12,7 +13,7 @@ describe("dot()", () => {
         global.Worker = undefined;
     });
 
-    tape("dot() performs layout in a web worker in the background with text/javascript tag.", async function (test) {
+    it("dot() performs layout in a web worker in the background with text/javascript tag.", async () => {
 
         var window = global.window = jsdom(
             `
@@ -36,7 +37,7 @@ describe("dot()", () => {
                 .on("initEnd", resolve);
         });
 
-        test.equal(d3.select('#graph').datum(), undefined, 'No data is attached before calling dot');
+        assert.equal(d3.select('#graph').datum(), undefined, 'No data is attached before calling dot');
 
         await new Promise(resolve => {
             graphviz
@@ -46,18 +47,18 @@ describe("dot()", () => {
                 .render(resolve);
         });
 
-        test.equal(d3.select('#graph').datum(), undefined, 'No data is attached immediately after calling dot when worker is used');
+        assert.equal(d3.select('#graph').datum(), undefined, 'No data is attached immediately after calling dot when worker is used');
 
-        test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-        test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
-        test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+        assert.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
+        assert.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+        assert.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+        assert.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+        assert.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
         await new Promise(resolve => {
             graphviz
                 .onerror((err) => {
-                    test.equal(
+                    assert.equal(
                         err,
                         "syntax error in line 1 near 'bad'\n",
                         'A registered error handler catches syntax errors in the dot source thrown during layout'
@@ -69,9 +70,8 @@ describe("dot()", () => {
         });
 
         function callbackThatShouldNotBeCalled() {
-            test.fail('Callback should not be called when an error occurs');
+            assert.fail('Callback should not be called when an error occurs');
         }
 
-        test.end();
     });
 });
