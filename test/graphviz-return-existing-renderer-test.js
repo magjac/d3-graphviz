@@ -1,9 +1,10 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-tape("graphviz() returns an exiting renderer.", async function (test) {
+it("graphviz() returns an exiting renderer.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz1;
@@ -16,7 +17,7 @@ tape("graphviz() returns an exiting renderer.", async function (test) {
     var graphviz2;
     var graphviz3;
 
-    test.equal(graphviz1.options().tweenShapes, true, "Options have default values when renderer is created");
+    assert.equal(graphviz1.options().tweenShapes, true, "Options have default values when renderer is created");
 
     await new Promise(resolve => {
         graphviz1
@@ -25,7 +26,7 @@ tape("graphviz() returns an exiting renderer.", async function (test) {
             .render(resolve);
     });
 
-    test.equal(graphviz1.options().tweenShapes, false, "Options are changed when set on the created renderer");
+    assert.equal(graphviz1.options().tweenShapes, false, "Options are changed when set on the created renderer");
 
     // Attempt to create a new renderer on the same element
 
@@ -34,8 +35,8 @@ tape("graphviz() returns an exiting renderer.", async function (test) {
             .on("initEnd", resolve);
     });
 
-    test.equal(graphviz1, graphviz2, "The returned renderer is the same as the one originally created");
-    test.equal(graphviz2.options().tweenShapes, false, "Options set on the originally created renderer is preserved");
+    assert.equal(graphviz1, graphviz2, "The returned renderer is the same as the one originally created");
+    assert.equal(graphviz2.options().tweenShapes, false, "Options set on the originally created renderer is preserved");
 
     await new Promise(resolve => {
         graphviz2
@@ -50,8 +51,8 @@ tape("graphviz() returns an exiting renderer.", async function (test) {
             .on("initEnd", resolve);
     });
 
-    test.equal(graphviz1, graphviz3, "The returned renderer is the same as the one originally created");
-    test.equal(graphviz3.options().tweenShapes, true, "Options are changed if specified when creating the new renderer");
+    assert.equal(graphviz1, graphviz3, "The returned renderer is the same as the one originally created");
+    assert.equal(graphviz3.options().tweenShapes, true, "Options are changed if specified when creating the new renderer");
 
     await new Promise(resolve => {
         graphviz3
@@ -59,5 +60,4 @@ tape("graphviz() returns an exiting renderer.", async function (test) {
             .render(resolve);
     });
 
-    test.end();
 });
