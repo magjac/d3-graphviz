@@ -3,33 +3,43 @@ import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-tape("graphviz().render() renders growing edges to nodes with URL attribute.", function(test) {
+tape("graphviz().render() renders growing edges to nodes with URL attribute.", async function (test) {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
-        .on("initEnd", startTest);
 
-    function startTest() {
+    var graphviz;
+
+    await new Promise(resolve => {
+        graphviz = d3_graphviz.graphviz("#graph")
+            .on("initEnd", resolve);
+    });
+
+    await new Promise(resolve => {
         graphviz
             .tweenShapes(false)
             .growEnteringEdges(true)
             .zoom(false)
-            .renderDot('digraph {node [URL="DUMMY-URL"]; a -> b;}');
-        test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
-        test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-        test.equal(d3.selectAll('g').size(), 6, 'Number of groups');
-        test.equal(d3.selectAll('a').size(), 2, 'Number of hyperlinks');
-        test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses');
-        test.equal(d3.selectAll('path').size(), 1, 'Number of paths');
-        graphviz
-            .renderDot('digraph {node [URL="DUMMY-URL"]; a -> b; a -> c}')
-        test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes after add');
-        test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after add');
-        test.equal(d3.selectAll('g').size(), 9, 'Number of groups');
-        test.equal(d3.selectAll('a').size(), 3, 'Number of hyperlinks');
-        test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses');
-        test.equal(d3.selectAll('path').size(), 2, 'Number of paths');
+            .renderDot('digraph {node [URL="DUMMY-URL"]; a -> b;}', resolve);
+    });
 
-        test.end();
-    }
+    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    test.equal(d3.selectAll('g').size(), 6, 'Number of groups');
+    test.equal(d3.selectAll('a').size(), 2, 'Number of hyperlinks');
+    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses');
+    test.equal(d3.selectAll('path').size(), 1, 'Number of paths');
+
+    await new Promise(resolve => {
+        graphviz
+            .renderDot('digraph {node [URL="DUMMY-URL"]; a -> b; a -> c}', resolve);
+    });
+
+    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes after add');
+    test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after add');
+    test.equal(d3.selectAll('g').size(), 9, 'Number of groups');
+    test.equal(d3.selectAll('a').size(), 3, 'Number of hyperlinks');
+    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses');
+    test.equal(d3.selectAll('path').size(), 2, 'Number of paths');
+
+    test.end();
 });
