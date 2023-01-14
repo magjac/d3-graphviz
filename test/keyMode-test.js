@@ -1,10 +1,11 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_transition from "d3-transition";
 import * as d3_graphviz from "../index.js";
 
-tape("graphviz().keyMode() affects transitions and order of rendering.", async function (test) {
+it("graphviz().keyMode() affects transitions and order of rendering.", async function () {
     var window = global.window = jsdom('<div id="main"></div>');
     var document = global.document = window.document;
     var keyModes = [
@@ -16,7 +17,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", async f
     const nRenderings = 2;
     var delay = 500;
     var duration = 500;
-    test.timeoutAfter(2000 + keyModes.length * nRenderings * (delay + duration));
+    this.timeout(2000 + keyModes.length * nRenderings * (delay + duration)); // FIXME
     await new Promise(resolve0 => {
         var keyModeIndex = 0;
         renderKeyMode();
@@ -97,7 +98,7 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", async f
         for (let name in counts) {
             var count = counts[name];
             const objectName = name.replace('.', '');
-            test.equal(d3.select('#graph-' + keyMode).selectAll(name).size(), count, 'Number of ' + objectName + 's is ' + count + ' ' + state + ' transition with keyMode ' + keyMode);
+            assert.equal(d3.select('#graph-' + keyMode).selectAll(name).size(), count, 'Number of ' + objectName + 's is ' + count + ' ' + state + ' transition with keyMode ' + keyMode);
         }
     }
 
@@ -171,10 +172,9 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", async f
         check(counts, 'after ending', keyMode);
     }
 
-    test.end();
 });
 
-tape("graphviz().keyMode() does not accept illegal key modes.", async function (test) {
+it("graphviz().keyMode() does not accept illegal key modes.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -193,13 +193,12 @@ tape("graphviz().keyMode() does not accept illegal key modes.", async function (
             .render();
     }
 
-    test.throws(useIllegalKeyMode, 'Illegal keyMode throws error');
+    assert.throws(useIllegalKeyMode, 'Illegal keyMode throws error');
 
 
-    test.end();
 });
 
-tape("graphviz().keyMode() cannot be changed after applying dot source.", async function (test) {
+it("graphviz().keyMode() cannot be changed after applying dot source.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -219,7 +218,6 @@ tape("graphviz().keyMode() cannot be changed after applying dot source.", async 
             .render();
     }
 
-    test.throws(changeKeyMode, 'Too late change of keyMode throws error');
+    assert.throws(changeKeyMode, 'Too late change of keyMode throws error');
 
-    test.end();
 });
