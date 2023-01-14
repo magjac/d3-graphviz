@@ -1,9 +1,10 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-tape("graphviz().render() renders an SVG from graphviz DOT.", async function (test) {
+it("graphviz().render() renders an SVG from graphviz DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -43,43 +44,42 @@ tape("graphviz().render() renders an SVG from graphviz DOT.", async function (te
             .render(resolve);
     });
 
-    test.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
+    assert.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
 
     // Check data tag by tag
-    test.equal(d3.select('svg').data()[0].tag, 'svg', '"svg" tag present in data joined with SVG');
-    test.equal(d3.select('g').data()[0].tag, 'g', '"g" tag present in data joined with first svg group element');
-    test.equal(d3.select('title').data()[0].tag, 'title', '"title" tag present in data joined with first title element');
-    test.equal(d3.select('ellipse').data()[0].tag, 'ellipse', '"ellipse" tag present in data joined with first ellipse element');
-    test.equal(d3.select('text').data()[0].tag, 'text', '"text" tag present in data joined with first text element');
-    test.equal(d3.select('path').data()[0].tag, 'path', '"path" tag present in data joined with first path element');
-    test.equal(d3.select('polygon').data()[0].tag, 'polygon', '"polygon" tag present in data joined with first polygon element');
+    assert.equal(d3.select('svg').data()[0].tag, 'svg', '"svg" tag present in data joined with SVG');
+    assert.equal(d3.select('g').data()[0].tag, 'g', '"g" tag present in data joined with first svg group element');
+    assert.equal(d3.select('title').data()[0].tag, 'title', '"title" tag present in data joined with first title element');
+    assert.equal(d3.select('ellipse').data()[0].tag, 'ellipse', '"ellipse" tag present in data joined with first ellipse element');
+    assert.equal(d3.select('text').data()[0].tag, 'text', '"text" tag present in data joined with first text element');
+    assert.equal(d3.select('path').data()[0].tag, 'path', '"path" tag present in data joined with first path element');
+    assert.equal(d3.select('polygon').data()[0].tag, 'polygon', '"polygon" tag present in data joined with first polygon element');
 
     // Check data tag by id
-    test.equal(d3.select('#graph0').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "graph0"');
-    test.equal(d3.select('#node1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node1"');
-    test.equal(d3.select('#node2').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node2"');
-    test.equal(d3.select('#edge1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "edge1"');
+    assert.equal(d3.select('#graph0').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "graph0"');
+    assert.equal(d3.select('#node1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node1"');
+    assert.equal(d3.select('#node2').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node2"');
+    assert.equal(d3.select('#edge1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "edge1"');
 
     // Check data tag by class
-    test.equal(d3.select('.graph').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "graph"');
-    test.equal(d3.select('.node').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "node"');
-    test.equal(d3.select('.edge').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "edge"');
+    assert.equal(d3.select('.graph').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "graph"');
+    assert.equal(d3.select('.node').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "node"');
+    assert.equal(d3.select('.edge').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "edge"');
 
     // Check full data structure for some primary elements
     var data = d3.select('svg').data();
     var svgData = data[0];
     var graph0Data = svgData.children[1];
 
-    test.deepEqual(d3.select('svg').datum(), svgData, 'Data structure present on SVG');
-    test.deepEqual(d3.select('#graph0').datum(), graph0Data, 'Data structure present on element with id "graph0"');
-    test.deepEqual(d3.select('#node1').datum(), graph0Data.children[5], 'Data structure present on element with id "node1"');
-    test.deepEqual(d3.select('#node2').datum(), graph0Data.children[9], 'Data structure present on element with id "node2"');
-    test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[13], 'Data structure present on element with id "edge1"');
+    assert.deepStrictEqual(d3.select('svg').datum(), svgData, 'Data structure present on SVG');
+    assert.deepStrictEqual(d3.select('#graph0').datum(), graph0Data, 'Data structure present on element with id "graph0"');
+    assert.deepStrictEqual(d3.select('#node1').datum(), graph0Data.children[5], 'Data structure present on element with id "node1"');
+    assert.deepStrictEqual(d3.select('#node2').datum(), graph0Data.children[9], 'Data structure present on element with id "node2"');
+    assert.deepStrictEqual(d3.select('#edge1').datum(), graph0Data.children[13], 'Data structure present on element with id "edge1"');
 
-    test.end();
 });
 
-tape("graphviz().render() renders on a div with sub-elements", async function (test) {
+it("graphviz().render() renders on a div with sub-elements", async () => {
     var window = global.window = jsdom('<div id="graph"><div id="dummy">Hello World</div></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -98,40 +98,39 @@ tape("graphviz().render() renders on a div with sub-elements", async function (t
     });
 
     // Check data tag by tag
-    test.equal(d3.select('svg').data()[0].tag, 'svg', '"svg" tag present in data joined with SVG');
-    test.equal(d3.select('g').data()[0].tag, 'g', '"g" tag present in data joined with first svg group element');
-    test.equal(d3.select('title').data()[0].tag, 'title', '"title" tag present in data joined with first title element');
-    test.equal(d3.select('ellipse').data()[0].tag, 'ellipse', '"ellipse" tag present in data joined with first ellipse element');
-    test.equal(d3.select('text').data()[0].tag, 'text', '"text" tag present in data joined with first text element');
-    test.equal(d3.select('path').data()[0].tag, 'path', '"path" tag present in data joined with first path element');
-    test.equal(d3.select('polygon').data()[0].tag, 'polygon', '"polygon" tag present in data joined with first polygon element');
+    assert.equal(d3.select('svg').data()[0].tag, 'svg', '"svg" tag present in data joined with SVG');
+    assert.equal(d3.select('g').data()[0].tag, 'g', '"g" tag present in data joined with first svg group element');
+    assert.equal(d3.select('title').data()[0].tag, 'title', '"title" tag present in data joined with first title element');
+    assert.equal(d3.select('ellipse').data()[0].tag, 'ellipse', '"ellipse" tag present in data joined with first ellipse element');
+    assert.equal(d3.select('text').data()[0].tag, 'text', '"text" tag present in data joined with first text element');
+    assert.equal(d3.select('path').data()[0].tag, 'path', '"path" tag present in data joined with first path element');
+    assert.equal(d3.select('polygon').data()[0].tag, 'polygon', '"polygon" tag present in data joined with first polygon element');
 
     // Check data tag by id
-    test.equal(d3.select('#graph0').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "graph0"');
-    test.equal(d3.select('#node1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node1"');
-    test.equal(d3.select('#node2').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node2"');
-    test.equal(d3.select('#edge1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "edge1"');
+    assert.equal(d3.select('#graph0').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "graph0"');
+    assert.equal(d3.select('#node1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node1"');
+    assert.equal(d3.select('#node2').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "node2"');
+    assert.equal(d3.select('#edge1').data()[0].tag, 'g', '"g" tag present in data joined with first element with id "edge1"');
 
     // Check data tag by class
-    test.equal(d3.select('.graph').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "graph"');
-    test.equal(d3.select('.node').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "node"');
-    test.equal(d3.select('.edge').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "edge"');
+    assert.equal(d3.select('.graph').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "graph"');
+    assert.equal(d3.select('.node').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "node"');
+    assert.equal(d3.select('.edge').data()[0].tag, 'g', '"g" tag present in data joined with first element with class "edge"');
 
     // Check full data structure for some primary elements
     var data = d3.select('svg').data();
     var svgData = data[0];
     var graph0Data = svgData.children[1];
 
-    test.deepEqual(d3.select('svg').datum(), svgData, 'Data structure present on SVG');
-    test.deepEqual(d3.select('#graph0').datum(), graph0Data, 'Data structure present on element with id "graph0"');
-    test.deepEqual(d3.select('#node1').datum(), graph0Data.children[5], 'Data structure present on element with id "node1"');
-    test.deepEqual(d3.select('#node2').datum(), graph0Data.children[9], 'Data structure present on element with id "node2"');
-    test.deepEqual(d3.select('#edge1').datum(), graph0Data.children[13], 'Data structure present on element with id "edge1"');
+    assert.deepStrictEqual(d3.select('svg').datum(), svgData, 'Data structure present on SVG');
+    assert.deepStrictEqual(d3.select('#graph0').datum(), graph0Data, 'Data structure present on element with id "graph0"');
+    assert.deepStrictEqual(d3.select('#node1').datum(), graph0Data.children[5], 'Data structure present on element with id "node1"');
+    assert.deepStrictEqual(d3.select('#node2').datum(), graph0Data.children[9], 'Data structure present on element with id "node2"');
+    assert.deepStrictEqual(d3.select('#edge1').datum(), graph0Data.children[13], 'Data structure present on element with id "edge1"');
 
-    test.end();
 });
 
-tape("graphviz().render() removes SVG elements for nodes and edges when removed from updated DOT.", async function (test) {
+it("graphviz().render() removes SVG elements for nodes and edges when removed from updated DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -149,8 +148,8 @@ tape("graphviz().render() removes SVG elements for nodes and edges when removed 
             .render(resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
 
     await new Promise(resolve => {
         graphviz
@@ -170,14 +169,13 @@ tape("graphviz().render() removes SVG elements for nodes and edges when removed 
 </g>
 </svg>`;
 
-    test.equal(d3.selectAll('.node').size(), 1, 'Number of nodes after removal');
-    test.equal(d3.selectAll('.edge').size(), 0, 'Number of edges after removal');
-    test.equal(d3.select('div').html(), svgDoc2, "SVG after removal of one edge and one node");
+    assert.equal(d3.selectAll('.node').size(), 1, 'Number of nodes after removal');
+    assert.equal(d3.selectAll('.edge').size(), 0, 'Number of edges after removal');
+    assert.equal(d3.select('div').html(), svgDoc2, "SVG after removal of one edge and one node");
 
-    test.end();
 });
 
-tape("graphviz().render() adds SVG elements for nodes and edges when added to updated DOT.", async function (test) {
+it("graphviz().render() adds SVG elements for nodes and edges when added to updated DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -195,8 +193,8 @@ tape("graphviz().render() adds SVG elements for nodes and edges when added to up
             .render(resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
 
     await new Promise(resolve => {
         graphviz
@@ -204,13 +202,12 @@ tape("graphviz().render() adds SVG elements for nodes and edges when added to up
             .render(resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes after add');
-    test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after add');
+    assert.equal(d3.selectAll('.node').size(), 3, 'Number of nodes after add');
+    assert.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after add');
 
-    test.end();
 });
 
-tape("graphviz().renderDot() renders an SVG from graphviz DOT.", async function (test) {
+it("graphviz().renderDot() renders an SVG from graphviz DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -227,16 +224,15 @@ tape("graphviz().renderDot() renders an SVG from graphviz DOT.", async function 
             .renderDot('digraph {a -> b;}', resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
-    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    assert.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
+    assert.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+    assert.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
-    test.end();
 });
 
-tape("graphviz().render() updates SVG text element when node name changes in DOT.", async function (test) {
+it("graphviz().render() updates SVG text element when node name changes in DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -254,9 +250,9 @@ tape("graphviz().render() updates SVG text element when node name changes in DOT
             .render(resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 1, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 0, 'Number of initial edges');
-    test.equal(d3.selectAll('text').text(), 'a', 'Text of initial node');
+    assert.equal(d3.selectAll('.node').size(), 1, 'Number of initial nodes');
+    assert.equal(d3.selectAll('.edge').size(), 0, 'Number of initial edges');
+    assert.equal(d3.selectAll('text').text(), 'a', 'Text of initial node');
 
     await new Promise(resolve => {
         graphviz
@@ -264,14 +260,13 @@ tape("graphviz().render() updates SVG text element when node name changes in DOT
             .render(resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 1, 'Number of nodes after node name change');
-    test.equal(d3.selectAll('.edge').size(), 0, 'Number of edges after node name change');
-    test.equal(d3.selectAll('text').text(), 'b', 'Text after node name change');
+    assert.equal(d3.selectAll('.node').size(), 1, 'Number of nodes after node name change');
+    assert.equal(d3.selectAll('.edge').size(), 0, 'Number of edges after node name change');
+    assert.equal(d3.selectAll('text').text(), 'b', 'Text after node name change');
 
-    test.end();
 });
 
-tape("graphviz().render() changes SVG element type when node shape changes in DOT.", async function (test) {
+it("graphviz().render() changes SVG element type when node shape changes in DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -289,11 +284,11 @@ tape("graphviz().render() changes SVG element type when node shape changes in DO
             .render(resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
-    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    assert.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
+    assert.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+    assert.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
     await new Promise(resolve => {
         graphviz
@@ -301,16 +296,15 @@ tape("graphviz().render() changes SVG element type when node shape changes in DO
             .render(resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after shape change');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after shape change');
-    test.equal(d3.selectAll('ellipse').size(), 1, 'Number of ellipses after shape change');
-    test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after shape change');
-    test.equal(d3.selectAll('path').size(), 1, 'Number of paths after shape change');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after shape change');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after shape change');
+    assert.equal(d3.selectAll('ellipse').size(), 1, 'Number of ellipses after shape change');
+    assert.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after shape change');
+    assert.equal(d3.selectAll('path').size(), 1, 'Number of paths after shape change');
 
-    test.end();
 });
 
-tape("graphviz().renderDot() renders an SVG from graphviz strict undirectd DOT.", async function (test) {
+it("graphviz().renderDot() renders an SVG from graphviz strict undirectd DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -327,11 +321,11 @@ tape("graphviz().renderDot() renders an SVG from graphviz strict undirectd DOT."
             .renderDot('strict graph {a -- b;}', resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
-    test.equal(d3.selectAll('polygon').size(), 1, 'Number of initial polygons');
-    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    assert.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
+    assert.equal(d3.selectAll('polygon').size(), 1, 'Number of initial polygons');
+    assert.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
     await new Promise(resolve => {
         graphviz
@@ -341,16 +335,15 @@ tape("graphviz().renderDot() renders an SVG from graphviz strict undirectd DOT."
             .render(resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after adding one edge');
-    test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after adding one edge');
-    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after adding one edge');
-    test.equal(d3.selectAll('polygon').size(), 1, 'Number of polygons after adding one edge');
-    test.equal(d3.selectAll('path').size(), 2, 'Number of paths after adding one edge');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after adding one edge');
+    assert.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after adding one edge');
+    assert.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after adding one edge');
+    assert.equal(d3.selectAll('polygon').size(), 1, 'Number of polygons after adding one edge');
+    assert.equal(d3.selectAll('path').size(), 2, 'Number of paths after adding one edge');
 
-    test.end();
 });
 
-tape("graphviz().renderDot() renders an SVG from graphviz strict directd DOT.", async function (test) {
+it("graphviz().renderDot() renders an SVG from graphviz strict directd DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -367,11 +360,11 @@ tape("graphviz().renderDot() renders an SVG from graphviz strict directd DOT.", 
             .renderDot('digraph {a -> b;}', resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
-    test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-    test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    assert.equal(d3.selectAll('ellipse').size(), 2, 'Number of initial ellipses');
+    assert.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+    assert.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
     await new Promise(resolve => {
         graphviz
@@ -381,16 +374,15 @@ tape("graphviz().renderDot() renders an SVG from graphviz strict directd DOT.", 
             .render(resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after adding an edge');
-    test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after adding an edge');
-    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after adding an edge');
-    test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after adding an edge');
-    test.equal(d3.selectAll('path').size(), 2, 'Number of paths after adding an edge');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after adding an edge');
+    assert.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after adding an edge');
+    assert.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after adding an edge');
+    assert.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after adding an edge');
+    assert.equal(d3.selectAll('path').size(), 2, 'Number of paths after adding an edge');
 
-    test.end();
 });
 
-tape("graphviz().render() renders edges with tooltip attribute.", async function (test) {
+it("graphviz().render() renders edges with tooltip attribute.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -407,24 +399,23 @@ tape("graphviz().render() renders edges with tooltip attribute.", async function
             .renderDot('digraph {edge [tooltip="\\\\E"]; a -> b;}', resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-    test.equal(d3.selectAll('g').size(), 5, 'Number of groups');
-    test.equal(d3.selectAll('a').size(), 1, 'Number of hyperlinks');
-    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses');
-    test.equal(d3.selectAll('path').size(), 1, 'Number of paths');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+    assert.equal(d3.selectAll('g').size(), 5, 'Number of groups');
+    assert.equal(d3.selectAll('a').size(), 1, 'Number of hyperlinks');
+    assert.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses');
+    assert.equal(d3.selectAll('path').size(), 1, 'Number of paths');
 
     await new Promise(resolve => {
         graphviz
             .renderDot('digraph {edge [tooltip="\\\\E"]; a -> b; a -> c}', resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes after add');
-    test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after add');
-    test.equal(d3.selectAll('g').size(), 8, 'Number of groups');
-    test.equal(d3.selectAll('a').size(), 2, 'Number of hyperlinks');
-    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses');
-    test.equal(d3.selectAll('path').size(), 2, 'Number of paths');
+    assert.equal(d3.selectAll('.node').size(), 3, 'Number of nodes after add');
+    assert.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after add');
+    assert.equal(d3.selectAll('g').size(), 8, 'Number of groups');
+    assert.equal(d3.selectAll('a').size(), 2, 'Number of hyperlinks');
+    assert.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses');
+    assert.equal(d3.selectAll('path').size(), 2, 'Number of paths');
 
-    test.end();
 });
