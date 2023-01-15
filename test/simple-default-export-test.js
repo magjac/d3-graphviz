@@ -1,9 +1,10 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "d3-graphviz";
 
-tape("Simple rendering an SVG from graphviz DOT using default export", async function (test) {
+it("Simple rendering an SVG from graphviz DOT using default export", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
 
@@ -14,11 +15,10 @@ tape("Simple rendering an SVG from graphviz DOT using default export", async fun
             .renderDot('digraph {a -> b;}', resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges');
-    test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses');
-    test.equal(d3.selectAll('polygon').size(), 2, 'Number of polygons');
-    test.equal(d3.selectAll('path').size(), 1, 'Number of paths');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of nodes');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of edges');
+    assert.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses');
+    assert.equal(d3.selectAll('polygon').size(), 2, 'Number of polygons');
+    assert.equal(d3.selectAll('path').size(), 1, 'Number of paths');
 
-    test.end();
 });
