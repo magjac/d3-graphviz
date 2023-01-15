@@ -1,4 +1,5 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_transition from "d3-transition";
@@ -13,7 +14,7 @@ describe("render()", () => {
         global.Worker = undefined;
     });
 
-    tape("graphviz().render() adds and removes SVG elements after transition delay.", async function (test) {
+    it("graphviz().render() adds and removes SVG elements after transition delay.", async () => {
 
         function transition_test_init() {
             var window = global.window = jsdom(
@@ -37,7 +38,7 @@ describe("render()", () => {
 
                 graphviz = d3_graphviz.graphviz("#graph");
 
-                test.equal(graphviz.active(), null, 'No transition is active before a graph has been rendered');
+                assert.equal(graphviz.active(), null, 'No transition is active before a graph has been rendered');
 
                 await new Promise(resolve => {
                     graphviz
@@ -52,19 +53,19 @@ describe("render()", () => {
                         .dot('digraph {a -> b; c}')
                         .render(resolve)
                         .on("transitionStart", function () {
-                            test.equal(graphviz.active(), null, 'No transition is active before the transition starts');
+                            assert.equal(graphviz.active(), null, 'No transition is active before the transition starts');
                         })
                         .on("transitionEnd", function () {
-                            test.ok(graphviz.active() instanceof d3_transition.transition, 'A transition is active just before the transition ends');
+                            assert.ok(graphviz.active() instanceof d3_transition.transition, 'A transition is active just before the transition ends');
                         });
                 });
 
-                test.equal(graphviz.active(), null, 'No transition is active after the transition ended');
-                test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
-                test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
-                test.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
-                test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
-                test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
+                assert.equal(graphviz.active(), null, 'No transition is active after the transition ended');
+                assert.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
+                assert.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
+                assert.equal(d3.selectAll('polygon').size(), 2, 'Number of initial polygons');
+                assert.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
+                assert.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
                 await new Promise(resolve => {
                     graphviz
@@ -78,20 +79,20 @@ describe("render()", () => {
                 });
 
                 function part2_end() {
-                    test.equal(graphviz.active(), null, 'No transition is active immediately after the rendering has been initiated');
-                    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
-                    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
-                    test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
-                    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
-                    test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
+                    assert.equal(graphviz.active(), null, 'No transition is active immediately after the rendering has been initiated');
+                    assert.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
+                    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
+                    assert.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
+                    assert.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
+                    assert.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
                 }
 
-                test.equal(graphviz.active(), null, 'No transition is active after the transition ended');
-                test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after transition');
-                test.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after transition');
-                test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after transition');
-                test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after transition');
-                test.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
+                assert.equal(graphviz.active(), null, 'No transition is active after the transition ended');
+                assert.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after transition');
+                assert.equal(d3.selectAll('.edge').size(), 2, 'Number of edges after transition');
+                assert.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons after transition');
+                assert.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after transition');
+                assert.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
 
                 graphviz.destroy();
 
@@ -107,6 +108,5 @@ describe("render()", () => {
             return d3_transition.transition().duration(0);
         });
 
-        test.end();
     });
 });
