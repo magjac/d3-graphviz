@@ -11,7 +11,7 @@ describe("graphvizVersion()", () => {
         global.Worker = undefined;
     });
 
-    tape("graphviz().graphvizVersion() returns the Graphviz version.", function (test) {
+    tape("graphviz().graphvizVersion() returns the Graphviz version.", async function (test) {
 
         var window = global.window = jsdom(
             `
@@ -28,21 +28,22 @@ describe("graphvizVersion()", () => {
         }
         global.Worker = Worker;
 
-        graphviz = d3_graphviz.graphviz("#graph", { useWorker: true })
-            .on("initEnd", startTest);
+        await new Promise(resolve => {
+            graphviz = d3_graphviz.graphviz("#graph", { useWorker: true })
+                .on("initEnd", resolve);
+        });
 
-        function startTest() {
-            const version = graphviz.graphvizVersion();
-            if (version == undefined) {
-                test.fail("version is not defined")
-            }
-            else {
-                const [major, minor, patch] = version.split('.');
-                test.ok(!isNaN(major), 'Major version number is a number');
-                test.ok(!isNaN(minor), 'Minor version number is a number');
-                test.ok(!isNaN(patch), 'Patch version number is a number');
-            }
-            test.end();
+        const version = graphviz.graphvizVersion();
+        if (version == undefined) {
+            test.fail("version is not defined")
         }
+        else {
+            const [major, minor, patch] = version.split('.');
+            test.ok(!isNaN(major), 'Major version number is a number');
+            test.ok(!isNaN(minor), 'Minor version number is a number');
+            test.ok(!isNaN(patch), 'Patch version number is a number');
+        }
+
+        test.end();
     });
 });
