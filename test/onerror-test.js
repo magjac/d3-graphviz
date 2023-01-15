@@ -1,8 +1,9 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3_graphviz from "../index.js";
 
-tape("onerror() registers dot layout error handler.", async function (test) {
+it("onerror() registers dot layout error handler.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
@@ -27,7 +28,7 @@ tape("onerror() registers dot layout error handler.", async function (test) {
             .renderDot('{bad dot 1}');
     });
 
-    test.equal(
+    assert.equal(
         err,
         "syntax error in line 1 near '{'\n",
         'A registered error handler catches syntax errors in the dot source thrown during layout ' + (errorsCaught == 1 ? 'the first' : 'a second') + 'time'
@@ -44,8 +45,8 @@ tape("onerror() registers dot layout error handler.", async function (test) {
         }
     });
 
-    test.ok(errorsCaught <= 2, 'The error handler does not catch any errors in correct dot source');
-    test.ok(errorsCaught >= 2, 'The error handler catches errors also after already having caught errors once already');
+    assert.ok(errorsCaught <= 2, 'The error handler does not catch any errors in correct dot source');
+    assert.ok(errorsCaught >= 2, 'The error handler catches errors also after already having caught errors once already');
     graphviz
         .onerror(null);
 
@@ -54,10 +55,9 @@ tape("onerror() registers dot layout error handler.", async function (test) {
             .renderDot('{bad dot 3}');
     }
 
-    test.throws(renderDot, 'Without a registered error handler, errors in the dot source throws error');
+    assert.throws(renderDot, 'Without a registered error handler, errors in the dot source throws error');
 
-    test.equal(errorsCaught, 2, 'Without a registered error handler, errors in the dot source are not caught');
+    assert.equal(errorsCaught, 2, 'Without a registered error handler, errors in the dot source are not caught');
 
 
-    test.end();
 });
