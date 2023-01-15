@@ -1,4 +1,5 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3_graphviz from "../index.js";
 import Worker from "tiny-worker";
@@ -11,7 +12,7 @@ describe("graphvizVersion()", () => {
         global.Worker = undefined;
     });
 
-    tape("graphviz().graphvizVersion() returns the Graphviz version.", async function (test) {
+    it("graphviz().graphvizVersion() returns the Graphviz version.", async () => {
 
         var window = global.window = jsdom(
             `
@@ -35,15 +36,14 @@ describe("graphvizVersion()", () => {
 
         const version = graphviz.graphvizVersion();
         if (version == undefined) {
-            test.fail("version is not defined")
+            assert.fail("version is not defined")
         }
         else {
             const [major, minor, patch] = version.split('.');
-            test.ok(!isNaN(major), 'Major version number is a number');
-            test.ok(!isNaN(minor), 'Minor version number is a number');
-            test.ok(!isNaN(patch), 'Patch version number is a number');
+            assert.ok(!isNaN(major), 'Major version number is a number');
+            assert.ok(!isNaN(minor), 'Minor version number is a number');
+            assert.ok(!isNaN(patch), 'Patch version number is a number');
         }
 
-        test.end();
     });
 });
