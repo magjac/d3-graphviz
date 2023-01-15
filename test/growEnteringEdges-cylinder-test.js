@@ -1,9 +1,10 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-tape("graphviz().render() renders growing edges to nodes with URL attribute.", async function (test) {
+it("graphviz().render() renders growing edges to nodes with URL attribute.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
 
@@ -22,20 +23,19 @@ tape("graphviz().render() renders growing edges to nodes with URL attribute.", a
             .renderDot('digraph {a; b [shape="cylinder"]}', resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
-    test.equal(d3.selectAll('.edge').size(), 0, 'Number of initial edges');
-    test.equal(d3.selectAll('g').size(), 3, 'Number of groups');
-    test.equal(d3.selectAll('path').size(), 2, 'Number of paths');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of initial nodes');
+    assert.equal(d3.selectAll('.edge').size(), 0, 'Number of initial edges');
+    assert.equal(d3.selectAll('g').size(), 3, 'Number of groups');
+    assert.equal(d3.selectAll('path').size(), 2, 'Number of paths');
 
     await new Promise(resolve => {
         graphviz
             .renderDot('digraph {a; b [shape="cylinder"]; a -> b}', resolve);
     });
 
-    test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after add');
-    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after add');
-    test.equal(d3.selectAll('g').size(), 4, 'Number of groups');
-    test.equal(d3.selectAll('path').size(), 3, 'Number of paths');
+    assert.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after add');
+    assert.equal(d3.selectAll('.edge').size(), 1, 'Number of edges after add');
+    assert.equal(d3.selectAll('g').size(), 4, 'Number of groups');
+    assert.equal(d3.selectAll('path').size(), 3, 'Number of paths');
 
-    test.end();
 });
