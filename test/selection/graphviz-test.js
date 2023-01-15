@@ -4,12 +4,12 @@ import * as d3_selection from "d3-selection";
 import * as d3_graphviz from "../../index.js";
 
 tape("selection.graphviz() returns an instanceof d3.graphviz", function(test) {
-  var window = global.window = jsdom();
-  var document = global.document = window.document;
-  var root = document.documentElement,
-      selection = d3_selection.select(root),
-      graphviz = selection.graphviz()
-      .on("initEnd", startTest);
+    var window = global.window = jsdom();
+    var document = global.document = window.document;
+    var root = document.documentElement,
+        selection = d3_selection.select(root),
+        graphviz = selection.graphviz()
+            .on("initEnd", startTest);
 
     function startTest() {
         test.equal(graphviz instanceof d3_graphviz.graphviz, true, "graphviz is an instanceof d3.graphviz");
@@ -22,7 +22,7 @@ tape("selection.graphviz().dot().render() renders an SVG from graphviz DOT.", fu
     var document = global.document = window.document;
 
     var graphviz = d3_selection.select("#graph")
-      .graphviz()
+        .graphviz()
         .zoom(false)
         .on("initEnd", startTest);
 
