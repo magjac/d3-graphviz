@@ -1,10 +1,11 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_transition from "d3-transition";
 import * as d3_graphviz from "../index.js";
 
-tape("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", async function (test) {
+it("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -28,13 +29,12 @@ tape("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph 
         .zoom(false)
         .renderDot('digraph {graph [tooltip="G"]}');
 
-    test.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
+    assert.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
 
 
-    test.end();
 });
 
-tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", async function (test) {
+it("graphviz.transition().renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
     var graphviz;
@@ -60,7 +60,7 @@ tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DO
         .zoom(false)
         .renderDot('digraph {graph [tooltip="G"]}');
 
-    test.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
+    assert.equal(d3.select('div').html(), svgDoc, "SVG after initial rendering");
 
     graphviz
         .tweenShapes(false)
@@ -75,7 +75,6 @@ tape("graphviz.transition().renderDot() generates a correct SVG from graphviz DO
             .on("end", resolve);
     });
 
-    test.equal(d3.select('div').html(), svgDoc, "SVG after transition");
+    assert.equal(d3.select('div').html(), svgDoc, "SVG after transition");
 
-    test.end();
 });
