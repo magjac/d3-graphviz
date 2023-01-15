@@ -6,10 +6,10 @@ import * as d3_graphviz from "../../index.js";
 tape("selection.graphviz() returns an instanceof d3.graphviz", function(test) {
     var window = global.window = jsdom();
     var document = global.document = window.document;
-    var root = document.documentElement,
-        selection = d3_selection.select(root),
-        graphviz = selection.graphviz()
-            .on("initEnd", startTest);
+    var root = document.documentElement;
+    var selection = d3_selection.select(root);
+    var graphviz = selection.graphviz()
+        .on("initEnd", startTest);
 
     function startTest() {
         test.equal(graphviz instanceof d3_graphviz.graphviz, true, "graphviz is an instanceof d3.graphviz");
