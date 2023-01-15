@@ -13,7 +13,7 @@ describe("render()", () => {
         global.Worker = undefined;
     });
 
-    tape("graphviz().render() adds and removes SVG elements after transition delay.", function (test) {
+    tape("graphviz().render() adds and removes SVG elements after transition delay.", async function (test) {
 
         function transition_test_init() {
             var window = global.window = jsdom(
@@ -32,34 +32,33 @@ describe("render()", () => {
             global.Worker = Worker;
         }
 
-        function transition_test(transition1, next_test) {
+        async function transition_test(transition1) {
+            await new Promise(async resolve0 => {
 
-            graphviz = d3_graphviz.graphviz("#graph");
+                graphviz = d3_graphviz.graphviz("#graph");
 
-            test.equal(graphviz.active(), null, 'No transition is active before a graph has been rendered');
+                test.equal(graphviz.active(), null, 'No transition is active before a graph has been rendered');
 
-            graphviz
-                .on("initEnd", function () {
-                    part1();
+                await new Promise(resolve => {
+                    graphviz
+                        .on("initEnd", resolve);
                 });
 
-            const transition2 = transition1 || d3_transition.transition().duration(1000);
-            function part1() {
-                graphviz
-                    .tweenShapes(false)
-                    .zoom(false)
-                    .transition(transition1)
-                    .dot('digraph {a -> b; c}')
-                    .render(part1_end)
-                    .on("transitionStart", function () {
-                        test.equal(graphviz.active(), null, 'No transition is active before the transition starts');
-                    })
-                    .on("transitionEnd", function () {
-                        test.ok(graphviz.active() instanceof d3_transition.transition, 'A transition is active just before the transition ends');
-                    });
-            }
+                await new Promise(resolve => {
+                    graphviz
+                        .tweenShapes(false)
+                        .zoom(false)
+                        .transition(transition1)
+                        .dot('digraph {a -> b; c}')
+                        .render(resolve)
+                        .on("transitionStart", function () {
+                            test.equal(graphviz.active(), null, 'No transition is active before the transition starts');
+                        })
+                        .on("transitionEnd", function () {
+                            test.ok(graphviz.active() instanceof d3_transition.transition, 'A transition is active just before the transition ends');
+                        });
+                });
 
-            function part1_end() {
                 test.equal(graphviz.active(), null, 'No transition is active after the transition ended');
                 test.equal(d3.selectAll('.node').size(), 3, 'Number of initial nodes');
                 test.equal(d3.selectAll('.edge').size(), 1, 'Number of initial edges');
@@ -67,27 +66,25 @@ describe("render()", () => {
                 test.equal(d3.selectAll('ellipse').size(), 3, 'Number of initial ellipses');
                 test.equal(d3.selectAll('path').size(), 1, 'Number of initial paths');
 
-                const transition2 = transition1 || d3_transition.transition().duration(1000);
-                graphviz
-                    .dot('digraph {a -> b; b -> a}')
-                    .transition(transition1)
-                    .fade(false)
-                    .tweenPaths(false)
-                    .on("renderEnd", part2_end)
-                    .on("end", part3_end)
-                    .render();
-            }
+                await new Promise(resolve => {
+                    graphviz
+                        .dot('digraph {a -> b; b -> a}')
+                        .transition(transition1)
+                        .fade(false)
+                        .tweenPaths(false)
+                        .on("renderEnd", part2_end)
+                        .on("end", resolve)
+                        .render();
+                });
 
-            function part2_end() {
-                test.equal(graphviz.active(), null, 'No transition is active immediately after the rendering has been initiated');
-                test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
-                test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
-                test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
-                test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
-                test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
-            }
-
-            function part3_end() {
+                function part2_end() {
+                    test.equal(graphviz.active(), null, 'No transition is active immediately after the rendering has been initiated');
+                    test.equal(d3.selectAll('.node').size(), 3, 'Number of nodes immediately after rendering');
+                    test.equal(d3.selectAll('.edge').size(), 1, 'Number of edges immediately after rendering');
+                    test.equal(d3.selectAll('polygon').size(), 3, 'Number of polygons immediately after rendering');
+                    test.equal(d3.selectAll('ellipse').size(), 3, 'Number of ellipses immediately after rendering');
+                    test.equal(d3.selectAll('path').size(), 2, 'Number of paths immediately after rendering');
+                }
 
                 test.equal(graphviz.active(), null, 'No transition is active after the transition ended');
                 test.equal(d3.selectAll('.node').size(), 2, 'Number of nodes after transition');
@@ -96,27 +93,20 @@ describe("render()", () => {
                 test.equal(d3.selectAll('ellipse').size(), 2, 'Number of ellipses after transition');
                 test.equal(d3.selectAll('path').size(), 2, 'Number of paths after transition');
 
-                if (next_test) {
-                    graphviz._worker.terminate();
-                    next_test();
-                } else {
-                    test.end();
-                }
-            }
-        }
+                graphviz.destroy();
 
-        function transition_instance_test() {
-            transition_test_init();
-            transition_test(null, transition_function_test);
-        }
-
-        function transition_function_test() {
-            transition_test_init();
-            transition_test(function () {
-                return d3_transition.transition().duration(0);
+                resolve0();
             });
         }
 
-        transition_instance_test();
+        transition_test_init();
+        await transition_test(null);
+
+        transition_test_init();
+        await transition_test(function () {
+            return d3_transition.transition().duration(0);
+        });
+
+        test.end();
     });
 });
