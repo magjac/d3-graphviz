@@ -1,9 +1,10 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3_graphviz from "../index.js";
 import * as d3_transition from "d3-transition";
 
-tape("logEvents enables and disables event logging.", async function (test) {
+it("logEvents enables and disables event logging.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
 
@@ -26,11 +27,11 @@ tape("logEvents enables and disables event logging.", async function (test) {
     var n = 0;
     for (let i in eventTypes) {
         let eventType = eventTypes[i];
-        test.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'function', "An event named " + eventType + ".log is registered when event logging is enabled");
+        assert.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'function', "An event named " + eventType + ".log is registered when event logging is enabled");
         n += 1;
     }
-    test.ok(n > 10, "More than 10 events are registered when event logging is enabled");
-    test.equal(n, eventTypes.length, "All " + eventTypes.length + " events are registered when event logging is enabled");
+    assert.ok(n > 10, "More than 10 events are registered when event logging is enabled");
+    assert.equal(n, eventTypes.length, "All " + eventTypes.length + " events are registered when event logging is enabled");
 
     await new Promise(resolve => {
         graphviz
@@ -43,11 +44,11 @@ tape("logEvents enables and disables event logging.", async function (test) {
     n = 0;
     for (let i in eventTypes) {
         let eventType = eventTypes[i];
-        test.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'undefined', "No event named " + eventType + ".log is registered when event logging is disabled");
+        assert.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'undefined', "No event named " + eventType + ".log is registered when event logging is disabled");
         n += 1;
     }
-    test.ok(n > 10, "None of the more than 10 events are registered when event logging is disabled");
-    test.equal(n, eventTypes.length, "None of the " + eventTypes.length + " events are registered when event logging is disabled");
+    assert.ok(n > 10, "None of the more than 10 events are registered when event logging is disabled");
+    assert.equal(n, eventTypes.length, "None of the " + eventTypes.length + " events are registered when event logging is disabled");
 
     await new Promise(resolve => {
         graphviz
@@ -65,11 +66,10 @@ tape("logEvents enables and disables event logging.", async function (test) {
     n = 0;
     for (let i in eventTypes) {
         let eventType = eventTypes[i];
-        test.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'function', "An event named " + eventType + ".log is registered when event logging is enabled and a transition is used");
+        assert.equal(typeof graphviz._dispatch.on(eventType + ".log"), 'function', "An event named " + eventType + ".log is registered when event logging is enabled and a transition is used");
         n += 1;
     }
-    test.ok(n > 10, "More than 10 events are registered when event logging is enabled and a transition is used");
-    test.equal(n, eventTypes.length, "All " + eventTypes.length + " events are registered when event logging is enabled and a transition is used");
+    assert.ok(n > 10, "More than 10 events are registered when event logging is enabled and a transition is used");
+    assert.equal(n, eventTypes.length, "All " + eventTypes.length + " events are registered when event logging is enabled and a transition is used");
 
-    test.end();
 });
