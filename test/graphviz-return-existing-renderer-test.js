@@ -1,12 +1,11 @@
 import assert from "assert";
 import it from "./it.js";
 import jsdom from "./jsdom.js";
-import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
 it("graphviz() returns an exiting renderer.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz1;
 
     await new Promise(resolve => {

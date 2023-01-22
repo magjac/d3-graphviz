@@ -12,7 +12,7 @@ it(".destroy() deletes the Graphviz instance from the container element (worker 
             <div id="graph"></div>
             `,
     );
-    var document = global.document = window.document;
+    global.document = window.document;
     global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
@@ -44,11 +44,11 @@ it(".destroy() closes the worker", async () => {
             <div id="graph"></div>
             `,
     );
-    var document = global.document = window.document;
-    var Blob = global.Blob = function (jsarray) {
+    global.document = window.document;
+    global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
-    var createObjectURL = window.URL.createObjectURL = function (js) {
+    window.URL.createObjectURL = function (js) {
         return js;
     }
     global.Worker = Worker;

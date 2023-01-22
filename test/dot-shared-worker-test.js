@@ -23,7 +23,7 @@ describe("dot()", () => {
                 `,
         );
 
-        var document = global.document = window.document;
+        global.document = window.document;
         global.SharedWorker = SharedWorker;
         graphviz = d3_graphviz.graphviz("#graph", { useSharedWorker: true });
 

@@ -7,7 +7,7 @@ import * as d3_graphviz from "../index.js";
 
 it("graphviz().keyMode() affects transitions and order of rendering.", async function () {
     var window = global.window = jsdom('<div id="main"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var keyModes = [
         'title',
         'tag-index',
@@ -176,7 +176,7 @@ it("graphviz().keyMode() affects transitions and order of rendering.", async fun
 
 it("graphviz().keyMode() does not accept illegal key modes.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -200,7 +200,7 @@ it("graphviz().keyMode() does not accept illegal key modes.", async () => {
 
 it("graphviz().keyMode() cannot be changed after applying dot source.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {

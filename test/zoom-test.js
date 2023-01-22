@@ -8,7 +8,7 @@ import * as d3_selection from "d3-selection";
 
 it("zoom(false) disables zooming.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -26,7 +26,7 @@ it("zoom(false) disables zooming.", async () => {
 
 it("zoom(true) enables zooming.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -49,7 +49,7 @@ it("zoom(true) enables zooming.", async () => {
 
 it("zoom(false) after zoom(true) disables zooming.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -79,7 +79,7 @@ it("zoom(false) after zoom(true) disables zooming.", async () => {
 
 it("resetZoom resets the zoom transform to the original transform.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -163,7 +163,7 @@ it("resetZoom resets the zoom transform to the original transform.", async () =>
 
 it("resetZoom resets the zoom transform to the original transform of the latest rendered graph.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -253,7 +253,7 @@ it("resetZoom resets the zoom transform to the original transform of the latest 
 
 it("zooming rescales transforms during transitions.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -322,7 +322,7 @@ it("zooming rescales transforms during transitions.", async () => {
 
 it("zoomScaleExtent() sets zoom scale extent.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -341,7 +341,7 @@ it("zoomScaleExtent() sets zoom scale extent.", async () => {
 
 it("zoomTranslateExtent() sets zoom translate extent.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -361,7 +361,7 @@ it("zoomTranslateExtent() sets zoom translate extent.", async () => {
 
 it("zoomBehavior() returns the current zoom behavior if zoom is enabled.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -379,7 +379,7 @@ it("zoomBehavior() returns the current zoom behavior if zoom is enabled.", async
 
 it("zoomBehavior() returns null if zoom is disabled.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -397,7 +397,7 @@ it("zoomBehavior() returns null if zoom is disabled.", async () => {
 
 it("zoomSelection() returns the current zoom selection if zoom is enabled.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -415,7 +415,7 @@ it("zoomSelection() returns the current zoom selection if zoom is enabled.", asy
 
 it("zoomSelection() returns null if zoom is disabled.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {

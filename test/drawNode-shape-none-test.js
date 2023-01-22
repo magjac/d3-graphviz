@@ -8,7 +8,7 @@ import {translatePointsAttribute} from "../src/svg.js"
 
 it("Verify that none shape is drawn exactly as Graphviz does.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
@@ -82,7 +82,7 @@ it("Verify that none shape is drawn exactly as Graphviz does.", async () => {
 
 it("Verify that none shape without label is drawn exactly as Graphviz does.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
@@ -144,7 +144,7 @@ it("Verify that none shape without label is drawn exactly as Graphviz does.", as
 
 it("Verify that none shape with style filled is drawn exactly as Graphviz does.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
@@ -221,7 +221,7 @@ it("Verify that none shape with style filled is drawn exactly as Graphviz does."
 
 it("Verify that none shape with style filled and pen color specified is drawn exactly as Graphviz does.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;

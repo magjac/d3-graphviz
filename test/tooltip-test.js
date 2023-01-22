@@ -7,7 +7,7 @@ import * as d3_graphviz from "../index.js";
 
 it("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -36,7 +36,7 @@ it("graphviz.renderDot() generates a correct SVG from graphviz DOT with graph to
 
 it("graphviz.transition().renderDot() generates a correct SVG from graphviz DOT with graph tooltip.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {

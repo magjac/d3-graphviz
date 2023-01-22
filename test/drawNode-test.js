@@ -7,7 +7,7 @@ import {translatePointsAttribute} from "../src/svg.js";
 
 it("Check our understanding of how Graphviz draws nodes.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -44,7 +44,7 @@ it("Check our understanding of how Graphviz draws nodes.", async () => {
 
 it("drawNode() draws a node in the same way as Graphviz does", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -100,7 +100,7 @@ it("drawNode() draws a node in the same way as Graphviz does", async () => {
 
 it("drawNode() draws a polygon node", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -154,7 +154,7 @@ it("drawNode() draws a polygon node", async () => {
 
 it("drawNode() draws a node with an URL attribute in the same way as Graphviz does", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -209,7 +209,7 @@ it("drawNode() draws a node with an URL attribute in the same way as Graphviz do
 
 it("drawNode() draws a node with an tooltip attribute in the same way as Graphviz does", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -263,7 +263,7 @@ it("drawNode() draws a node with an tooltip attribute in the same way as Graphvi
 
 it("insertDrawnNode() inserts the currently drawn node into the joined data structure so that it can be animated when the graph is re-rendered", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -318,7 +318,7 @@ it("insertDrawnNode() inserts the currently drawn node into the joined data stru
 
 it("removeDrawnNode() removes the node currently being drawn", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -377,7 +377,7 @@ it("removeDrawnNode() removes the node currently being drawn", async () => {
 
 it("updateDrawnNode modifies the position, size and attributes of a node", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -504,7 +504,7 @@ it("updateDrawnNode modifies the position, size and attributes of a node", async
 
 it("moveDrawnNode modifies the position of a node", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -555,7 +555,7 @@ it("moveDrawnNode modifies the position of a node", async () => {
 
 it("drawnNodeSelection return a selection containing the node currently being drawn", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -606,7 +606,7 @@ it("drawnNodeSelection return a selection containing the node currently being dr
 
 it("Attempts to operate on a node without drawing one first is handled gracefully", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {

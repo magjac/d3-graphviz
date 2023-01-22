@@ -7,7 +7,7 @@ import * as d3_graphviz from "../index.js";
 
 it("Verify that default shape is drawn exactly as Graphviz does.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
 
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
@@ -85,7 +85,7 @@ it("Verify that default shape is drawn exactly as Graphviz does.", async () => {
 
 it("Verify that default shape with style filled is drawn exactly as Graphviz does.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
@@ -162,7 +162,7 @@ it("Verify that default shape with style filled is drawn exactly as Graphviz doe
 
 it("Default shape with style filled without fillcolor, but with color, uses color as fillcolor.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
@@ -241,7 +241,7 @@ it("Default shape with style filled without fillcolor, but with color, uses colo
 
 it("Verify that default shape with label is drawn exactly as Graphviz does.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;

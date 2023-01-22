@@ -6,7 +6,7 @@ import * as d3_graphviz from "d3-graphviz";
 
 it("Simple rendering an SVG from graphviz DOT using default export", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
 
     var graphviz;
 

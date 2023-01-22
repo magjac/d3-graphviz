@@ -6,7 +6,7 @@ import * as d3_graphviz from "../index.js";
 
 it("Check our understanding of how Graphviz draws edges.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
 
     await new Promise(resolve => {
@@ -96,7 +96,7 @@ it("Check our understanding of how Graphviz draws edges.", async () => {
 
 it("drawEdge() draws an edge in the same way as Graphviz does", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -196,7 +196,7 @@ it("drawEdge() draws an edge in the same way as Graphviz does", async () => {
 
 it("drawEdge() draws an edge even if the length is zero", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -239,7 +239,7 @@ it("drawEdge() draws an edge even if the length is zero", async () => {
 
 it("drawEdge() draws an edge with an URL attribute in the same way as Graphviz does", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -338,7 +338,7 @@ it("drawEdge() draws an edge with an URL attribute in the same way as Graphviz d
 
 it("drawEdge() draws an edge with an tooltip attribute in the same way as Graphviz does", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -437,7 +437,7 @@ it("drawEdge() draws an edge with an tooltip attribute in the same way as Graphv
 
 it("insertDrawnEdge() inserts the currently drawn edge into the joined data structure so that it can be animated when the graph is re-rendered", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -495,7 +495,7 @@ it("insertDrawnEdge() inserts the currently drawn edge into the joined data stru
 
 it("removeDrawnEdge() removes the edge currently being drawn", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph")
     await new Promise(resolve => {
         graphviz
@@ -558,7 +558,7 @@ it("removeDrawnEdge() removes the edge currently being drawn", async () => {
 
 it("updateDrawnEdge modifies the start and end points and the attributes of an edge", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -634,7 +634,7 @@ it("updateDrawnEdge modifies the start and end points and the attributes of an e
 
 it("moveDrawnEdgeEndPoint modifies the end points of an edge", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -692,7 +692,7 @@ it("moveDrawnEdgeEndPoint modifies the end points of an edge", async () => {
 
 it("drawnEdgeSelection return a selection containing the edge currently being drawn", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -747,7 +747,7 @@ it("drawnEdgeSelection return a selection containing the edge currently being dr
 
 it("Attempts to operate on an edge without drawing one first is handled gracefully", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz

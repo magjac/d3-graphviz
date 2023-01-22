@@ -6,7 +6,7 @@ import * as d3_graphviz from "../index.js";
 
 it("graphviz().options() gets options.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var defaultOptions = {
         tweenShapes: true,
         totalMemory: undefined,
@@ -20,7 +20,7 @@ it("graphviz().options() gets options.", async () => {
 
 it("graphviz(options) sets options at initialization.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var setOptions = {
         tweenShapes: false,
         totalMemory: 65536,
@@ -34,7 +34,7 @@ it("graphviz(options) sets options at initialization.", async () => {
 
 it("graphviz().options(options) sets options.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var setOptions1 = {
         tweenShapes: false,
         totalMemory: 255,

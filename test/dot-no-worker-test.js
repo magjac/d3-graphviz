@@ -7,7 +7,7 @@ import Worker from "tiny-worker";
 
 async function do_test(useWorker, html) {
     var window = global.window = jsdom(html);
-    var document = global.document = window.document;
+    global.document = window.document;
     global.Blob = function (jsarray) {
         return new Function(jsarray[0]);
     }
