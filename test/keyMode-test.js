@@ -1,10 +1,11 @@
-import tape from "./tape.js";
+import assert from "assert";
+import it from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_transition from "d3-transition";
 import * as d3_graphviz from "../index.js";
 
-tape("graphviz().keyMode() affects transitions and order of rendering.", function(test) {
+it("graphviz().keyMode() affects transitions and order of rendering.", async function () {
     var window = global.window = jsdom('<div id="main"></div>');
     var document = global.document = window.document;
     var keyModes = [
@@ -13,90 +14,91 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
         'id',
         'index',
     ];
-    const nCheckPoints = 8;
-    const nItemsPerCheckPoint = 4;
-    const nRenderings = nCheckPoints * nItemsPerCheckPoint;
-    const expected_num_assertion = keyModes.length * nRenderings;
+    const nRenderings = 2;
     var delay = 500;
     var duration = 500;
-    var keyModeIndex = 0;
-    var num_assertions = 0;
-    test.timeoutAfter(2000 + keyModes.length * nRenderings * (delay + duration));
+    this.timeout(2000 + keyModes.length * nRenderings * (delay + duration)); // FIXME
+    await new Promise(resolve0 => {
+        var keyModeIndex = 0;
+        renderKeyMode();
+        async function renderKeyMode() {
+            const keyMode = keyModes[keyModeIndex];
+            d3.select('#main')
+                .append('div')
+                .attr('id', 'graph-' + keyMode);
 
-    renderKeyMode();
+            var graphviz;
 
-    function renderKeyMode() {
-        const keyMode = keyModes[keyModeIndex]
-        d3.select('#main')
-          .append('div')
-            .attr('id', 'graph-' + keyMode)
-        var graphviz = d3_graphviz.graphviz("#graph-" + keyMode)
-            .on("initEnd", render_1st);
-        function render_1st() {
-            graphviz
-                .tweenShapes(false)
-                .zoom(false)
-                .keyMode(keyMode)
-                .dot('digraph {a -> b; c}')
-                .transition(function () {
-                    return d3_transition.transition().delay(delay).duration(duration);
-                })
-                .render()
-                .on("end", function() {
-                    checkInitalRendering(keyMode);
-                    render_2nd();
-                });
+            await new Promise(resolve => {
+                graphviz = d3_graphviz.graphviz("#graph-" + keyMode)
+                    .on("initEnd", resolve);
+            });
+
+            await new Promise(resolve => {
+                graphviz
+                    .tweenShapes(false)
+                    .zoom(false)
+                    .keyMode(keyMode)
+                    .dot('digraph {a -> b; c}')
+                    .transition(function () {
+                        return d3_transition.transition().delay(delay).duration(duration);
+                    })
+                    .render()
+                    .on("end", resolve);
+            });
+
+            checkInitalRendering(keyMode);
+
+            await new Promise(resolve => {
+                graphviz
+                    .keyMode(keyMode)
+                    .dot('digraph {a -> b; b -> a}')
+                    .transition(function () {
+                        d3_transition.transition("helper-" + keyMode).delay(delay).duration(0)
+                            .transition().delay(0).duration(0)
+                            .on("start", function () {
+                                checkAtStarting(keyMode);
+                            })
+                            .transition().delay(0).duration(0)
+                            .on("start", function () {
+                                checkAfterStarting(keyMode);
+                            });
+                        return d3_transition.transition("main-" + keyMode).delay(delay).duration(duration);
+                    })
+                    .fade(false)
+                    .tweenPaths(false)
+                    .render()
+                    .on("renderEnd", function () {
+                        checkBeforeScheduling(keyMode);
+                    })
+                    .on("transitionStart", function () {
+                        checkBeforeScheduling(keyMode);
+                    })
+                    .on("transitionEnd", function () {
+                        checkAtEnding(keyMode);
+                    })
+                    .on("restoreEnd", function () {
+                        checkAfterEnding(keyMode)
+                    })
+                    .on("end", resolve);
+            });
+
+            checkAfterEnding(keyMode)
+
+            if (keyMode == keyModes[keyModes.length - 1]) {
+                resolve0();
+            } else {
+                keyModeIndex += 1;
+                renderKeyMode()
+            }
         }
-
-        function render_2nd() {
-            graphviz
-                .keyMode(keyMode)
-                .dot('digraph {a -> b; b -> a}')
-                .transition(function () {
-                    d3_transition.transition("helper-" + keyMode).delay(delay).duration(0)
-                        .transition().delay(0).duration(0)
-                        .on("start", function() {
-                            checkAtStarting(keyMode);
-                        })
-                        .transition().delay(0).duration(0)
-                        .on("start", function() {
-                            checkAfterStarting(keyMode);
-                        });
-                    return d3_transition.transition("main-" + keyMode).delay(delay).duration(duration);
-                })
-                .fade(false)
-                .tweenPaths(false)
-                .render()
-                .on("renderEnd", function() {
-                    checkBeforeScheduling(keyMode);
-                })
-                .on("transitionStart", function() {
-                    checkBeforeScheduling(keyMode);
-                })
-                .on("transitionEnd", function() {
-                    checkAtEnding(keyMode);
-                })
-                .on("restoreEnd", function() {
-                    checkAfterEnding(keyMode)
-                })
-                .on("end", function() {
-                    checkAfterEnding(keyMode)
-                    if (keyMode == keyModes[keyModes.length -1]) {
-                        endTest()
-                    } else {
-                        keyModeIndex += 1;
-                        renderKeyMode()
-                    }
-                });
-        }
-    }
+    });
 
     function check(counts, state, keyMode) {
         for (let name in counts) {
             var count = counts[name];
             const objectName = name.replace('.', '');
-            test.equal(d3.select('#graph-' + keyMode).selectAll(name).size(), count, 'Number of ' + objectName + 's is ' + count + ' ' + state + ' transition with keyMode ' + keyMode);
-            ++num_assertions;
+            assert.equal(d3.select('#graph-' + keyMode).selectAll(name).size(), count, 'Number of ' + objectName + 's is ' + count + ' ' + state + ' transition with keyMode ' + keyMode);
         }
     }
 
@@ -170,18 +172,17 @@ tape("graphviz().keyMode() affects transitions and order of rendering.", functio
         check(counts, 'after ending', keyMode);
     }
 
-    function endTest() {
-        test.equal(num_assertions, expected_num_assertion);
-        test.end();
-    }
-
 });
 
-tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
-
+it("graphviz().keyMode() does not accept illegal key modes.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph");
+    var graphviz;
+
+    await new Promise(resolve => {
+        graphviz = d3_graphviz.graphviz("#graph")
+            .on("initEnd", resolve);
+    });
 
     function useIllegalKeyMode() {
         graphviz
@@ -192,33 +193,31 @@ tape("graphviz().keyMode() does not accept illegal key modes.", function(test) {
             .render();
     }
 
-    test.throws(useIllegalKeyMode, 'Illegal keyMode throws error');
+    assert.throws(useIllegalKeyMode, 'Illegal keyMode throws error');
 
-    test.end();
 
 });
 
-tape("graphviz().keyMode() cannot be changed after applying dot source.", function(test) {
-
+it("graphviz().keyMode() cannot be changed after applying dot source.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     var document = global.document = window.document;
-    var graphviz = d3_graphviz.graphviz("#graph")
-        .on("initEnd", startTest);
+    var graphviz;
 
-    function startTest() {
-        function changeKeyMode() {
-            graphviz
+    await new Promise(resolve => {
+        graphviz = d3_graphviz.graphviz("#graph")
+            .on("initEnd", resolve);
+    });
+
+    function changeKeyMode() {
+        graphviz
             .tweenShapes(false)
             .zoom(false)
             .keyMode('title')
             .dot('digraph {a -> b}')
             .keyMode('id')
             .render();
-        }
-
-        test.throws(changeKeyMode, 'Too late change of keyMode throws error');
-
-        test.end();
-
     }
+
+    assert.throws(changeKeyMode, 'Too late change of keyMode throws error');
+
 });
