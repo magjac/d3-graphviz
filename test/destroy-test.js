@@ -6,7 +6,7 @@ import * as d3_graphviz from "../index.js";
 
 it(".destroy() deletes the Graphviz instance from the container element", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph", { useWorker: false });
 
     await new Promise(resolve => {

@@ -6,7 +6,7 @@ import * as d3_graphviz from "../index.js";
 
 it("renderDot() renders a node with an empty string as node_id.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
 
     var graphviz = d3_graphviz.graphviz("#graph");
 

@@ -20,7 +20,7 @@ describe("logEvents())", () => {
                 <div id="graph"></div>
                 `,
         );
-        global.document = window.document;
+       global.document = window.document;
         global.Blob = function (jsarray) {
             return new Function(jsarray[0]);
         }

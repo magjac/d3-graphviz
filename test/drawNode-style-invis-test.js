@@ -8,7 +8,7 @@ import {translatePointsAttribute} from "../src/svg.js";
 
 it("No node is drawn when style is invis.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
@@ -58,7 +58,7 @@ it("No node is drawn when style is invis.", async () => {
 
 it("Updating of a node with style invis is ignored.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
@@ -103,7 +103,7 @@ it("Updating of a node with style invis is ignored.", async () => {
 
 it("Moving a node with style invis is ignored.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
@@ -148,7 +148,7 @@ it("Moving a node with style invis is ignored.", async () => {
 
 it("Removal of a node with style invis is allowed.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraph = d3.select("#actual-graph");
@@ -193,7 +193,7 @@ it("Removal of a node with style invis is allowed.", async () => {
 
 it("Changing a node with style invis to a visible node is allowed.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;

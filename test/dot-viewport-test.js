@@ -12,7 +12,7 @@ var bbHeight = simpleHeight - margin * 2;
 
 it("DOT without viewport", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -42,7 +42,7 @@ it("DOT without viewport", async () => {
 
 it("DOT with viewport scale 2", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -74,7 +74,7 @@ it("DOT with viewport scale 2", async () => {
 
 it("DOT with viewport scale 0.5", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -105,7 +105,7 @@ it("DOT with viewport scale 0.5", async () => {
 
 it("DOT with viewport scale 1.5", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz
@@ -137,7 +137,7 @@ it("DOT with viewport scale 1.5", async () => {
 
 it("DOT with viewport scale 2 and original size", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz

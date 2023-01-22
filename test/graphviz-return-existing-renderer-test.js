@@ -6,7 +6,7 @@ import * as d3_graphviz from "../index.js";
 
 it("graphviz() returns an exiting renderer.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz1;
 
     await new Promise(resolve => {

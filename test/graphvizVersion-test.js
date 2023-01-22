@@ -5,7 +5,7 @@ import * as d3_graphviz from "../index.js";
 
 it("graphviz().graphvizVersion() return the Graphviz version.", async () => {
     global.window = jsdom('<div id="graph"></div>');
-    global.document = window.document;
+   global.document = window.document;
 
     var graphviz;
 

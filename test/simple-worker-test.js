@@ -20,7 +20,7 @@ describe("renderDot()", () => {
                 <div id="graph"></div>
                 `,
         );
-        var document = global.document = window.document;
+        global.document = window.document;
         var Blob = global.Blob = function (jsarray) {
             return new Function(jsarray[0]);
         }

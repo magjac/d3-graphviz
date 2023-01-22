@@ -8,7 +8,7 @@ import * as d3_graphviz from "../index.js";
 it("graphviz().render() adds and removes SVG elements after transition delay.", async () => {
 
     var window = global.window = jsdom('<div id="graph"><div id="dummy">Hello World</div></div>');
-    var document = global.document = window.document
+    global.document = window.document
 
     var graphviz;
 

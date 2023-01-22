@@ -6,7 +6,7 @@ import * as d3_graphviz from "../index.js";
 
 it("graphviz().render() renders an SVG from graphviz DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");
     await new Promise(resolve => {
         graphviz.on("initEnd", resolve);
@@ -81,7 +81,7 @@ it("graphviz().render() renders an SVG from graphviz DOT.", async () => {
 
 it("graphviz().render() renders on a div with sub-elements", async () => {
     var window = global.window = jsdom('<div id="graph"><div id="dummy">Hello World</div></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -132,7 +132,7 @@ it("graphviz().render() renders on a div with sub-elements", async () => {
 
 it("graphviz().render() removes SVG elements for nodes and edges when removed from updated DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -177,7 +177,7 @@ it("graphviz().render() removes SVG elements for nodes and edges when removed fr
 
 it("graphviz().render() adds SVG elements for nodes and edges when added to updated DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -209,7 +209,7 @@ it("graphviz().render() adds SVG elements for nodes and edges when added to upda
 
 it("graphviz().renderDot() renders an SVG from graphviz DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -234,7 +234,7 @@ it("graphviz().renderDot() renders an SVG from graphviz DOT.", async () => {
 
 it("graphviz().render() updates SVG text element when node name changes in DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -268,7 +268,7 @@ it("graphviz().render() updates SVG text element when node name changes in DOT."
 
 it("graphviz().render() changes SVG element type when node shape changes in DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -306,7 +306,7 @@ it("graphviz().render() changes SVG element type when node shape changes in DOT.
 
 it("graphviz().renderDot() renders an SVG from graphviz strict undirectd DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -345,7 +345,7 @@ it("graphviz().renderDot() renders an SVG from graphviz strict undirectd DOT.", 
 
 it("graphviz().renderDot() renders an SVG from graphviz strict directd DOT.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {
@@ -384,7 +384,7 @@ it("graphviz().renderDot() renders an SVG from graphviz strict directd DOT.", as
 
 it("graphviz().render() renders edges with tooltip attribute.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {

@@ -8,7 +8,7 @@ import * as d3_graphviz from "../index.js";
 it("graphviz().tweenShapes() enables and disables shape tweening during transitions.", async () => {
 
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {

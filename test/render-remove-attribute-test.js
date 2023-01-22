@@ -8,7 +8,7 @@ import * as d3_graphviz from "../index.js";
 it("graphviz().render() removes attribute from SVG element when attribute is removed from Graphviz node.", async () => {
 
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
 
     var graphviz;
 

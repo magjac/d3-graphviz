@@ -6,7 +6,7 @@ import * as d3_graphviz from "../../index.js";
 
 it("selection.selectWithoutDataPropagation() selects without propagating data", async () => {
     var window = global.window = jsdom('<div id="parent"><div id="child1"></div><div id="child2"></div></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
 
     var parent = d3_selection.select("#parent");
     parent

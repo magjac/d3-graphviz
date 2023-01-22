@@ -6,7 +6,7 @@ import * as d3_transition from "d3-transition";
 
 it("logEvents enables and disables event logging.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
 
     var graphviz;
 

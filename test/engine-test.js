@@ -6,7 +6,7 @@ import * as d3_selection from "d3-selection";
 
 it("engine() selects which graphviz layout engine to use.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
 
     var graphviz;
 
@@ -29,7 +29,7 @@ it("engine() selects which graphviz layout engine to use.", async () => {
 
 it("engine() selects which graphviz layout engine to use.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var graphviz;
 
     await new Promise(resolve => {

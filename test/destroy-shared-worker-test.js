@@ -12,7 +12,7 @@ it(".destroy() deletes the Graphviz instance from the container element (shared 
             <div id="graph"></div>
             `,
     );
-    global.document = window.document;
+   global.document = window.document;
     global.SharedWorker = SharedWorker;
 
     var graphviz = d3_graphviz.graphviz("#graph", { useSharedWorker: true });

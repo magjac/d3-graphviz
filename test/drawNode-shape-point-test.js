@@ -7,7 +7,7 @@ import * as d3_graphviz from "../index.js";
 
 it("Verify that point shape is drawn exactly as Graphviz does.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
-    var document = global.document = window.document;
+    global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
     var actualGraph = d3.select("#actual-graph");
     var actualGraphviz;
