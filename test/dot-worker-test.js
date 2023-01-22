@@ -23,7 +23,7 @@ describe("dot()", () => {
         );
 
         global.document = window.document;
-        var Blob = global.Blob = function (jsarray) {
+        global.Blob = function (jsarray) {
             return new Function(jsarray[0]);
         }
         var createObjectURL = window.URL.createObjectURL = function (js) {
