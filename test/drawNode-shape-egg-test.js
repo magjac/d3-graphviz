@@ -6,7 +6,7 @@ import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 import {translatePointsAttribute} from "../src/svg.js"
 
-xit("Verify that egg shape is drawn exactly as Graphviz does.", async () => {
+it("Verify that egg shape is drawn exactly as Graphviz does.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
@@ -35,7 +35,7 @@ xit("Verify that egg shape is drawn exactly as Graphviz does.", async () => {
             .renderDot('digraph {}', resolve);
     });
 
-    var x = 28.74;
+    var x = 28.745;
     var y = -18;
     actualGraphviz
         .drawNode(x, y, 'a', { shape: 'egg', id: 'node1' })
