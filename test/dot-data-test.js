@@ -5,7 +5,7 @@ import deepEqualData from "./deepEqualData.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-xit("data extraction", async () => {
+it("data extraction", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     global.document = window.document;
 
@@ -458,17 +458,17 @@ var basic_data = {
                             "attributes": {
                                 "fill": "none",
                                 "stroke": "black",
-                                "d": "M27,-71.7C27,-64.41 27,-55.73 27,-47.54"
+                                "d": "M27,-71.7C27,-64.24 27,-55.32 27,-46.97"
                             },
                             "bbox": {
                                 "x": 27,
                                 "y": -71.7,
                                 "width": 0,
-                                "height": 24.160000000000004
+                                "height": 24.730000000000004
                             },
                             "center": {
                                 "x": 27,
-                                "y": -59.620000000000005
+                                "y": -59.335
                             },
                             "totalLength": 100,
                             "parent": "[Circular ~.children.1.children.15]",
@@ -490,17 +490,17 @@ var basic_data = {
                             "attributes": {
                                 "fill": "black",
                                 "stroke": "black",
-                                "points": "30.5,-47.62 27,-37.62 23.5,-47.62 30.5,-47.62"
+                                "points": "30.5,-47.1 27,-37.1 23.5,-47.1 30.5,-47.1"
                             },
                             "bbox": {
                                 "x": 23.5,
-                                "y": -47.62,
+                                "y": -47.1,
                                 "width": 7,
                                 "height": 10
                             },
                             "center": {
                                 "x": 27,
-                                "y": -42.62
+                                "y": -42.1
                             },
                             "parent": "[Circular ~.children.1.children.15]",
                             "children": [],
