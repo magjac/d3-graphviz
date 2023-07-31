@@ -56,7 +56,7 @@
     "@babel/register": "^7.22.5",
     "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-babel": "^6.0.3",
-    "@rollup/plugin-node-resolve": "^14.1.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
     "ace-builds": "^1.23.4",
     "c8": "^7.14.0",
     "codecov": "^3.8.3",
