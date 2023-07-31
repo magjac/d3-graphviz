@@ -55,6 +55,7 @@
     "@babel/preset-env": "^7.22.9",
     "@babel/register": "^7.22.5",
     "@rollup/plugin-alias": "^4.0.4",
+    "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-node-resolve": "^14.1.0",
     "ace-builds": "^1.23.4",
     "c8": "^7.14.0",
@@ -73,7 +74,6 @@
     "marked": "^4.3.0",
     "mocha": "^10.2.0",
     "rollup": "^2.79.1",
-    "rollup-plugin-babel": "^4.4.0",
     "terser": "^5.19.2",
     "tiny-worker": "^2.3.0"
   },
