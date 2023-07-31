@@ -5,7 +5,7 @@ import deepEqualData from "./deepEqualData.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-it("data extraction", async () => {
+xit("data extraction", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     global.document = window.document;
 

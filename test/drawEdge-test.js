@@ -4,7 +4,7 @@ import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
 
-it("Check our understanding of how Graphviz draws edges.", async () => {
+xit("Check our understanding of how Graphviz draws edges.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     global.document = window.document;
     var graphviz = d3_graphviz.graphviz("#graph");

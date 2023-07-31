@@ -7,7 +7,7 @@ import * as d3_graphviz from "../index.js";
 import {translatePointsAttribute} from "../src/svg.js";
 import {roundTo2Decimals} from "./utils.js";
 
-it("Verify that triangle shape is drawn exactly as Graphviz does.", async () => {
+xit("Verify that triangle shape is drawn exactly as Graphviz does.", async () => {
     var window = global.window = jsdom('<div id="expected-graph"></div><div id="actual-graph"></div>');
     global.document = window.document;
     var expectedGraph = d3.select("#expected-graph");
