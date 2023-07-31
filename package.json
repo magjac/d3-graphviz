@@ -58,7 +58,7 @@
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "ace-builds": "^1.23.4",
-    "c8": "^7.14.0",
+    "c8": "^8.0.1",
     "codecov": "^3.8.3",
     "d3": "^7.8.5",
     "d3-dispatch": "^3.0.1",
