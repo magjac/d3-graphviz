@@ -37,7 +37,7 @@ it("Verify that triangle shape is drawn exactly as Graphviz does.", async () => 
     });
 
     var x = 30.64645;
-    var y = -30.9504;
+    var y = -31.0004;
     actualGraphviz
         .drawNode(x, y, 'a', { shape: 'triangle', id: 'node1' })
         .insertDrawnNode('a');

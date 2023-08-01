@@ -35,7 +35,7 @@ it("Verify that egg shape is drawn exactly as Graphviz does.", async () => {
             .renderDot('digraph {}', resolve);
     });
 
-    var x = 28.74;
+    var x = 28.745;
     var y = -18;
     actualGraphviz
         .drawNode(x, y, 'a', { shape: 'egg', id: 'node1' })
