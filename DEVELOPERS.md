@@ -64,7 +64,7 @@ link for this heading at the bottom of `CHANGELOG.md`.
 
 1. Push:
 
-   Example: `release-of-version-4.1.1`
+   Example: `git push origin release-of-version-4.1.1`
 
 1. Wait until the GitHub action has run for your branch and check that it's green
 
@@ -92,15 +92,13 @@ link for this heading at the bottom of `CHANGELOG.md`.
 
     Example: `v4.1.1`
 
-See the [CHANGELOG](https://github.com/magjac/d3-graphviz/blob/master/CHANGELOG.md#410) for details.
-
-1. In the **Describe this release** are, type e.g.:
+1. In the **Describe this release** area, type e.g.:
 
 ```
-See the [CHANGELOG](https://github.com/magjac/d3-graphviz/blob/master/CHANGELOG.md#411) for details.
+See the [CHANGELOG]([Title](https://github.com/magjac/d3-graphviz/blob/master/CHANGELOG.md#411--2022-04-09)) for details.
 ```
 
-Be careful the get the mangled version corret. In this exmaple `411` stands for `4.1.1`.
+Be careful the get the mangled version correct. In this example `411` stands for `4.1.1`.
 
 1. Click **Publish the release**.
 
