@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [5.1.0] – 2023-08-01
 * Upgrade @hpcc-js/wasm to 2.13.1 (Graphviz 8.1.0)
 
 ## [5.0.2] – 2022-12-27
@@ -167,7 +169,8 @@ issue](https://github.com/d3/d3/issues/3469).
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v5.0.2...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v5.1.0...HEAD
+[5.1.0]: https://github.com/magjac/d3-graphviz/compare/v5.0.2...v5.1.0
 [5.0.2]: https://github.com/magjac/d3-graphviz/compare/v5.0.1...v5.0.2
 [5.0.1]: https://github.com/magjac/d3-graphviz/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/magjac/d3-graphviz/compare/v4.5.0...v5.0.0
