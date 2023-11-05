@@ -50,14 +50,14 @@
     "report-dir": "./alternative"
   },
   "devDependencies": {
-    "@babel/cli": "^7.22.9",
-    "@babel/core": "^7.22.9",
-    "@babel/preset-env": "^7.22.9",
-    "@babel/register": "^7.22.5",
-    "@rollup/plugin-alias": "^5.0.0",
-    "@rollup/plugin-babel": "^6.0.3",
-    "@rollup/plugin-node-resolve": "^15.1.0",
-    "ace-builds": "^1.23.4",
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2",
+    "@babel/register": "^7.22.15",
+    "@rollup/plugin-alias": "^5.0.1",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "ace-builds": "^1.31.1",
     "c8": "^8.0.1",
     "codecov": "^3.8.3",
     "d3": "^7.8.5",
@@ -73,8 +73,8 @@
     "jsdom": "^22.1.0",
     "marked": "^5.1.2",
     "mocha": "^10.2.0",
-    "rollup": "^3.27.0",
-    "terser": "^5.19.2",
+    "rollup": "^3.29.4",
+    "terser": "^5.24.0",
     "tiny-worker": "^2.3.0"
   },
   "dependencies": {
