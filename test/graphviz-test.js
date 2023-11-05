@@ -30,8 +30,8 @@ it("graphviz().render() renders an SVG from graphviz DOT.", async () => {
 <!-- a&#45;&gt;b -->
 <g id="edge1" class="edge">
 <title>a-&gt;b</title>
-<path fill="none" stroke="black" d="M27,-71.7C27,-64.24 27,-55.32 27,-46.97"></path>
-<polygon fill="black" stroke="black" points="30.5,-47.1 27,-37.1 23.5,-47.1 30.5,-47.1"></polygon>
+<path fill="none" stroke="black" d="M27,-71.7C27,-64.41 27,-55.73 27,-47.54"></path>
+<polygon fill="black" stroke="black" points="30.5,-47.62 27,-37.62 23.5,-47.62 30.5,-47.62"></polygon>
 </g>
 </g>
 </svg>`;
