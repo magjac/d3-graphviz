@@ -176,7 +176,8 @@ issue](https://github.com/d3/d3/issues/3469).
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v5.1.0...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v5.2.0...HEAD
+[5.2.0]: https://github.com/magjac/d3-graphviz/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/magjac/d3-graphviz/compare/v5.0.2...v5.1.0
 [5.0.2]: https://github.com/magjac/d3-graphviz/compare/v5.0.1...v5.0.2
 [5.0.1]: https://github.com/magjac/d3-graphviz/compare/v5.0.0...v5.0.1
