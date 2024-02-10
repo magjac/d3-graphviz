@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+* Error when rendering an initial graph with an edge from a node with a name
+  equal to a property of the JavaScript Object type and growEnteringEdges is
+  enabled #301
+
 ## [5.2.0] – 2023-11-05
 
 ### Changed

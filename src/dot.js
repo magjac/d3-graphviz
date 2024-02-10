@@ -266,8 +266,8 @@ function layoutDone(svgDoc, callback) {
                     }
                     var startNodeId = nodeIds[0];
                     var startNode = nodeDictionary[startNodeId];
-                    var prevStartNode = prevNodeDictionary[startNodeId];
-                    if (prevStartNode) {
+                    if (Object.hasOwn(prevNodeDictionary, startNodeId)) {
+                        var prevStartNode = prevNodeDictionary[startNodeId];
                         var i = startNode.children.findIndex(function (element, index) {
                             return element.tag == 'g';
                         });
