@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+* Upgrade @hpcc-js/wasm to 2.16.0 (Graphviz 10.0.1)
+
 ### Fixed
 * Error when rendering an initial graph with an edge from a node with a name
   equal to a property of the JavaScript Object type and growEnteringEdges is
