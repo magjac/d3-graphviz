@@ -72,7 +72,7 @@
     "deep-equal": "^2.2.3",
     "jsdom": "^22.1.0",
     "mocha": "^10.3.0",
-    "rollup": "^3.29.4",
+    "rollup": "^4.10.0",
     "terser": "^5.27.0",
     "tiny-worker": "^2.3.0"
   },
