@@ -98,7 +98,8 @@ function _render(callback) {
         childrenExit = childrenExit
             .remove()
         children = childrenEnter
-            .merge(children);
+            .merge(children)
+            .order();
         children.each(attributeElement);
     }
 

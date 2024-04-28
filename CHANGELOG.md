@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+* Cluster's box shadows nodes inside it after animated transition
+
 ## [5.3.0] – 2024-02-11
 
 ### Changed
