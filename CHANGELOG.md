@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+* Upgrade @hpcc-js/wasm to 2.16.2 (Graphviz 11.0.0)
+
 ### Fixed
 * Cluster's box shadows nodes inside it after animated transition
 
