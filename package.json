@@ -77,7 +77,7 @@
     "tiny-worker": "^2.3.0"
   },
   "dependencies": {
-    "@hpcc-js/wasm": "^2.16.2",
+    "@hpcc-js/wasm": "^2.18.1",
     "d3-dispatch": "^3.0.1",
     "d3-format": "^3.1.0",
     "d3-interpolate": "^3.0.1",
