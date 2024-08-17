@@ -50,14 +50,14 @@
     "report-dir": "./alternative"
   },
   "devDependencies": {
-    "@babel/cli": "^7.24.5",
-    "@babel/core": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
-    "@babel/register": "^7.23.7",
+    "@babel/cli": "^7.24.8",
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.3",
+    "@babel/register": "^7.24.6",
     "@rollup/plugin-alias": "^5.1.0",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "ace-builds": "^1.33.1",
+    "ace-builds": "^1.35.4",
     "c8": "^9.1.0",
     "codecov": "^3.8.3",
     "d3": "^7.9.0",
@@ -71,9 +71,9 @@
     "d3-zoom": "^3.0.0",
     "deep-equal": "^2.2.3",
     "jsdom": "^22.1.0",
-    "mocha": "^10.4.0",
-    "rollup": "^4.17.2",
-    "terser": "^5.31.0",
+    "mocha": "^10.7.3",
+    "rollup": "^4.20.0",
+    "terser": "^5.31.6",
     "tiny-worker": "^2.3.0"
   },
   "dependencies": {
