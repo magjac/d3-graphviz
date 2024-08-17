@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.5.0] – 2024-08-17
+
 ### Changed
 * Upgrade @hpcc-js/wasm to 2.18.1 (Graphviz 12.0.0)
 
@@ -197,7 +199,8 @@ issue](https://github.com/d3/d3/issues/3469).
 ## 2.x & 1.x
 See the [release notes](https://github.com/magjac/d3-graphviz/releases).
 
-[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v5.4.0...HEAD
+[Unreleased]: https://github.com/magjac/d3-graphviz/compare/v5.5.0...HEAD
+[5.5.0]: https://github.com/magjac/d3-graphviz/compare/v5.4.0...v5.5.0
 [5.4.0]: https://github.com/magjac/d3-graphviz/compare/v5.3.0...v5.4.0
 [5.3.0]: https://github.com/magjac/d3-graphviz/compare/v5.2.0...v5.3.0
 [5.2.0]: https://github.com/magjac/d3-graphviz/compare/v5.1.0...v5.2.0
