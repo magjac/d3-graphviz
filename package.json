@@ -1,6 +1,6 @@
 {
   "name": "d3-graphviz",
-  "version": "5.5.0",
+  "version": "5.6.0",
   "description": "Graphviz DOT rendering and animated transitions for D3",
   "keywords": [
     "d3",
