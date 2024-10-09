@@ -291,7 +291,8 @@ function _render(callback) {
                                             return function (t) {
                                                 const fromTransform = zoomTransform(graphvizInstance._zoomSelection.node()).toString();
                                                 const toTransform = getTranslatedZoomTransform.call(graphvizInstance, element).toString();
-                                                node.setAttribute("transform", interpolateTransformSvg(fromTransform, toTransform)(t));
+                                                const interpolationFunction = interpolateTransformSvg(fromTransform, toTransform);
+                                                node.setAttribute("transform", interpolationFunction(t));
                                             };
                                         });
                                 }
