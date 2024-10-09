@@ -21,7 +21,18 @@ export function createZoomBehavior() {
     var graphvizInstance = this;
     function zoomed(event) {
         var g = d3.select(svg.node().querySelector("g"));
-        g.attr('transform', event.transform);
+        var transform = g.node().transform;
+        var matrix = transform.baseVal.consolidate().matrix;
+        if (matrix.b == 0) {
+            // drawing orientation is portrait
+            g.attr('transform', event.transform);
+        }
+        else {
+            // drawing orientation is landscape
+            const t = event.transform;
+            const transformStr = `rotate(-90) translate(${-t.y} ${t.x}) scale(${t.k})`;
+            g.attr('transform', transformStr);
+        }
         graphvizInstance._dispatch.call('zoom', graphvizInstance);
     }
 

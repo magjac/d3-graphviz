@@ -7,7 +7,7 @@ import * as d3_transition from "d3-transition";
 import * as d3_zoom from "d3-zoom";
 import * as d3_selection from "d3-selection";
 
-it_xfail("resetZoom resets the zoom transform to the original transform when rotate=90.", async () => {
+it("resetZoom resets the zoom transform to the original transform when rotate=90.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     global.document = window.document;
     var graphviz;
@@ -90,7 +90,7 @@ it_xfail("resetZoom resets the zoom transform to the original transform when rot
 
 });
 
-it_xfail("resetZoom resets the zoom transform to the original transform of the latest rendered graph when rotate=90.", async () => {
+it("resetZoom resets the zoom transform to the original transform of the latest rendered graph when rotate=90.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     global.document = window.document;
     var graphviz;

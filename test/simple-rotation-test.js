@@ -1,6 +1,5 @@
 import assert from "assert";
 import it from "./it.js";
-import { it_xfail } from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3 from "d3-selection";
 import * as d3_graphviz from "../index.js";
@@ -26,7 +25,7 @@ it("Simple rendering an SVG from graphviz DOT with rotate=90 and zoom disabled."
     assert.equal(d3.select('#graph0').attr("transform"), "scale(1 1) rotate(-90) translate(-58 112)");
 });
 
-it_xfail("Simple rendering an SVG from graphviz DOT with rotate=90 and zoom enabled.", async () => {
+it("Simple rendering an SVG from graphviz DOT with rotate=90 and zoom enabled.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     global.document = window.document;
 

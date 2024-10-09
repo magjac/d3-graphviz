@@ -23,8 +23,16 @@ export function extractElementData(element) {
     var transform = element.node().transform;
     if (transform && transform.baseVal.numberOfItems != 0) {
         var matrix = transform.baseVal.consolidate().matrix;
-        datum.translation = {x: matrix.e, y: matrix.f};
-        datum.scale = matrix.a;
+        if (matrix.b == 0) {
+            // drawing orientation is portrait
+            datum.translation = { x: matrix.e, y: matrix.f };
+            datum.scale = matrix.a;
+        }
+        else {
+            // drawing orientation is landscape
+            datum.translation = { x: matrix.e, y: matrix.f };
+            datum.scale = matrix.c;
+        }
     }
     if (tag == 'ellipse') {
         datum.center = {
