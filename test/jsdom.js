@@ -100,11 +100,11 @@ export default function jsdomit(html, options) {
                     }).split(/[ ,]+/).map(function(v) {
                         return +v;
                     });
-                    var scale = transform.replace(/.*scale\((-*[\d.]+[ ,]*-*[\d.]*)\).*/, function(match, scale) {
+                    var scale = transform.includes('scale') ? transform.replace(/.*scale\((-*[\d.]+[ ,]*-*[\d.]*)\).*/, function(match, scale) {
                         return scale;
                     }).split(/[ ,]+/).map(function(v) {
                         return +v;
-                    });
+                    }) : 1;
                     return {
                         baseVal: {
                             numberOfItems: 1,
