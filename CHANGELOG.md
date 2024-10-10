@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+* rotate=90 graph attribute does not set the rotation #251
+
 ## [5.6.0] – 2024-08-18
 
 ### Changed

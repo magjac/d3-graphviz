@@ -138,6 +138,7 @@ export function Graphviz(selection, options) {
     this._images = [];
     this._translation = undefined;
     this._scale = undefined;
+    this._rotation = undefined;
     this._eventTypes = [
         'initEnd',
         'start',

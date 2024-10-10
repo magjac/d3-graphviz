@@ -27,11 +27,13 @@ export function extractElementData(element) {
             // drawing orientation is portrait
             datum.translation = { x: matrix.e, y: matrix.f };
             datum.scale = matrix.a;
+            datum.rotation = 0;
         }
         else {
             // drawing orientation is landscape
             datum.translation = { x: matrix.e, y: matrix.f };
             datum.scale = matrix.c;
+            datum.rotation = -90;
         }
     }
     if (tag == 'ellipse') {

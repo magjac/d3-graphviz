@@ -1,6 +1,5 @@
 import assert from "assert";
 import it from "./it.js";
-import { it_xfail } from "./it.js";
 import jsdom from "./jsdom.js";
 import * as d3_graphviz from "../index.js";
 import * as d3_transition from "d3-transition";
@@ -180,7 +179,7 @@ it("resetZoom resets the zoom transform to the original transform of the latest 
 
 });
 
-it_xfail("zooming rescales transforms during transitions when rotate=90.", async () => {
+it("zooming rescales transforms during transitions when rotate=90.", async () => {
     var window = global.window = jsdom('<div id="graph"></div>');
     global.document = window.document;
     var graphviz;

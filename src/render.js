@@ -289,8 +289,9 @@ function _render(callback) {
                                         .tween("attr.transform", function() {
                                             var node = this;
                                             return function (t) {
-                                                const fromTransform = zoomTransform(graphvizInstance._zoomSelection.node()).toString();
-                                                const toTransform = getTranslatedZoomTransform.call(graphvizInstance, element).toString();
+                                                const rotateStr = ` rotate(${data.rotation})`;
+                                                const fromTransform = zoomTransform(graphvizInstance._zoomSelection.node()).toString() + rotateStr;
+                                                const toTransform = getTranslatedZoomTransform.call(graphvizInstance, element).toString() + rotateStr;
                                                 const interpolationFunction = interpolateTransformSvg(fromTransform, toTransform);
                                                 node.setAttribute("transform", interpolationFunction(t));
                                             };
