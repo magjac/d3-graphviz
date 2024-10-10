@@ -105,18 +105,21 @@ export default function jsdomit(html, options) {
                     }).split(/[ ,]+/).map(function(v) {
                         return +v;
                     }) : 1;
+                    var rotate = transform.includes('rotate') ? transform.replace(/.*rotate\((-*[\d.]+)\).*/, function (match, rotate) {
+                        return rotate;
+                    }) : 0;
                     return {
                         baseVal: {
                             numberOfItems: 1,
                             consolidate: function() {
                                 return {
                                     matrix: {
-                                        'a': scale[0],
-                                        'b': 0,
-                                        'c': 0,
-                                        'd': scale[1] || scale[0],
-                                        'e': translate[0],
-                                        'f': translate[1],
+                                        'a': rotate == 0 ? scale[0] : 0,
+                                        'b': rotate == 0 ? 0 : -scale[0],
+                                        'c': rotate == 0 ? 0 : scale[0],
+                                        'd': rotate == 0 ? scale[1] || scale[0] : 0,
+                                        'e': rotate == 0 ? translate[0] : translate[1],
+                                        'f': rotate == 0 ? translate[1] : -translate[0],
                                     }
                                 };
                             },
