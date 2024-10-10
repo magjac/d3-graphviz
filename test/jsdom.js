@@ -93,13 +93,14 @@ export default function jsdomit(html, options) {
     if (!('transform' in window.SVGElement.prototype)) {
         Object.defineProperty(window.SVGElement.prototype, 'transform', {
             get: function() {
-                if (this.getAttribute('transform')) {
-                    var translate = this.getAttribute('transform').replace(/.*translate\((-*[\d.]+[ ,]+-*[\d.]+)\).*/, function(match, xy) {
+                const transform = this.getAttribute('transform');
+                if (transform) {
+                    var translate = transform.replace(/.*translate\((-*[\d.]+[ ,]+-*[\d.]+)\).*/, function(match, xy) {
                         return xy;
                     }).split(/[ ,]+/).map(function(v) {
                         return +v;
                     });
-                    var scale = this.getAttribute('transform').replace(/.*.*scale\((-*[\d.]+[ ,]*-*[\d.]*)\).*/, function(match, scale) {
+                    var scale = transform.replace(/.*.*scale\((-*[\d.]+[ ,]*-*[\d.]*)\).*/, function(match, scale) {
                         return scale;
                     }).split(/[ ,]+/).map(function(v) {
                         return +v;
