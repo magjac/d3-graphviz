@@ -17,6 +17,7 @@ export function convertToPathData(originalData, guideData) {
             var normPoints = pointStrings.map(function(p) {var xy = p.split(','); return [xy[0] - bbox.cx, xy[1] - bbox.cy]});
             var x0 = normPoints[normPoints.length - 1][0];
             var y0 = normPoints[normPoints.length - 1][1];
+            var x2 = 0;
             for (var i = 0; i < normPoints.length; i++, x0 = x1, y0 = y1) {
                 var x1 = normPoints[i][0];
                 var y1 = normPoints[i][1];
@@ -25,7 +26,7 @@ export function convertToPathData(originalData, guideData) {
                 if (dy == 0) {
                     continue;
                 } else {
-                    var x2 = x0 - y0 * dx / dy;
+                    x2 = x0 - y0 * dx / dy;
                 }
                 if (0 <= x2 && x2 < Infinity && ((x0 <= x2 && x2 <= x1) || (x1 <= x2 && x2 <= x0))) {
                     break;
