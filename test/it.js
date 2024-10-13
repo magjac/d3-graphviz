@@ -11,3 +11,17 @@ export default function it_wrapper(decription, run) {
         });
     });
 }
+
+export function it_xfail(decription, run) {
+    it(decription + " XFAIL", async function () {
+        await new Promise(async (resolve, reject) => {
+            try {
+                await run.call(this);
+            }
+            catch (e) {
+                resolve();
+            }
+            reject(Error("The test unexpectedly passed (XPASS)"));
+        });
+    });
+}
