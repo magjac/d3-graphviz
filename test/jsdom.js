@@ -93,29 +93,33 @@ export default function jsdomit(html, options) {
     if (!('transform' in window.SVGElement.prototype)) {
         Object.defineProperty(window.SVGElement.prototype, 'transform', {
             get: function() {
-                if (this.getAttribute('transform')) {
-                    var translate = this.getAttribute('transform').replace(/.*translate\((-*[\d.]+[ ,]+-*[\d.]+)\).*/, function(match, xy) {
+                const transform = this.getAttribute('transform');
+                if (transform) {
+                    var translate = transform.replace(/.*translate\((-*[\d.]+[ ,]+-*[\d.]+)\).*/, function(match, xy) {
                         return xy;
                     }).split(/[ ,]+/).map(function(v) {
                         return +v;
                     });
-                    var scale = this.getAttribute('transform').replace(/.*.*scale\((-*[\d.]+[ ,]*-*[\d.]*)\).*/, function(match, scale) {
+                    var scale = transform.includes('scale') ? transform.replace(/.*scale\((-*[\d.]+[ ,]*-*[\d.]*)\).*/, function(match, scale) {
                         return scale;
                     }).split(/[ ,]+/).map(function(v) {
                         return +v;
-                    });
+                    }) : 1;
+                    var rotate = transform.includes('rotate') ? transform.replace(/.*rotate\((-*[\d.]+)\).*/, function (match, rotate) {
+                        return rotate;
+                    }) : 0;
                     return {
                         baseVal: {
                             numberOfItems: 1,
                             consolidate: function() {
                                 return {
                                     matrix: {
-                                        'a': scale[0],
-                                        'b': 0,
-                                        'c': 0,
-                                        'd': scale[1] || scale[0],
-                                        'e': translate[0],
-                                        'f': translate[1],
+                                        'a': rotate == 0 ? scale[0] : 0,
+                                        'b': rotate == 0 ? 0 : -scale[0],
+                                        'c': rotate == 0 ? 0 : scale[0],
+                                        'd': rotate == 0 ? scale[1] || scale[0] : 0,
+                                        'e': rotate == 0 ? translate[0] : translate[1],
+                                        'f': rotate == 0 ? translate[1] : -translate[0],
                                     }
                                 };
                             },

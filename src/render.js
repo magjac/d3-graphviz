@@ -288,8 +288,12 @@ function _render(callback) {
                                     elementTransition
                                         .tween("attr.transform", function() {
                                             var node = this;
-                                            return function(t) {
-                                                node.setAttribute("transform", interpolateTransformSvg(zoomTransform(graphvizInstance._zoomSelection.node()).toString(), getTranslatedZoomTransform.call(graphvizInstance, element).toString())(t));
+                                            return function (t) {
+                                                const rotateStr = ` rotate(${data.rotation})`;
+                                                const fromTransform = zoomTransform(graphvizInstance._zoomSelection.node()).toString() + rotateStr;
+                                                const toTransform = getTranslatedZoomTransform.call(graphvizInstance, element).toString() + rotateStr;
+                                                const interpolationFunction = interpolateTransformSvg(fromTransform, toTransform);
+                                                node.setAttribute("transform", interpolationFunction(t));
                                             };
                                         });
                                 }

@@ -69,6 +69,7 @@ var basic_data = {
                 "y": 112
             },
             "scale": 1,
+            "rotation": 0,
             "parent": "[Circular ~]",
             "children": [
                 {
