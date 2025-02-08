@@ -588,3 +588,9 @@ In order to run the tests you need [Node.js](https://nodejs.org/en/download/pack
 * [Aaron Bycoffe](https://blocks.roadtolarissa.com/bycoffe) for the [Element rotation with point-along-path interpolation](https://blocks.roadtolarissa.com/bycoffe/c3849a0b15234d7e32fc) code.
 * [Marcin Stefaniuk](https://github.com/mstefaniuk) for inspiration and learning through [graph-viz-d3-js](https://github.com/mstefaniuk/graph-viz-d3-js).
 * [Ueyama Satoshi](https://github.com/gyuque) for inspiring growing edges through [livizjs](http://ushiroad.com/jsviz/).
+
+## Projects using d3-graphviz
+
+Feel free to
+[submit a pull request](https://github.com/magjac/d3-graphviz/compare)
+adding your own project.
