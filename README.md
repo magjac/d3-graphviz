@@ -594,3 +594,12 @@ In order to run the tests you need [Node.js](https://nodejs.org/en/download/pack
 Feel free to
 [submit a pull request](https://github.com/magjac/d3-graphviz/compare)
 adding your own project.
+
+* [graphviz-anywidget](https://github.com/pipefunc/graphviz-anywidget) -
+Interactive Graphviz visualization widget for Jupyter notebooks using anywidget.
+Graphviz is provided via WASM
+([hpcc-js-wasm](https://github.com/hpcc-systems/hpcc-js-wasm)) and the
+rendering is done using [graphvizsvg](https://github.com/pipefunc/graphvizsvg)
+and [d3-graphviz](https://github.com/magjac/d3-graphviz), inspired by the VS
+Code extension
+[Graphviz Interactive Preview](https://github.com/tintinweb/vscode-interactive-graphviz/).
